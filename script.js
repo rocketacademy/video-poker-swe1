@@ -4,7 +4,8 @@ const PLAYER_STARTING_POINTS = 100;
 // the player's points
 const playerPoints = PLAYER_STARTING_POINTS;
 // array to store player's hand cards
-const playerHand = []; // let playerHand = ['']; // to use for testing only
+const playerHand = [];
+// playerHand = ['']; // to use for testing only
 
 // player hand size
 const handSize = 5;
@@ -25,6 +26,9 @@ let gameInfo;
 
 // array to store player's cards to exchange
 let cardsToExchange = [];
+
+// to store cards based on similar ranks
+const rankedHand = [[]];
 
 // Helper functions ================================================
 // create elements needed when browser loads
@@ -209,6 +213,21 @@ const reorderCards = () => {
       }
     }
     j += 1;
+  }
+};
+// store similar ranks together and used to check for winning conditions
+const groupPlayerCardsByRank = () => {
+  rankedHand[0].push(playerHand[0]);
+  let rankRow = 0;
+  for (let i = 1; i < playerHand.length; i += 1) {
+    // store the current card in the row array containing cards of the same rank
+    if (playerHand[i].rank === playerHand[i - 1].rank) {
+      rankedHand[rankRow].push(playerHand[i]);
+    } else { // store the current card in a new row array for the next rank
+      rankedHand.push([]);
+      rankRow += 1;
+      rankedHand[rankRow].push(playerHand[i]);
+    }
   }
 };
 // returns true if there is a straight in the player's hand

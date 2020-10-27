@@ -36,7 +36,7 @@ let numOf3OfAKind = 0;
 // to find number of pairs in playerHand
 let numOfPairs = 0;
 // points of the player hand
-let handPoints = 0;
+let handScore = 0;
 
 // Helper functions ================================================
 // create elements needed when browser loads
@@ -313,32 +313,32 @@ const isJackOrHigher = () => {
   return checkJackOrHigher;
 };
 // returns number of points based on player's hand
-const getPoints = () => {
+const calcHandScore = () => {
   if (isStraight() === true && isFlush() === true) { // straight flush
-    handPoints = 9;
+    handScore = 9;
   } else if (numOf4OfAKind === 1) { // 4 of a kind
-    handPoints = 8;
+    handScore = 8;
   } else if (isFullHouse() === true) { // full house
-    handPoints = 7;
+    handScore = 7;
   } else if (isFlush() === true) { // flush
-    handPoints = 6;
+    handScore = 6;
   } else if (isStraight() === true) { // straight
-    handPoints = 5;
+    handScore = 5;
   } else if (numOf3OfAKind === 1) { // 3 of a kind
-    handPoints = 4;
+    handScore = 4;
   } else if (numOfPairs === 2) { // 2 pairs
-    handPoints = 3;
+    handScore = 3;
   } else if (numOfPairs === 1) { // 1 pair
-    handPoints = 2;
+    handScore = 2;
   } else if (isJackOrHigher === true) {
-    handPoints = 1;
+    handScore = 1;
   } else {
-    handPoints = 0;
+    handScore = 0;
   }
 };
 
 // Game initialization =============================================
-const gameInit = () => {
+const initGame = () => {
   // make and store a shuffled deck
   deck = shuffleCards(makeDeck());
 
@@ -385,7 +385,7 @@ const gameInit = () => {
     // find number of pairs/3 of a kind/4 of a kind
     findNumOfSimilarCards();
     // store number of points based on player's hand
-    getPoints();
+    calcHandScore();
   });
   document.body.appendChild(exchangeOrHoldCardsButton);
 
@@ -393,4 +393,4 @@ const gameInit = () => {
   document.body.appendChild(gameInfo);
 };
 
-gameInit();
+initGame();

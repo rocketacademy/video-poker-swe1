@@ -191,6 +191,25 @@ const exchangeCards = () => {
   }
 };
 
+// reorder player's cards from highest to lowest rank
+const reorderCards = () => {
+  /** for each position starting from the 0th index
+   * check cards in positions further down the array for higher ranks
+   * and swap the cards in those positions */
+  let j = 1;
+  for (let i = 0; i < (playerHand.length - 1); i += 1) {
+    for (let k = j; k < playerHand.length; k += 1) {
+      if (playerHand[k].rank > playerHand[i].rank) {
+        const lowerRankCard = playerHand[i];
+        const higherRankCard = playerHand[k];
+        playerHand[i] = higherRankCard;
+        playerHand[k] = lowerRankCard;
+      }
+    }
+    j += 1;
+  }
+};
+
 // Game initialization =============================================
 const gameInit = () => {
   // make and store a shuffled deck

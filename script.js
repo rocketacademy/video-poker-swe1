@@ -4,8 +4,8 @@ const PLAYER_STARTING_POINTS = 100;
 // the player's points
 const playerPoints = PLAYER_STARTING_POINTS;
 // array to store player's hand cards
-let playerHand = [];
-playerHand = ['']; // to use for testing only
+const playerHand = [];
+// playerHand = ['']; // to use for testing only
 
 // player hand size
 const handSize = 5;
@@ -35,6 +35,8 @@ let numOf4OfAKind = 0;
 let numOf3OfAKind = 0;
 // to find number of pairs in playerHand
 let numOfPairs = 0;
+// points of the player hand
+let handPoints = 0;
 
 // Helper functions ================================================
 // create elements needed when browser loads
@@ -299,6 +301,41 @@ const isFullHouse = () => {
   }
   return checkFullHouse;
 };
+// returns true if there is a card that is Jack or higher in the player's hand
+const isJackOrHigher = () => {
+  let checkJackOrHigher = false;
+  // check every card in player's hand for jack,queen,king or ace
+  for (let i = 0; i < playerHand.length; i += 1) {
+    if (playerHand[i].rank > 10 || playerHand[i].rank === 1) {
+      checkJackOrHigher = true;
+    }
+  }
+  return checkJackOrHigher;
+};
+// returns number of points based on player's hand
+const getPoints = () => {
+  if (isStraight() === true && isFlush() === true) { // straight flush
+    handPoints = 9;
+  } else if (numOf4OfAKind === 1) { // 4 of a kind
+    handPoints = 8;
+  } else if (isFullHouse() === true) { // full house
+    handPoints = 7;
+  } else if (isFlush() === true) { // flush
+    handPoints = 6;
+  } else if (isStraight() === true) { // straight
+    handPoints = 5;
+  } else if (numOf3OfAKind === 1) { // 3 of a kind
+    handPoints = 4;
+  } else if (numOfPairs === 2) { // 2 pairs
+    handPoints = 3;
+  } else if (numOfPairs === 1) { // 1 pair
+    handPoints = 2;
+  } else if (isJackOrHigher === true) {
+    handPoints = 1;
+  } else {
+    handPoints = 0;
+  }
+};
 
 // Game initialization =============================================
 const gameInit = () => {
@@ -339,6 +376,16 @@ const gameInit = () => {
     if (cardsToExchange.length > 0) {
       exchangeCards();
     }
+
+    // check player hand's points ------------------------------
+    // reorder player's cards from highest to lowest rank
+    reorderCards();
+    // store similar ranks together and used to check for winning conditions
+    groupPlayerCardsByRank();
+    // find number of pairs/3 of a kind/4 of a kind
+    findNumOfSimilarCards();
+    // store number of points based on player's hand
+    getPoints();
   });
   document.body.appendChild(exchangeOrHoldCardsButton);
 

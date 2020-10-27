@@ -21,27 +21,28 @@ body {
   max-width: 500px;
   height: 150px;
 }
-.card{
-    margin: 10px;
-    padding: 10px;
-    background-color:white;
-    width:50px;
-    text-align:center;
-    border-radius:8px;
-    display:inline-block;
+.card {
+  margin: 10px;
+  padding: 10px;
+  background-color: white;
+  width: 50px;
+  text-align: center;
+  border-radius: 8px;
+  display: inline-block;
 }
-.suit{
-    margin: 5px;
-    font-size:20px;
+.suit {
+  margin: 5px;
+  font-size: 20px;
 }
-.name{
-    margin: 5px;
-    font-size:24px;
-    font-weight:bold;
-    font-family:sans-serif;
+.name {
+  margin: 5px;
+  font-size: 24px;
+  font-weight: bold;
+  font-family: sans-serif;
 }
-.red{
-    color:rgb(221, 7, 7);
+.red {
+  color: rgb(221, 7, 7);
 }
-.black{
-    color:black;
+.black {
+  color: black;
+}

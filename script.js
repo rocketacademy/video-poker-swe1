@@ -4,7 +4,8 @@ const PLAYER_STARTING_POINTS = 100;
 // the player's points
 const playerPoints = PLAYER_STARTING_POINTS;
 // array to store player's hand cards
-const playerHand = [];
+const playerHand = []; // let playerHand = ['']; // to use for testing only
+
 // player hand size
 const handSize = 5;
 
@@ -14,7 +15,7 @@ let deck;
 // button to deal cards
 let dealButton;
 // button to exchange cards
-let exchangeCardsButton;
+let exchangeOrHoldCardsButton;
 // container to display a card
 let playerCardContainer;
 // container to display the player's cardContainers
@@ -31,7 +32,7 @@ const createStartingElements = () => {
   // button to deal cards
   dealButton = document.createElement('button');
   // button to exchange cards
-  exchangeCardsButton = document.createElement('button');
+  exchangeOrHoldCardsButton = document.createElement('button');
   // container to display a card
   playerCardContainer = document.createElement('div');
   playerCardContainer.classList.add('player-card-container');
@@ -191,6 +192,7 @@ const exchangeCards = () => {
   }
 };
 
+// For checking player hand's points -------------------------------
 // reorder player's cards from highest to lowest rank
 const reorderCards = () => {
   /** for each position starting from the 0th index
@@ -208,6 +210,49 @@ const reorderCards = () => {
     }
     j += 1;
   }
+};
+// returns true if there is a straight in the player's hand
+const isStraight = () => {
+  // if checkStraight is true, there is a straight in the player's hand
+  let checkStraight = false;
+  // number of times the difference between playerHand[i].rank and playerHand[i+1].rank is one
+  let timesDifferenceIsMinusOne = 0;
+
+  // check if player has a straight from 10 to ace
+  for (let i = 0; i < (playerHand.length - 2); i += 1) {
+    if (playerHand[i].rank - playerHand[i + 1].rank === 1) {
+      timesDifferenceIsMinusOne += 1;
+    }
+  }
+  if (timesDifferenceIsMinusOne === 3 && playerHand[4].rank === 1 && playerHand[0].rank === 13) {
+    checkStraight = true;
+  }
+
+  // check if player has a straight other than from 10 to ace
+  timesDifferenceIsMinusOne = 0;
+  for (let i = 0; i < (playerHand.length - 1); i += 1) {
+    if (playerHand[i].rank - playerHand[i + 1].rank === 1) {
+      timesDifferenceIsMinusOne += 1;
+    }
+  }
+  if (timesDifferenceIsMinusOne === 4) {
+    checkStraight = true;
+  }
+
+  return checkStraight;
+};
+// returns true if there is a flush in the player's hand
+const isFlush = () => {
+  // if checkFlush is true, there is a Flush in the player's hand
+  let checkFlush = false;
+
+  // logic
+  if (playerHand[0].suit === playerHand[1].suit && playerHand[1].suit === playerHand[2].suit
+    && playerHand[2].suit === playerHand[3].suit && playerHand[3].suit === playerHand[4].suit) {
+    checkFlush = true;
+  }
+
+  return checkFlush;
 };
 
 // Game initialization =============================================
@@ -243,12 +288,14 @@ const gameInit = () => {
   document.body.appendChild(dealButton);
 
   // initialize exchangeCardsButton functionality
-  exchangeCardsButton.innerText = 'exchange cards';
-  exchangeCardsButton.addEventListener('click', () => {
-    // exchange the cards
-    exchangeCards();
+  exchangeOrHoldCardsButton.innerText = 'exchange/hold cards';
+  exchangeOrHoldCardsButton.addEventListener('click', () => {
+    // exchange the cards if player selected cards to exchange
+    if (cardsToExchange.length > 0) {
+      exchangeCards();
+    }
   });
-  document.body.appendChild(exchangeCardsButton);
+  document.body.appendChild(exchangeOrHoldCardsButton);
 
   // initialize gameInfo functionality
   document.body.appendChild(gameInfo);

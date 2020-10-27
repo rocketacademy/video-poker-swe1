@@ -1,0 +1,15 @@
+body {
+  background-color: lightblue;
+}
+.playing-area {
+  display: flex;
+  background-color: teal;
+}
+
+.cardElement {
+  width: 50px;
+  height: 80px;
+  border: solid black;
+  border-width: 2px;
+  margin: 2px;
+}

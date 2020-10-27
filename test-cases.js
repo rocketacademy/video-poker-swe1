@@ -1,24 +1,22 @@
-// store similar ranks together and used to check for winning conditions
-const groupPlayerCardsByRank = () => {
-  rankedHand[0].push(playerHand[0]);
-
-  let rankRow = 0;
-  for (let i=1; i<playerHand.length;i+=1) {
-    // store the current card in the row array containing cards of the same rank
-    if(playerHand[i].rank === playerHand[i-1].rank) {
-      rankedHand[rankRow].push(playerHand[i]);
-    } else {  // store the current card in a new row array for the next rank 
-      rankedHand.push([]);
-      rankRow+=1;
-      rankedHand[rankRow].push(playerHand[i]);
+let numOf4OfAKind = 0;
+let numOf3OfAKind = 0;
+let numOfPairs = 0;
+// find number of pairs/3 of a kind/4 of a kind
+const findNumOfSimilarCards = () => {
+  for (let i=0; i<rankedHand.length; i+=1) {
+    if (rankedHand[i].length === 4) {
+      numOf4OfAKind +=1;
+    } else if (rankedHand[i].length === 3) {
+      numOf3OfAKind += 1;
+    } else if (rankedHand[i].length === 2) {
+      numOfPairs += 1;
     }
-  } 
-
-} 
+  }
+}
 
 
 // straight hand
-const playerHand = [ // straight from 10 to ace
+const playerHand = [ 
   {
     rank: 13,
     suit: 'hearts',
@@ -42,7 +40,7 @@ const playerHand = [ // straight from 10 to ace
   },
 ];
 
-const playerHand = [ // straight from 10 to ace
+const playerHand = [ 
   {
     rank: 10,
     suit: 'hearts',
@@ -67,7 +65,7 @@ const playerHand = [ // straight from 10 to ace
 ];
 
 // flush hand
-const playerHand = [ // straight from 10 to ace
+const playerHand = [ 
   {
     rank: 2,
     suit: 'hearts',
@@ -92,7 +90,7 @@ const playerHand = [ // straight from 10 to ace
 ];
 
 // straight-flush hand
-const playerHand = [ // straight from 10 to ace
+const playerHand = [ 
   {
     rank: 10,
     suit: 'hearts',
@@ -113,5 +111,30 @@ const playerHand = [ // straight from 10 to ace
   {
     rank: 6,
     suit: 'hearts',
+  },
+];
+
+// fullhouse hand
+const playerHand = [ 
+  {
+    rank: 10,
+    suit: 'hearts',
+  },
+  {
+    rank: 10,
+    suit: 'clubs',
+  },
+
+  {
+    rank: 10,
+    suit: 'spades',
+  },
+  {
+    rank: 7,
+    suit: 'hearts',
+  },
+  {
+    rank: 7,
+    suit: 'spades',
   },
 ];

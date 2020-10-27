@@ -4,8 +4,8 @@ const PLAYER_STARTING_POINTS = 100;
 // the player's points
 const playerPoints = PLAYER_STARTING_POINTS;
 // array to store player's hand cards
-const playerHand = [];
-// playerHand = ['']; // to use for testing only
+let playerHand = [];
+playerHand = ['']; // to use for testing only
 
 // player hand size
 const handSize = 5;
@@ -29,6 +29,12 @@ let cardsToExchange = [];
 
 // to store cards based on similar ranks
 const rankedHand = [[]];
+// to find number of 4 of a kind in playerHand
+let numOf4OfAKind = 0;
+// to find number of 3 of a kind in playerHand
+let numOf3OfAKind = 0;
+// to find number of pairs in playerHand
+let numOfPairs = 0;
 
 // Helper functions ================================================
 // create elements needed when browser loads
@@ -230,6 +236,18 @@ const groupPlayerCardsByRank = () => {
     }
   }
 };
+// find number of pairs/3 of a kind/4 of a kind
+const findNumOfSimilarCards = () => {
+  for (let i = 0; i < rankedHand.length; i += 1) {
+    if (rankedHand[i].length === 4) {
+      numOf4OfAKind += 1;
+    } else if (rankedHand[i].length === 3) {
+      numOf3OfAKind += 1;
+    } else if (rankedHand[i].length === 2) {
+      numOfPairs += 1;
+    }
+  }
+};
 // returns true if there is a straight in the player's hand
 const isStraight = () => {
   // if checkStraight is true, there is a straight in the player's hand
@@ -272,6 +290,14 @@ const isFlush = () => {
   }
 
   return checkFlush;
+};
+// returns true if there is a full house in the player's hand
+const isFullHouse = () => {
+  let checkFullHouse = false;
+  if (numOf3OfAKind === 1 && numOfPairs === 1) {
+    checkFullHouse = true;
+  }
+  return checkFullHouse;
 };
 
 // Game initialization =============================================

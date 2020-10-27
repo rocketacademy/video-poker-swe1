@@ -8,7 +8,7 @@
   width: 1000px;
 }
 
-.displayCombinations{
+.combinationsDisplay{
   background-color: green;
   flex:0.5;
   display:flex;
@@ -73,9 +73,9 @@
   justify-content:space-around;
 }
 .cover-card{
-  height:auto%;
+  height:auto;
   width:17%;
-
+  border-radius:15px;
 }
 
 .card{
@@ -92,7 +92,8 @@
   align-items:center;
   text-align: center;
   flex:1;
-  margin-top:-39px;
+  margin-top:-58px;
+  font-size:30px;
 }
 
 .cardImage{
@@ -102,7 +103,7 @@
   width: auto;
 }
 
-.displayStatistics{
+.statsDisplay{
   background-color: pink; 
   flex:0.2;
 }
@@ -139,5 +140,34 @@ margin-top:20px;
 margin-bottom:20px;
 }
 
+.statsDisplay{
+  display:flex;
+  flex-direction: row;
+  align-items:center;
+  justify-content:space-between;
+}
+
+#creditsInserted{
+flex:1;
+margin-left: 15px;
+font-size: 30px;
+}
+
+#currentCombi{
+flex:1;
+margin-left: 15px;
+font-size: 30px;
+text-align:center;
+}
+
+
+
+#availCredits{
+flex:1;
+margin-left: 15px;
+margin-right:15px;
+font-size: 30px;
+text-align:right;
+}
 
 

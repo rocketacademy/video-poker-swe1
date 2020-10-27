@@ -16,15 +16,23 @@ let isStraight = false;
 let isStraightFlush = false;
 
 //  Global var that holds the name of the winning combi
-let nameOfWinCombi;
+let nameOfWinCombi = 'No winning hand';
 
-// -------- HTML Elements-------//
+// -------- Html Elements---------------------//
 let overallScreen;
-let displayCombinations;
-let displayHoldStatus;
+let payOutScheduleDisplay;
 let cardsContainer;
-let displayStatistics;
+let statsDisplay;
 let buttonsContainer;
+
+// -------- Game Stats - Credits Mgmt & Display-----------//
+// Html elements for credits displays
+let availCreditsDisplay;
+let currentCombiDisplay;
+let creditsInsertedDisplay;
+// Track number of credits
+let numCreditsInserted = 0;
+let creditsLeft = 100;
 
 const getHandScore = () => {
 
@@ -88,7 +96,7 @@ const checkForKindsnPairs = () => {
     // if only 2 unique cards and 1 of the cards occured 3 times...
     const uniqueCards = [...new Set(playerHand.map((card) => card.name))];
     if (uniqueCards.length === 2) {
-      nameOfWinCombi = ' full house';
+      nameOfWinCombi = ' Full House';
       isFullHouse = true;
       return isFullHouse;
     }
@@ -105,12 +113,12 @@ const checkForKindsnPairs = () => {
     const countAcesInHand = playerHand.filter((card) => card.rank === 1);
 
     if (numPairs.length === 2) {
-      nameOfWinCombi = '2 pairs';
+      nameOfWinCombi = '2 Pairs';
       isAnyKindOrPair = true;
       return isAnyKindOrPair;
     } if (countJacksInHand.length === 2 || countQueensInHand.length === 2
       || countKingsInHand.length === 2 || countAcesInHand.length === 2) {
-      nameOfWinCombi = ' pair of Jacks or better';
+      nameOfWinCombi = 'Pair of Jacks or better';
       isAnyKindOrPair = true;
       return isAnyKindOrPair;
     }
@@ -163,11 +171,11 @@ const checkForStraight = () => {
     // Check if last card in the sorted hand is an ace
     // because its rank is 0, it will not show up as a consecutive card
     if (sortedHand[sortedHand.length - 1].name === 'Ace') {
-      nameOfWinCombi = 'Ace-high straight';
+      nameOfWinCombi = 'Ace-high Straight';
       isStraight = true;
     }
   } else if (countOfConsecutiveRankCards === sortedHand.length) {
-    nameOfWincombi = `${highestCardName}-high straight`;
+    nameOfWincombi = `${highestCardName}-high Straight`;
     isStraight = true;
   }
 };
@@ -175,7 +183,7 @@ const checkForStraight = () => {
 const checkForStraightFlush = () => {
   if (isFlush === true && isStraight === true) {
     isStraightFlush = true;
-    nameOfWincombi = 'Straight flush!';
+    nameOfWincombi = 'Straight Flush!';
   }
 };
 
@@ -218,11 +226,8 @@ const buildUI = () => {
   overallScreen = document.createElement('div');
   overallScreen.classList.add('overallScreen');
 
-  displayCombinations = document.createElement('div');
-  displayCombinations.classList.add('displayCombinations');
-
-  displayHoldStatus = document.createElement('div');
-  displayHoldStatus.classList.add('displayHoldStatus');
+  payOutScheduleDisplay = document.createElement('div');
+  payOutScheduleDisplay.classList.add('combinationsDisplay');
 
   cardsContainer = document.createElement('div');
   cardsContainer.classList.add('cardsContainer');
@@ -230,8 +235,8 @@ const buildUI = () => {
   // Display generic card cover before game starts
   displayCardCover();
 
-  displayStatistics = document.createElement('div');
-  displayStatistics.classList.add('displayStatistics');
+  statsDisplay = document.createElement('div');
+  statsDisplay.classList.add('statsDisplay');
 
   buttonsContainer = document.createElement('div');
   buttonsContainer.classList.add('buttonsContainer');
@@ -239,10 +244,9 @@ const buildUI = () => {
   // Create the elements and information of combinations
   generateDisplayCombinations();
 
-  overallScreen.appendChild(displayCombinations);
-  overallScreen.appendChild(displayHoldStatus);
+  overallScreen.appendChild(payOutScheduleDisplay);
   overallScreen.appendChild(cardsContainer);
-  overallScreen.appendChild(displayStatistics);
+  overallScreen.appendChild(statsDisplay);
   overallScreen.appendChild(buttonsContainer);
   document.body.appendChild(overallScreen);
 };
@@ -413,7 +417,7 @@ const generateDisplayCombinations = () => {
     winCombi.setAttribute('id', `winCombi${i}`);
     nameOfCombiDisplay.appendChild(winCombi);
   }
-  displayCombinations.appendChild(nameOfCombiDisplay);
+  payOutScheduleDisplay.appendChild(nameOfCombiDisplay);
 
   // Hardcoded individual credit payouts for X amount of credits used
   const oneCreditPayOut = [250, 50, 25, 9, 6, 4, 3, 2, 1];
@@ -434,7 +438,7 @@ const generateDisplayCombinations = () => {
       payOutBox.innerText += payOutSchedule[i][j] + '\t';
       payOutColumn.appendChild(payOutBox);
     }
-    displayCombinations.appendChild(payOutColumn);
+    payOutScheduleDisplay.appendChild(payOutColumn);
   }
 };
 
@@ -453,11 +457,12 @@ const createInsertCreditsBtn = () => {
   const insertCreditsBtn = document.createElement('button');
   insertCreditsBtn.innerText = 'INSERT \n 1 CREDIT';
   insertCreditsBtn.setAttribute('id', 'insertCreditsBtn');
-  buttonsContainer.appendChild(insertCreditsBtn);
-
-  buttonsContainer.addEventListener('click', () => {
-    console.log('increment credits by 1');
+  insertCreditsBtn.addEventListener('click', () => {
+    numCreditsInserted += 1;
+    creditsInsertedDisplay.innerText = `INSERT CREDITS: ${numCreditsInserted}`;
+    console.log(numCreditsInserted, 'creditsToBeInserted');
   });
+  buttonsContainer.appendChild(insertCreditsBtn);
 };
 
 // Function that creates a button for dealing cards
@@ -470,8 +475,18 @@ const createDealCardsBtn = () => {
     cardsContainer.innerText = '';
     // clear playerHand first before drawing initial hand
     playerHand.length = 0;
+    // clear cache of previous' hand's win combi
+    nameOfWinCombi = 'No winning hand';
     drawInitialHand();
     checkForWinCombi();
+
+    // reset insert credits and deduct credits left:
+    creditsLeft -= numCreditsInserted;
+    numCreditsInserted = 0;
+    // reset stats display and make a new one;
+    statsDisplay.innerText = '';
+
+    createGameStatsDisplay();
   });
   buttonsContainer.appendChild(dealBtn);
 };
@@ -492,14 +507,36 @@ const createSwapCardsBtn = () => {
   buttonsContainer.appendChild(swapBtn);
 };
 
+const createGameStatsDisplay = () => {
+  // Display how much credits to play for this game
+  creditsInsertedDisplay = document.createElement('div');
+  creditsInsertedDisplay.innerText = `INSERT CREDITS: ${numCreditsInserted}`;
+  creditsInsertedDisplay.setAttribute('id', 'creditsInserted');
+
+  // Display what combination is present
+  currentCombiDisplay = document.createElement('div');
+  currentCombiDisplay.setAttribute('id', 'currentCombi');
+  currentCombiDisplay.innerText = `${nameOfWinCombi}`;
+
+  // Display how much credits the player has left
+  availCreditsDisplay = document.createElement('div');
+  availCreditsDisplay.innerText = `CREDITS LEFT: ${creditsLeft}`;
+  availCreditsDisplay.setAttribute('id', 'availCredits');
+
+  statsDisplay.appendChild(creditsInsertedDisplay);
+  statsDisplay.appendChild(currentCombiDisplay);
+  statsDisplay.appendChild(availCreditsDisplay);
+};
+
 const gameInit = () => {
   buildUI();
   shuffledDeck = shuffleCards(makeDeck());
+  createGameStatsDisplay();
   createCreditsInput();
   createInsertCreditsBtn();
   createDealCardsBtn();
   createSwapCardsBtn();
 };
-// ==== EXECUTE GAM`E =====//
+// ==== EXECUTE GAME =====//
 
 gameInit();

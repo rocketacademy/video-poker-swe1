@@ -413,6 +413,7 @@ const calcHandScore = () => {
 };
 
 // Game initialization =============================================
+// to initilize game
 const initGame = () => {
   // make and store a shuffled deck
   deck = shuffleCards(makeDeck());
@@ -491,6 +492,7 @@ const initGame = () => {
   });
   document.body.appendChild(exchangeOrHoldCardsButton);
 
+  // Total points and bid points -------------------------------------------
   // initialize totalPointsHeadingEl functionality
   totalPointsHeadingEl.innerText = 'Total Points';
   totalPointsContainer.appendChild(totalPointsHeadingEl);
@@ -545,4 +547,5 @@ const initGame = () => {
   document.body.appendChild(bidPointsContainer);
 };
 
+// Initilize game
 initGame();

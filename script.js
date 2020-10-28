@@ -1,11 +1,13 @@
 // Global setup ====================================================
 // points player start with
 const PLAYER_STARTING_POINTS = 100;
-// the player's points
-const playerPoints = PLAYER_STARTING_POINTS;
+// the player's total points
+const playerTotalPoints = PLAYER_STARTING_POINTS;
+// player's bid points
+let playerBidPoints = 0;
 // array to store player's hand cards
 let playerHand = [];
-playerHand = ['']; // to use for testing only
+// playerHand = ['']; // to use for testing only
 
 // player hand size
 const handSize = 5;
@@ -13,6 +15,7 @@ const handSize = 5;
 // shuffled deck
 let deck;
 
+// elements and containers to display information ------------------
 // button to deal cards
 let dealButton;
 // button to exchange cards
@@ -23,6 +26,22 @@ let playerCardContainer;
 let playerHandContainer;
 // container to display the game instructions or output messages
 let gameInfo;
+// element to display heading for player's total points
+let totalPointsHeadingEl;
+// element to display player's total points
+let totalPointsInfoEl;
+// container to display player's total points info and heading
+let totalPointsContainer;
+// element to display heading for player's bid points
+let bidPointsHeadingEl;
+// element to display player's bid points
+let bidPointsInfoEl;
+// input element to ask for points player wants to bid
+let bidPointsInputEl;
+// button to submit the points player wants to bid
+let bidPointsButton;
+// container to display player's bid points info and heading
+let bidPointsContainer;
 
 // array to store player's cards to exchange
 let cardsToExchange = [];
@@ -37,6 +56,18 @@ let numOf3OfAKind = 0;
 let numOfPairs = 0;
 // points of the player hand
 let handScore = 0;
+
+// For controlling buttons (if they can be pressed) ----------------
+// only allow player to submit bid points at start of the round
+let canSubmitBidPoints = true;
+
+// Only allow player to click on dealButton
+// only after submitting bid points and before exchanging cards
+let canDealStartingCards = false;
+// only allow player to click on card after having dealt cards
+let canClickCards = false;
+// only allow player to click on exchangeOrHoldCardsButton after having dealt cards
+let canExchangeOrHoldCards = false;
 
 // Helper functions ================================================
 // create elements needed when browser loads
@@ -53,6 +84,22 @@ const createStartingElements = () => {
   playerHandContainer.classList.add('player-hand-container');
   // container to display the game instructions or output messages
   gameInfo = document.createElement('div');
+  // element to display heading for player's total points
+  totalPointsHeadingEl = document.createElement('p');
+  // element to display player's total points
+  totalPointsInfoEl = document.createElement('p');
+  // container to display player's total points info and heading
+  totalPointsContainer = document.createElement('div');
+  // element to display heading for player's bid points
+  bidPointsHeadingEl = document.createElement('p');
+  // element to display player's bid points
+  bidPointsInfoEl = document.createElement('p');
+  // input element to ask for points player wants to bid
+  bidPointsInputEl = document.createElement('input');
+  // button to submit the points player wants to bid
+  bidPointsButton = document.createElement('button');
+  // container to display player's bid points info, heading, input and button
+  bidPointsContainer = document.createElement('div');
 };
 
 // For creating a shuffled deck ------------------------------------
@@ -137,6 +184,10 @@ const makeDeck = () => {
 
 // deal cards to player at start of the game according to handSize
 const dealStartingCards = (cardsData) => {
+  // remove the cards from previous round
+  playerHand = [];
+
+  // deal cards
   for (let i = 0; i < handSize; i += 1) {
     playerHand.push(cardsData.pop());
   }
@@ -161,6 +212,7 @@ const makeCardElement = (cardData) => {
   return cardEl;
 };
 
+// For exchanging cards -------------------------------------------
 // select the card to exchange or unselect it
 const selectOrUnselectCardToExchange = (cardToExchange) => {
   // when player clicks this card and it has not been selected before,
@@ -204,7 +256,7 @@ const exchangeCards = () => {
   }
 };
 
-// For checking player hand's points -------------------------------
+// For checking player hand's score -------------------------------
 // reorder player's cards from highest to lowest rank
 const reorderCards = () => {
   /** for each position starting from the 0th index
@@ -368,26 +420,43 @@ const initGame = () => {
   // initialize starting elements
   createStartingElements();
 
+  // initialize gameInfo functionality
+  document.body.appendChild(gameInfo);
+
   // initialize playerHandContainer functionality
   document.body.appendChild(playerHandContainer);
 
   // initialize dealButton functionality
+  dealButton.setAttribute('id', 'deal-button');
   dealButton.innerText = 'deal cards';
   dealButton.addEventListener('click', () => {
-    // deal starting cards to player hand
-    dealStartingCards(deck);
+    if (canDealStartingCards === true) {
+      // prevent dealing starting cards until start of next round
+      canDealStartingCards = false;
 
-    // make the cards' display and display them and
-    // add event listener to store the cards in case player wants to exchange them later
-    for (let i = 0; i < playerHand.length; i += 1) {
-      const cardEl = makeCardElement(playerHand[i]);
-      // store the current card in case the player wants to exchange it later
-      const cardToExchange = playerHand[i];
-      cardEl.addEventListener('click', () => {
-        // select the card to exchange or unselect it
-        selectOrUnselectCardToExchange(cardToExchange);
-      });
-      playerHandContainer.appendChild(cardEl);
+      // deal starting cards to player hand
+      dealStartingCards(deck);
+
+      // make the cards' display and display them and
+      // add event listener to store the cards in case player wants to exchange them later
+      for (let i = 0; i < playerHand.length; i += 1) {
+        const cardEl = makeCardElement(playerHand[i]);
+        // store the current card in case the player wants to exchange it later
+        const cardToExchange = playerHand[i];
+        // eslint-disable-next-line no-loop-func
+        cardEl.addEventListener('click', () => {
+          if (canClickCards === true) {
+            // select the card to exchange or unselect it
+            selectOrUnselectCardToExchange(cardToExchange);
+          }
+        });
+        playerHandContainer.appendChild(cardEl);
+      }
+
+      // allow player to start clicking on cards he/she wants to exchange
+      canClickCards = true;
+      // allow player to start exchanging cards for this round
+      canExchangeOrHoldCards = true;
     }
   });
   document.body.appendChild(dealButton);
@@ -395,25 +464,85 @@ const initGame = () => {
   // initialize exchangeCardsButton functionality
   exchangeOrHoldCardsButton.innerText = 'exchange/hold cards';
   exchangeOrHoldCardsButton.addEventListener('click', () => {
-    // exchange the cards if player selected cards to exchange
-    if (cardsToExchange.length > 0) {
-      exchangeCards();
-    }
+    if (canExchangeOrHoldCards === true) {
+      // prevent exchanging cards until next round of starting cards have been dealt
+      canExchangeOrHoldCards = false;
+      // prevent clicking on cards until next round of starting cards have been dealt
+      canClickCards = false;
 
-    // check player hand's points ------------------------------
-    // reorder player's cards from highest to lowest rank
-    reorderCards();
-    // store similar ranks together and used to check for winning conditions
-    groupPlayerCardsByRank();
-    // find number of pairs/3 of a kind/4 of a kind
-    findNumOfSimilarCards();
-    // store number of points based on player's hand
-    calcHandScore();
+      // exchange the cards if player selected cards to exchange
+      if (cardsToExchange.length > 0) {
+        exchangeCards();
+      }
+
+      // check player hand's points ------------------------------
+      // reorder player's cards from highest to lowest rank
+      reorderCards();
+      // store similar ranks together and used to check for winning conditions
+      groupPlayerCardsByRank();
+      // find number of pairs/3 of a kind/4 of a kind
+      findNumOfSimilarCards();
+      // store number of points based on player's hand
+      calcHandScore();
+
+      // it is the end of the round so allow player to begin new round by submitting points
+      canSubmitBidPoints = true;
+    }
   });
   document.body.appendChild(exchangeOrHoldCardsButton);
 
-  // initialize gameInfo functionality
-  document.body.appendChild(gameInfo);
+  // initialize totalPointsHeadingEl functionality
+  totalPointsHeadingEl.innerText = 'Total Points';
+  totalPointsContainer.appendChild(totalPointsHeadingEl);
+  totalPointsContainer.appendChild(totalPointsHeadingEl);
+  // initialize totalPointsInfoEl  functionality
+  totalPointsInfoEl.innerText = playerTotalPoints;
+  totalPointsContainer.appendChild(totalPointsInfoEl);
+  // initialize totalPointsContainer functionality
+  document.body.appendChild(totalPointsContainer);
+  // initialize bidPointsHeadingEl functionality
+  bidPointsHeadingEl.innerText = 'Points Bidded';
+  bidPointsContainer.appendChild(bidPointsHeadingEl);
+  // initialize bidPointsInfoEl functionality
+  bidPointsInfoEl.innerText = playerBidPoints;
+  bidPointsContainer.appendChild(bidPointsInfoEl);
+  // initialize bidPointsInputEl functionality
+  bidPointsInputEl.setAttribute('type', 'text');
+  bidPointsInputEl.setAttribute('placeholder', 'enter points to bid');
+  bidPointsContainer.appendChild(bidPointsInputEl);
+  // initialize bidPointsButton functionality
+  bidPointsButton.setAttribute('id', 'bid-points-button');
+  bidPointsButton.innerText = 'submit points';
+  bidPointsButton.addEventListener('click', () => {
+    if (canSubmitBidPoints === true) {
+      if (bidPointsInputEl.value > 0) { // player submitted a valid bid points
+        // player has submitted bid points so they cannot submit anymore in this round
+        canSubmitBidPoints = false;
+
+        // clear player's hand container display since a new round has started
+        playerHandContainer.innerHTML = '';
+
+        // store bid points and display it
+        playerBidPoints = bidPointsInputEl.value;
+        bidPointsInfoEl.innerText = playerBidPoints;
+        // clear bid points from bidPointsInputEl display
+        bidPointsInputEl.value = '';
+
+        // allow player to deal starting cards since it is a new round
+        canDealStartingCards = true;
+      } else {
+        // tell player to submit a valid bid points
+        bidPointsInputEl.value = 'please input a number > 0';
+      }
+    } else {
+      // clear bid points from bidPointsInputEl display since
+      // player might have accidentally tried submitting
+      bidPointsInputEl.value = '';
+    }
+  });
+  bidPointsContainer.appendChild(bidPointsButton);
+  // initialize bidPointsContainer functionality
+  document.body.appendChild(bidPointsContainer);
 };
 
 initGame();

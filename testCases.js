@@ -110,21 +110,19 @@
 //   { name: 'Ace', suit: 'diamond', rank: 1 },
 // ];
 
-// // Normal Straight Flush Hand
-// // Result of isFlush is true and isStraight is true
-// const playerHand = [
-//   { name: 'Queen', suit: 'diamond', rank: 12 },
-//   { name: 10, suit: 'diamond', rank: 10 },
-//   { name: 'Jack', suit: 'diamond', rank: 11 },
-//   { name: 'King', suit: 'diamond', rank: 13 },
-//   { name: 'Ace', suit: 'diamond', rank: 1 },
-// ];
+// Normal Straight Flush Hand
+// Result of isFlush is true and isStraight is true
+const simulatedHand = [
+  { name: 'Queen', suit: 'diamond', rank: 12 },
+  { name: 10, suit: 'diamond', rank: 10 },
+  { name: 'Jack', suit: 'diamond', rank: 11 },
+  { name: 'King', suit: 'diamond', rank: 13 },
+  { name: 'Ace', suit: 'diamond', rank: 1 },
 
-// // Failed Case:
-// const playerHand = [
-//   { name: 'King', suit: 'spade', rank: 13 },
-//   { name: 10, suit: 'club', rank: 10 },
-//   { name: 9, suit: 'diamond', rank: 9 },
-//   { name: 2, suit: 'heart', rank: 2 },
-//   { name: 'Ace', suit: 'club', rank: 1 },
-// ];
+  { name: 'Queen', suit: 'diamond', rank: 12 },
+  { name: 10, suit: 'diamond', rank: 10 },
+  { name: 'Jack', suit: 'diamond', rank: 11 },
+  { name: 'King', suit: 'diamond', rank: 13 },
+  { name: 'Ace', suit: 'diamond', rank: 1 },
+
+];

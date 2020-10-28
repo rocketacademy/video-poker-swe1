@@ -27,15 +27,43 @@ let buttonsContainer;
 
 // -------- Game Stats - Credits Mgmt & Display-----------//
 // Html elements for credits displays
-let availCreditsDisplay;
+let creditsLeftDisplay;
 let currentCombiDisplay;
 let creditsInsertedDisplay;
 // Track number of credits
-let numCreditsInserted = 0;
+let numCreditsInserted = 1;
 let creditsLeft = 100;
 
-const getHandScore = () => {
+// Hardcoded individual credit payouts for X amount of credits used
+const oneCreditPayOut = [250, 50, 25, 9, 6, 4, 3, 2, 1];
+const twoCreditPayout = [500, 100, 50, 18, 12, 8, 6, 4, 2];
+const threeCreditPayout = [750, 150, 75, 27, 18, 12, 9, 6, 3];
+const fourCreditPayout = [1000, 200, 100, 36, 24, 16, 12, 8, 4];
+const fiveCreditPayout = [4000, 250, 125, 45, 30, 20, 15, 10, 5];
 
+const payOutSchedule = [[...oneCreditPayOut], [...twoCreditPayout],
+  [...threeCreditPayout], [...fourCreditPayout], [...fiveCreditPayout]];
+
+// Management of game state//
+const canDeal = false;
+
+// Track Rank of Hand
+// Five of a kind being 0 and Jacks or Better being 8, no winning hand = 0;
+let rankOfHand = 0;
+
+// Calculate the score of the hand and add to user's credits
+const calcHandScore = () => {
+  let amtWon = 0;
+  console.log(amtWon, 'amtWon');
+  console.log(rankOfHand, 'rank of hand');
+  if (rankOfHand > 0) {
+    amtWon = payOutSchedule[numCreditsInserted - 1][rankOfHand];
+    creditsLeft += amtWon;
+    // creditsLeftDisplay.innerText = `CREDITS LEFT: ${creditsLeft}`;
+    console.log(amtWon, 'amtWon');
+  }
+  // reset rankOfHand after each calculation
+  rankOfHand = 0;
 };
 
 // Function that calculates the rank of the current hand
@@ -84,10 +112,12 @@ const checkForKindsnPairs = () => {
   // Next Check for a joker for 5 of a kind
     if (playerHand.some((card) => card.name === 'Joker')) {
       nameOfWinCombi = '5 of a kind!';
+      rankOfHand = 0;
       isAnyKindOrPair = true;
       return isAnyKindOrPair;
     }
     nameOfWinCombi = '4 of a kind!';
+    rankOfHand = 2;
     isAnyKindOrPair = true;
 
   // Check for 3 of a kind
@@ -96,11 +126,13 @@ const checkForKindsnPairs = () => {
     // if only 2 unique cards and 1 of the cards occured 3 times...
     const uniqueCards = [...new Set(playerHand.map((card) => card.name))];
     if (uniqueCards.length === 2) {
-      nameOfWinCombi = ' Full House';
+      nameOfWinCombi = 'Full House';
+      rankOfHand = 0;
       isFullHouse = true;
       return isFullHouse;
     }
-    nameOfWinCombi = ' 3 of a kind';
+    nameOfWinCombi = '3 of a kind';
+    rankOfHand = 6;
     isAnyKindOrPair = true;
     return isAnyKindOrPair;
 
@@ -114,11 +146,13 @@ const checkForKindsnPairs = () => {
 
     if (numPairs.length === 2) {
       nameOfWinCombi = '2 Pairs';
+      rankOfHand = 7;
       isAnyKindOrPair = true;
       return isAnyKindOrPair;
     } if (countJacksInHand.length === 2 || countQueensInHand.length === 2
       || countKingsInHand.length === 2 || countAcesInHand.length === 2) {
       nameOfWinCombi = 'Pair of Jacks or better';
+      rankOfHand = 8;
       isAnyKindOrPair = true;
       return isAnyKindOrPair;
     }
@@ -129,22 +163,23 @@ const checkForKindsnPairs = () => {
 // taking in playerHand.length-1 initially
 const checkForFlush = (numCardsToCheck) => {
   let i = numCardsToCheck;
-  console.log(i, 'i');
   if (i > 1) {
     if (playerHand[i].suit === playerHand[i - 1].suit) {
       i -= 1;
-      console.log(i, 'i');
       return checkForFlush(i);
     }
     // If any 2 consecutive cards'suits don't match then immediately break
     // and declare that there is no flush;
-    return isFlush = false;
+    isFlush = false;
+    return isFlush;
   }
   // Once we reached the base case (first 2 cards in playerHand array),
   // check if the 2 cards are the same
   if (playerHand[i].suit === playerHand[i - 1].suit) {
-    nameOfWinCombi = 'Flush';
-    return isFlush = true;
+    nameOfWinCombi = 'Flush!';
+    rankOfHand = 4;
+    isFlush = true;
+    return isFlush;
   }
 };
 
@@ -152,7 +187,7 @@ const checkForStraight = () => {
   // Sort hand by descending order by rank (use spread operator to prevent original hand array
   //  from changing)
   const sortedHand = [...playerHand].sort((a, b) => b.rank - a.rank);
-  console.log(playerHand);
+  console.log(playerHand, 'playerHand');
 
   // loop through each element and check if difference between each is
   // exactly one...
@@ -160,7 +195,6 @@ const checkForStraight = () => {
   for (let i = 0; i < playerHand.length - 1; i += 1) {
     if (sortedHand[i].rank - sortedHand[i + 1].rank === 1) {
       countOfConsecutiveRankCards += 1;
-      console.log(countOfConsecutiveRankCards, 'count of consec cards');
     }
   }
   // For checking if 1st 2 card is K and Q first
@@ -172,10 +206,12 @@ const checkForStraight = () => {
     // because its rank is 0, it will not show up as a consecutive card
     if (sortedHand[sortedHand.length - 1].name === 'Ace') {
       nameOfWinCombi = 'Ace-high Straight';
+      rankOfHand = 5;
       isStraight = true;
     }
   } else if (countOfConsecutiveRankCards === sortedHand.length) {
     nameOfWincombi = `${highestCardName}-high Straight`;
+    rankOfHand = 5;
     isStraight = true;
   }
 };
@@ -183,7 +219,8 @@ const checkForStraight = () => {
 const checkForStraightFlush = () => {
   if (isFlush === true && isStraight === true) {
     isStraightFlush = true;
-    nameOfWincombi = 'Straight Flush!';
+    nameOfWinCombi = 'Straight Flush!';
+    rankOfHand = 1;
   }
 };
 
@@ -360,10 +397,20 @@ const displayCardCover = () => {
   }
 };
 
+const displayNewDrawnCards = (card, index) => {
+  const newCardImage = document.querySelector(`#cardImg${index + 1}`);
+  console.log(newCardImage, 'newCardImage');
+  newCardImage.src = getCardPicUrl(card);
+};
+
 const drawInitialHand = () => {
   for (let i = 0; i < 5; i += 1) {
     // Draw a card from top of deck
+
     const card = shuffledDeck.pop();
+    card.holdStatus = false;
+    // For testing on different card combis
+    // const card = simulatedHand.pop();
     playerHand.push(card);
 
     // Create 'hold' display on top of card pressed ;
@@ -371,12 +418,13 @@ const drawInitialHand = () => {
     const holdStatusDisplay = document.createElement('div');
     holdStatusDisplay.classList.add('holdStatus');
 
-    // Create a break element to seperate hold status display and poker card display
+    // Create a break element to separate hold status display and poker card display
     const breakElement = document.createElement('br');
 
     // Create image tag that holds path to current card's image
     const cardImage = document.createElement('img');
     cardImage.classList.add('cardImage');
+    cardImage.setAttribute('id', `cardImg${i + 1}`);
     cardImage.src = getCardPicUrl(card);
 
     // Create div container that holds the image, and enable output once card is clicked
@@ -388,9 +436,11 @@ const drawInitialHand = () => {
       if (holdStatus === false) {
         holdStatus = true;
         holdStatusDisplay.innerText = 'HOLD';
+        playerHand[i].holdStatus = holdStatus;
       } else {
         holdStatus = false;
         holdStatusDisplay.innerText = '';
+        playerHand[i].holdStatus = holdStatus;
       }
     });
 
@@ -405,7 +455,7 @@ const drawInitialHand = () => {
 // Function that generates onscreen the different
 // winning combinations (and their prize monies [WIP])
 const generateDisplayCombinations = () => {
-  const winningCombiArray = ['Royal-Flush', 'Straight Flush', 'Four-of-a-kind', 'Full-House', 'Flush', 'Straight', 'Three-of-a-kind', 'Two-Pair', 'Jacks-or-better'];
+  const winningCombiArray = ['Five-of-a-kind', 'Straight Flush', 'Four-of-a-kind', 'Full-House', 'Flush', 'Straight', 'Three-of-a-kind', 'Two-Pair', 'Jacks-or-better'];
 
   // Create column that describe winning combinations
   const nameOfCombiDisplay = document.createElement('div');
@@ -419,16 +469,7 @@ const generateDisplayCombinations = () => {
   }
   payOutScheduleDisplay.appendChild(nameOfCombiDisplay);
 
-  // Hardcoded individual credit payouts for X amount of credits used
-  const oneCreditPayOut = [250, 50, 25, 9, 6, 4, 3, 2, 1];
-  const twoCreditPayout = [500, 100, 50, 18, 12, 8, 6, 4, 2];
-  const threeCreditPayout = [750, 150, 75, 27, 18, 12, 9, 6, 3];
-  const fourCreditPayout = [1000, 200, 100, 36, 24, 16, 12, 8, 4];
-  const fiveCreditPayout = [4000, 250, 125, 45, 30, 20, 15, 10, 5];
-
-  const payOutSchedule = [[...oneCreditPayOut], [...twoCreditPayout],
-    [...threeCreditPayout], [...fourCreditPayout], [...fiveCreditPayout]];
-
+  // Create the display for payoutSchedule
   for (let i = 0; i < payOutSchedule.length; i += 1) {
     const payOutColumn = document.createElement('div');
     payOutColumn.classList.add(`pCol${i + 1}`);
@@ -458,9 +499,11 @@ const createInsertCreditsBtn = () => {
   insertCreditsBtn.innerText = 'INSERT \n 1 CREDIT';
   insertCreditsBtn.setAttribute('id', 'insertCreditsBtn');
   insertCreditsBtn.addEventListener('click', () => {
-    numCreditsInserted += 1;
-    creditsInsertedDisplay.innerText = `INSERT CREDITS: ${numCreditsInserted}`;
-    console.log(numCreditsInserted, 'creditsToBeInserted');
+    if (numCreditsInserted < 5) {
+      numCreditsInserted += 1;
+      creditsInsertedDisplay.innerText = `INSERT CREDITS: ${numCreditsInserted}`;
+      console.log(numCreditsInserted, 'creditsToBeInserted');
+    }
   });
   buttonsContainer.appendChild(insertCreditsBtn);
 };
@@ -471,22 +514,31 @@ const createDealCardsBtn = () => {
   dealBtn.setAttribute('id', 'dealBtn');
   dealBtn.innerText = 'DEAL';
   dealBtn.addEventListener('click', () => {
-    shuffledDeck = shuffleCards(makeDeck());
-    cardsContainer.innerText = '';
-    // clear playerHand first before drawing initial hand
-    playerHand.length = 0;
-    // clear cache of previous' hand's win combi
-    nameOfWinCombi = 'No winning hand';
-    drawInitialHand();
-    checkForWinCombi();
+    if (numCreditsInserted > 0) {
+      shuffledDeck = shuffleCards(makeDeck());
+      cardsContainer.innerText = '';
 
-    // reset insert credits and deduct credits left:
-    creditsLeft -= numCreditsInserted;
-    numCreditsInserted = 0;
-    // reset stats display and make a new one;
-    statsDisplay.innerText = '';
+      // clear playerHand first before drawing initial hand
+      playerHand.length = 0;
 
-    createGameStatsDisplay();
+      // clear cache of previous' hand's win combi
+      nameOfWinCombi = 'No winning hand';
+      drawInitialHand();
+      checkForWinCombi();
+
+      // calculate score and add to creditsLeft
+      calcHandScore();
+
+      // reset insert credits and deduct from credits left:
+      creditsLeft -= numCreditsInserted;
+      numCreditsInserted = 0;
+
+      // reset stats display and make a new one;
+      statsDisplay.innerText = '';
+      createGameStatsDisplay();
+    } else {
+      console.log('cannot deal until you insert credits!');
+    }
   });
   buttonsContainer.appendChild(dealBtn);
 };
@@ -497,11 +549,13 @@ const createSwapCardsBtn = () => {
   swapBtn.setAttribute('id', 'swapBtn');
   swapBtn.innerText = 'SWAP';
   swapBtn.addEventListener('click', () => {
-    shuffledDeck = shuffleCards(makeDeck());
-    cardsContainer.innerText = '';
-    // clear playerHand first before drawing initial hand
-    playerHand.length = 0;
-    drawInitialHand();
+    playerHand.map((currentCard, index) => {
+      if (currentCard.holdStatus === false) {
+        const newCard = shuffledDeck.pop();
+        playerHand.splice(index, 1, newCard);
+        displayNewDrawnCards(newCard, index);
+      }
+    });
     checkForWinCombi();
   });
   buttonsContainer.appendChild(swapBtn);
@@ -519,13 +573,13 @@ const createGameStatsDisplay = () => {
   currentCombiDisplay.innerText = `${nameOfWinCombi}`;
 
   // Display how much credits the player has left
-  availCreditsDisplay = document.createElement('div');
-  availCreditsDisplay.innerText = `CREDITS LEFT: ${creditsLeft}`;
-  availCreditsDisplay.setAttribute('id', 'availCredits');
+  creditsLeftDisplay = document.createElement('div');
+  creditsLeftDisplay.innerText = `CREDITS LEFT: ${creditsLeft}`;
+  creditsLeftDisplay.setAttribute('id', 'availCredits');
 
   statsDisplay.appendChild(creditsInsertedDisplay);
   statsDisplay.appendChild(currentCombiDisplay);
-  statsDisplay.appendChild(availCreditsDisplay);
+  statsDisplay.appendChild(creditsLeftDisplay);
 };
 
 const gameInit = () => {

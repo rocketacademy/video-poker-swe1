@@ -2,7 +2,7 @@
 // points player start with
 const PLAYER_STARTING_POINTS = 100;
 // the player's total points
-const playerTotalPoints = PLAYER_STARTING_POINTS;
+let playerTotalPoints = PLAYER_STARTING_POINTS;
 // player's bid points
 let playerBidPoints = 0;
 // array to store player's hand cards
@@ -47,7 +47,7 @@ let bidPointsContainer;
 let cardsToExchange = [];
 
 // to store cards based on similar ranks
-const rankedHand = [[]];
+let rankedHand = [[]];
 // to find number of 4 of a kind in playerHand
 let numOf4OfAKind = 0;
 // to find number of 3 of a kind in playerHand
@@ -57,7 +57,7 @@ let numOfPairs = 0;
 // points of the player hand
 let handScore = 0;
 
-// For controlling buttons (if they can be pressed) ----------------
+// For controlling button clickability ----------------------------
 // only allow player to submit bid points at start of the round
 let canSubmitBidPoints = true;
 
@@ -277,6 +277,10 @@ const reorderCards = () => {
 };
 // store similar ranks together and used to check for winning conditions
 const groupPlayerCardsByRank = () => {
+  // empty rankedHand of previous round
+  rankedHand = [[]];
+
+  // logic
   rankedHand[0].push(playerHand[0]);
   let rankRow = 0;
   for (let i = 1; i < playerHand.length; i += 1) {
@@ -292,6 +296,12 @@ const groupPlayerCardsByRank = () => {
 };
 // find number of pairs/3 of a kind/4 of a kind
 const findNumOfSimilarCards = () => {
+  // empty previous round's records
+  numOfPairs = 0;
+  numOf3OfAKind = 0;
+  numOf4OfAKind = 0;
+
+  // logic
   for (let i = 0; i < rankedHand.length; i += 1) {
     if (rankedHand[i].length === 4) {
       numOf4OfAKind += 1;
@@ -405,11 +415,16 @@ const calcHandScore = () => {
     handScore = 3;
   } else if (numOfPairs === 1) { // 1 pair
     handScore = 2;
-  } else if (isJackOrHigher === true) {
+  } else if (isJackOrHigher() === true) {
     handScore = 1;
   } else {
     handScore = 0;
   }
+};
+
+// add points to player's total points based on bid points and hand score
+const addPoints = () => {
+  playerTotalPoints += playerBidPoints * handScore;
 };
 
 // Game initialization =============================================
@@ -476,15 +491,20 @@ const initGame = () => {
         exchangeCards();
       }
 
-      // check player hand's points ------------------------------
+      // check player hand's score ------------------------------
       // reorder player's cards from highest to lowest rank
       reorderCards();
       // store similar ranks together and used to check for winning conditions
       groupPlayerCardsByRank();
       // find number of pairs/3 of a kind/4 of a kind
       findNumOfSimilarCards();
-      // store number of points based on player's hand
+      // calculate hand score and store in handScore
       calcHandScore();
+
+      // add points to player's total points based on bid points and hand score
+      addPoints();
+      // display player's total points
+      totalPointsInfoEl.innerText = playerTotalPoints;
 
       // it is the end of the round so allow player to begin new round by submitting points
       canSubmitBidPoints = true;
@@ -529,6 +549,10 @@ const initGame = () => {
         bidPointsInfoEl.innerText = playerBidPoints;
         // clear bid points from bidPointsInputEl display
         bidPointsInputEl.value = '';
+        // minus bid points away from player's total points
+        playerTotalPoints -= playerBidPoints;
+        // display player's total points
+        totalPointsInfoEl.innerText = playerTotalPoints;
 
         // allow player to deal starting cards since it is a new round
         canDealStartingCards = true;

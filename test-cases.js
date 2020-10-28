@@ -163,3 +163,28 @@ const playerHand = [
     suit: 'spades',
   },
 ];
+
+// High Card Jack
+const playerHand = [ 
+  {
+    rank: 2,
+    suit: 'spades',
+  },
+  {
+    rank: 4,
+    suit: 'hearts',
+  },
+
+  {
+    rank: 6,
+    suit: 'spades',
+  },
+  {
+    rank: 8,
+    suit: 'spades',
+  },
+  {
+    rank: 11,
+    suit: 'spades',
+  },
+];

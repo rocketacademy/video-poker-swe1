@@ -1,0 +1,117 @@
+body{
+  background-color: whitesmoke;
+  color: darkolivegreen;
+}
+.game-play .pay-table{
+  display: inline-block;
+  vertical-align: top;
+  margin: 20px;
+}
+.single-card{
+  display: inline-block;
+  vertical-align: top;
+  margin: 10px;
+  width: 50px;
+  height: 80px;
+  background-color: wheat;
+  border-radius: 5px;
+  text-align:center;
+  color:black;
+}
+.red{
+    color:red;
+  }
+
+.suit{
+  margin: 5px;
+  font-size:20px;
+}
+.name{
+  margin: 5px;
+  font-size:24px;
+  font-weight:bold;
+  font-family:sans-serif;
+}
+
+.hold-status{
+  font-size: 9px;
+}
+
+.default-fill{
+  width: 45px;
+  margin: 10%;
+  overflow: hidden;
+}
+
+.reduced-card{
+  width: 25px;
+  height: 35px;
+  margin: 5px;
+  font-size:10px;
+  font-weight:bold;
+  font-family:sans-serif;
+}
+
+
+.reduced-size{
+  margin: 5px;
+  font-size:10px;
+  font-weight:bold;
+  font-family:sans-serif;
+}
+
+.status{
+  color: crimson;
+  font-family: 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.result{
+  margin-top: 30px;
+}
+.score-card-container{
+  margin: 20px;
+}
+
+
+table, th, td{
+  border:1px solid olive;
+  border-collapse: collapse;
+  padding: 10px;
+}
+
+.pay-table{
+  margin-top: 20px;
+}
+
+.tooltip .tooltip-text {
+  visibility: hidden;
+  background-color: lightgoldenrodyellow;
+  color: black;
+  opacity: 0;
+  transition: opacity 0.3s;
+  text-align: justify;
+  border-radius: 6px;
+  padding: 5px 5px;
+  position: absolute;
+  z-index: 1;
+  left: 10%;
+  margin-left: -70px;
+  margin-top: -10px;;
+}
+
+/*Adding arrows on the tool tip*/
+.tooltip .tooltip-text::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 100%; /*to the left of tooltip*/
+  margin-top: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: lightgoldenrodyellow transparent transparent transparent;
+}
+
+.tooltip:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}

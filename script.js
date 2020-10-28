@@ -4,8 +4,8 @@ const PLAYER_STARTING_POINTS = 100;
 // the player's points
 const playerPoints = PLAYER_STARTING_POINTS;
 // array to store player's hand cards
-const playerHand = [];
-// playerHand = ['']; // to use for testing only
+let playerHand = [];
+playerHand = ['']; // to use for testing only
 
 // player hand size
 const handSize = 5;
@@ -293,6 +293,27 @@ const isFlush = () => {
 
   return checkFlush;
 };
+// return true if there is a royal flush (straight from 10 to ace and cards have same suit)
+const isRoyalFlush = () => {
+  // if check10ToAce is true, there is a straight from 10 to Ace in the player's hand
+  let check10ToAce = false;
+  // number of times the difference between playerHand[i].rank and playerHand[i+1].rank is one
+  let timesDifferenceIsMinusOne = 0;
+  // if there is a flush, check for straight from 10 to ace
+  if (isFlush() === true) {
+    // check if player has a straight from 10 to ace
+    for (let i = 0; i < (playerHand.length - 2); i += 1) {
+      if (playerHand[i].rank - playerHand[i + 1].rank === 1) {
+        timesDifferenceIsMinusOne += 1;
+      }
+    }
+    if (timesDifferenceIsMinusOne === 3 && playerHand[4].rank === 1 && playerHand[0].rank === 13) {
+      check10ToAce = true;
+    }
+  }
+
+  return check10ToAce;
+};
 // returns true if there is a full house in the player's hand
 const isFullHouse = () => {
   let checkFullHouse = false;
@@ -314,7 +335,9 @@ const isJackOrHigher = () => {
 };
 // returns number of points based on player's hand
 const calcHandScore = () => {
-  if (isStraight() === true && isFlush() === true) { // straight flush
+  if (isRoyalFlush() === true) { // royal flush
+    handScore = 10;
+  } else if (isStraight() === true && isFlush() === true) { // straight flush
     handScore = 9;
   } else if (numOf4OfAKind === 1) { // 4 of a kind
     handScore = 8;

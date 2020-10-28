@@ -138,3 +138,28 @@ const playerHand = [
     suit: 'spades',
   },
 ];
+
+// Royal flush hand
+const playerHand = [ 
+  {
+    rank: 13,
+    suit: 'spades',
+  },
+  {
+    rank: 12,
+    suit: 'spades',
+  },
+
+  {
+    rank: 11,
+    suit: 'spades',
+  },
+  {
+    rank: 10,
+    suit: 'spades',
+  },
+  {
+    rank: 1,
+    suit: 'spades',
+  },
+];

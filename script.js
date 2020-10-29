@@ -6,9 +6,11 @@ const player = {
   tempHand: [],
   handScore: 0,
   credits: 100,
+  fauxHand: [],
 };
 let deck = [];
 let keepCardCanClick = true;
+let bidTracker = 0;
 
 //= =========HELPER FUNCTIONS===================
 // get a random index from an array given it's size
@@ -110,9 +112,7 @@ const makeDeck = () => {
   return newDeck;
 };
 
-//= =========HELPER FUNCTIONS==========
-
-// ------------Build the board element----------------
+// ------------Build the board elements----------------
 const buildBoardElements = () => {
   // create the primary container
   const priContainter = document.createElement('div');
@@ -123,20 +123,32 @@ const buildBoardElements = () => {
   arsenal.classList = 'arsenal';
   arsenal.setAttribute('id', 'arsenalID');
 
-  // build the secondary container: player interactionConsole
-  const interactionConsole = document.createElement('div');
-  interactionConsole.classList = 'interactionConsole';
+  // build secondary container1: credits management console
+  const creditsManagementConsoleElement = document.createElement('div');
+  creditsManagementConsoleElement.classList = 'creditsManagementConsoleElement';
 
-  // build the credits display: creditsDisplay
-  const creditsDisplay = document.createElement('div');
-  creditsDisplay.classList = 'creditsDisplay';
-  creditsDisplay.setAttribute('id', 'creditsDisplayID');
-  creditsDisplay.innerText = player.credits;
+  // build the secondary container2: player interactionConsoleElement
+  const interactionConsoleElement = document.createElement('div');
+  interactionConsoleElement.classList = 'interactionConsoleElement';
+
+  // build the bidding/ betting button:
+  const addBidButton = document.createElement('button');
+  addBidButton.classList = 'addBidButton';
+  addBidButton.innerText = 'Bid/Add Bid';
+  addBidButton.setAttribute('id', 'addBidButtonID');
+  addBidButton.addEventListener('click', () => { bidTracker += 1; });
+
+  // build the credits display: creditsDisplayElement
+  const creditsDisplayElement = document.createElement('div');
+  creditsDisplayElement.classList = 'creditsDisplayElement';
+  creditsDisplayElement.setAttribute('id', 'creditsDisplayElementID');
+  creditsDisplayElement.innerText = `CREDITS: ${player.credits}`;
 
   // build the start game button: starGame
   const startGameButton = document.createElement('button');
   startGameButton.classList = 'startGameButton';
   startGameButton.innerText = ' Start';
+
   // build the deal/draw button: dealOrDraw
   const dealOrDrawButton = document.createElement('button');
   dealOrDrawButton.classList = 'dealOrDrawButton';
@@ -146,13 +158,22 @@ const buildBoardElements = () => {
   // append child according to logic: parent> child1>child nodes, child2>nodes
   document.body.appendChild(priContainter);
   priContainter.appendChild(arsenal);
-  priContainter.appendChild(interactionConsole);
-  interactionConsole.appendChild(creditsDisplay);
-  interactionConsole.appendChild(startGameButton);
-  interactionConsole.appendChild(dealOrDrawButton);
+  priContainter.appendChild(creditsManagementConsoleElement);
+  creditsManagementConsoleElement.appendChild(addBidButton);
+  creditsManagementConsoleElement.appendChild(creditsDisplayElement);
+
+  priContainter.appendChild(interactionConsoleElement);
+  interactionConsoleElement.appendChild(startGameButton);
+  interactionConsoleElement.appendChild(dealOrDrawButton);
 };
 
-// -------initialise user's hand----------(fn w/in fn)
+// -----------SHOW PLAYER CREDITS-----------
+// this is a function that simplifies the code needed to update player his on credits
+const showCredits = (message) => {
+  document.getElementById('creditsDisplayElementID').innerHTML = `CREDITS: ${message}`;
+};
+
+// -------initialise user's hand----------
 const intialiseHand = () => {
   // Make a deck and shuffle it
   deck = shuffleCards(makeDeck());
@@ -210,24 +231,45 @@ const keepCard = (cardElement, position) => {
   player.tempHand.push(clickedCard);
 };
 
-// -----------GET THE SCORE IN PLAYER'S HAND--------
-const getHandScore = () => {
-  if (player.hand.length >= 5) {
-    player.credits += 100;
+// ----------determine bet type------------------
+const getStakes = () => {
+  const stakesArray = [{}, {}, {}, {}];
+  // make first object in array
+  stakesArray[0] = {
+    straightFlush: 50,
+    fourOfAKind: 25,
+    fullHouse: 9,
+    flush: 6,
+    straight: 4,
+    threeOfAKind: 3,
+    twoPair: 2,
+    jacksOrLarger: 1,
+    lose: -1,
+  };
+  // using first object, makes subsequent objects by using multiples of first object's properties.
+  for (let i = 1; i < stakesArray.length; i += 1) {
+    stakesArray[i] = {
+      straightFlush: stakesArray[0].straightFlush * (i + 1),
+      fourOfAKind: stakesArray[0].fourOfAKind * (i + 1),
+      fullHouse: stakesArray[0].fullHouse * (i + 1),
+      flush: stakesArray[0].flush * (i + 1),
+      straight: stakesArray[0].straight * (i + 1),
+      threeOfAKind: stakesArray[0].threeOfAKind * (i + 1),
+      twoPair: stakesArray[0].twoPair * (i + 1),
+      jacksOrLarger: stakesArray[0].jacksOrLarger * (i + 1),
+      lose: stakesArray[0].jacksOrLarger * (i + 1),
+    };
   }
-  else { player.credits -= 50; }
-  // Display the user's credits
-  document.getElementById('creditsDisplayID').innerText = `Your credits${player.credits}`;
-  console.log(`Your credits: ${player.credits}`);
+  console.log(stakesArray);
+  return stakesArray[bidTracker];
 };
 
 //= ===========GAME FLOW========================
-// deal cards to player and store in his hand
-const gameInit = () => {
+const initGame = () => {
   // build the board
   buildBoardElements();
 
-  // initialise the player's hand
+  // initialise the player's hand+ create his cards' elements
   intialiseHand();
   createCardsElements();
 
@@ -238,9 +280,14 @@ const gameInit = () => {
   // if player clicks the draw button and has selected cards to keep, then draw new cards for him;
   document.getElementById('dealOrDrawButtonID').addEventListener('click', () => {
     console.log('pressing \'deal/draw...');
+    // if the player has chosen to keep all cards:
     if (player.tempHand.length === 0) {
-      console.log('player temp hand is null');
-    } else if (player.tempHand.length !== 0) {
+      console.log('player temp hand is empty');
+      // Analyse the player's hand
+      getHandScore();
+    }
+    // else if the player has chosen some cards to keep and others to dispose
+    else if (player.tempHand.length !== 0) {
       // empty the player.hand and push temphand objects into the player.hand
       player.hand = [];
       player.hand.push(...player.tempHand);
@@ -252,9 +299,11 @@ const gameInit = () => {
       createCardsElements();
       // turn off the ability for player to try and select cards(i.e. keeepCard)
       keepCardCanClick = false;
+      // empty the temp hand so that the next time user clicks deal/draw,
+      // it will getHandscore (by virture of logic)
+      player.tempHand = [];
     }
   });
-  // Analyse the player's hand
-  getHandScore();
 };
-gameInit();
+
+initGame();

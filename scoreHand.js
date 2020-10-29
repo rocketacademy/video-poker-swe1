@@ -1,260 +1,188 @@
-//= =========GLOBAL VARIABLES============
+// ----check for pairs-------
+const checkPairs = (card) => {
+  console.log('checking for pairs...');
 
-const player = {
-  setHandSize: 5,
-  hand: [],
-  tempHand: [],
-  handScore: 0,
-  credits: 100,
-};
-let deck = [];
-let keepCardCanClick = true;
+  let match = 0;
+  let rankLargerThanTen = 0;
+  let outcome = null;
+  let handRankScore = 0;
 
-//= =========HELPER FUNCTIONS===================
-// get a random index from an array given it's size
-const getRandomIndex = (size) => Math.floor(Math.random() * size);
-
-// ----------SHUFFLE CARDS-------------------
-// cards is an array of card objects
-const shuffleCards = (cards) => {
-  // loop over the entire cards array
-  for (let currentIndex = 0; currentIndex < cards.length; currentIndex += 1) {
-    // select a random position from the deck
-    const randomIndex = getRandomIndex(cards.length);
-
-    // get the current card in the loop
-    const currentItem = cards[currentIndex];
-
-    // get the random card
-    const randomItem = cards[randomIndex];
-
-    // swap the current card and the random card
-    cards[currentIndex] = randomItem;
-    cards[randomIndex] = currentItem;
+  for (let i = 0; i < player.hand.length - 1; i += 1) {
+    if (player.hand[i].rank === player.hand[i + 1].rank) {
+      match += 1;
+    }
+    if (player.hand[i].rank > 10) {
+      rankLargerThanTen += 1;
+      handRankScore += player.hand[i].rank;
+    }
   }
 
-  // give back the shuffled deck
-  return cards;
-};
-
-// -------------MAKE A DECK------------------------------
-// Make a deck
-const makeDeck = () => {
-  // create the empty deck at the beginning
-  const newDeck = [];
-  const suits = ['hearts', 'diamonds', 'clubs', 'spades'];
-
-  for (let suitIndex = 0; suitIndex < suits.length; suitIndex += 1) {
-    // make a variable of the current suit
-    const currentSuit = suits[suitIndex];
-    // console.log(`current suit: ${currentSuit}`);
-
-    let color = '';
-    let suitSymbol = suitIndex;
-    if (suitSymbol === 0) {
-      suitSymbol = '♥';
-      color = 'red';
-    } else if (suitSymbol === 1) {
-      suitSymbol = '♦';
-
-      color = 'red';
-    } else if (suitSymbol === 2) {
-      suitSymbol = '♣';
-      color = 'black';
-    } else if (suitSymbol === 3) {
-      suitSymbol = '♠';
-      color = 'black';
-    }
-
-    // loop to create all cards in this suit
-    // rank 1-13
-    for (let rankCounter = 1; rankCounter <= 13; rankCounter += 1) {
-      // Convert rankCounter to string
-      let cardName = `${rankCounter}`;
-
-      let display = '';
-      display = rankCounter;
-
-      // 1, 11, 12 ,13
-      if (cardName === '1') {
-        cardName = 'ace';
-        display = 'A';
-      } else if (cardName === '11') {
-        cardName = 'jack';
-        display = 'J';
-      } else if (cardName === '12') {
-        cardName = 'queen';
-        display = 'Q';
-      } else if (cardName === '13') {
-        cardName = 'king';
-        display = 'K';
+  if ((match === 1) && (rankLargerThanTen >= 2) && (handRankScore > 20)) {
+    console.log('match is 1');
+    outcome = 'jacksOrLarger';
+  }
+  // search for 2 pair or three-of-a-kind
+  else if (match === 2) {
+    // given 2 matches: Using the first card as a reference point,
+    //  if the third card is the same, it must be a three of a kind
+    for (let j = 0; j < player.hand.length - 2; j += 1) {
+      if (player.hand[j].rank === player.hand[j + 2].rank) {
+        outcome = 'threeOfAKind';
+        break;
+        // given that the third card is different, it must be a two pair
+      } else {
+        outcome = 'twoPair';
       }
-
-      // make a single card object variable
-      const card = {
-        display,
-        suitSymbol,
-        name: cardName,
-        color,
-        suit: currentSuit,
-        rank: rankCounter,
-      };
-
-      // console.log(`rank: ${rankCounter}`);
-
-      // add the card to the deck
-      newDeck.push(card);
     }
   }
-
-  return newDeck;
-};
-
-//= =========HELPER FUNCTIONS==========
-
-// ------------Build the board element----------------
-const buildBoardElements = () => {
-  // create the primary container
-  const priContainter = document.createElement('div');
-  priContainter.classList = 'priContainer';
-
-  // build the secondary container: Arsenal
-  const arsenal = document.createElement('div');
-  arsenal.classList = 'arsenal';
-  arsenal.setAttribute('id', 'arsenalID');
-
-  // build the secondary container: player interactionConsole
-  const interactionConsole = document.createElement('div');
-  interactionConsole.classList = 'interactionConsole';
-
-  // build the credits display: creditsDisplay
-  const creditsDisplay = document.createElement('div');
-  creditsDisplay.classList = 'creditsDisplay';
-  creditsDisplay.setAttribute('id', 'creditsDisplayID');
-  creditsDisplay.innerText = player.credits;
-
-  // build the start game button: starGame
-  const startGameButton = document.createElement('button');
-  startGameButton.classList = 'startGameButton';
-  startGameButton.innerText = ' Start';
-  // build the deal/draw button: dealOrDraw
-  const dealOrDrawButton = document.createElement('button');
-  dealOrDrawButton.classList = 'dealOrDrawButton';
-  dealOrDrawButton.setAttribute('id', 'dealOrDrawButtonID');
-  dealOrDrawButton.innerText = 'Deal/Draw';
-
-  // append child according to logic: parent> child1>child nodes, child2>nodes
-  document.body.appendChild(priContainter);
-  priContainter.appendChild(arsenal);
-  priContainter.appendChild(interactionConsole);
-  interactionConsole.appendChild(creditsDisplay);
-  interactionConsole.appendChild(startGameButton);
-  interactionConsole.appendChild(dealOrDrawButton);
-};
-
-// -------initialise user's hand----------(fn w/in fn)
-const intialiseHand = () => {
-  // Make a deck and shuffle it
-  deck = shuffleCards(makeDeck());
-  // push 5 cards to the hand
-  for (let i = 0; i < player.setHandSize; i += 1) {
-    player.hand.push(deck.pop());
-  }
-};
-const createCardsElements = () => {
-  // ensure that the container is empty before creating anything:
-  document.getElementById('arsenalID').innerHTML = '';
-
-  // display the player's hand
-  for (let i = 0; i < player.hand.length; i += 1) {
-    console.log(player.hand[i]);
-    // create a card element, and append it to the arsenal
-    const cardElement = document.createElement('div');
-    cardElement.setAttribute('id', 'cardElementID');
-    cardElement.classList = 'cardElement';
-    document.getElementById('arsenalID').appendChild(cardElement);
-    // assign current cardElement the details for card[i]
-    cardElement.innerHTML = player.hand[i].display + player.hand[i].suitSymbol;
-
-    // make each card element clickable
-    // eslint-disable-next-line
-    cardElement.addEventListener('click', (event) => {
-      if (keepCardCanClick === true) {
-        keepCard(event.currentTarget, i);
+  // search for full house or four-of-a-kind
+  else if (match === 3) {
+    // given 3 matches: using card j as a reference point,
+    // if the third card is the same, it must be a full house
+    for (let j = 0; j < player.hand.length - 3; j += 1) {
+      if (player.hand[j].rank === player.hand[j + 3].rank) {
+        outcome = 'fourOfAKind';
+        break;
       }
-    });
-  }
-};
-
-// ---------Identify which cards to keep-------
-// ----concept: store the identified cards in a new array, then update player.hand w/ that new array
-const keepCard = (cardElement, position) => {
-  console.log('card element is: ');
-  console.log(cardElement);
-
-  const clickedCard = player.hand[position];
-  console.log('clicked card is:');
-  console.log(clickedCard);
-
-  // if the clicked card is alr in the array, remove it from the array
-  for (let j = 0; j < player.tempHand.length; j += 1) {
-    if ((clickedCard.display === player.tempHand[j].display) && (clickedCard.suit === player.tempHand[j].suit)) {
-      player.tempHand.splice(j, 1);
-      console.log('splicing this card');
-      console.log(player.tempHand[j]);
-      return;
+      // give that the third card is different, it must be a two pair
+      else {
+        outcome = 'fullHouse';
+      }
     }
   }
-  // if user clicks a card, add it to new array
-  console.log('pushing....');
-  player.tempHand.push(clickedCard);
+  return outcome;
 };
 
-// -----------GET THE SCORE IN PLAYER'S HAND--------
+// ----check for straight/flush-------
+const checkStraight = () => {
+  console.log('checking for straights...');
+  let outcome = null;
+  let match = 0;
+  // compare each card with the next;
+  // if the next card has a rank that is one greater, increase the 'match'
+  for (let i = 0; i < player.hand.length - 1; i += 1) {
+    // console.log(player.hand[i + 1].rank + 1);
+    if (player.hand[i].rank + 1 === player.hand[i + 1].rank) {
+      match += 1;
+    }
+    // if the 'match' is 4, you have a straight
+    if (match === 4) {
+      outcome = 'straight';
+    }
+  }
+  console.log(`straight-match is ${match}`);
+  return outcome;
+};
+// ----check for straight/flush-------
+const checkFlush = () => {
+  console.log('checking for flushes...');
+
+  let outcome = null;
+  let match = 0;
+  for (let i = 0; i < player.hand.length - 1; i += 1) {
+    if (player.hand[i].suit === player.hand[i + 1].suit) {
+      match += 1;
+    }
+  }
+  if (match === 4) {
+    outcome = 'flush';
+  }
+  return outcome;
+};
+// ---------check win----------------------
+const checkWin = (outcomeOfCheckPairs, outcomeOfCheckStraight, outcomeOfCheckFlush) => {
+  // check for win conditions: (logic: straight flush>...>jacks or better)
+  // straight flush
+  if (outcomeOfCheckFlush === 'flush' && outcomeOfCheckStraight === 'straight') {
+    // give the user 50 points;
+    console.log('straightFlush');
+    return 'straightFlush';
+  }
+  // four of a kind
+  if (outcomeOfCheckPairs === 'fourOfAKind') {
+    // give the user 25 points;
+    console.log('four of a kind');
+    return 'fourOfAKind';
+  }
+  // full house
+  if (outcomeOfCheckPairs === 'fullHouse') {
+    // give the user 9 points
+    console.log('full house');
+    return 'fullHouse';
+  }
+  if (outcomeOfCheckFlush === 'flush') {
+    // give the useer 6 points
+    console.log('flush');
+    return 'flush';
+  }
+  // straight
+  if (outcomeOfCheckStraight === 'straight') {
+    // give the user 4 points;
+    console.log('straight');
+    return 'straight';
+  }
+  // three of a kind
+  if (outcomeOfCheckPairs === 'threeOfAKind') {
+    // give the user 3 points
+    console.log('three of a kind');
+    return 'threeOfAKind';
+  }
+  if (outcomeOfCheckPairs === 'twoPair') {
+    // give the user 2 points
+    console.log('two pair');
+    return 'twoPair';
+  }
+  // jacks or larger
+  if (outcomeOfCheckPairs === 'jacksOrLarger') {
+    // give the user 1 point
+    console.log('jacks or larger');
+    return 'jacksOrLarger';
+  }
+  console.log('lose');
+  return 'lose';
+};
+
+//------------------------------------------
 const getHandScore = () => {
-  if (player.hand.length >= 5) {
-    player.credits += 100;
-  }
-  else { player.credits -= 50; }
-  // Display the user's credits
-  document.getElementById('creditsDisplayID').innerText = `Your credits${player.credits}`;
-  console.log(`Your credits: ${player.credits}`);
-};
+  // ===============================
+// for testing:
+  player.hand = player.fauxHand;
 
-//= ===========GAME FLOW========================
-// deal cards to player and store in his hand
-const gameInit = () => {
-  // build the board
-  buildBoardElements();
-
-  // initialise the player's hand
-  intialiseHand();
-  createCardsElements();
-
-  // Display the user's credits
-  // note: 100 credits were assigned to the player via default (as a global V)
-  console.log(`Your credits: ${player.credits}`);
-
-  // if player clicks the draw button and has selected cards to keep, then draw new cards for him;
-  document.getElementById('dealOrDrawButtonID').addEventListener('click', () => {
-    console.log('pressing \'deal/draw...');
-    if (player.tempHand.length === 0) {
-      console.log('player temp hand is null');
-    } else if (player.tempHand.length !== 0) {
-      // empty the player.hand and push temphand objects into the player.hand
-      player.hand = [];
-      player.hand.push(...player.tempHand);
-      // re-deal cards to player until his hand is full
-      while (player.hand.length < player.setHandSize) {
-        player.hand.push(deck.pop());
+  // ===============================
+  // sort cards (bubble sort) in ascending order
+  for (let j = 0; j < player.hand.length; j += 1) {
+    for (let i = 0; i < player.hand.length - 1; i += 1) {
+      console.log(`start iteration ${i}`);
+      if (player.hand[i].rank > player.hand[i + 1].rank) {
+        [player.hand[i], player.hand[i + 1]] = [player.hand[i + 1], player.hand[i]];
+        console.log(`end iteration ${i}`);
       }
-      // display new hand
-      createCardsElements();
-      // turn off the ability for player to try and select cards(i.e. keeepCard)
-      keepCardCanClick = false;
     }
-  });
-  // Analyse the player's hand
-  getHandScore();
+  }
+
+  // check for pairs
+  const outcomeOfCheckPairs = checkPairs();
+  // console.log(`outcomeOfCheckPairs is ${outcomeOfCheckPairs}`);
+
+  // check for straights;
+  const outcomeOfCheckStraight = checkStraight();
+  // console.log(`outcomeOfCheckStraight is:  ${outcomeOfCheckStraight}`);
+
+  // check for flushes;
+  const outcomeOfCheckFlush = checkFlush();
+  // console.log(`outcomeOfCheckFlush is: ${outcomeOfCheckFlush}`);
+
+  // based on the 3 checks above, determine if the player has a winning hand
+  const finalOutcome = checkWin(outcomeOfCheckPairs, outcomeOfCheckStraight, outcomeOfCheckFlush);
+
+  console.log(`finalOutcome is: ${finalOutcome}`);
+
+  // get the stakes basd on the user's bid choice (i.e. using the bid counter global variable)
+  const stakes = getStakes();
+
+  // update player.credits according to the stakes and the performance of the player's hand
+  player.credits += stakes['' + finalOutcome]; // the [''+] helps convert the variable into a string, which is needed to call that object's proprty.
+
+  // display the credits to the user
+  showCredits(player.credits);
 };
-gameInit();

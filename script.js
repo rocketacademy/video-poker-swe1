@@ -428,7 +428,7 @@ const calcHandScore = () => {
 };
 
 // returns points won for the round
-calcPointsWon = () => playerBidPoints * handScore;
+const calcPointsWon = () => playerBidPoints * handScore;
 // add points to player's total points based on bid points and hand score
 const addPoints = () => {
   playerTotalPoints += calcPointsWon();

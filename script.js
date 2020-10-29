@@ -492,7 +492,7 @@ const initGame = () => {
       // allow player to start exchanging cards for this round
       canExchangeOrHoldCards = true;
       // display instruction for player to select cards to exchange
-      displayGameInfo('Click on any card(s) you want to exchange and <br> click the \'exchange/hold cards\' button to see your score.');
+      displayGameInfo('Click on any card(s) you want to exchange and click the \'exchange/hold cards\' button to see your score.');
     }
   });
   gameDisplayContainer.appendChild(dealButton);
@@ -531,7 +531,7 @@ const initGame = () => {
       // calculate points won this round
       const pointsWonThisRound = calcPointsWon();
       // display handscore and points player won this round and submit points to play again
-      displayGameInfo(`Your hand score is ${handScore}. You earned ${pointsWonThisRound} points.<br>
+      displayGameInfo(`Your hand score is ${handScore}. You earned ${pointsWonThisRound} points.
       Please submit points to play another round.`);
     }
   });

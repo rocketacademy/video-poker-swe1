@@ -1,6 +1,20 @@
-body {
-  background-color: rgb(152, 208, 240);
+h1 {
+  padding: 20px 0;
+  background-color: turquoise;
+  font-family: "Chakra Petch", sans-serif;
+  font-size: 25px;
 }
+#how-to-play,
+#scoring-table,
+#game-display {
+  margin-bottom: 35px;
+}
+ol {
+  text-align: justify;
+  padding-inline-start: 1em;
+  margin-right: 1em;
+}
+
 table,
 th,
 td {

@@ -1,7 +1,12 @@
+body {
+  padding-right: 0;
+  padding-left: 0;
+  font-family: "Chakra Petch", sans-serif;
+}
+
 h1 {
   padding: 20px 0;
   background-color: turquoise;
-  font-family: "Chakra Petch", sans-serif;
   font-size: 25px;
 }
 #how-to-play,
@@ -13,13 +18,14 @@ ol {
   text-align: justify;
   padding-inline-start: 1em;
   margin-right: 1em;
+  font-family: serif;
+}
+#game-display {
+  background-color: rgba(245, 222, 179, 0.7);
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
-table,
-th,
-td {
-  border: 1px solid black;
-}
 #player-card-container {
   padding: 50px 20px;
   background-color: white;
@@ -33,12 +39,13 @@ td {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 10px;
-  padding: 15px;
+  padding: 5px;
   background-color: yellowgreen;
-  border-radius: 20px;
-  max-width: 500px;
   height: 200px;
+  border-style: ridge;
+  border-width: 5px;
+  border-color: chocolate;
+  border-radius: 10px;
 }
 .card {
   margin: 2px;
@@ -48,9 +55,11 @@ td {
   text-align: center;
   border-radius: 8px;
   display: inline-block;
+  border-width: 4px;
+  border-color: yellowgreen;
 }
 .card-border {
-  border-width: 4px;
+  border-color: lightgray;
 }
 .suit {
   margin: 2px;
@@ -65,4 +74,52 @@ td {
 }
 .black {
   color: black;
+}
+#game-info-container {
+  display: flex;
+  justify-content: center;
+  background-color: whitesmoke;
+  border-style: ridge;
+  border-width: 3px;
+  border-radius: 7px;
+  padding: 5px;
+  margin: 2px 0 10px 0;
+}
+#buttons-container {
+  margin-left: 0;
+  margin-right: 0;
+  justify-content: space-evenly;
+}
+#deal-button,
+#exchange-button {
+  font-size: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+#deal-button {
+  background-color: rgb(255, 208, 0);
+}
+#exchange-button {
+  background-color: paleturquoise;
+}
+#total-points-container {
+  display: inline-block;
+  margin-top: 15px;
+  margin-left: 40px;
+  width: 20vw;
+}
+#bid-points-container {
+  display: inline-block;
+  margin-top: 15px;
+  margin-left: 20px;
+  width: 20vw;
+}
+#bid-points-input-container {
+  margin-bottom: 10px;
+}
+
+table,
+th,
+td {
+  border: 1px solid black;
 }

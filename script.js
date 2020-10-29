@@ -21,6 +21,8 @@ let deck;
 let dealButton;
 // button to exchange cards
 let exchangeOrHoldCardsButton;
+// container to display buttons
+let buttonsContainer;
 // container to display a card
 let playerCardContainer;
 // container to display the player's cardContainers
@@ -43,6 +45,8 @@ let bidPointsInputEl;
 let bidPointsButton;
 // container to display player's bid points info and heading
 let bidPointsContainer;
+// container to display player's bid points input box and button
+let bidPointsInputContainer;
 // container that other containers in this file will append to
 const gameDisplayContainer = document.getElementById('game-display');
 
@@ -80,11 +84,20 @@ const createStartingElements = () => {
 
   // container to display output messages informing player about the state of the game
   gameInfo = document.createElement('div');
+  gameInfo.setAttribute('id', 'game-info-container');
 
+  // container to display buttons
+  buttonsContainer = document.createElement('div');
+  buttonsContainer.setAttribute('id', 'buttons-container');
+  buttonsContainer.classList.add('row');
   // button to deal cards
   dealButton = document.createElement('button');
+  dealButton.setAttribute('id', 'deal-button');
+  dealButton.classList.add('col-5');
   // button to exchange cards
   exchangeOrHoldCardsButton = document.createElement('button');
+  exchangeOrHoldCardsButton.setAttribute('id', 'exchange-button');
+  exchangeOrHoldCardsButton.classList.add('col-5');
 
   // element to display heading for player's total points
   totalPointsHeadingEl = document.createElement('p');
@@ -92,6 +105,7 @@ const createStartingElements = () => {
   totalPointsInfoEl = document.createElement('p');
   // container to display player's total points info and heading
   totalPointsContainer = document.createElement('div');
+  totalPointsContainer.setAttribute('id', 'total-points-container');
   // element to display heading for player's bid points
   bidPointsHeadingEl = document.createElement('p');
   // element to display player's bid points
@@ -100,8 +114,12 @@ const createStartingElements = () => {
   bidPointsInputEl = document.createElement('input');
   // button to submit the points player wants to bid
   bidPointsButton = document.createElement('button');
-  // container to display player's bid points info, heading, input and button
+  // container to display player's bid points info and heading
   bidPointsContainer = document.createElement('div');
+  bidPointsContainer.setAttribute('id', 'bid-points-container');
+  // container to display player's bid points input box and button
+  bidPointsInputContainer = document.createElement('div');
+  bidPointsInputContainer.setAttribute('id', 'bid-points-input-container');
 };
 
 // For creating a shuffled deck ------------------------------------
@@ -495,7 +513,7 @@ const initGame = () => {
       displayGameInfo('Click on any card(s) you want to exchange and click the \'exchange/hold cards\' button to see your score.');
     }
   });
-  gameDisplayContainer.appendChild(dealButton);
+  buttonsContainer.appendChild(dealButton);
 
   // initialize exchangeCardsButton functionality
   exchangeOrHoldCardsButton.innerText = 'exchange/hold cards';
@@ -535,9 +553,20 @@ const initGame = () => {
       Please submit points to play another round.`);
     }
   });
-  gameDisplayContainer.appendChild(exchangeOrHoldCardsButton);
+  buttonsContainer.appendChild(exchangeOrHoldCardsButton);
+
+  // initialize buttonsContainer functionality
+  gameDisplayContainer.appendChild(buttonsContainer);
 
   // Total points and bid points -------------------------------------------
+  // initialize bidPointsHeadingEl functionality
+  bidPointsHeadingEl.innerText = 'Points Bidded';
+  bidPointsContainer.appendChild(bidPointsHeadingEl);
+  // initialize bidPointsInfoEl functionality
+  bidPointsInfoEl.innerText = playerBidPoints;
+  bidPointsContainer.appendChild(bidPointsInfoEl);
+  // initialize bidPointsContainer functionality
+  gameDisplayContainer.appendChild(bidPointsContainer);
   // initialize totalPointsHeadingEl functionality
   totalPointsHeadingEl.innerText = 'Total Points';
   totalPointsContainer.appendChild(totalPointsHeadingEl);
@@ -547,16 +576,11 @@ const initGame = () => {
   totalPointsContainer.appendChild(totalPointsInfoEl);
   // initialize totalPointsContainer functionality
   gameDisplayContainer.appendChild(totalPointsContainer);
-  // initialize bidPointsHeadingEl functionality
-  bidPointsHeadingEl.innerText = 'Points Bidded';
-  bidPointsContainer.appendChild(bidPointsHeadingEl);
-  // initialize bidPointsInfoEl functionality
-  bidPointsInfoEl.innerText = playerBidPoints;
-  bidPointsContainer.appendChild(bidPointsInfoEl);
+
   // initialize bidPointsInputEl functionality
   bidPointsInputEl.setAttribute('type', 'text');
   bidPointsInputEl.setAttribute('placeholder', 'enter points to bid');
-  bidPointsContainer.appendChild(bidPointsInputEl);
+  bidPointsInputContainer.appendChild(bidPointsInputEl);
   // initialize bidPointsButton functionality
   bidPointsButton.setAttribute('id', 'bid-points-button');
   bidPointsButton.innerText = 'submit points';
@@ -593,9 +617,8 @@ const initGame = () => {
       bidPointsInputEl.value = '';
     }
   });
-  bidPointsContainer.appendChild(bidPointsButton);
-  // initialize bidPointsContainer functionality
-  gameDisplayContainer.appendChild(bidPointsContainer);
+  bidPointsInputContainer.appendChild(bidPointsButton);
+  gameDisplayContainer.appendChild(bidPointsInputContainer);
 };
 
 // Initilize game

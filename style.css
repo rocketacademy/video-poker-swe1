@@ -4,13 +4,19 @@ body{
   font-family: sans-serif, serif;
 }
 
-.button{
+.button-common{
   background-color: #3B6855;
   color: white;
   text-align: center;
-  border-radius: 6px;
-  font-size: 1.1em;
+  border-radius: 9px;
   margin-bottom: 10px;
+  margin-left: 10px;
+  padding: 7px 7px ;
+}
+
+.stand-alone-button{
+  font-size: 1.1em;
+  border-radius: 6px;
   padding: 10px 15px ;
 }
 
@@ -73,9 +79,11 @@ body{
 }
 
 .status{
-  color: crimson;
+  color: #0c800c;
   font-weight: lighter;
   font-style: italic;
+  font-size: 90%;
+  margin: 10px 10px 20px;
 }
 
 .result{

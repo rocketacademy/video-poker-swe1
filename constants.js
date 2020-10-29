@@ -29,7 +29,7 @@ const QUEEN_DISPLAY_NAME = 'Q';
  * Full house: Three cards of one rank, two cards of another rank;
  * for example, 3 of diamonds, 3 of hearts, 3 of spades, 6 of hearts, 6 of spades.
  * Flush: Five cards of the same suit; for example, ace, 10, 7, 4, 3, all of diamonds.
- *  * Straight: Five consecutive cards of mixed suits;
+ * Straight: Five consecutive cards of mixed suits;
  *  for example, 2 of diamonds, 3 of hearts, 4 of diamonds, 5 of clubs, 6 of spades.
  * Three of a kind: Three cards of the same rank;
  * for example, 6 of hearts, 6 of clubs, 6 of diamonds.
@@ -37,85 +37,86 @@ const QUEEN_DISPLAY_NAME = 'Q';
  *  for example, ace of spades, ace of hearts, 7 of clubs, 7 of diamonds.
  * Pair of jacks or better: Two jacks, queens, kings, or aces.
  */
-// const PAY_TABLE_ARRAY = [
-//   ['Pair of jacks or better', 'Two jacks, queens, kings, or aces.'],
-//   ['Two pair', 'Two cards of one rank, two cards of another rank;
-// for example, ace of spades, ace of hearts, 7 of clubs, 7 of diamonds.'],
-//   ['Three of a kind', 'Three cards of the same rank;
-// for example, 6 of hearts, 6 of clubs, 6 of diamonds.'],
-//   ['Straight', 'Five consecutive cards of mixed suits;
-// for example, 2 of diamonds, 3 of hearts, 4 of diamonds, 5 of clubs, 6 of spades.'],
-//   ['Flush', 'Five cards of the same suit; for example, ace, 10, 7, 4, 3, all of diamonds.'],
-//   ['Full house', 'Three cards of one rank, two cards of another rank;
-// for example, 3 of diamonds, 3 of hearts, 3 of spades, 6 of hearts, 6 of spades.'],
-//   ['Four of a kind', 'Four cards of the same rank;
-// for example, ace of hearts, ace of spades, ace of clubs, ace of diamonds.'],
-//   ['Straight flush', 'Five consecutive cards of the same suit;
-// for example, 2-3-4-5-6, all of clubs.'],
-//   ['Royal flush', 'Ace-king-queen-jack-10 all of the same suit
-// (hearts, clubs, spades, or diamonds)'],
-// ];
+const PairOfJacksBetterRank = 0;
+const TwoPairRank = 1;
+const ThreeOfKindRank = 2;
+const StraightRank = 3;
+const FlushRank = 4;
+const FullHouseRank = 5;
+const FourOfKindRank = 6;
+const StraightFlushRank = 7;
+const RoyalFlushRank = 8;
 
-const Pay_Table_Objects = [
+const GameTypeList = [PairOfJacksBetterRank,
+  TwoPairRank,
+  ThreeOfKindRank,
+  StraightRank,
+  FlushRank,
+  FullHouseRank,
+  FourOfKindRank,
+  StraightFlushRank,
+  RoyalFlushRank];
+
+const PayTableObjects = [
   {
     gameName: 'Pair of jacks or better',
-    gameRank: 0,
+    gameRank: PairOfJacksBetterRank,
     gameCredit: 5,
     gameDesc: 'Two jacks, queens, kings, or aces.',
   },
 
   {
     gameName: 'Two pair',
-    gameRank: 1,
+    gameRank: TwoPairRank,
     gameCredit: 10,
     gameDesc: 'Two cards of one rank, two cards of another rank; for example, ace of spades, ace of hearts, 7 of clubs, 7 of diamonds.',
   },
 
   {
     gameName: 'Three of a kind',
-    gameRank: 2,
+    gameRank: ThreeOfKindRank,
     gameCredit: 20,
     gameDesc: 'Three cards of the same rank; for example, 6 of hearts, 6 of clubs, 6 of diamonds.',
   },
 
   {
     gameName: 'Straight',
-    gameRank: 3,
+    gameRank: StraightRank,
     gameCredit: 40,
     gameDesc: 'Five consecutive cards of mixed suits; for example, 2 of diamonds, 3 of hearts, 4 of diamonds, 5 of clubs, 6 of spades.',
   },
 
   {
     gameName: 'Flush',
-    gameRank: 4,
+    gameRank: FlushRank,
     gameCredit: 50,
     gameDesc: 'Five cards of the same suit; for example, ace, 10, 7, 4, 3, all of diamonds.',
   },
 
   {
     gameName: 'Full house',
-    gameRank: 5,
+    gameRank: FullHouseRank,
     gameCredit: 100,
     gameDesc: 'Three cards of one rank, two cards of another rank; for example, 3 of diamonds, 3 of hearts, 3 of spades, 6 of hearts, 6 of spades.',
   },
 
   {
     gameName: 'Four of a kind',
-    gameRank: 6,
+    gameRank: FourOfKindRank,
     gameCredit: 200,
     gameDesc: 'Four cards of the same rank; for example, ace of hearts, ace of spades, ace of clubs, ace of diamonds.',
   },
 
   {
     gameName: 'Straight flush',
-    gameRank: 7,
+    gameRank: StraightFlushRank,
     gameCredit: 300,
     gameDesc: 'Five consecutive cards of the same suit; for example, 2-3-4-5-6, all of clubs.',
   },
 
   {
     gameName: 'Royal flush',
-    gameRank: 8,
+    gameRank: RoyalFlushRank,
     gameCredit: 500,
     gameDesc: 'Ace-king-queen-jack-10 all of the same suit (hearts, clubs, spades, or diamonds)',
   },

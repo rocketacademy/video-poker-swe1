@@ -15,14 +15,30 @@ let buttonDealDraw = null;
 let divGameStatus = null;
 // Container that holds the dealt cards board
 let divDealtCardBoardElement = null;
+// Element to show the current credit in hand
+let divCurrentCreditHand = null;
 let deck = null;
 let isGameOver = false;
 let gameResultType = '';
+let betAmount = 0;
 
-// Variable that holds the score at a given time
-let currentGameScore = INITIAL_CREDIT_PLAYER;
+// Variable that holds the credits with the player at a given time
+// This is taken based on the bet amount placed and game type he won ( gameRank * 10)
+let currentCreditsInHand = INITIAL_CREDIT_PLAYER;
+// Holds the number of games the player lost
 let numOfGamesLost = 0;
+// Holds the number of games the player won
 let numOfGamesWon = 0;
+// Holds the overall credits he won.
+// Calculated based on the Credits for each game type
+// This different from the current credits in Hand
+let totalCreditsWon = 0;
+// This is the total amount of bet money player put
+let totalCreditsPlayed = 0;
+// This variable holds the net amount lost / win in the game
+// let netWinLossCredits = 0;
+// Credits tht will be added to player hand, if it's a win
+const AddedCredits = 10;
 
 // Variable to store data other than DOM elements
 const boardOfDealtCards = [];
@@ -293,17 +309,17 @@ const isFullHouse = () => {
   }
   // Filter out all the values that are not having value as "true".
   // This will give the index of the remaining 2 (?) cards that are to be verified
-  resThreeKind.indices.filter((index) => (index !== true));
+  const remIndexArray = resThreeKind.indices.filter((index) => (index !== true));
 
   // If 3 same kind cards are found, check for the other pair
   let tempCard = null;
-  for (let i = 0; i < resThreeKind.indices.length; i += 1)
+  for (let i = 0; i < remIndexArray.length; i += 1)
   {
     if (tempCard === null) {
-      tempCard = boardOfDealtCards[resThreeKind.indices[i]];
+      tempCard = boardOfDealtCards[remIndexArray[i]];
     }
     else { // compare both the card elements
-      const nextCard = boardOfDealtCards[resThreeKind.indices[i]];
+      const nextCard = boardOfDealtCards[remIndexArray[i]];
       if (nextCard.rank === tempCard.rank) {
         // It's a pair.
         return true;
@@ -417,85 +433,80 @@ const isRoyalFlush = () => {
 
 // This function calculates the points user scored for the cards in hand.
 const calcHandScore = () => {
-  // // Checking for PairOfJacksOrBetter.
-  // if (isPairOfJacksOrBetter())
-  // {
-  //   gameResultType = 'Pair of Jacks or Better';
-  //   currentGameScore += 1;
-  //   numOfGamesWon += 1;
-  // }
-  // if (isTwoPair())
-  // {
-  //   gameResultType = 'Two Pair';
-  //   currentGameScore += 1;
-  //   numOfGamesWon += 1;
-  // }
-  // if (isThreeOfAKind())
-  // {
-  //   gameResultType = 'Three of a Kind';
-  //   currentGameScore += 1;
-  //   numOfGamesWon += 1;
-  // }
-  // if (isStraight())
-  // {
-  //   gameResultType = 'Straight';
-  //   currentGameScore += 1;
-  //   numOfGamesWon += 1;
-  // }
-  // if (isFlush())
-  // {
-  //   gameResultType = 'Flush';
-  //   currentGameScore += 1;
-  //   numOfGamesWon += 1;
-  // }
-  // if (isFullHouse())
-  // {
-  //   gameResultType = 'Full House';
-  //   currentGameScore += 1;
-  //   numOfGamesWon += 1;
-  // }
-  // if (isFourOfAKind())
-  // {
-  //   gameResultType = 'Four of a Kind';
-  //   currentGameScore += 1;
-  //   numOfGamesWon += 1;
-  // }
-  // if (isStraightFlush())
-  // {
-  //   gameResultType = 'Straight Flush';
-  //   currentGameScore += 1;
-  //   numOfGamesWon += 1;
-  // }
-  if (isRoyalFlush())
+  // Start from the highest rank
+  let comparisonResult = false;
+  let finalRank = 0;
+  for (let index = GameTypeList.length - 1; index >= 0; index -= 1)
   {
-    gameResultType = 'Royal Flush';
-    currentGameScore += 1;
+    const currentGameRank = GameTypeList[index];
+    const gameTypeInfo = PayTableObjects.find((tempGameInfo) => (tempGameInfo.gameRank
+      === currentGameRank));
+    console.log(gameTypeInfo.gameName);
+    switch (currentGameRank)
+    {
+      case RoyalFlushRank: {
+        comparisonResult = isRoyalFlush();
+        break; }
+      case StraightFlushRank: {
+        comparisonResult = isStraightFlush();
+        break; }
+      case FourOfKindRank: {
+        comparisonResult = isFourOfAKind();
+        break; }
+      case FullHouseRank: {
+        comparisonResult = isFullHouse();
+        break; }
+      case FlushRank: {
+        comparisonResult = isFlush();
+        break; }
+      case StraightRank: {
+        comparisonResult = isStraight();
+        break; }
+      case ThreeOfKindRank: {
+        const resThreeKind = isThreeOfAKind();
+        comparisonResult = resThreeKind.match;
+        break; }
+      case TwoPairRank: {
+        comparisonResult = isTwoPair();
+        break; }
+      case PairOfJacksBetterRank: {
+        comparisonResult = isPairOfJacksOrBetter();
+        break; }
+      default: { break; }
+    }
+    // If atleast one comparison is success break the loop to check for other game types
+    if (comparisonResult) {
+      gameResultType = gameTypeInfo.gameName;
+      // adding 1, so as not to take value as 0
+      finalRank = (gameTypeInfo.gameRank + 1);
+      totalCreditsWon += gameTypeInfo.gameCredit;
+      break;
+    }
+  }
+
+  // Calculating the total credits won
+  totalCreditsPlayed += betAmount;
+  console.log(totalCreditsPlayed);
+  if (comparisonResult) {
+    currentCreditsInHand += (finalRank * AddedCredits);
     numOfGamesWon += 1;
+    // netWinLossCredits += betAmount;
   }
   else
   {
-    gameResultType = 'Lost';
+    gameResultType = 'No Matches';
     numOfGamesLost += 1;
+    // netWinLossCredits -= betAmount;
   }
-};
-
-// Checks who is the winner
-const hasPlayerWon = () => {
-  if (currentGameScore <= 0)
-  {
-    // Score is zero or negative may be
-    return false;
-  }
-  if (numOfGamesLost > numOfGamesWon)
-  {
-    return false;
-  }
-  return true;
 };
 
 // Function to set the game status
 const setGameStatus = (message) => {
   divGameStatus.innerHTML = message;
+};
+
+const setCurrentCreditInfo = () => {
+  divCurrentCreditHand.innerHTML = `Credits: ${currentCreditsInHand}`;
 };
 
 const toggleElementDisplay = (elementToToggle) => {
@@ -587,17 +598,34 @@ const createCardCell = (cardDeck) => {
 const addScoreCard = (dealtCardBoard) => {
   // Define the column headers for rows
   const rowElement = document.createElement('tr');
+
   const cellGameCount = document.createElement('td');
   cellGameCount.innerText = numOfGamesWon + numOfGamesLost;
   rowElement.appendChild(cellGameCount);
 
   const cellGameResult = document.createElement('td');
-  cellGameResult.innerText = gameResultType; // Game type he won if it's a win
+  cellGameResult.innerText = gameResultType;
   rowElement.appendChild(cellGameResult);
 
-  const cellCurrentScore = document.createElement('td');
-  cellCurrentScore.innerText = currentGameScore;
-  rowElement.appendChild(cellCurrentScore);
+  const cellBetAmount = document.createElement('td');
+  cellBetAmount.innerText = betAmount;
+  rowElement.appendChild(cellBetAmount);
+
+  const cellCreditsPlayed = document.createElement('td');
+  cellCreditsPlayed.innerText = totalCreditsPlayed;
+  rowElement.appendChild(cellCreditsPlayed);
+
+  // const cellCreditsWon = document.createElement('td');
+  // cellCreditsWon.innerText = ;
+  // rowElement.appendChild(cellCreditsWon);
+
+  const cellTotalCreditsWon = document.createElement('td');
+  cellTotalCreditsWon.innerText = totalCreditsWon;
+  rowElement.appendChild(cellTotalCreditsWon);
+
+  const cellWinLoss = document.createElement('td');
+  cellWinLoss.innerText = `${numOfGamesWon} - ${numOfGamesLost}`;
+  rowElement.appendChild(cellWinLoss);
 
   rowElement.appendChild(createCardCell(dealtCardBoard));
   tableScoreCard.appendChild(rowElement);
@@ -605,10 +633,10 @@ const addScoreCard = (dealtCardBoard) => {
 
 // Function to handle result score card display
 const displayScoreCard = () => {
-  const gameInfoMessage = (hasPlayerWon()) ? `You won!! ${gameResultType}` : 'You lost!!';
-  setGameStatus(`Game Over. 
-  ${gameInfoMessage}.
-  Please check score card for details.`);
+  // const gameInfoMessage = (hasPlayerWon()) ? `You won!! ${gameResultType}` : 'You lost!!';
+  setGameStatus(`Game Over. \n
+  ${gameResultType}.
+  Please check score card for more details.`);
   // Display the current cards in the score cards
   addScoreCard(boardOfDealtCards);
 };
@@ -659,6 +687,10 @@ const onClickDealDrawButton = () =>
     isGameOver = false;
     setGameStatus('');
   }
+
+  currentCreditsInHand -= betAmount;
+  setCurrentCreditInfo();
+
   for (let i = 0; i < boardOfDealtCards.length; i += 1)
   {
     // The card is replaced in following cases:
@@ -685,6 +717,7 @@ const onClickDealDrawButton = () =>
   {
     calcHandScore();
     displayScoreCard();
+    setCurrentCreditInfo();
     isGameOver = true;
     buttonDealDraw.innerText = TXT_DEAL;
     return;
@@ -692,82 +725,31 @@ const onClickDealDrawButton = () =>
   buttonDealDraw.innerText = TXT_DRAW;
 };
 
-// // Function to fill the pay-table data
-// const fillPayTableData = (tablePayEl) => {
-//   for (let i = 0; i < PAY_TABLE_ARRAY.length; i += 1)
-//   {
-//     // Define the column headers for rows
-//     const rowElement = document.createElement('tr');
-//     const cellGameType = document.createElement('td');
-//     cellGameType.classList.add('tooltip');
-//     cellGameType.innerText = PAY_TABLE_ARRAY[i][0];
-//     const spanGameDesc = document.createElement('span');
-//     spanGameDesc.classList.add('tooltip-text');
-//     spanGameDesc.innerText = PAY_TABLE_ARRAY[i][1];
-//     cellGameType.appendChild(spanGameDesc);
-//     rowElement.appendChild(cellGameType);
-
-//     const cellGamePoints = document.createElement('td');
-//     cellGamePoints.innerText = i + 1;
-//     rowElement.appendChild(cellGamePoints);
-
-//     // const cellCurrentDesc = document.createElement('td');
-//     // cellCurrentDesc.innerText = PAY_TABLE_ARRAY[i][1];
-//     // rowElement.appendChild(cellCurrentDesc);
-
-//     tablePayEl.appendChild(rowElement);
-//   }
-// };
-
 // Function to fill the pay-table data
 const fillPayTableData = (tablePayEl) => {
-  for (let i = 0; i < Pay_Table_Objects.length; i += 1)
+  for (let i = 0; i < PayTableObjects.length; i += 1)
   {
     // Define the column headers for rows
     const rowElement = document.createElement('tr');
     const cellGameType = document.createElement('td');
     cellGameType.classList.add('tooltip');
-    cellGameType.innerText = Pay_Table_Objects[i].gameName;
+    cellGameType.innerText = PayTableObjects[i].gameName;
     const spanGameDesc = document.createElement('span');
     spanGameDesc.classList.add('tooltip-text');
-    spanGameDesc.innerText = Pay_Table_Objects[i].gameDesc;
+    spanGameDesc.innerText = PayTableObjects[i].gameDesc;
     cellGameType.appendChild(spanGameDesc);
     rowElement.appendChild(cellGameType);
 
     const cellGamePoints = document.createElement('td');
-    cellGamePoints.innerText = Pay_Table_Objects[i].gameRank;
+    cellGamePoints.innerText = PayTableObjects[i].gameRank + 1;
     rowElement.appendChild(cellGamePoints);
 
     const cellGameCredit = document.createElement('td');
-    cellGameCredit.innerText = Pay_Table_Objects[i].gameCredit;
+    cellGameCredit.innerText = PayTableObjects[i].gameCredit;
     rowElement.appendChild(cellGameCredit);
 
     tablePayEl.appendChild(rowElement);
   }
-
-  // for (let i = 0; i < PAY_TABLE_ARRAY.length; i += 1)
-  // {
-  //   // Define the column headers for rows
-  //   const rowElement = document.createElement('tr');
-  //   const cellGameType = document.createElement('td');
-  //   cellGameType.classList.add('tooltip');
-  //   cellGameType.innerText = PAY_TABLE_ARRAY[i][0];
-  //   const spanGameDesc = document.createElement('span');
-  //   spanGameDesc.classList.add('tooltip-text');
-  //   spanGameDesc.innerText = PAY_TABLE_ARRAY[i][1];
-  //   cellGameType.appendChild(spanGameDesc);
-  //   rowElement.appendChild(cellGameType);
-
-  //   const cellGamePoints = document.createElement('td');
-  //   cellGamePoints.innerText = i + 1;
-  //   rowElement.appendChild(cellGamePoints);
-
-  //   // const cellCurrentDesc = document.createElement('td');
-  //   // cellCurrentDesc.innerText = PAY_TABLE_ARRAY[i][1];
-  //   // rowElement.appendChild(cellCurrentDesc);
-
-  //   tablePayEl.appendChild(rowElement);
-  // }
 };
 
 // Function that displays the list of possible hands that gives a score
@@ -796,48 +778,43 @@ const createPayTableContainer = (divGameParentContainer) => {
   divPayTableContainer.appendChild(tablePayEl);
 };
 
+// Function that creates an element for submitting Bet amount
+// Also it shows the credits with player at a given time
+const createInputContainer = () => {
+  const divGameInputContainer = document.createElement('div');
+  divGameInputContainer.classList.add('inputs');
+
+  const inputBetAmount = document.createElement('input');
+  inputBetAmount.setAttribute('type', 'Number');
+  inputBetAmount.placeholder = 'Enter bet Amount';
+  divGameInputContainer.appendChild(inputBetAmount);
+
+  const buttonSubmitBet = document.createElement('button');
+  buttonSubmitBet.classList.add('button-common');
+  buttonSubmitBet.innerText = 'Submit Bet Amount';
+  buttonSubmitBet.addEventListener('click', () => {
+    betAmount = inputBetAmount.valueAsNumber;
+  });
+  divGameInputContainer.appendChild(buttonSubmitBet);
+  return divGameInputContainer;
+};
+
 // Set of functions that creates all the elements for game play div
-/**
- * <div class="game">
- *   <div class="game-play">
- *     <h1>Play</h1>
- *     <div class="buttons">
- *       <button>Start or Draw/Deal or Deal</button>
- *     </div>
- *     <div class="dealt-cards">
- *       <div class="single-card">
- *         <div class="name red">A</div>
- *         <div class="suit red">💗</div>
- *       </div>
- *       <div class="single-card">
- *         <div class="name red">A</div>
- *         <div class="suit red">💗</div>
- *       </div>
- *     </div>
- *     <div class="status">
- *       Display the status of the last game
- *     </div>
- *   </div >
- *
- *   <div class="pay-table">
- *     <table class>Pay Table
- *       <tr>
- *         <th>Game Type</th>
- *         <th>Points</th>
- *       </tr>
- *       <tr>
- *         <td>Five of a kind</td>
- *         <td>2</td>
- *       </tr>
- *     </table>
- *   </div>
- * </div>
- *  */
 const createGameContainerElements = (divGameContainer) => {
   // Game playing container
   // <div class="game-play">
   const divGamePlayContainer = document.createElement('div');
   divGamePlayContainer.classList.add('game-play');
+
+  // For adding the Bet submit elements
+  const divGameInputContainer = createInputContainer();
+  divGamePlayContainer.appendChild(divGameInputContainer);
+
+  // For displaying the current player credits
+  divCurrentCreditHand = document.createElement('div');
+  divCurrentCreditHand.classList.add('status');
+  setCurrentCreditInfo();
+  divGamePlayContainer.appendChild(divCurrentCreditHand);
 
   // Button to Deal/Draw cards
   // The initial text on the button will be "Deal".
@@ -848,29 +825,74 @@ const createGameContainerElements = (divGameContainer) => {
 
   // Button for Deal / draw
   buttonDealDraw = document.createElement('button');
-  buttonDealDraw.classList.add('button');
+  buttonDealDraw.classList.add('button-common', 'stand-alone-button');
   buttonDealDraw.innerText = TXT_DEAL;
   buttonDealDraw.addEventListener('click', onClickDealDrawButton);
+
+  divDealDrawButton.appendChild(buttonDealDraw);
+  divGamePlayContainer.appendChild(divDealDrawButton);
 
   // Initialize the board of cards to be displayed
   for (let i = 0; i < NUM_OF_CARDS_DRAWN; i += 1)
   {
     boardOfDealtCards.push(null);
   }
+  // Container to hold the cards that are played
+  divDealtCardBoardElement = createDealtCardsElement(boardOfDealtCards);
+  divGamePlayContainer.appendChild(divDealtCardBoardElement);
 
   // Status element
   divGameStatus = document.createElement('div');
   divGameStatus.classList.add('status');
-
-  divDealDrawButton.appendChild(buttonDealDraw);
-  divGamePlayContainer.appendChild(divDealDrawButton);
-  // Container to hold the cards that are played
-  divDealtCardBoardElement = createDealtCardsElement(boardOfDealtCards);
-  divGamePlayContainer.appendChild(divDealtCardBoardElement);
   divGamePlayContainer.appendChild(divGameStatus);
+
   divGameContainer.appendChild(divGamePlayContainer);
 
   createPayTableContainer(divGameContainer);
+};
+
+// Function to define column headers for the Score table
+const createScoreCardTable = () => {
+  // Table that shows the whole result of the game
+  tableScoreCard = document.createElement('table');
+  tableScoreCard.classList.add('result-table');
+  tableScoreCard.createCaption('Score Card');
+
+  // Define the column headers for rows
+  const rowElement = document.createElement('tr');
+  tableScoreCard.appendChild(rowElement);
+
+  const rowHeaderGameCount = document.createElement('th');
+  rowHeaderGameCount.innerText = 'Game Counter';
+  rowElement.appendChild(rowHeaderGameCount);
+
+  const rowHeaderGameResult = document.createElement('th');
+  rowHeaderGameResult.innerText = 'Result';
+  rowElement.appendChild(rowHeaderGameResult);
+
+  const rowHeaderBetAmount = document.createElement('th');
+  rowHeaderBetAmount.innerText = 'Bet Amount';
+  rowElement.appendChild(rowHeaderBetAmount);
+
+  const rowHeaderCreditsPlayed = document.createElement('th');
+  rowHeaderCreditsPlayed.innerText = 'Total Credits Played';
+  rowElement.appendChild(rowHeaderCreditsPlayed);
+
+  // const rowHeaderCreditsWon = document.createElement('th');
+  // rowHeaderCreditsWon.innerText = 'Credits Won';
+  // rowElement.appendChild(rowHeaderCreditsWon);
+
+  const rowHeaderTotalCreditsWon = document.createElement('th');
+  rowHeaderTotalCreditsWon.innerText = 'Total Credits Won';
+  rowElement.appendChild(rowHeaderTotalCreditsWon);
+
+  const rowHeaderWinLoss = document.createElement('th');
+  rowHeaderWinLoss.innerText = 'Win-Loss Count';
+  rowElement.appendChild(rowHeaderWinLoss);
+
+  const rowHeaderFinalCardSet = document.createElement('th');
+  rowHeaderFinalCardSet.innerText = 'Final Set of Cards Played';
+  rowElement.appendChild(rowHeaderFinalCardSet);
 };
 
 // Function to create all the elements for displaying the Score Card
@@ -882,7 +904,7 @@ const createResultContainerElements = () => {
   // Button to show and hide the result details
   const divScoreButtonContainer = document.createElement('div');
   buttonShowHideScore = document.createElement('button');
-  buttonShowHideScore.classList.add('button');
+  buttonShowHideScore.classList.add('button-common', 'stand-alone-button');
   buttonShowHideScore.innerText = `${TXT_SHOW_RESULT}`;
   divScoreButtonContainer.appendChild(buttonShowHideScore);
   divGameResultContainer.appendChild(divScoreButtonContainer);
@@ -898,31 +920,8 @@ const createResultContainerElements = () => {
   buttonShowHideScore.addEventListener('click', () => {
     toggleElementDisplay(divScoreContainer);
   });
-
   // Table that shows the whole result of the game
-  tableScoreCard = document.createElement('table');
-  tableScoreCard.classList.add('result-table');
-  tableScoreCard.createCaption('Score Card');
-  // Define the column headers for rows
-  const rowElement = document.createElement('tr');
-  tableScoreCard.appendChild(rowElement);
-
-  const rowHeaderGameCount = document.createElement('th');
-  rowHeaderGameCount.innerText = 'Game Counter';
-  rowElement.appendChild(rowHeaderGameCount);
-
-  const rowHeaderGameResult = document.createElement('th');
-  rowHeaderGameResult.innerText = 'Result';
-  rowElement.appendChild(rowHeaderGameResult);
-
-  const rowHeaderCurrentScore = document.createElement('th');
-  rowHeaderCurrentScore.innerText = 'Current Score';
-  rowElement.appendChild(rowHeaderCurrentScore);
-
-  const rowHeaderFinalCardSet = document.createElement('th');
-  rowHeaderFinalCardSet.innerText = 'Final Set of Cards Played';
-  rowElement.appendChild(rowHeaderFinalCardSet);
-
+  createScoreCardTable();
   divScoreContainer.appendChild(tableScoreCard);
   document.body.appendChild(divGameResultContainer);
 };

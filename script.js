@@ -184,7 +184,7 @@ const makeDeck = () => {
 
 // to display output messages informing player about the state of the game
 const displayGameInfo = (info) => {
-  gameInfo.innerText = info;
+  gameInfo.innerHTML = info;
 };
 
 // deal cards to player at start of the game according to handSize
@@ -427,9 +427,11 @@ const calcHandScore = () => {
   }
 };
 
+// returns points won for the round
+calcPointsWon = () => playerBidPoints * handScore;
 // add points to player's total points based on bid points and hand score
 const addPoints = () => {
-  playerTotalPoints += playerBidPoints * handScore;
+  playerTotalPoints += calcPointsWon();
 };
 
 // Game initialization =============================================
@@ -479,6 +481,8 @@ const initGame = () => {
       canClickCards = true;
       // allow player to start exchanging cards for this round
       canExchangeOrHoldCards = true;
+      // display instruction for player to select cards to exchange
+      displayGameInfo('Click on any card(s) you want to exchange and <br> click the \'exchange/hold cards\' button to see your score.');
     }
   });
   document.body.appendChild(dealButton);
@@ -514,6 +518,11 @@ const initGame = () => {
 
       // it is the end of the round so allow player to begin new round by submitting points
       canSubmitBidPoints = true;
+      // calculate points won this round
+      const pointsWonThisRound = calcPointsWon();
+      // display handscore and points player won this round and submit points to play again
+      displayGameInfo(`Your hand score is ${handScore}. You earned ${pointsWonThisRound} points.<br>
+      Please submit points to play another round.`);
     }
   });
   document.body.appendChild(exchangeOrHoldCardsButton);
@@ -562,6 +571,8 @@ const initGame = () => {
 
         // allow player to deal starting cards since it is a new round
         canDealStartingCards = true;
+        // display instruction for player to click on dealButton to deal cards
+        displayGameInfo('Please click on the \'deal cards\' button to deal cards.');
       } else {
         // tell player to submit a valid bid points
         bidPointsInputEl.value = 'please input a number > 0';

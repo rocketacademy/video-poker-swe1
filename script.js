@@ -43,6 +43,8 @@ let bidPointsInputEl;
 let bidPointsButton;
 // container to display player's bid points info and heading
 let bidPointsContainer;
+// container that other containers in this file will append to
+const gameDisplayContainer = document.getElementById('game-display');
 
 // Variables used in calculating hand score ----------------------
 // to store cards based on similar ranks
@@ -444,11 +446,11 @@ const initGame = () => {
   createStartingElements();
 
   // initialize playerHandContainer functionality
-  document.body.appendChild(playerHandContainer);
+  gameDisplayContainer.appendChild(playerHandContainer);
 
   // initialize gameInfo functionality
   displayGameInfo('Welcome! Please submit your bid points to start playing.');
-  document.body.appendChild(gameInfo);
+  gameDisplayContainer.appendChild(gameInfo);
 
   // initialize dealButton functionality
   dealButton.setAttribute('id', 'deal-button');
@@ -485,7 +487,7 @@ const initGame = () => {
       displayGameInfo('Click on any card(s) you want to exchange and <br> click the \'exchange/hold cards\' button to see your score.');
     }
   });
-  document.body.appendChild(dealButton);
+  gameDisplayContainer.appendChild(dealButton);
 
   // initialize exchangeCardsButton functionality
   exchangeOrHoldCardsButton.innerText = 'exchange/hold cards';
@@ -525,7 +527,7 @@ const initGame = () => {
       Please submit points to play another round.`);
     }
   });
-  document.body.appendChild(exchangeOrHoldCardsButton);
+  gameDisplayContainer.appendChild(exchangeOrHoldCardsButton);
 
   // Total points and bid points -------------------------------------------
   // initialize totalPointsHeadingEl functionality
@@ -536,7 +538,7 @@ const initGame = () => {
   totalPointsInfoEl.innerText = playerTotalPoints;
   totalPointsContainer.appendChild(totalPointsInfoEl);
   // initialize totalPointsContainer functionality
-  document.body.appendChild(totalPointsContainer);
+  gameDisplayContainer.appendChild(totalPointsContainer);
   // initialize bidPointsHeadingEl functionality
   bidPointsHeadingEl.innerText = 'Points Bidded';
   bidPointsContainer.appendChild(bidPointsHeadingEl);
@@ -585,7 +587,7 @@ const initGame = () => {
   });
   bidPointsContainer.appendChild(bidPointsButton);
   // initialize bidPointsContainer functionality
-  document.body.appendChild(bidPointsContainer);
+  gameDisplayContainer.appendChild(bidPointsContainer);
 };
 
 // Initilize game

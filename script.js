@@ -16,7 +16,7 @@ let cardsToExchange = [];
 // shuffled deck
 let deck;
 
-// Elements and containers to display items in browser ----------
+// Elements and containers to display items in browser ------------
 // button to deal cards
 let dealButton;
 // button to exchange cards
@@ -25,7 +25,7 @@ let exchangeOrHoldCardsButton;
 let playerCardContainer;
 // container to display the player's cardContainers
 let playerHandContainer;
-// container to display the game instructions or output messages
+// container to display output messages informing player about the state of the game
 let gameInfo;
 // element to display heading for player's total points
 let totalPointsHeadingEl;
@@ -69,18 +69,21 @@ let canExchangeOrHoldCards = false;
 // Helper functions ================================================
 // create elements needed when browser loads
 const createStartingElements = () => {
-  // button to deal cards
-  dealButton = document.createElement('button');
-  // button to exchange cards
-  exchangeOrHoldCardsButton = document.createElement('button');
   // container to display a card
   playerCardContainer = document.createElement('div');
   playerCardContainer.classList.add('player-card-container');
   // container to display the player's cardContainers
   playerHandContainer = document.createElement('div');
   playerHandContainer.classList.add('player-hand-container');
-  // container to display the game instructions or output messages
+
+  // container to display output messages informing player about the state of the game
   gameInfo = document.createElement('div');
+
+  // button to deal cards
+  dealButton = document.createElement('button');
+  // button to exchange cards
+  exchangeOrHoldCardsButton = document.createElement('button');
+
   // element to display heading for player's total points
   totalPointsHeadingEl = document.createElement('p');
   // element to display player's total points
@@ -177,6 +180,11 @@ const makeDeck = () => {
   }
 
   return newDeck;
+};
+
+// to display output messages informing player about the state of the game
+const displayGameInfo = (info) => {
+  gameInfo.innerText = info;
 };
 
 // deal cards to player at start of the game according to handSize
@@ -433,11 +441,12 @@ const initGame = () => {
   // initialize starting elements
   createStartingElements();
 
-  // initialize gameInfo functionality
-  document.body.appendChild(gameInfo);
-
   // initialize playerHandContainer functionality
   document.body.appendChild(playerHandContainer);
+
+  // initialize gameInfo functionality
+  displayGameInfo('Welcome! Please submit your bid points to start playing.');
+  document.body.appendChild(gameInfo);
 
   // initialize dealButton functionality
   dealButton.setAttribute('id', 'deal-button');

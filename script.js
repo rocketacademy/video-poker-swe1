@@ -223,7 +223,7 @@ const makeCardElement = (cardData) => {
 
 // For exchanging cards -------------------------------------------
 // select the card to exchange or unselect it
-const selectOrUnselectCardToExchange = (cardToExchange) => {
+const selectOrUnselectCardToExchange = (cardEl, cardToExchange) => {
   // when player clicks this card and it has not been selected before,
   // store it in an array of cards that will be exchanged
   // but if card is selected before,
@@ -235,11 +235,17 @@ const selectOrUnselectCardToExchange = (cardToExchange) => {
         isCardPresent = true;
         cardsToExchange.splice(j, 1); // remove the card from array
         j -= 1; // account for the decrease in array length
+
+        // remove the card border display to let player know card is dis-selected
+        cardEl.classList.remove('card-border');
       }
     }
   }
   if (isCardPresent === false) {
     cardsToExchange.push(cardToExchange); // store the card
+
+    // display the card border to let player know card is selected
+    cardEl.classList.add('card-border');
   }
 };
 // exchange cards
@@ -472,10 +478,10 @@ const initGame = () => {
         // store the current card in case the player wants to exchange it later
         const cardToExchange = playerHand[i];
         // eslint-disable-next-line no-loop-func
-        cardEl.addEventListener('click', () => {
+        cardEl.addEventListener('click', (event) => {
           if (canClickCards === true) {
             // select the card to exchange or unselect it
-            selectOrUnselectCardToExchange(cardToExchange);
+            selectOrUnselectCardToExchange(event.currentTarget, cardToExchange);
           }
         });
         playerHandContainer.appendChild(cardEl);

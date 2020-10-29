@@ -1,4 +1,5 @@
 // Global setup ====================================================
+// Information related to player -----------------------------------
 // points player start with
 const PLAYER_STARTING_POINTS = 100;
 // the player's total points
@@ -6,16 +7,16 @@ let playerTotalPoints = PLAYER_STARTING_POINTS;
 // player's bid points
 let playerBidPoints = 0;
 // array to store player's hand cards
-let playerHand = [];
-// playerHand = ['']; // to use for testing only
-
+let playerHand = []; // playerHand = ['']; // to use for testing only
 // player hand size
 const handSize = 5;
+// array to store player's cards to exchange
+let cardsToExchange = [];
 
 // shuffled deck
 let deck;
 
-// elements and containers to display information ------------------
+// Elements and containers to display items in browser ----------
 // button to deal cards
 let dealButton;
 // button to exchange cards
@@ -43,9 +44,7 @@ let bidPointsButton;
 // container to display player's bid points info and heading
 let bidPointsContainer;
 
-// array to store player's cards to exchange
-let cardsToExchange = [];
-
+// Variables used in calculating hand score ----------------------
 // to store cards based on similar ranks
 let rankedHand = [[]];
 // to find number of 4 of a kind in playerHand
@@ -60,9 +59,7 @@ let handScore = 0;
 // For controlling button clickability ----------------------------
 // only allow player to submit bid points at start of the round
 let canSubmitBidPoints = true;
-
-// Only allow player to click on dealButton
-// only after submitting bid points and before exchanging cards
+// Only allow player to click on dealButton after submitting bid points and before exchanging cards
 let canDealStartingCards = false;
 // only allow player to click on card after having dealt cards
 let canClickCards = false;
@@ -256,7 +253,7 @@ const exchangeCards = () => {
   }
 };
 
-// For checking player hand's score -------------------------------
+// For calculating player hand score -------------------------------
 // reorder player's cards from highest to lowest rank
 const reorderCards = () => {
   /** for each position starting from the 0th index

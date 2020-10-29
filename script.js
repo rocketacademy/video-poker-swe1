@@ -34,6 +34,9 @@ let creditsInsertedDisplay;
 let numCreditsInserted = 1;
 let creditsLeft = 100;
 
+// Track payout level separate from creditsInserted
+let payoutLevel = 0;
+
 // Hardcoded individual credit payouts for X amount of credits used
 const oneCreditPayOut = [250, 50, 25, 9, 6, 4, 3, 2, 1];
 const twoCreditPayout = [500, 100, 50, 18, 12, 8, 6, 4, 2];
@@ -44,8 +47,14 @@ const fiveCreditPayout = [4000, 250, 125, 45, 30, 20, 15, 10, 5];
 const payOutSchedule = [[...oneCreditPayOut], [...twoCreditPayout],
   [...threeCreditPayout], [...fourCreditPayout], [...fiveCreditPayout]];
 
-// Management of game state//
-const canDeal = false;
+// ----------------- Animation Management --------------//
+// Tracks new card images when swapped
+let newCardImage;
+// Tracks cardImages during new dealt
+let cardImage;
+// Tracks cover-card animations;
+let coverCardImage;
+let coverCardShown = true;
 
 // Track Rank of Hand
 // Five of a kind being 0 and Jacks or Better being 8, no winning hand = 0;
@@ -54,16 +63,19 @@ let rankOfHand = 0;
 // Calculate the score of the hand and add to user's credits
 const calcHandScore = () => {
   let amtWon = 0;
-  console.log(amtWon, 'amtWon');
-  console.log(rankOfHand, 'rank of hand');
+
+  if (numCreditsInserted > 0) {
+    payoutLevel = numCreditsInserted - 1;
+  }
+
   if (rankOfHand > 0) {
-    amtWon = payOutSchedule[numCreditsInserted - 1][rankOfHand];
+    amtWon = payOutSchedule[payoutLevel][rankOfHand];
     creditsLeft += amtWon;
-    // creditsLeftDisplay.innerText = `CREDITS LEFT: ${creditsLeft}`;
     console.log(amtWon, 'amtWon');
   }
   // reset rankOfHand after each calculation
   rankOfHand = 0;
+  return amtWon;
 };
 
 // Function that calculates the rank of the current hand
@@ -84,7 +96,6 @@ const compareCardRank = () => {
     numOfCommonCards = 0;
     pointer += 1;
   }
-  console.log('completed');
 };
 
 // CheckForKinds scenarios checked
@@ -270,7 +281,7 @@ const buildUI = () => {
   cardsContainer.classList.add('cardsContainer');
 
   // Display generic card cover before game starts
-  displayCardCover();
+  displayCoverCard();
 
   statsDisplay = document.createElement('div');
   statsDisplay.classList.add('statsDisplay');
@@ -385,22 +396,63 @@ const getCardPicUrl = (card) => {
   return imgSrc;
 };
 
-const displayCardCover = () => {
+// Function that creates the initial cover cards before game is started
+const displayCoverCard = () => {
   let imgSrc = '';
   imgSrc = './Single_Cards/COVER-CARD.png';
 
   for (let i = 0; i < 5; i += 1) {
-    const coverCardPic = document.createElement('img');
-    coverCardPic.classList.add('cover-card');
-    coverCardPic.src = imgSrc;
-    cardsContainer.appendChild(coverCardPic);
+    coverCardImage = document.createElement('img');
+    coverCardImage.setAttribute('id', `cc${i}`);
+    coverCardImage.classList.add('cover-card');
+    coverCardImage.classList.add('animate__animated');
+    coverCardImage.classList.add('animate__fadeInLeft');
+    coverCardImage.src = imgSrc;
+    cardsContainer.appendChild(coverCardImage);
+    drawInitialHandAnimation(i, coverCardImage, 0.3);
   }
 };
 
+const coverCardAnimateOut = () => {
+  let thisCoverCardImage = document.querySelector('#cc0');
+  // Check if cover image exists before performing animation
+  if (thisCoverCardImage) {
+    for (let i = 0; i < 5; i += 1) {
+      thisCoverCardImage = document.querySelector(`#cc${i}`);
+      thisCoverCardImage.classList.remove('animate__fadeInLeft');
+      thisCoverCardImage.classList.add('animate__flipOutY');
+      thisCoverCardImage.style.setProperty('--animate-duration', '0.8s');
+    }
+  }
+};
+
+// Function that animates the card that is to be swapped
+const swapCardAnimation = (thisCardImage) => {
+  thisCardImage.classList.remove('animate__flipInY');
+  thisCardImage.classList.add('animate__fadeInDown');
+};
+
+// Function that display the new drawn cards after swapping
 const displayNewDrawnCards = (card, index) => {
-  const newCardImage = document.querySelector(`#cardImg${index + 1}`);
-  console.log(newCardImage, 'newCardImage');
+  newCardImage = document.querySelector(`#cardImg${index + 1}`);
+  swapCardAnimation(newCardImage);
   newCardImage.src = getCardPicUrl(card);
+};
+
+// Function that animates the initial drawing of cards upon 'deal'
+const drawInitialHandAnimation = (index, thisCardImage, delayInS) => {
+  thisCardImage.style.setProperty('--animate-duration', `${delayInS + index / 2}s`);
+};
+
+const fadeOutCurrHandAnimation = () => {
+  for (let i = 0; i < playerHand.length; i += 1) {
+    newCardImage = document.querySelector(`#cardImg${i + 1}`);
+    // Reset all the animations of the existing cards by removing all class names
+    newCardImage.className = 'animate__animated';
+    // Add back the relevant classes for proper animation;
+    newCardImage.classList.add('cardImage');
+    newCardImage.classList.add('animate__fadeOutRight');
+  }
 };
 
 const drawInitialHand = () => {
@@ -422,10 +474,15 @@ const drawInitialHand = () => {
     const breakElement = document.createElement('br');
 
     // Create image tag that holds path to current card's image
-    const cardImage = document.createElement('img');
+    cardImage = document.createElement('img');
     cardImage.classList.add('cardImage');
     cardImage.setAttribute('id', `cardImg${i + 1}`);
+    cardImage.classList.add('animate__animated');
+    cardImage.classList.add('animate__flipInY');
     cardImage.src = getCardPicUrl(card);
+
+    // set animation delay (in seconds)
+    drawInitialHandAnimation(i, cardImage, 0.5);
 
     // Create div container that holds the image, and enable output once card is clicked
     const cardDiv = document.createElement('div');
@@ -515,27 +572,53 @@ const createDealCardsBtn = () => {
   dealBtn.innerText = 'DEAL';
   dealBtn.addEventListener('click', () => {
     if (numCreditsInserted > 0) {
+      // Change delay in MS depending on whether covercards are present
+      let delayInDrawingCardsAnimation;
+      // Animate out cover-cards first if present
+      if (coverCardShown === true) {
+        coverCardAnimateOut();
+        coverCardShown = false;
+        delayInDrawingCardsAnimation = 800;
+      } else if (coverCardShown === false) {
+        const existHoldStatusDisplay = document.querySelector('.holdStatus');
+        existHoldStatusDisplay.innerText = '';
+        fadeOutCurrHandAnimation();
+
+        setTimeout(() => {
+          cardsContainer.innerText = '';
+          displayCoverCard();
+        }, 1000);
+
+        setTimeout(() => {
+          coverCardAnimateOut();
+        }, 2500);
+
+        delayInDrawingCardsAnimation = 3500;
+      // Set different delays depending situation
+      }
       shuffledDeck = shuffleCards(makeDeck());
-      cardsContainer.innerText = '';
+      setTimeout(() => {
+        cardsContainer.innerText = '';
 
-      // clear playerHand first before drawing initial hand
-      playerHand.length = 0;
+        // clear playerHand first before drawing initial hand
+        playerHand.length = 0;
 
-      // clear cache of previous' hand's win combi
-      nameOfWinCombi = 'No winning hand';
-      drawInitialHand();
-      checkForWinCombi();
+        // clear cache of previous' hand's win combi
+        nameOfWinCombi = 'No winning hand';
+        drawInitialHand();
+        checkForWinCombi();
+        console.log('creditsLeft', creditsLeft);
+        // reset insert credits and deduct from credits left:
+        creditsLeft -= numCreditsInserted;
+        numCreditsInserted = 0;
 
-      // calculate score and add to creditsLeft
-      calcHandScore();
+        // calculate score and add to creditsLeft
+        calcHandScore();
 
-      // reset insert credits and deduct from credits left:
-      creditsLeft -= numCreditsInserted;
-      numCreditsInserted = 0;
-
-      // reset stats display and make a new one;
-      statsDisplay.innerText = '';
-      createGameStatsDisplay();
+        // reset stats display and make a new one;
+        statsDisplay.innerText = '';
+        createGameStatsDisplay();
+      }, delayInDrawingCardsAnimation);
     } else {
       console.log('cannot deal until you insert credits!');
     }
@@ -548,6 +631,7 @@ const createSwapCardsBtn = () => {
   const swapBtn = document.createElement('button');
   swapBtn.setAttribute('id', 'swapBtn');
   swapBtn.innerText = 'SWAP';
+
   swapBtn.addEventListener('click', () => {
     playerHand.map((currentCard, index) => {
       if (currentCard.holdStatus === false) {
@@ -557,10 +641,18 @@ const createSwapCardsBtn = () => {
       }
     });
     checkForWinCombi();
+
+    // calculate score and add to creditsLeft
+    calcHandScore();
+
+    // reset stats display and make a new one;
+    statsDisplay.innerText = '';
+    createGameStatsDisplay();
   });
   buttonsContainer.appendChild(swapBtn);
 };
 
+// Function that creates the display on the statistics on the gameplay below
 const createGameStatsDisplay = () => {
   // Display how much credits to play for this game
   creditsInsertedDisplay = document.createElement('div');
@@ -582,6 +674,7 @@ const createGameStatsDisplay = () => {
   statsDisplay.appendChild(creditsLeftDisplay);
 };
 
+// Function that initializes the game with certain displays and cover-cards
 const gameInit = () => {
   buildUI();
   shuffledDeck = shuffleCards(makeDeck());

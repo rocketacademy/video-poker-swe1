@@ -1,173 +1,324 @@
+@property --num {
+  syntax: "<integer>";
+}
 
-.overallScreen{
+.overallScreen {
   background-color: grey;
-  margin:auto;
-  display:flex;
-  flex-direction:column;
-  height:800px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  height: 800px;
   width: 1000px;
 }
 
-.combinationsDisplay{
+.combinationsDisplay {
   background-color: green;
-  flex:0.5;
-  display:flex;
+  flex: 0.5;
+  display: flex;
   flex-direction: row;
   align-items: space-around;
-  margin:10px;
+  font-size: 25px;
+  margin: 10px;
 }
 
-.nameOfCombiDisplay{
+.nameOfCombiDisplay {
   list-style-type: none;
   background-color: aquamarine;
-  flex:2;
-  display:flex; 
-  flex-direction:column;
+  flex: 2;
+  display: flex;
+  flex-direction: column;
   border-style: solid;
-  border-color:black;
-  border-width:1px;
+  border-color: black;
+  border-width: 1px;
 }
 
-.winCombi{
+.winCombi {
   flex: 1;
   border-style: dotted;
-  border-color:black;
-  border-width:1px;
+  border-color: black;
+  border-width: 1px;
 }
 
-.pCol1{
-  flex:1;
-  background-color:red;
+.pCol1 {
+  flex: 1;
+  background-color: red;
 }
 
-.pCol2{
-  flex:1;
-  background-color:magenta;
+.pCol2 {
+  flex: 1;
+  background-color: magenta;
 }
 
-.pCol3{
-  flex:1;
-  background-color:aliceblue;
+.pCol3 {
+  flex: 1;
+  background-color: aliceblue;
 }
 
-.pCol4{
-  flex:1;
-  background-color:darkcyan;
+.pCol4 {
+  flex: 1;
+  background-color: darkcyan;
 }
-.pCol5{
-    flex:1;
-  background-color:gold;
+
+.pCol5 {
+  flex: 1;
+  background-color: gold;
 }
-.pOutBox{
+
+.pOutBox {
   border-style: dotted;
-  border-color:black;
-  border-width:1px;
-  padding:1px;
+  border-color: black;
+  border-width: 1px;
+  padding: 1px;
 }
 
-.cardsContainer{
+.cardsContainer {
   background-color: beige;
-  flex:1;
-  display:flex;
-  align-items:center;
-  justify-content:space-around;
-}
-.cover-card{
-  height:auto;
-  width:17%;
-  border-radius:15px;
-}
-
-.card{
-  vertical-align:top;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  flex:1;
-  height:60%;
-  width:auto;
-}
-
-.holdStatus{
-  align-items:center;
-  text-align: center;
-  flex:1;
-  margin-top:-58px;
-  font-size:30px;
-}
-
-.cardImage{
-  vertical-align:top;
-  flex:5;
-  height:100%;
-  width: auto;
-}
-
-.statsDisplay{
-  background-color: pink; 
-  flex:0.2;
-}
-.buttonsContainer{
-  background-color: grey;
-  flex:0.2;
-  display:flex;
-  flex-direction: row;
-  align-items:space-around;
+  flex: 1;
+  display: flex;
+  align-items: center;
   justify-content: space-around;
 }
 
-#dealBtn{
-margin-top:10px;
-margin-bottom:10px;
-width:100px;
+.cover-card {
+  height: auto;
+  width: 17%;
+  border-radius: 15px;
 }
 
-#swapBtn{
-margin-top:10px;
-margin-bottom:10px;
-width:100px;
+.card {
+  vertical-align: top;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  height: 60%;
+  width: auto;
 }
 
-#insertCreditsBtn{
-margin-top:10px;
-margin-bottom:10px;
-text-align:center;
+.holdStatus {
+  align-items: center;
+  text-align: center;
+  flex: 1;
+  margin-top: -54px;
+  font-size: 30px;
 }
 
-
-#inputCredits{
-margin-top:20px;
-margin-bottom:20px;
+.cardImage {
+  vertical-align: top;
+  flex: 5;
+  height: 100%;
+  width: auto;
 }
 
-.statsDisplay{
-  display:flex;
+.statsDisplay {
+  background-color: pink;
+  flex: 0.2;
+}
+.buttonsContainer {
+  background-color: grey;
+  flex: 0.2;
+  display: flex;
   flex-direction: row;
-  align-items:center;
-  justify-content:space-between;
+  align-items: space-around;
+  justify-content: space-around;
 }
 
-#creditsInserted{
-flex:1;
-margin-left: 15px;
-font-size: 30px;
+#dealBtn {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  width: 100px;
 }
 
-#currentCombi{
-flex:1;
-margin-left: 15px;
-font-size: 30px;
-text-align:center;
+#swapBtn {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  width: 100px;
 }
 
-
-
-#availCredits{
-flex:1;
-margin-left: 15px;
-margin-right:15px;
-font-size: 30px;
-text-align:right;
+#insertCreditsBtn {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  text-align: center;
 }
 
+#inputCredits {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
 
+.statsDisplay {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 30px;
+}
+
+#creditsInserted {
+  flex: 1;
+  margin-left: 15px;
+}
+
+#currentCombi {
+  flex: 1;
+  margin-left: 15px;
+  text-align: center;
+}
+
+#availCredits {
+  flex: 1;
+  margin-left: 15px;
+  margin-right: 15px;
+  text-align: right;
+}
+
+/* for half screen*/
+@media screen and (max-width: 1000px) {
+  .overallScreen {
+    width: auto;
+    height: 100vh;
+    margin: auto;
+    box-sizing: border-box;
+  }
+  .combinationsDisplay {
+    flex: 0.4;
+    font-size: 25px;
+  }
+
+  .cardsContainer {
+    flex: 1;
+    flex-wrap: wrap;
+    flex-basis: 33.33%;
+    box-sizing: border-box;
+    margin: -2px;
+  }
+  .card {
+    height: 40%;
+    box-sizing: border-box;
+  }
+  .cardImage {
+    width: 200px;
+    height: auto;
+  }
+  .cover-card {
+    width: 28%;
+    height: auto;
+  }
+  .holdStatus {
+    background: lightgrey;
+    color: green;
+    display: inline;
+    text-align: center;
+    margin-top: -15px;
+  }
+
+  #availCredits {
+    font-size: 25px;
+  }
+  #creditsInserted {
+    font-size: 25px;
+  }
+  #currentCombi {
+    font-size: 25px;
+  }
+}
+
+/* for iphone 6/7/8 */
+@media screen and (max-width: 375px) {
+  .overallScreen {
+    width: auto;
+    height: 100vh;
+    margin: auto;
+    box-sizing: border-box;
+  }
+  .combinationsDisplay {
+    flex: 0.4;
+  }
+
+  .cardsContainer {
+    flex: 1;
+    flex-wrap: wrap;
+    flex-basis: 33.33%;
+    box-sizing: border-box;
+    margin: -2px;
+  }
+  .card {
+    height: 40%;
+    box-sizing: border-box;
+  }
+  .cardImage {
+    width: 102px;
+  }
+  .cover-card {
+    width: 28%;
+    height: 148px;
+  }
+  .holdStatus {
+    background: lightgrey;
+    color: green;
+    position: relative;
+    top: 100px;
+    font-size: 14px;
+    text-align: center;
+  }
+
+  #availCredits {
+    font-size: 15px;
+  }
+  #creditsInserted {
+    font-size: 15px;
+  }
+  #currentCombi {
+    font-size: 15px;
+  }
+}
+
+/* for iphone X */
+@media screen and (max-width: 414px) {
+  .overallScreen {
+    width: auto;
+    height: 100vh;
+    margin: auto;
+    box-sizing: border-box;
+  }
+  .combinationsDisplay {
+    flex: 0.4;
+  }
+
+  .cardsContainer {
+    flex: 1;
+    flex-wrap: wrap;
+    flex-basis: 33.33%;
+    box-sizing: border-box;
+    margin: -2px;
+  }
+  .card {
+    height: 40%;
+    box-sizing: border-box;
+  }
+  .cardImage {
+    width: 102px;
+  }
+  .cover-card {
+    width: 28%;
+    height: 148px;
+  }
+  .holdStatus {
+    background: lightgrey;
+    /* padding: 10px; */
+    color: green;
+    display: inline;
+    /* font-size: 14px; */
+    text-align: center;
+  }
+
+  #availCredits {
+    font-size: 15px;
+  }
+  #creditsInserted {
+    font-size: 15px;
+  }
+  #currentCombi {
+    font-size: 15px;
+  }
+}

@@ -6,7 +6,7 @@ th,
 td {
   border: 1px solid black;
 }
-.player-card-container {
+#player-card-container {
   padding: 50px 20px;
   background-color: white;
   text-align: center;
@@ -15,7 +15,7 @@ td {
   border-style: solid;
   display: inline-block;
 }
-.player-hand-container {
+#player-hand-container {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -27,7 +27,7 @@ td {
   height: 200px;
 }
 .card {
-  margin: 10px;
+  margin: 2px;
   padding: 10px;
   background-color: white;
   width: 70px;
@@ -35,15 +35,16 @@ td {
   border-radius: 8px;
   display: inline-block;
 }
+.card-border {
+  border-width: 4px;
+}
 .suit {
-  margin: 5px;
+  margin: 2px;
   font-size: 20px;
 }
 .name {
-  margin: 5px;
-  font-size: 24px;
-  font-weight: bold;
-  font-family: sans-serif;
+  margin: 2px;
+  font-size: 12px;
 }
 .red {
   color: rgb(221, 7, 7);

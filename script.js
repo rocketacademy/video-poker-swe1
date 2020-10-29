@@ -73,10 +73,10 @@ let canExchangeOrHoldCards = false;
 const createStartingElements = () => {
   // container to display a card
   playerCardContainer = document.createElement('div');
-  playerCardContainer.classList.add('player-card-container');
+  playerCardContainer.setAttribute('id', 'player-card-container');
   // container to display the player's cardContainers
   playerHandContainer = document.createElement('div');
-  playerHandContainer.classList.add('player-hand-container');
+  playerHandContainer.setAttribute('id', 'player-hand-container');
 
   // container to display output messages informing player about the state of the game
   gameInfo = document.createElement('div');
@@ -203,7 +203,9 @@ const dealStartingCards = (cardsData) => {
 // make a card element to be appended to the card container and return it
 const makeCardElement = (cardData) => {
   const suitEl = document.createElement('div');
-  suitEl.classList.add('suit');
+
+  suitEl.classList.add(cardData.color, 'suit');
+
   suitEl.innerText = cardData.suitSymbol;
 
   const nameEl = document.createElement('div');

@@ -1,7 +1,19 @@
 body{
-  background-color: whitesmoke;
-  color: darkolivegreen;
+  background-color: #DFE5DC;
+  color: #234d2c;
+  font-family: sans-serif, serif;
 }
+
+.button{
+  background-color: #3B6855;
+  color: white;
+  text-align: center;
+  border-radius: 6px;
+  font-size: 1.1em;
+  margin-bottom: 10px;
+  padding: 10px 15px ;
+}
+
 .game-play .pay-table{
   display: inline-block;
   vertical-align: top;
@@ -13,7 +25,7 @@ body{
   margin: 10px;
   width: 50px;
   height: 80px;
-  background-color: wheat;
+  background-color: #cee0c4;  
   border-radius: 5px;
   text-align:center;
   color:black;
@@ -62,7 +74,8 @@ body{
 
 .status{
   color: crimson;
-  font-family: 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-weight: lighter;
+  font-style: italic;
 }
 
 .result{
@@ -108,7 +121,7 @@ table, th, td{
   margin-top: -5px;
   border-width: 5px;
   border-style: solid;
-  border-color: lightgoldenrodyellow transparent transparent transparent;
+  border-color: rgb(230, 194, 38) transparent transparent transparent;
 }
 
 .tooltip:hover .tooltip-text {

@@ -1,3 +1,8 @@
+/* eslint-disable no-continue */
+// The above es lint rule is disabled, because if continue is not used
+// most of the for loops will have numerous nested conditions and loops
+// which makes the code less readable.
+
 // Global variables
 // DOM Elements
 // Table container to hold the result of the game.
@@ -12,12 +17,12 @@ let divGameStatus = null;
 let divDealtCardBoardElement = null;
 let deck = null;
 let isGameOver = false;
-const gameResultType = '';
+let gameResultType = '';
 
 // Variable that holds the score at a given time
-const currentGameScore = INITIAL_CREDIT_PLAYER;
-const numOfGamesLost = 0;
-const numOfGamesWon = 0;
+let currentGameScore = INITIAL_CREDIT_PLAYER;
+let numOfGamesLost = 0;
+let numOfGamesWon = 0;
 
 // Variable to store data other than DOM elements
 const boardOfDealtCards = [];
@@ -68,16 +73,16 @@ const makeDeck = () => {
       // 1, 11, 12 ,13
       if (cardName === '1') {
         cardName = 'ace';
-        displayName = 'A';
+        displayName = ACE_DISPLAY_NAME;
       } else if (cardName === '11') {
         cardName = 'jack';
-        displayName = 'J';
+        displayName = JACK_DISPLAY_NAME;
       } else if (cardName === '12') {
         cardName = 'queen';
-        displayName = 'Q';
+        displayName = QUEEN_DISPLAY_NAME;
       } else if (cardName === '13') {
         cardName = 'king';
-        displayName = 'K';
+        displayName = KING_DISPLAY_NAME;
       }
 
       // make a single card object variable
@@ -100,21 +105,378 @@ const makeDeck = () => {
   return newDeck;
 };
 
-// This function calculates the points user scored for the cards in hand.
-const calcHandScore = () => {
-  let totalScore = 0;
-  for (let i = 0; i < boardOfDealtCards.length; i += 1)
+// To check whether it's a pair of Jack or better
+// Pair of jacks or better: Two jacks, queens, kings, or aces.
+const isPairOfJacksOrBetter = () => {
+  // Testing purpose
+  // boardOfDealtCards = TestArray1;
+  /// ////////////////////////////
+
+  let hasPairFound = false;
+  for (let i = 0; i < boardOfDealtCards.length - 1; i += 1)
   {
-    totalScore += boardOfDealtCards[i].rank;
+    const currentCard = boardOfDealtCards[i];
+    // If the current cards display name is neither of A, J, K and Q, proceed with next card
+    if (!((currentCard.display === JACK_DISPLAY_NAME)
+    || (currentCard.display === KING_DISPLAY_NAME)
+    || (currentCard.display === QUEEN_DISPLAY_NAME)
+    || (currentCard.display === ACE_DISPLAY_NAME)))
+    {
+      // eslint-disable-next-line no-continue
+      continue;
+    }
+    // Compare with each other elements in the array
+    for (let j = i + 1; j < boardOfDealtCards.length; j += 1)
+    {
+      const nextCard = boardOfDealtCards[j];
+      // If atleast one pair is found, no further checking is done.
+      // It's confirmed as PairOfJacksOrBetter
+      if (currentCard.display === nextCard.display)
+      {
+        hasPairFound = true;
+        break;
+      }
+    }
+    if (hasPairFound)
+    {
+      break;
+    }
+  }
+  return hasPairFound;
+};
+
+// Is Two Pair - Two cards of one rank, two cards of another rank;
+// for example, ace of spades, ace of hearts, 7 of clubs, 7 of diamonds.
+const isTwoPair = () => {
+  let numOfPairsFound = 0;
+  const totalCardCount = boardOfDealtCards.length;
+  // Variable to store the indices that are already a part of a pair
+  const isPairFoundArray = [];
+  for (let idx = 0; idx < totalCardCount; idx += 1)
+  {
+    isPairFoundArray.push(false);
+  }
+  for (let i = 0; i < totalCardCount - 1; i += 1)
+  {
+    // If the this card is already a part of pair, skip to next
+    if (isPairFoundArray[i])
+    {
+      continue;
+    }
+    const currentCard = boardOfDealtCards[i];
+    // Compare with each other elements in the array
+    for (let j = i + 1; j < totalCardCount; j += 1)
+    {
+      // If the this card is already a part of pair, skip to next
+      if (isPairFoundArray[j])
+      {
+        continue;
+      }
+      const nextCard = boardOfDealtCards[j];
+      if (currentCard.rank === nextCard.rank)
+      {
+        numOfPairsFound += 1;
+        isPairFoundArray[i] = true;
+        isPairFoundArray[j] = true;
+      }
+    }
   }
 
-  // Check for each value
-  // Check whether the card is pinned or not
-  // Update the current score, if it was already a draw
-  // Update the lost and won game count
-  // If it's a win set the game type result too
+  console.log(`boardOfDealtCards: ${boardOfDealtCards}`);
+  console.log(`numOfPairsFound: ${numOfPairsFound}`);
+  console.log(`isPairFoundArray: ${isPairFoundArray}`);
+  // If 2 pairs are found, return true;
+  if (numOfPairsFound >= 2)
+  {
+    return true;
+  }
+  return false;
+};
 
-  return totalScore;
+// Three of a kind - Three cards of the same rank;
+// for example, 6 of hearts, 6 of clubs, 6 of diamonds.
+const isThreeOfAKind = () => {
+  /// ////////
+  // boardOfDealtCards = TestArray3;
+  /// ////////
+
+  const totalCardCount = boardOfDealtCards.length;
+  // The below array stores the indexes.
+  // When a three of kind match is found, all those values will
+  // be turned true. Remaining elements will be the ones that are having indices
+  // This is later used as part of FullHouse checking
+  const indexThreeOfAKindFound = [];
+  for (let i = 0; i < totalCardCount; i += 1)
+  {
+    indexThreeOfAKindFound.push(i);
+  }
+  for (let i = 0; i < totalCardCount - 2; i += 1)
+  {
+    for (let j = i + 1; j < totalCardCount - 1; j += 1)
+    {
+      // If the current card's rank is not same as the ith card, continue with next card
+      if (boardOfDealtCards[i].rank !== boardOfDealtCards[j].rank)
+      {
+        continue;
+      }
+      for (let k = j + 1; k < totalCardCount; k += 1)
+      {
+        if (boardOfDealtCards[j].rank !== boardOfDealtCards[k].rank)
+        {
+          continue;
+        }
+        indexThreeOfAKindFound[i] = true;
+        indexThreeOfAKindFound[j] = true;
+        indexThreeOfAKindFound[k] = true;
+        return { match: true, indices: indexThreeOfAKindFound };
+      } // third loop end
+    } // second loop end
+  }
+  return { match: false, indices: indexThreeOfAKindFound };
+};
+
+// 'Straight', 'Five consecutive cards of mixed suits;
+// for example, 2 of diamonds, 3 of hearts, 4 of diamonds, 5 of clubs, 6 of spades.'
+const isStraight = () => {
+  let previousCardRank = 0;
+  let isStraightCards = true;
+  for (let i = 0; i < boardOfDealtCards.length; i += 1)
+  {
+    const currentCardRank = boardOfDealtCards[i].rank;
+    if (i === 0)
+    {
+      // If the first card is Ace, take it's rank as 14 and compare
+      previousCardRank = (boardOfDealtCards[i].display === ACE_DISPLAY_NAME)
+        ? 14 : currentCardRank;
+      continue;
+    }
+    if ((previousCardRank - currentCardRank) !== 1)
+    {
+      isStraightCards = false;
+      break;
+    }
+  }
+  return isStraightCards;
+};
+
+// 'Flush', 'Five cards of the same suit;
+// for example, ace, 10, 7, 4, 3, all of diamonds.'
+const isFlush = () => {
+  let prevoiusCardSuit = '';
+  // boardOfDealtCards = TestArray2;
+  for (let i = 0; i < boardOfDealtCards.length; i += 1)
+  {
+    const currentCardSuit = boardOfDealtCards[i].suit;
+    if (i === 0)
+    {
+      prevoiusCardSuit = currentCardSuit;
+      continue;
+    }
+    // If any card suit is different from others, return false
+    if (!(prevoiusCardSuit === currentCardSuit))
+    {
+      return false;
+    }
+    prevoiusCardSuit = currentCardSuit;
+  }
+  return true;
+};
+
+// 'Full house', 'Three cards of one rank, two cards of another rank;
+// for example, 3 of diamonds, 3 of hearts, 3 of spades, 6 of hearts, 6 of spades.'
+const isFullHouse = () => {
+  // First check whether there are 3 cards of same kind.
+  const resThreeKind = isThreeOfAKind();
+  if (!resThreeKind.match) {
+    // If three of a kind match is not found return false.
+    return false;
+  }
+  // Filter out all the values that are not having value as "true".
+  // This will give the index of the remaining 2 (?) cards that are to be verified
+  resThreeKind.indices.filter((index) => (index !== true));
+
+  // If 3 same kind cards are found, check for the other pair
+  let tempCard = null;
+  for (let i = 0; i < resThreeKind.indices.length; i += 1)
+  {
+    if (tempCard === null) {
+      tempCard = boardOfDealtCards[resThreeKind.indices[i]];
+    }
+    else { // compare both the card elements
+      const nextCard = boardOfDealtCards[resThreeKind.indices[i]];
+      if (nextCard.rank === tempCard.rank) {
+        // It's a pair.
+        return true;
+      }
+    }
+  }
+  return false;
+};
+
+// 'Four of a kind', 'Four cards of the same rank;
+// for example, ace of hearts, ace of spades, ace of clubs, ace of diamonds.'
+const isFourOfAKind = () => {
+  // ////////////////////////////////////
+  // boardOfDealtCards = TestArray4;
+  // ///////////////////////////////////
+
+  const totalCardCount = boardOfDealtCards.length;
+  for (let i = 0; i < totalCardCount - 3; i += 1)
+  {
+    for (let j = i + 1; j < totalCardCount - 2; j += 1)
+    {
+      // If the current card's rank is not same as the ith card, continue with next card
+      if (boardOfDealtCards[i].rank !== boardOfDealtCards[j].rank)
+      {
+        continue;
+      }
+      for (let k = j + 1; k < totalCardCount - 1; k += 1)
+      {
+        if (boardOfDealtCards[j].rank !== boardOfDealtCards[k].rank)
+        {
+          continue;
+        }
+        for (let m = k + 1; m < totalCardCount; m += 1)
+        {
+          if (boardOfDealtCards[k].rank !== boardOfDealtCards[m].rank)
+          {
+            continue;
+          }
+          return true;
+        } // fourth loop
+      } // third loop end
+    } // second loop end
+  }
+
+  return false;
+};
+
+// 'Straight flush', 'Five consecutive cards of the same suit;
+// for example, 2-3-4-5-6, all of clubs.'
+const isStraightFlush = () => {
+//   boardOfDealtCards = TestArray7;
+
+  let prevoiusCardSuit = '';
+  let previousCardRank = 0;
+  let prevRankDiff = 0;
+  for (let i = 0; i < boardOfDealtCards.length; i += 1)
+  {
+    const currentCardSuit = boardOfDealtCards[i].suit;
+    const currentCardRank = boardOfDealtCards[i].rank;
+    if (i === 0)
+    {
+      prevoiusCardSuit = currentCardSuit;
+      previousCardRank = currentCardRank;
+      continue;
+    }
+    // If any card suit is different from others, return false
+    if (!(prevoiusCardSuit === currentCardSuit))
+    {
+      return false;
+    }
+    const diffRank = previousCardRank - currentCardRank;
+    if (Math.abs(diffRank) !== 1) {
+      // If the rank difference is not equal to one, the cards are not
+    // in consecutive order in either direction
+      return false;
+    }
+    // To check if the cards are in consecutive order (either low to high or high to low)
+    // subtract the 2 consecutive differences. It should be qual to zero.
+    if ((prevRankDiff !== 0) && ((prevRankDiff - diffRank) !== 0))
+    {
+      return false;
+    }
+
+    prevRankDiff = diffRank;
+    prevoiusCardSuit = currentCardSuit;
+    previousCardRank = currentCardRank;
+  }
+  return true;
+};
+
+// 'Royal flush', 'Ace-king-queen-jack-10 all of the same suit
+// (hearts, clubs, spades, or diamonds)'
+const isRoyalFlush = () => {
+  // //////////////////////////
+  // boardOfDealtCards = TestArray8;
+  // /////////////////////////////
+
+  // First check whether all the cards are of the same suit
+  if (!isFlush()) {
+    return false;
+  }
+  if (boardOfDealtCards[0].display === ACE_DISPLAY_NAME
+    && boardOfDealtCards[1].display === KING_DISPLAY_NAME
+    && boardOfDealtCards[2].display === QUEEN_DISPLAY_NAME
+    && boardOfDealtCards[3].display === JACK_DISPLAY_NAME
+    && boardOfDealtCards[4].rank === 10) {
+    return true;
+  }
+  return false;
+};
+
+// This function calculates the points user scored for the cards in hand.
+const calcHandScore = () => {
+  // // Checking for PairOfJacksOrBetter.
+  // if (isPairOfJacksOrBetter())
+  // {
+  //   gameResultType = 'Pair of Jacks or Better';
+  //   currentGameScore += 1;
+  //   numOfGamesWon += 1;
+  // }
+  // if (isTwoPair())
+  // {
+  //   gameResultType = 'Two Pair';
+  //   currentGameScore += 1;
+  //   numOfGamesWon += 1;
+  // }
+  // if (isThreeOfAKind())
+  // {
+  //   gameResultType = 'Three of a Kind';
+  //   currentGameScore += 1;
+  //   numOfGamesWon += 1;
+  // }
+  // if (isStraight())
+  // {
+  //   gameResultType = 'Straight';
+  //   currentGameScore += 1;
+  //   numOfGamesWon += 1;
+  // }
+  // if (isFlush())
+  // {
+  //   gameResultType = 'Flush';
+  //   currentGameScore += 1;
+  //   numOfGamesWon += 1;
+  // }
+  // if (isFullHouse())
+  // {
+  //   gameResultType = 'Full House';
+  //   currentGameScore += 1;
+  //   numOfGamesWon += 1;
+  // }
+  // if (isFourOfAKind())
+  // {
+  //   gameResultType = 'Four of a Kind';
+  //   currentGameScore += 1;
+  //   numOfGamesWon += 1;
+  // }
+  // if (isStraightFlush())
+  // {
+  //   gameResultType = 'Straight Flush';
+  //   currentGameScore += 1;
+  //   numOfGamesWon += 1;
+  // }
+  if (isRoyalFlush())
+  {
+    gameResultType = 'Royal Flush';
+    currentGameScore += 1;
+    numOfGamesWon += 1;
+  }
+  else
+  {
+    gameResultType = 'Lost';
+    numOfGamesLost += 1;
+  }
 };
 
 // Checks who is the winner
@@ -230,7 +592,7 @@ const addScoreCard = (dealtCardBoard) => {
   rowElement.appendChild(cellGameCount);
 
   const cellGameResult = document.createElement('td');
-  cellGameResult.innerText = ''; // Game type he won if it's a win
+  cellGameResult.innerText = gameResultType; // Game type he won if it's a win
   rowElement.appendChild(cellGameResult);
 
   const cellCurrentScore = document.createElement('td');
@@ -243,7 +605,7 @@ const addScoreCard = (dealtCardBoard) => {
 
 // Function to handle result score card display
 const displayScoreCard = () => {
-  const gameInfoMessage = (hasPlayerWon()) ? 'You won!!' : 'You lost!!';
+  const gameInfoMessage = (hasPlayerWon()) ? `You won!! ${gameResultType}` : 'You lost!!';
   setGameStatus(`Game Over. 
   ${gameInfoMessage}.
   Please check score card for details.`);
@@ -289,6 +651,7 @@ const onClickDealDrawButton = () =>
   // If so, the current request is considered as to draw cards,
   // in place of cards that are not selected.
   let drawAndReplaceCards = (String(buttonText).includes(TXT_DRAW));
+
   // consider it as a new deal, if the game is starting over.
   if (isGameOver)
   {
@@ -305,6 +668,13 @@ const onClickDealDrawButton = () =>
     // So, if draw request is made, but the card is on hold, skip the loop.
     if ((!drawAndReplaceCards) || ((drawAndReplaceCards && !boardOfDealtCards[i].hold)))
     {
+      // Check whether there are cards in the deck
+      if (deck.length === 0)
+      {
+        isGameOver = true;
+        setGameStatus('Not enough cards to deal. Please restart the game by refreshing the page.');
+        break;
+      }
       boardOfDealtCards[i] = deck.pop();
     }
     // Change the display of the card
@@ -322,31 +692,82 @@ const onClickDealDrawButton = () =>
   buttonDealDraw.innerText = TXT_DRAW;
 };
 
+// // Function to fill the pay-table data
+// const fillPayTableData = (tablePayEl) => {
+//   for (let i = 0; i < PAY_TABLE_ARRAY.length; i += 1)
+//   {
+//     // Define the column headers for rows
+//     const rowElement = document.createElement('tr');
+//     const cellGameType = document.createElement('td');
+//     cellGameType.classList.add('tooltip');
+//     cellGameType.innerText = PAY_TABLE_ARRAY[i][0];
+//     const spanGameDesc = document.createElement('span');
+//     spanGameDesc.classList.add('tooltip-text');
+//     spanGameDesc.innerText = PAY_TABLE_ARRAY[i][1];
+//     cellGameType.appendChild(spanGameDesc);
+//     rowElement.appendChild(cellGameType);
+
+//     const cellGamePoints = document.createElement('td');
+//     cellGamePoints.innerText = i + 1;
+//     rowElement.appendChild(cellGamePoints);
+
+//     // const cellCurrentDesc = document.createElement('td');
+//     // cellCurrentDesc.innerText = PAY_TABLE_ARRAY[i][1];
+//     // rowElement.appendChild(cellCurrentDesc);
+
+//     tablePayEl.appendChild(rowElement);
+//   }
+// };
+
 // Function to fill the pay-table data
 const fillPayTableData = (tablePayEl) => {
-  for (let i = 0; i < PAY_TABLE_ARRAY.length; i += 1)
+  for (let i = 0; i < Pay_Table_Objects.length; i += 1)
   {
     // Define the column headers for rows
     const rowElement = document.createElement('tr');
     const cellGameType = document.createElement('td');
     cellGameType.classList.add('tooltip');
-    cellGameType.innerText = PAY_TABLE_ARRAY[i][0];
+    cellGameType.innerText = Pay_Table_Objects[i].gameName;
     const spanGameDesc = document.createElement('span');
     spanGameDesc.classList.add('tooltip-text');
-    spanGameDesc.innerText = PAY_TABLE_ARRAY[i][1];
+    spanGameDesc.innerText = Pay_Table_Objects[i].gameDesc;
     cellGameType.appendChild(spanGameDesc);
     rowElement.appendChild(cellGameType);
 
     const cellGamePoints = document.createElement('td');
-    cellGamePoints.innerText = PAY_TABLE_ARRAY.length - i;
+    cellGamePoints.innerText = Pay_Table_Objects[i].gameRank;
     rowElement.appendChild(cellGamePoints);
 
-    // const cellCurrentDesc = document.createElement('td');
-    // cellCurrentDesc.innerText = PAY_TABLE_ARRAY[i][1];
-    // rowElement.appendChild(cellCurrentDesc);
+    const cellGameCredit = document.createElement('td');
+    cellGameCredit.innerText = Pay_Table_Objects[i].gameCredit;
+    rowElement.appendChild(cellGameCredit);
 
     tablePayEl.appendChild(rowElement);
   }
+
+  // for (let i = 0; i < PAY_TABLE_ARRAY.length; i += 1)
+  // {
+  //   // Define the column headers for rows
+  //   const rowElement = document.createElement('tr');
+  //   const cellGameType = document.createElement('td');
+  //   cellGameType.classList.add('tooltip');
+  //   cellGameType.innerText = PAY_TABLE_ARRAY[i][0];
+  //   const spanGameDesc = document.createElement('span');
+  //   spanGameDesc.classList.add('tooltip-text');
+  //   spanGameDesc.innerText = PAY_TABLE_ARRAY[i][1];
+  //   cellGameType.appendChild(spanGameDesc);
+  //   rowElement.appendChild(cellGameType);
+
+  //   const cellGamePoints = document.createElement('td');
+  //   cellGamePoints.innerText = i + 1;
+  //   rowElement.appendChild(cellGamePoints);
+
+  //   // const cellCurrentDesc = document.createElement('td');
+  //   // cellCurrentDesc.innerText = PAY_TABLE_ARRAY[i][1];
+  //   // rowElement.appendChild(cellCurrentDesc);
+
+  //   tablePayEl.appendChild(rowElement);
+  // }
 };
 
 // Function that displays the list of possible hands that gives a score
@@ -365,11 +786,11 @@ const createPayTableContainer = (divGameParentContainer) => {
   rowHeaderGameType.innerText = 'Game Type';
   rowElement.appendChild(rowHeaderGameType);
   const rowHeaderGamePoints = document.createElement('th');
-  rowHeaderGamePoints.innerText = 'Points';
+  rowHeaderGamePoints.innerText = 'Rank';
   rowElement.appendChild(rowHeaderGamePoints);
-  // const rowHeaderDesc = document.createElement('th');
-  // rowHeaderDesc.innerText = 'Description';
-  // rowElement.appendChild(rowHeaderDesc);
+  const rowHeaderGameCredits = document.createElement('th');
+  rowHeaderGameCredits.innerText = 'Credits';
+  rowElement.appendChild(rowHeaderGameCredits);
 
   fillPayTableData(tablePayEl);
   divPayTableContainer.appendChild(tablePayEl);
@@ -427,6 +848,7 @@ const createGameContainerElements = (divGameContainer) => {
 
   // Button for Deal / draw
   buttonDealDraw = document.createElement('button');
+  buttonDealDraw.classList.add('button');
   buttonDealDraw.innerText = TXT_DEAL;
   buttonDealDraw.addEventListener('click', onClickDealDrawButton);
 
@@ -460,6 +882,7 @@ const createResultContainerElements = () => {
   // Button to show and hide the result details
   const divScoreButtonContainer = document.createElement('div');
   buttonShowHideScore = document.createElement('button');
+  buttonShowHideScore.classList.add('button');
   buttonShowHideScore.innerText = `${TXT_SHOW_RESULT}`;
   divScoreButtonContainer.appendChild(buttonShowHideScore);
   divGameResultContainer.appendChild(divScoreButtonContainer);

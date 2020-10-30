@@ -147,4 +147,15 @@ td {
   #exchange-button {
     font-size: 18px;
   }
+  #bid-points-container {
+    width: 120px;
+  }
+  #total-points-container {
+    width: 100px;
+  }
+  #bid-points-input-container {
+    display: inline-block;
+    margin: 0 20px;
+    width: 250px;
+  }
 }

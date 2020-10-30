@@ -76,6 +76,7 @@ const createStartingElements = () => {
   // container to display the player's cardContainers
   playerHandContainer = document.createElement('div');
   playerHandContainer.setAttribute('id', 'player-hand-container');
+  playerHandContainer.classList.add('row', 'align-items-center', 'justify-content-center');
 
   // container to display output messages informing player about the state of the game
   gameInfo = document.createElement('div');
@@ -226,7 +227,7 @@ const makeCardElement = (cardData) => {
   nameEl.innerText = cardData.display;
 
   const cardEl = document.createElement('div');
-  cardEl.classList.add('card');
+  cardEl.classList.add('card', 'col-3', 'align-items-center');
 
   cardEl.appendChild(nameEl);
   cardEl.appendChild(suitEl);

@@ -1,21 +1,26 @@
 // Test Cases - To be further refined for any other bugs
 
 // // Five of Kind
-// const playerHand = [
-//   {name: 2, suit: 'diamond', rank: 2},
-//   {name: 2, suit: 'heart', rank: 2},
-//   {name: 2, suit: 'spade', rank: 2},
-//   {name: 2, suit: 'club', rank: 2},
-//   {name: 'Joker', suit: 'Joker', rank: 0}
+// const simulatedHand = [
+// { name: 2, suit: 'diamond', rank: 2 },
+// { name: 2, suit: 'heart', rank: 2 },
+// { name: 2, suit: 'spade', rank: 2 },
+// { name: 2, suit: 'club', rank: 2 },
+// { name: 'Joker', suit: 'Joker', rank: 0 },
+// { name: 2, suit: 'diamond', rank: 2 },
+// { name: 2, suit: 'heart', rank: 2 },
+// { name: 2, suit: 'spade', rank: 2 },
+// { name: 2, suit: 'club', rank: 2 },
+// { name: 'Joker', suit: 'Joker', rank: 0 },
 // ];
 
-// // Four of a kind
-// const playerHand = [
-//   {name: 2, suit: 'diamond', rank: 2},
-//   {name: 2, suit: 'heart', rank: 2},
-//   {name: 2, suit: 'spade', rank: 2},
-//   {name: 2, suit: 'club', rank: 2},
-//   {name: 3, suit: 'club', rank: 3}
+// Four of a kind
+// const simulatedHand = [
+//   { name: 2, suit: 'diamond', rank: 2 },
+//   { name: 2, suit: 'heart', rank: 2 },
+//   { name: 2, suit: 'spade', rank: 2 },
+//   { name: 2, suit: 'club', rank: 2 },
+//   { name: 3, suit: 'club', rank: 3 },
 // ];
 
 // // Three of a kind
@@ -46,7 +51,7 @@
 // ];
 
 // // // Pair of Jacks or Better
-// const playerHand = [
+// const simulatedHand = [
 //   { name: 7, suit: 'club', rank: 7 },
 //   { name: 'Jack', suit: 'spade', rank: 11 },
 //   { name: 'Ace', suit: 'club', rank: 1 },
@@ -55,7 +60,7 @@
 // ];
 
 // // Pair of Aces
-// const playerHand = [
+// const simulatedHand = [
 //   { name: 'Ace', suit: 'club', rank: 1 },
 //   { name: 'Jack', suit: 'spade', rank: 11 },
 //   { name: 2, suit: 'diamond', rank: 2 },
@@ -64,10 +69,10 @@
 // ];
 
 // // Normal Straight Hand
-// const playerHand = [
+// const simulatedHand = [
 //   { name: 9, suit: 'diamond', rank: 9 },
 //   { name: 8, suit: 'diamond', rank: 8 },
-//   { name: 'Jack', suit: 'diamond', rank: 11 },
+//   { name: 'Jack', suit: 'spade', rank: 11 },
 //   { name: 7, suit: 'diamond', rank: 7 },
 //   { name: 10, suit: 'diamond', rank: 10 },
 // ];
@@ -82,8 +87,8 @@
 // ];
 
 // // Fail Ace-High Straight Hand (to counter-test against K,4,3,2,A)
-// Result should be 'No Straight!'
-// const playerHand = [
+// Result should be 'No winning hand'
+// const simulatedHand = [
 //   { name: 2, suit: 'spade', rank: 2 },
 //   { name: 4, suit: 'diamond', rank: 4 },
 //   { name: 3, suit: 'diamond', rank: 3 },

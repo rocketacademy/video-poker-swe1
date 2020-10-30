@@ -16,7 +16,7 @@ let isStraight = false;
 let isStraightFlush = false;
 
 //  Global var that holds the name of the winning combi
-let nameOfWinCombi = 'No winning hand';
+let nameOfWinCombi = 'No winning hand.\n Please insert\n credits to continue';
 
 // -------- Html Elements---------------------//
 let overallScreen;
@@ -89,14 +89,9 @@ const calcHandScore = () => {
     console.log(payoutLevel, 'payoutlevel');
   }
 
-  if (rankOfHand > 0) {
-    amtWon = payOutSchedule[payoutLevel][rankOfHand];
-    creditsLeft += amtWon;
-    console.log(amtWon, 'amtWon');
-  }
-  // reset rankOfHand after each calculation
-  console.log(rankOfHand, 'rankOfHand');
-  rankOfHand = 0;
+  amtWon = payOutSchedule[payoutLevel][rankOfHand];
+  creditsLeft += amtWon;
+  console.log(amtWon, 'amtWon');
   return amtWon;
 };
 
@@ -139,7 +134,6 @@ const checkForKindsnPairs = () => {
   // Filter the array only for number of times
   // common card is 1 (i.e 1 pair) and copies into an array
   const numPairs = numCommonCardsArray.filter((num) => num === 1);
-  console.log(numPairs, 'numPairs');
   // Check for 4 and 5 of a kind
   if (maxNum === 3) {
   // Next Check for a joker for 5 of a kind
@@ -414,40 +408,53 @@ const getRandomIndex = (size) => Math.floor(Math.random() * size);
 
 // Function that enables slotmachine animation on the winning combis on top
 const topScoreScrollDisplay = () => {
+  // delay is 500 milliseconds
   const delay = 500;
-  // Still thinking of a good formula to replace 2
-  // 2 is meant to be the placeholder for the proper variable
-  const numTimesToScrollUp = 2;
+  // sum of oneCreditPayout.length -1 and rankofHand always yields 9, which
+  // yields the number of times it scrolls up i.e:
+  // steps to move:
+  // 0 1 2 3 4 5 6 7 8 9
+  // Rank of Hand:
+  // 9 8 7 6 5 4 3 2 1 0
+  // total length = 9 - rank of hand = 0
+
+  const numTimesToScrollUp = oneCreditPayOut.length - 1 - rankOfHand;
+  console.log(rankOfHand, 'rankOfHand');
   console.log(numTimesToScrollUp, 'numTimesToScrollUp');
   const animationDelay = delay * numTimesToScrollUp;
+  console.log(animationDelay, 'animationDelay');
+  if (numTimesToScrollUp > 0) {
+    const combiRoller = setInterval(() => {
+      combiDisplayMachine.next();
+      switch (payoutLevel) {
+        case 0:
+          pOut1Machine.next();
+          break;
+        case 1:
+          pOut2Machine.next();
+          break;
+        case 2:
+          pOut3Machine.next();
+          break;
+        case 3:
+          pOut4Machine.next();
+          break;
+        case 4:
+          pOut5Machine.next();
+          break;
+        default:
+          console.log('error');
+      }
 
-  const combiRoller = setInterval(() => {
-    combiDisplayMachine.next();
-
-    switch (payoutLevel) {
-      case 0:
-        pOut1Machine.next();
-        break;
-      case 1:
-        pOut2Machine.next();
-        break;
-      case 2:
-        pOut3Machine.next();
-        break;
-      case 3:
-        pOut4Machine.next();
-        break;
-      case 4:
-        pOut5Machine.next();
-        break;
-      default:
-        console.log('error');
-    }
-
-    setTimeout(() => {
-      clearInterval(combiRoller);
-    }, animationDelay + 100);
-  }, delay);
+      setTimeout(() => {
+        clearInterval(combiRoller);
+        // not sure what animationDelay-100 works and animationDelay doesnt work
+      }, animationDelay - 100);
+    }, delay);
+  }
+  // reset rankOfHand after each calculation and animation
+  console.log(rankOfHand, 'rankOfHand');
+  rankOfHand = 9;
 };
 
 // Function that generates the path to each individual card
@@ -700,7 +707,7 @@ const createDealCardsBtn = () => {
         playerHand.length = 0;
 
         // clear cache of previous' hand's win combi
-        nameOfWinCombi = 'No winning hand';
+        nameOfWinCombi = 'No winning hand.\n Please insert credits to continue';
         drawInitialHand();
         checkForWinCombi();
         console.log('creditsLeft', creditsLeft);
@@ -775,16 +782,6 @@ const createGameStatsDisplay = () => {
   statsDisplay.appendChild(creditsLeftDisplay);
 };
 
-// Function that initializes the game with certain displays and cover-cards
-const gameInit = () => {
-  buildUI();
-  shuffledDeck = shuffleCards(makeDeck());
-  createGameStatsDisplay();
-  createInsertCreditsBtn();
-  createDealCardsBtn();
-  createSwapCardsBtn();
-};
-
 // Function that creates a 'slotMachine' obj for each column of the display abv
 const createScrollDisplayMachines = () => {
   combiDisplayCol = document.querySelector('.nameOfCombiDisplay');
@@ -809,6 +806,16 @@ const destroyScrollDisplayMachines = () => {
   pOut3Col = null;
   pOut4Col = null;
   pOut5Col = null;
+};
+
+// Function that initializes the game with certain displays and cover-cards
+const gameInit = () => {
+  buildUI();
+  shuffledDeck = shuffleCards(makeDeck());
+  createGameStatsDisplay();
+  createInsertCreditsBtn();
+  createDealCardsBtn();
+  createSwapCardsBtn();
 };
 
 // ==== EXECUTE GAME =====//

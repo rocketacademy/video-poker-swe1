@@ -159,3 +159,12 @@ td {
     width: 250px;
   }
 }
+@media (min-width: 992px) {
+  h2 {
+    text-align: center;
+  }
+  ol {
+    width: 600px;
+    margin: 0 auto;
+  }
+}

@@ -89,11 +89,11 @@ const createStartingElements = () => {
   // button to deal cards
   dealButton = document.createElement('button');
   dealButton.setAttribute('id', 'deal-button');
-  dealButton.classList.add('col-5');
+  dealButton.classList.add('col-5', 'col-md-4');
   // button to exchange cards
   exchangeOrHoldCardsButton = document.createElement('button');
   exchangeOrHoldCardsButton.setAttribute('id', 'exchange-button');
-  exchangeOrHoldCardsButton.classList.add('col-5');
+  exchangeOrHoldCardsButton.classList.add('col-5', 'col-md-4');
 
   // element to display heading for player's total points
   totalPointsHeadingEl = document.createElement('p');

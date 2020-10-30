@@ -143,4 +143,8 @@ td {
   .card-border {
     border-color: blue;
   }
+  #deal-button,
+  #exchange-button {
+    font-size: 18px;
+  }
 }

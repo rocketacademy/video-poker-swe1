@@ -10,6 +10,7 @@ const player = {
 };
 let deck = [];
 let keepCardCanClick = true;
+const bidButtonCanClick = true;
 let bidTracker = 0;
 
 //= =========HELPER FUNCTIONS===================
@@ -136,7 +137,13 @@ const buildBoardElements = () => {
   addBidButton.classList = 'addBidButton';
   addBidButton.innerText = 'Bid/Add Bid';
   addBidButton.setAttribute('id', 'addBidButtonID');
-  addBidButton.addEventListener('click', () => { bidTracker += 1; });
+  addBidButton.addEventListener('click', () => {
+    if (bidButtonCanClick === true) {
+      bidTracker += 1;
+    }
+  });
+
+  // add a display to show the
 
   // build the credits display: creditsDisplayElement
   const creditsDisplayElement = document.createElement('div');
@@ -191,7 +198,7 @@ const createCardsElements = () => {
     console.log(player.hand[i]);
     // create a card element, and append it to the arsenal
     const cardElement = document.createElement('div');
-    cardElement.setAttribute('id', 'cardElementID');
+    cardElement.setAttribute('id', 'cardElementID' + i);
     cardElement.classList = 'cardElement';
     document.getElementById('arsenalID').appendChild(cardElement);
     // assign current cardElement the details for card[i]
@@ -199,9 +206,11 @@ const createCardsElements = () => {
 
     // make each card element clickable
     // eslint-disable-next-line
+    // cardElement.addEventListener('click', keepCard)
     cardElement.addEventListener('click', (event) => {
       if (keepCardCanClick === true) {
         keepCard(event.currentTarget, i);
+        // event.currentTarget.appendChild(keepCardIndication);
       }
     });
   }
@@ -210,25 +219,37 @@ const createCardsElements = () => {
 // ---------Identify which cards to keep-------
 // ----concept: store the identified cards in a new array, then update player.hand w/ that new array
 const keepCard = (cardElement, position) => {
-  console.log('card element is: ');
-  console.log(cardElement);
+  // console.log('card element is: ');
+  // console.log(cardElement);
 
   const clickedCard = player.hand[position];
-  console.log('clicked card is:');
-  console.log(clickedCard);
+  // console.log('clicked card is:');
+  // console.log(clickedCard);
+
+  // on each card, create an element that will appear to show user that he has decided to keepCard
+  const keepCardIndication = document.createElement('div');
+  keepCardIndication.setAttribute('id', 'keepCardIndicationID');
+  keepCardIndication.innerText = 'Keep';
 
   // if the clicked card is alr in the array, remove it from the array
+  // go through the temphand array
   for (let j = 0; j < player.tempHand.length; j += 1) {
+    // if the card at temphand[j] matches the clicked card, then remove temphand[j] from the tempHand array
     if ((clickedCard.display === player.tempHand[j].display) && (clickedCard.suit === player.tempHand[j].suit)) {
       player.tempHand.splice(j, 1);
-      console.log('splicing this card');
-      console.log(player.tempHand[j]);
+      // console.log('splicing this card');
+      // console.log(player.tempHand[j]);
+      // const keepDiv = document.getElementById('keepCardIndicationID');
+      const keepDiv = cardElement.querySelector('div');
+      console.log(keepDiv);
+      cardElement.removeChild(keepDiv);
       return;
     }
   }
   // if user clicks a card, add it to new array
-  console.log('pushing....');
+  // console.log('pushing....');
   player.tempHand.push(clickedCard);
+  cardElement.appendChild(keepCardIndication);
 };
 
 // ----------determine bet type------------------
@@ -283,6 +304,9 @@ const initGame = () => {
     // if the player has chosen to keep all cards:
     if (player.tempHand.length === 0) {
       console.log('player temp hand is empty');
+
+      // prevent user from increasing bid here-on-out
+      bidButtonCanClick = false;
       // Analyse the player's hand
       getHandScore();
     }

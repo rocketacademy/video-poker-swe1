@@ -185,4 +185,6 @@ const getHandScore = () => {
 
   // display the credits to the user
   showCredits(player.credits);
+
+  // reset the game (except the credits)
 };

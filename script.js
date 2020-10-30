@@ -38,11 +38,11 @@ let creditsLeft = 100;
 let payoutLevel = 0;
 
 // Hardcoded individual credit payouts for X amount of credits used
-const oneCreditPayOut = [250, 50, 25, 9, 6, 4, 3, 2, 1];
-const twoCreditPayout = [500, 100, 50, 18, 12, 8, 6, 4, 2];
-const threeCreditPayout = [750, 150, 75, 27, 18, 12, 9, 6, 3];
-const fourCreditPayout = [1000, 200, 100, 36, 24, 16, 12, 8, 4];
-const fiveCreditPayout = [4000, 250, 125, 45, 30, 20, 15, 10, 5];
+const oneCreditPayOut = [250, 50, 25, 9, 6, 4, 3, 2, 1, 0];
+const twoCreditPayout = [500, 100, 50, 18, 12, 8, 6, 4, 2, 0];
+const threeCreditPayout = [750, 150, 75, 27, 18, 12, 9, 6, 3, 0];
+const fourCreditPayout = [1000, 200, 100, 36, 24, 16, 12, 8, 4, 0];
+const fiveCreditPayout = [4000, 250, 125, 45, 30, 20, 15, 10, 5, 0];
 
 const payOutSchedule = [[...oneCreditPayOut], [...twoCreditPayout],
   [...threeCreditPayout], [...fourCreditPayout], [...fiveCreditPayout]];
@@ -57,8 +57,8 @@ let coverCardImage;
 let coverCardShown = true;
 
 // Track Rank of Hand
-// Five of a kind being 0 and Jacks or Better being 8, no winning hand = 0;
-let rankOfHand = 0;
+// Five of a kind being 0 and Jacks or Better being 8, no winning hand = 9;
+let rankOfHand = 9;
 
 // Calculate the score of the hand and add to user's credits
 const calcHandScore = () => {
@@ -66,6 +66,7 @@ const calcHandScore = () => {
 
   if (numCreditsInserted > 0) {
     payoutLevel = numCreditsInserted - 1;
+    console.log(payoutLevel, 'payoutlevel');
   }
 
   if (rankOfHand > 0) {
@@ -74,6 +75,7 @@ const calcHandScore = () => {
     console.log(amtWon, 'amtWon');
   }
   // reset rankOfHand after each calculation
+  console.log(rankOfHand, 'rankOfHand');
   rankOfHand = 0;
   return amtWon;
 };
@@ -458,11 +460,11 @@ const fadeOutCurrHandAnimation = () => {
 const drawInitialHand = () => {
   for (let i = 0; i < 5; i += 1) {
     // Draw a card from top of deck
-
-    const card = shuffledDeck.pop();
-    card.holdStatus = false;
     // For testing on different card combis
-    // const card = simulatedHand.pop();
+    const card = simulatedHand.pop();
+    // const card = shuffledDeck.pop();
+    card.holdStatus = false;
+
     playerHand.push(card);
 
     // Create 'hold' display on top of card pressed ;
@@ -512,7 +514,7 @@ const drawInitialHand = () => {
 // Function that generates onscreen the different
 // winning combinations (and their prize monies [WIP])
 const generateDisplayCombinations = () => {
-  const winningCombiArray = ['Five-of-a-kind', 'Straight Flush', 'Four-of-a-kind', 'Full-House', 'Flush', 'Straight', 'Three-of-a-kind', 'Two-Pair', 'Jacks-or-better'];
+  const winningCombiArray = ['Five-of-a-kind', 'Straight Flush', 'Four-of-a-kind', 'Full-House', 'Flush', 'Straight', 'Three-of-a-kind', 'Two-Pair', 'Jacks-or-better', 'No Win-Hand'];
 
   // Create column that describe winning combinations
   const nameOfCombiDisplay = document.createElement('div');
@@ -538,16 +540,6 @@ const generateDisplayCombinations = () => {
     }
     payOutScheduleDisplay.appendChild(payOutColumn);
   }
-};
-
-// Function that creates an input that takes in user's input on
-// how much credits to play per game
-const createCreditsInput = () => {
-  const creditsInput = document.createElement('input');
-  creditsInput.setAttribute('type', 'number');
-  creditsInput.setAttribute('id', 'inputCredits');
-  creditsInput.setAttribute('placeholder', 'Type in credits');
-  buttonsContainer.appendChild(creditsInput);
 };
 
 // Function that creates a button that allows users to increment credits
@@ -608,12 +600,17 @@ const createDealCardsBtn = () => {
         drawInitialHand();
         checkForWinCombi();
         console.log('creditsLeft', creditsLeft);
-        // reset insert credits and deduct from credits left:
-        creditsLeft -= numCreditsInserted;
-        numCreditsInserted = 0;
 
         // calculate score and add to creditsLeft
         calcHandScore();
+
+        // // Scroll the top header to display the winning combi
+        scrollTest();
+        // slotMachineAnimation();
+
+        // reset insert credits and deduct from credits left:
+        creditsLeft -= numCreditsInserted;
+        numCreditsInserted = 0;
 
         // reset stats display and make a new one;
         statsDisplay.innerText = '';
@@ -679,7 +676,6 @@ const gameInit = () => {
   buildUI();
   shuffledDeck = shuffleCards(makeDeck());
   createGameStatsDisplay();
-  createCreditsInput();
   createInsertCreditsBtn();
   createDealCardsBtn();
   createSwapCardsBtn();
@@ -687,3 +683,63 @@ const gameInit = () => {
 // ==== EXECUTE GAME =====//
 
 gameInit();
+
+// Create new object to spin the combiDisplayCol
+const combiDisplayCol = document.querySelector('.nameOfCombiDisplay');
+const combiDisplayMachine = new SlotMachine(combiDisplayCol, { active: 9 });
+
+// Create new object to spin the payout 1 column
+const pOut1Col = document.querySelector('.pCol1');
+const pOut1Machine = new SlotMachine(pOut1Col, { active: 9 });
+console.log(pOut1Machine);
+
+// Create new object to spin the payout 2 column
+const pOut2Col = document.querySelector('.pCol2');
+const pOut2Machine = new SlotMachine(pOut2Col, { active: 9 });
+
+// Create new object to spin the payout 2 column
+const pOut3Col = document.querySelector('.pCol3');
+const pOut3Machine = new SlotMachine(pOut3Col, { active: 9 });
+
+// Create new object to spin the payout 2 column
+const pOut4Col = document.querySelector('.pCol4');
+const pOut4Machine = new SlotMachine(pOut4Col, { active: 9 });
+
+// Create new object to spin the payout 2 column
+const pOut5Col = document.querySelector('.pCol5');
+const pOut5Machine = new SlotMachine(pOut5Col, { active: 9 });
+
+const scrollTest = () => {
+  const delay = 500;
+  const numTimesToScrollUp = oneCreditPayOut.length - rankOfHand - 3;
+  console.log(numTimesToScrollUp, 'numTimesToScrollUp');
+  const animationDelay = delay * numTimesToScrollUp;
+
+  const combiRoller = setInterval(() => {
+    combiDisplayMachine.next();
+
+    switch (payoutLevel) {
+      case 0:
+        pOut1Machine.next();
+        break;
+      case 1:
+        pOut2Machine.next();
+        break;
+      case 2:
+        pOut3Machine.next();
+        break;
+      case 3:
+        pOut4Machine.next();
+        break;
+      case 4:
+        pOut5Machine.next();
+        break;
+      default:
+        console.log('error');
+    }
+
+    setTimeout(() => {
+      clearInterval(combiRoller);
+    }, animationDelay + 100);
+  }, delay);
+};

@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "animate.css": "^4.1.1",
-    "jquery": "^3.5.1"
+    "jquery": "^3.5.1",
+    "jquery-slotmachine": "^4.0.1"
   }
 }

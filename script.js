@@ -1,5 +1,5 @@
 // Global Variable
-const playerHand = [];
+let playerHand = [];
 let playerCard;
 let bid = 5;
 let winnings = 100;
@@ -40,13 +40,13 @@ const makeDeck = () => {
     const currentSuit = suits[suitIndex];
     let colorType;
     let suitSymbol;
-    if (suitIndex == 0) {
+    if (suitIndex === 0) {
       suitSymbol = '♥';
       colorType = 'red';
-    } else if (suitIndex == 1) {
+    } else if (suitIndex === 1) {
       suitSymbol = '♦';
       colorType = 'red';
-    } else if (suitIndex == 2) {
+    } else if (suitIndex === 2) {
       suitSymbol = '♣';
       colorType = 'black';
     } else {
@@ -136,17 +136,20 @@ mainDisplayDiv.setAttribute('id', 'second-display');
 // bid amount display and label
 const bidAmountInput = document.createElement('input');
 bidAmountInput.setAttribute('type', 'number');
-bidAmountInput.setAttribute('class', 'display');
+bidAmountInput.classList.add('display', 'input-text');
 bidAmountInput.setAttribute('id', 'bid-amount-user');
 bidAmountInput.value = bid;
 const bidAmountLabel = document.createElement('label');
 bidAmountLabel.setAttribute('class', 'display');
 bidAmountLabel.innerText = 'Bid Amount:';
 
+// create br
+const brEL = document.createElement('br');
+
 // winnings display and label
 const displayWinnings = document.createElement('input');
 displayWinnings.setAttribute('type', 'number');
-displayWinnings.setAttribute('class', 'display');
+displayWinnings.classList.add('display', 'input-text');
 displayWinnings.setAttribute('id', 'winnings');
 displayWinnings.value = winnings;
 // disabling the input ability for the user
@@ -161,21 +164,13 @@ cardContainer.classList.add('cardContainer');
 
 // creation of deal button element
 const dealButton = document.createElement('button');
+dealButton.classList.add('btn', 'btn-success', 'button');
 dealButton.innerText = 'Deal Cards';
 
-// // function to auto create the back of the card element
-// const cardBackCreation = () => {
-
-// };
 // creation of back of card element
-const cardBack1 = document.createElement('img');
-cardBack1.setAttribute('src', 'https://tinyurl.com/y4bvjuw9');
-cardBack1.classList.add('cardback');
-
-// creation of back of card element
-const cardBack2 = document.createElement('img');
-cardBack2.setAttribute('src', 'https://tinyurl.com/y4bvjuw9');
-cardBack2.classList.add('cardback');
+// const cardBack2 = document.createElement('img');
+// cardBack2.setAttribute('src', 'https://tinyurl.com/y4bvjuw9');
+// cardBack2.classList.add('cardback', 'card');
 
 // card selection to trade
 let selectedCardsArray = [];
@@ -200,17 +195,24 @@ const cardSelection = (selectedCard) => {
     selectedCardsArray.push(selectedCard); // store the card in the card in the array
   }
 };
+
 // create the front of the card and add event listner to the card front
 let cardIDCounter = 0;
 const createCard = (cardInfo) => {
   const symbol = document.createElement('div');
-  symbol.classList.add('suit');
-  symbol.classList.add(cardInfo.display, cardInfo.color, 'card-corner-suit', 'card-topleft');
+  symbol.classList.add(cardInfo.display, cardInfo.color, 'suit', 'card-corner-suit', 'card-topleft', 'card__face', 'card__face--front');
   symbol.innerText = cardInfo.symbol;
 
   const name = document.createElement('div');
-  name.classList.add(cardInfo.display, cardInfo.color, 'card-corner-rank', 'card-topleft');
+  name.classList.add(cardInfo.display, cardInfo.color, 'name', 'card-corner-rank', 'card-topleft', 'card__face', 'card__face--front');
   name.innerText = cardInfo.name;
+
+  // creation of back of card element
+  const cardBack = document.createElement('img');
+  cardBack.setAttribute('src', 'Assets/cardback.png');
+  cardBack.setAttribute('width', '300');
+  cardBack.setAttribute('height', '300');
+  cardBack.classList.add('card__face', 'card__face--back');
 
   const card = document.createElement('div');
   card.classList.add('card');
@@ -218,8 +220,17 @@ const createCard = (cardInfo) => {
   card.setAttribute('id', `position${cardIDCounter}`);
   card.appendChild(name);
   card.appendChild(symbol);
+  card.appendChild(cardBack);
   return card;
 };
+
+// CSS animation for card Flip
+const animationDiv = document.createElement('div');
+animationDiv.classList.add('scene');
+
+// cardFlip.appendChild(cardBack1);
+// animationDiv.appendChild(cardFlip);
+cardContainer.appendChild(animationDiv);
 
 const tradeCards = () => {
   // trade the selected cards in playerhand
@@ -245,11 +256,11 @@ const tradeCards = () => {
 // appending child order/display order
 mainDisplayDiv.appendChild(bidAmountLabel);
 mainDisplayDiv.appendChild(bidAmountInput);
-mainDisplayDiv.appendChild(displayWinningsLabel);
-mainDisplayDiv.appendChild(displayWinnings);
+mainDisplayDiv.appendChild(brEL);
+mainDisplayDiv.appendChild(brEL.cloneNode());
 mainDisplayDiv.appendChild(dealButton);
+mainDisplayDiv.appendChild(brEL.cloneNode());
 mainDisplayDiv.appendChild(cardContainer);
-
 // store the cards based on rank, each rank has a different row in the array
 let rankHandArray = [[]];
 
@@ -321,18 +332,30 @@ const continuePlaying = () => {
   threeOfAKind = null;
   twoPairs = null;
   pair = null;
-  lhighCard = null;
+  highCard = null;
   royalFlush = null;
   dealButton.disabled = false;
   dealButton.innerHTML = 'Deal';
-  cardContainer.innerHTML = '';
+  playerHand = [];
   dealTurn = 'first';
+  displayWinnings.value = winnings;
+  bidAmountInput.disabled = false;
+  if (winnings === 0) {
+    dealTurn = 'null';
+    winnings += 100;
+    displayWinnings.value = winnings;
+    bid = 5;
+    dealButton.innerText = 'Restart';
+  }
 };
 
 const checkForStraightFlush = () => {
   if (straights === true && flush === true && straightsToAce === null) {
     straightFlush = true;
     console.log('Straight Flush');
+    amountWon = 240 * bid;
+    winnings = amountWon + winnings;
+    outputMessage(`Congrats! Your hand is a Straight Flush!<br> You won ${amountWon}!<br> Click deal again to play!`);
     continuePlaying();
   } else if (straights === true && flush === true && straightsToAce === true) {
     royalFlush = true;
@@ -340,7 +363,6 @@ const checkForStraightFlush = () => {
     amountWon = 360 * bid;
     winnings = amountWon + winnings;
     outputMessage(`Congrats! Your hand is a Royal Flush! You won ${amountWon}! Click deal again to play!`);
-    dealButton.disabled = false;
     continuePlaying();
   }
 };
@@ -350,6 +372,10 @@ const checkForFourOfAKind = () => {
     || rankHandArray[1].length === 4)) {
     fourOfAKind = true;
     console.log('Four of a kind!');
+    amountWon = 120 * bid;
+    winnings = amountWon + winnings;
+    outputMessage(`Congrats! Your hand is a Royal Flush!<br> You won ${amountWon}!<br> Click deal again to play!`);
+    continuePlaying();
   }
 };
 const checkForFullHouse = () => {
@@ -358,6 +384,10 @@ const checkForFullHouse = () => {
       || rankHandArray[1].length === 3)) {
     fullHouse = true;
     console.log('full house');
+    amountWon = 60 * bid;
+    winnings = amountWon + winnings;
+    outputMessage(`Congrats! Your hand is a Full House!<br> You won ${amountWon}!<br> Click deal again to play!`);
+    continuePlaying();
   }
 };
 const checkForStraights = () => {
@@ -369,12 +399,22 @@ const checkForStraights = () => {
       straights = true;
       straightsToAce = true;
       console.log('straights to ace');
-    } } else if (Math.abs((rankHandArray[0][0].rank - rankHandArray[1][0].rank)
+      amountWon = 15 * bid;
+      winnings = amountWon + winnings;
+      outputMessage(`Congrats! Your hand is a Straights! You won ${amountWon}! Click deal again to play!`);
+      continuePlaying();
+    }
+  } else if (rankHandArray.length === 5
+    && Math.abs((rankHandArray[0][0].rank - rankHandArray[1][0].rank)
         + (rankHandArray[1][0].rank - rankHandArray[2][0].rank)
         + (rankHandArray[2][0].rank - rankHandArray[3][0].rank)
         + (rankHandArray[3][0].rank - rankHandArray[4][0].rank)) === 4) {
     straights = true;
     console.log('straights');
+    amountWon = 15 * bid;
+    winnings = amountWon + winnings;
+    outputMessage(`Congrats! Your hand is a Straights!<br> You won ${amountWon}!<br> Click deal again to play!`);
+    continuePlaying();
   }
 };
 const checkForFlush = () => {
@@ -384,6 +424,10 @@ const checkForFlush = () => {
     && rankHandArray[3][0].suit === rankHandArray[4][0].suit)) {
     flush = true;
     console.log('flush');
+    amountWon = 20 * bid;
+    winnings = amountWon + winnings;
+    outputMessage(`Congrats! Your hand is a Flush!<br> You won ${amountWon}!<br> Click deal again to play!`);
+    continuePlaying();
   }
 };
 const checkForThreeOfAKind = () => {
@@ -393,15 +437,23 @@ const checkForThreeOfAKind = () => {
           || rankHandArray[2].length === 3)) {
     threeOfAKind = true;
     console.log('Three of a Kind!');
+    amountWon = 10 * bid;
+    winnings = amountWon + winnings;
+    outputMessage(`Congrats! Your hand has a Three of A Kind!<br> You won ${amountWon}!<br> Click deal again to play!`);
+    continuePlaying();
   } };
 
 const checkForTwoPairs = () => {
   if (rankHandArrayLength === 3 && threeOfAKind === null
-      && ((rankHandArray[0].length === 2 && rankHandArray[1].length == 2)
-          || (rankHandArray[1].length === 2 && rankHandArray[2].length == 2)
-          || (rankHandArray[2].length === 2 && rankHandArray[3].length == 2))) {
+      && ((rankHandArray[0].length === 2 && rankHandArray[1].length === 2)
+          || (rankHandArray[1].length === 2 && rankHandArray[2].length === 2)
+          || (rankHandArray[2].length === 2 && rankHandArray[3].length === 2))) {
     twoPairs = true;
     console.log('Two Pairs');
+    amountWon = 5 * bid;
+    winnings = amountWon + winnings;
+    outputMessage(`Congrats! Your hand has a Two Pair!<br> You won ${amountWon}! <br>Click deal again to play!`);
+    continuePlaying();
   } };
 const checkForPair = () => {
   if (rankHandArrayLength === 4
@@ -412,6 +464,9 @@ const checkForPair = () => {
             || (rankHandArray[4].length === 2))) {
     pair = true;
     console.log('One Pair');
+    amountWon = 1 * bid;
+    winnings = amountWon + winnings;
+    outputMessage(`Congrats! Your hand has a Pair!<br>You won ${amountWon}!<br> Click deal again to play!`);
     continuePlaying();
   } };
 const checkForHighCard = () => {
@@ -427,6 +482,9 @@ const checkForHighCard = () => {
     && pair === null) {
     highCard = true;
     console.log('High Card');
+    amountWon = bid;
+    winnings -= amountWon;
+    outputMessage(`Oh no! You didn't hit! Better luck next time!<br> You lose ${amountWon}!<br> Click deal again to play!`);
     continuePlaying();
   }
 };
@@ -551,17 +609,19 @@ const gamePlay = () => {
   // textbox display
   const inputBox = document.createElement('input');
   inputBox.setAttribute('type', 'text');
-  inputBox.setAttribute('placeholder', 'Please input name');
+  inputBox.setAttribute('placeholder', 'Please Input Name');
   inputBox.setAttribute('class', 'display');
   inputBox.setAttribute('id', 'username-input');
   firstDisplayDiv.appendChild(inputBox);
+  firstDisplayDiv.appendChild(brEL.cloneNode());
   // creation of submit button
   const submitButton = document.createElement('button');
+  submitButton.classList.add('button', 'btn', 'btn-success');
   submitButton.innerText = 'Submit';
   // adding eventlistener to submitbutton to retrieve userInput and displaying the other elements
   submitButton.addEventListener('click', () => {
     const usernameInput = document.querySelector('#username-input');
-    outputMessage(`Hello ${usernameInput.value}! Please Enter Bid Amount And Click Deal to Start`);
+    outputMessage(`Hello ${usernameInput.value}! Please Enter Bid Amount Below <br>Click Deal to Start`);
     inputBox.value = '';
     document.body.removeChild(firstDisplayDiv);
     document.body.appendChild(mainDisplayDiv);
@@ -569,49 +629,59 @@ const gamePlay = () => {
   dealButton.addEventListener('click', () => {
     bid = document.querySelector('#bid-amount-user').value;
     // check for bid amount being bigger than winnings
-    if (bid > winnings) {
+    if (bid > winnings && dealTurn !== 'null') {
       outputMessage('You do not have that much to bid! Please try again');
-    } else if (dealTurn == 'first') {
+    } else if (dealTurn === 'first') {
+      cardContainer.innerHTML = '';
       for (let i = 0; i < 5; i += 1) {
         playerCard = deck.pop();
         playerHand.push(playerCard);
       }
       console.log(`${(JSON.stringify(playerHand))} first hand`);
       dealButton.disabled = true;
-      outputMessage('Please select card you wish to trade');
+      outputMessage('Please select the cards you wish to trade');
       bidAmountInput.disabled = true;
       for (let i = 0; i < playerHand.length; i += 1) {
         const cardEl = createCard(playerHand[i]);
         const selectedCard = playerHand[i];
         cardIDCounter += 1;
         cardContainer.appendChild(cardEl);
-        const cardContainer2 = cardContainer;
         cardEl.addEventListener('click', () => {
           cardSelection(selectedCard);
-          cardContainer.replaceChild(cardBack1, document.querySelector('.card:nth-child(2)'));
-          cardContainer2.replaceChild(cardBack2, document.querySelector('.card:nth-child(3)'));
+          cardEl.classList.toggle('is-flipped');
         });
       }
-    } else if (dealTurn == 'second') {
+    } else if (dealTurn === 'second') {
       tradeCards();
-      dealButton.disabled = true;
       // get array length to do comparison
       arrangeCards();
       groupRankedPlayerCards();
       checkPlayerHand();
-
-      outputMessage('Result');
+    } else if (dealTurn === 'null') {
+      dealTurn = 'first';
+      dealButton.innerText = 'Deal Cards';
+      displayWinnings.value = winnings;
+      bidAmountInput.value = 5;
+      outputMessage('Please Enter Bid Amount Below <br>Click Deal to Start');
+      inputBox.value = '';
     }
   });
+  firstDisplayDiv.appendChild(brEL.cloneNode());
   firstDisplayDiv.appendChild(submitButton);
 };
 
-const gameInit = () => {
-  gamePlay();
-  outputMessage('Hello, please input your name to begin');
+const setupDisplay = () => {
+  document.body.appendChild(displayWinningsLabel);
+  document.body.appendChild(displayWinnings);
+  document.body.appendChild(cardContainer);
   document.body.appendChild(outputMessageDiv);
   document.body.appendChild(firstDisplayDiv);
-  document.body.style.background = "url('https://i.imgur.com/nWiqT8A.png') no-repeat";
-  document.body.style.backgroundSize = '1000px 1000px';
+};
+
+const gameInit = () => {
+  winnings = 100;
+  setupDisplay();
+  gamePlay();
+  outputMessage('Hello, please input your name to begin!');
 };
 gameInit();

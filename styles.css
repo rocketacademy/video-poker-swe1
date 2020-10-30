@@ -1,0 +1,62 @@
+.card {
+  display: inline-block;
+  position: relative;
+  width: 5em;
+  height: 7em;
+  background-color: #ffffff;
+  box-shadow: 0 0.0625em 0.125em rgba(0, 0, 0, 0.15);
+  border-radius: 0.5em;
+  margin-left: 20px;
+  margin-top: 30px;
+}
+.card-topleft {
+  position: absolute;
+  top: 0.3em;
+  left: 0.72em;
+}
+.card-corner-rank,
+.card-corner-suit {
+  width: 1em;
+  text-align: center;
+  transform: translate(-50%, 0);
+}
+.cardback {
+  margin: 10px;
+  padding: 15px;
+  background-color: white;
+  width: 40px;
+  height: 50px;
+  text-align: center;
+  border-radius: 7px;
+  display: inline-block;
+  vertical-align: top;
+}
+.suit {
+  margin: 5px;
+  font-size: 60px;
+  text-align: center;
+  display: flex;
+  flex-wrap: wrap;
+}
+.name {
+  margin-left: 50px;
+  font-size: 24px;
+  text-align: center;
+  font-weight: bold;
+  font-family: sans-serif;
+}
+.red {
+  color: red;
+}
+.cardContainer {
+  background-color: green;
+  margin: 10px;
+  padding: 10px;
+  width: 525px;
+  height: 200px;
+  border-radius: 7px;
+}
+.display {
+  margin-bottom: 10px;
+  margin-right: 10px;
+}

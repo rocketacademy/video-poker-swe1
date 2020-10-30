@@ -113,16 +113,14 @@
 // Normal Straight Flush Hand
 // Result of isFlush is true and isStraight is true
 const simulatedHand = [
-  { name: 'Queen', suit: 'diamond', rank: 12 },
-  { name: 10, suit: 'diamond', rank: 10 },
-  { name: 'Jack', suit: 'diamond', rank: 11 },
-  { name: 'King', suit: 'diamond', rank: 13 },
-  { name: 'Ace', suit: 'diamond', rank: 1 },
-
-  { name: 'Queen', suit: 'diamond', rank: 12 },
-  { name: 10, suit: 'diamond', rank: 10 },
-  { name: 'Jack', suit: 'diamond', rank: 11 },
-  { name: 'King', suit: 'diamond', rank: 13 },
-  { name: 'Ace', suit: 'diamond', rank: 1 },
-
+  { name: 9, suit: 'spade', rank: 9 },
+  { name: 8, suit: 'diamond', rank: 8 },
+  { name: 'Jack', suit: 'club', rank: 11 },
+  { name: 7, suit: 'diamond', rank: 7 },
+  { name: 10, suit: 'heart', rank: 10 },
+  { name: 9, suit: 'spade', rank: 9 },
+  { name: 8, suit: 'diamond', rank: 8 },
+  { name: 'Jack', suit: 'club', rank: 11 },
+  { name: 7, suit: 'diamond', rank: 7 },
+  { name: 10, suit: 'heart', rank: 10 },
 ];

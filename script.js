@@ -60,6 +60,23 @@ let coverCardShown = true;
 // Five of a kind being 0 and Jacks or Better being 8, no winning hand = 9;
 let rankOfHand = 9;
 
+// --- Scroll Display Management ----//
+let combiDisplayCol;
+let pOut1Col;
+let pOut2Col;
+let pOut3Col;
+let pOut4Col;
+let pOut5Col;
+let combiDisplayMachine;
+let pOut1Machine;
+let pOut2Machine;
+let pOut3Machine;
+let pOut4Machine;
+let pOut5Machine;
+
+// -- Game Round Management --- //
+let gameRound = 0;
+
 // Calculate the score of the hand and add to user's credits
 const calcHandScore = () => {
   let amtWon = 0;
@@ -292,7 +309,7 @@ const buildUI = () => {
   buttonsContainer.classList.add('buttonsContainer');
 
   // Create the elements and information of combinations
-  generateDisplayCombinations();
+  generateCombinationsTopDisplay();
 
   overallScreen.appendChild(payOutScheduleDisplay);
   overallScreen.appendChild(cardsContainer);
@@ -384,6 +401,42 @@ const shuffleCards = (deck) => {
 
 // Function that generates a random index from an array given it's size
 const getRandomIndex = (size) => Math.floor(Math.random() * size);
+
+// Function that enables
+const topScoreScrollDisplay = () => {
+  const delay = 500;
+  const numTimesToScrollUp = 2;
+  console.log(numTimesToScrollUp, 'numTimesToScrollUp');
+  const animationDelay = delay * numTimesToScrollUp;
+
+  const combiRoller = setInterval(() => {
+    combiDisplayMachine.next();
+
+    switch (payoutLevel) {
+      case 0:
+        pOut1Machine.next();
+        break;
+      case 1:
+        pOut2Machine.next();
+        break;
+      case 2:
+        pOut3Machine.next();
+        break;
+      case 3:
+        pOut4Machine.next();
+        break;
+      case 4:
+        pOut5Machine.next();
+        break;
+      default:
+        console.log('error');
+    }
+
+    setTimeout(() => {
+      clearInterval(combiRoller);
+    }, animationDelay + 100);
+  }, delay);
+};
 
 // Function that generates the path to each individual card
 const getCardPicUrl = (card) => {
@@ -513,7 +566,7 @@ const drawInitialHand = () => {
 
 // Function that generates onscreen the different
 // winning combinations (and their prize monies [WIP])
-const generateDisplayCombinations = () => {
+const generateCombinationsTopDisplay = () => {
   const winningCombiArray = ['Five-of-a-kind', 'Straight Flush', 'Four-of-a-kind', 'Full-House', 'Flush', 'Straight', 'Three-of-a-kind', 'Two-Pair', 'Jacks-or-better', 'No Win-Hand'];
 
   // Create column that describe winning combinations
@@ -563,6 +616,16 @@ const createDealCardsBtn = () => {
   dealBtn.setAttribute('id', 'dealBtn');
   dealBtn.innerText = 'DEAL';
   dealBtn.addEventListener('click', () => {
+    console.log(gameRound, 'gameRound');
+    // reset the top scrolling machine displays and recreate it
+    if (gameRound > 0) {
+      const topDisplay = document.querySelector('.combinationsDisplay');
+      topDisplay.innerText = '';
+      generateCombinationsTopDisplay();
+      destroyScrollDisplayMachines();
+      createScrollDisplayMachines();
+    }
+
     if (numCreditsInserted > 0) {
       // Change delay in MS depending on whether covercards are present
       let delayInDrawingCardsAnimation;
@@ -605,8 +668,7 @@ const createDealCardsBtn = () => {
         calcHandScore();
 
         // // Scroll the top header to display the winning combi
-        scrollTest();
-        // slotMachineAnimation();
+        topScoreScrollDisplay();
 
         // reset insert credits and deduct from credits left:
         creditsLeft -= numCreditsInserted;
@@ -619,6 +681,7 @@ const createDealCardsBtn = () => {
     } else {
       console.log('cannot deal until you insert credits!');
     }
+    gameRound += 1;
   });
   buttonsContainer.appendChild(dealBtn);
 };
@@ -680,66 +743,34 @@ const gameInit = () => {
   createDealCardsBtn();
   createSwapCardsBtn();
 };
+
+const createScrollDisplayMachines = () => {
+  combiDisplayCol = document.querySelector('.nameOfCombiDisplay');
+  pOut1Col = document.querySelector('.pCol1');
+  pOut2Col = document.querySelector('.pCol2');
+  pOut3Col = document.querySelector('.pCol3');
+  pOut4Col = document.querySelector('.pCol4');
+  pOut5Col = document.querySelector('.pCol5');
+  combiDisplayMachine = new SlotMachine(combiDisplayCol, { active: 9 });
+  pOut1Machine = new SlotMachine(pOut1Col, { active: 9 });
+  pOut2Machine = new SlotMachine(pOut2Col, { active: 9 });
+  pOut3Machine = new SlotMachine(pOut3Col, { active: 9 });
+  pOut4Machine = new SlotMachine(pOut4Col, { active: 9 });
+  pOut5Machine = new SlotMachine(pOut5Col, { active: 9 });
+};
+
+const destroyScrollDisplayMachines = () => {
+  combiDisplayCol = null;
+  pOut1Col = null;
+  pOut2Col = null;
+  pOut3Col = null;
+  pOut4Col = null;
+  pOut5Col = null;
+};
+
 // ==== EXECUTE GAME =====//
 
 gameInit();
 
-// Create new object to spin the combiDisplayCol
-const combiDisplayCol = document.querySelector('.nameOfCombiDisplay');
-const combiDisplayMachine = new SlotMachine(combiDisplayCol, { active: 9 });
-
-// Create new object to spin the payout 1 column
-const pOut1Col = document.querySelector('.pCol1');
-const pOut1Machine = new SlotMachine(pOut1Col, { active: 9 });
-console.log(pOut1Machine);
-
-// Create new object to spin the payout 2 column
-const pOut2Col = document.querySelector('.pCol2');
-const pOut2Machine = new SlotMachine(pOut2Col, { active: 9 });
-
-// Create new object to spin the payout 2 column
-const pOut3Col = document.querySelector('.pCol3');
-const pOut3Machine = new SlotMachine(pOut3Col, { active: 9 });
-
-// Create new object to spin the payout 2 column
-const pOut4Col = document.querySelector('.pCol4');
-const pOut4Machine = new SlotMachine(pOut4Col, { active: 9 });
-
-// Create new object to spin the payout 2 column
-const pOut5Col = document.querySelector('.pCol5');
-const pOut5Machine = new SlotMachine(pOut5Col, { active: 9 });
-
-const scrollTest = () => {
-  const delay = 500;
-  const numTimesToScrollUp = oneCreditPayOut.length - rankOfHand - 3;
-  console.log(numTimesToScrollUp, 'numTimesToScrollUp');
-  const animationDelay = delay * numTimesToScrollUp;
-
-  const combiRoller = setInterval(() => {
-    combiDisplayMachine.next();
-
-    switch (payoutLevel) {
-      case 0:
-        pOut1Machine.next();
-        break;
-      case 1:
-        pOut2Machine.next();
-        break;
-      case 2:
-        pOut3Machine.next();
-        break;
-      case 3:
-        pOut4Machine.next();
-        break;
-      case 4:
-        pOut5Machine.next();
-        break;
-      default:
-        console.log('error');
-    }
-
-    setTimeout(() => {
-      clearInterval(combiRoller);
-    }, animationDelay + 100);
-  }, delay);
-};
+// To be refactored
+createScrollDisplayMachines();

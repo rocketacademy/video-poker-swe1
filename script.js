@@ -227,7 +227,7 @@ const makeCardElement = (cardData) => {
   nameEl.innerText = cardData.display;
 
   const cardEl = document.createElement('div');
-  cardEl.classList.add('card', 'col-3', 'align-items-center');
+  cardEl.classList.add('card', 'col-3', 'align-items-center', 'col-md-2');
 
   cardEl.appendChild(nameEl);
   cardEl.appendChild(suitEl);

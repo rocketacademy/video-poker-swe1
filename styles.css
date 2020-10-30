@@ -14,12 +14,19 @@ h1 {
 #game-display {
   margin-bottom: 35px;
 }
+
+/* for how-to-play section */
 ol {
   text-align: justify;
   padding-inline-start: 1em;
   margin-right: 1em;
   font-family: serif;
 }
+li {
+  padding-bottom: 0.5em;
+}
+
+/* for game section */
 #game-background {
   background-color: rgba(245, 222, 179, 0.7);
 }
@@ -39,7 +46,7 @@ ol {
 }
 .card {
   margin: 2px;
-  padding: 7% 4%;
+  padding: 2% 4%;
   background-color: white;
   text-align: center;
   border-radius: 8px;
@@ -47,15 +54,15 @@ ol {
   border-color: yellowgreen;
 }
 .card-border {
-  border-color: lightgray;
+  border-color: blue;
 }
 .suit {
   margin: 2px;
-  font-size: 20px;
+  font-size: 150%;
 }
 .name {
   margin: 2px;
-  font-size: 12px;
+  font-size: 100%;
 }
 .red {
   color: rgb(221, 7, 7);
@@ -107,6 +114,7 @@ ol {
   margin-left: 20px;
 }
 
+/* for scoring table section */
 table,
 th,
 td {
@@ -114,4 +122,25 @@ td {
 }
 .score {
   text-align: end;
+}
+
+@media (min-width: 768px) {
+  /* for how-to-play section */
+  ol {
+    font-size: 110%;
+  }
+
+  /* for game section */
+  .card {
+    margin: 4px;
+    padding: 5% 8%;
+    background-color: white;
+    text-align: center;
+    border-radius: 12px;
+    border-width: 6px;
+    border-color: yellowgreen;
+  }
+  .card-border {
+    border-color: blue;
+  }
 }

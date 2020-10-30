@@ -2,9 +2,9 @@
 const playerHand = [];
 let playerCard;
 let bid = 5;
-const winnings = 100;
+let winnings = 100;
 let dealTurn = 'first';
-
+let amountWon = 0;
 // helper functions (Make Deck) (Shuffle Cards)
 
 // cards is an array of card objects
@@ -215,7 +215,7 @@ const createCard = (cardInfo) => {
   const card = document.createElement('div');
   card.classList.add('card');
   card.setAttribute('id', 'card');
-  card.setAttribute('id', 'position' + cardIDCounter);
+  card.setAttribute('id', `position${cardIDCounter}`);
   card.appendChild(name);
   card.appendChild(symbol);
   return card;
@@ -309,13 +309,39 @@ let pair = null;
 let highCard = null;
 let royalFlush = null;
 
+// reset global variables to continue gameplay
+const continuePlaying = () => {
+  rankHandArrayLength = 0;
+  straightFlush = null;
+  fourOfAKind = null;
+  fullHouse = null;
+  flush = null;
+  straights = null;
+  straightsToAce = null;
+  threeOfAKind = null;
+  twoPairs = null;
+  pair = null;
+  lhighCard = null;
+  royalFlush = null;
+  dealButton.disabled = false;
+  dealButton.innerHTML = 'Deal';
+  cardContainer.innerHTML = '';
+  dealTurn = 'first';
+};
+
 const checkForStraightFlush = () => {
   if (straights === true && flush === true && straightsToAce === null) {
     straightFlush = true;
     console.log('Straight Flush');
+    continuePlaying();
   } else if (straights === true && flush === true && straightsToAce === true) {
     royalFlush = true;
     console.log('Royal Flush');
+    amountWon = 360 * bid;
+    winnings = amountWon + winnings;
+    outputMessage(`Congrats! Your hand is a Royal Flush! You won ${amountWon}! Click deal again to play!`);
+    dealButton.disabled = false;
+    continuePlaying();
   }
 };
 const checkForFourOfAKind = () => {
@@ -346,7 +372,7 @@ const checkForStraights = () => {
     } } else if (Math.abs((rankHandArray[0][0].rank - rankHandArray[1][0].rank)
         + (rankHandArray[1][0].rank - rankHandArray[2][0].rank)
         + (rankHandArray[2][0].rank - rankHandArray[3][0].rank)
-        + (rankHandArray[3][0].rank - rankHandArray[4][0].rank)) == 4) {
+        + (rankHandArray[3][0].rank - rankHandArray[4][0].rank)) === 4) {
     straights = true;
     console.log('straights');
   }
@@ -386,6 +412,7 @@ const checkForPair = () => {
             || (rankHandArray[4].length === 2))) {
     pair = true;
     console.log('One Pair');
+    continuePlaying();
   } };
 const checkForHighCard = () => {
   if (rankHandArrayLength === 5
@@ -400,6 +427,7 @@ const checkForHighCard = () => {
     && pair === null) {
     highCard = true;
     console.log('High Card');
+    continuePlaying();
   }
 };
 

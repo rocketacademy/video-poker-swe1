@@ -23,8 +23,6 @@ let dealButton;
 let exchangeOrHoldCardsButton;
 // container to display buttons
 let buttonsContainer;
-// container to display a card
-let playerCardContainer;
 // container to display the player's cardContainers
 let playerHandContainer;
 // container to display output messages informing player about the state of the game
@@ -75,9 +73,6 @@ let canExchangeOrHoldCards = false;
 // Helper functions ================================================
 // create elements needed when browser loads
 const createStartingElements = () => {
-  // container to display a card
-  playerCardContainer = document.createElement('div');
-  playerCardContainer.setAttribute('id', 'player-card-container');
   // container to display the player's cardContainers
   playerHandContainer = document.createElement('div');
   playerHandContainer.setAttribute('id', 'player-hand-container');

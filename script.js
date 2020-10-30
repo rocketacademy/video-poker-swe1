@@ -20,6 +20,7 @@ let nameOfWinCombi = 'No winning hand';
 
 // -------- Html Elements---------------------//
 let overallScreen;
+let payoutLevelPointer;
 let payOutScheduleDisplay;
 let cardsContainer;
 let statsDisplay;
@@ -76,6 +77,8 @@ let pOut5Machine;
 
 // -- Game Round Management --- //
 let gameRound = 0;
+
+//= ================== Helper Functions =========================//
 
 // Calculate the score of the hand and add to user's credits
 const calcHandScore = () => {
@@ -213,6 +216,7 @@ const checkForFlush = (numCardsToCheck) => {
   }
 };
 
+// Function that checks for straight-combi
 const checkForStraight = () => {
   // Sort hand by descending order by rank (use spread operator to prevent original hand array
   //  from changing)
@@ -246,6 +250,7 @@ const checkForStraight = () => {
   }
 };
 
+// Function that checks for a straight flush
 const checkForStraightFlush = () => {
   if (isFlush === true && isStraight === true) {
     isStraightFlush = true;
@@ -254,6 +259,7 @@ const checkForStraightFlush = () => {
   }
 };
 
+// Function that resets all global trackers /(variables) of any winning combi
 const resetAllWinningCombiStatus = () => {
   isAnyKindOrPair = false;
   isFullHouse = false;
@@ -287,11 +293,15 @@ const checkForWinCombi = () => {
   resetAllWinningCombiStatus();
 };
 
+// Function that creates initial UI
 const buildUI = () => {
   // Create the general structure of the display
   // Container that holds all the other elements inside
   overallScreen = document.createElement('div');
   overallScreen.classList.add('overallScreen');
+
+  payoutLevelPointer = document.createElement('div');
+  payoutLevelPointer.classList.add('arrow-down');
 
   payOutScheduleDisplay = document.createElement('div');
   payOutScheduleDisplay.classList.add('combinationsDisplay');
@@ -310,7 +320,7 @@ const buildUI = () => {
 
   // Create the elements and information of combinations
   generateCombinationsTopDisplay();
-
+  overallScreen.appendChild(payoutLevelPointer);
   overallScreen.appendChild(payOutScheduleDisplay);
   overallScreen.appendChild(cardsContainer);
   overallScreen.appendChild(statsDisplay);
@@ -402,9 +412,11 @@ const shuffleCards = (deck) => {
 // Function that generates a random index from an array given it's size
 const getRandomIndex = (size) => Math.floor(Math.random() * size);
 
-// Function that enables
+// Function that enables slotmachine animation on the winning combis on top
 const topScoreScrollDisplay = () => {
   const delay = 500;
+  // Still thinking of a good formula to replace 2
+  // 2 is meant to be the placeholder for the proper variable
   const numTimesToScrollUp = 2;
   console.log(numTimesToScrollUp, 'numTimesToScrollUp');
   const animationDelay = delay * numTimesToScrollUp;
@@ -468,6 +480,7 @@ const displayCoverCard = () => {
   }
 };
 
+// Function that animates out the cover cards everytime a new hand is to be drawn
 const coverCardAnimateOut = () => {
   let thisCoverCardImage = document.querySelector('#cc0');
   // Check if cover image exists before performing animation
@@ -499,6 +512,7 @@ const drawInitialHandAnimation = (index, thisCardImage, delayInS) => {
   thisCardImage.style.setProperty('--animate-duration', `${delayInS + index / 2}s`);
 };
 
+// Function that animates  - fades out current hand before next hand is drawn
 const fadeOutCurrHandAnimation = () => {
   for (let i = 0; i < playerHand.length; i += 1) {
     newCardImage = document.querySelector(`#cardImg${i + 1}`);
@@ -510,12 +524,14 @@ const fadeOutCurrHandAnimation = () => {
   }
 };
 
+// Function that draws the initial hand when the game begins
 const drawInitialHand = () => {
   for (let i = 0; i < 5; i += 1) {
     // Draw a card from top of deck
-    // For testing on different card combis
-    const card = simulatedHand.pop();
-    // const card = shuffledDeck.pop();
+
+    // // For testing on different card combis
+    // const card = simulatedHand.pop();
+    const card = shuffledDeck.pop();
     card.holdStatus = false;
 
     playerHand.push(card);
@@ -564,8 +580,8 @@ const drawInitialHand = () => {
   }
 };
 
-// Function that generates onscreen the different
-// winning combinations (and their prize monies [WIP])
+// Function that generates the static onscreen display of the different
+// winning combinations (and their prize monies)
 const generateCombinationsTopDisplay = () => {
   const winningCombiArray = ['Five-of-a-kind', 'Straight Flush', 'Four-of-a-kind', 'Full-House', 'Flush', 'Straight', 'Three-of-a-kind', 'Two-Pair', 'Jacks-or-better', 'No Win-Hand'];
 
@@ -604,6 +620,31 @@ const createInsertCreditsBtn = () => {
     if (numCreditsInserted < 5) {
       numCreditsInserted += 1;
       creditsInsertedDisplay.innerText = `INSERT CREDITS: ${numCreditsInserted}`;
+      const leftPxArray = ['350px', '489px', '630px', '770px', '908px'];
+      switch (numCreditsInserted) {
+        case 1:
+          payoutLevelPointer.style.left = `${leftPxArray[0]}`;
+          break;
+        case 2:
+          payoutLevelPointer.style.left = `${leftPxArray[1]}`;
+          break;
+
+        case 3:
+          payoutLevelPointer.style.left = `${leftPxArray[2]}`;
+          break;
+
+        case 4:
+          payoutLevelPointer.style.left = `${leftPxArray[3]}`;
+          break;
+
+        case 5:
+          payoutLevelPointer.style.left = `${leftPxArray[4]}`;
+          break;
+
+        default:
+          payoutLevelPointer.style.left = `${leftPxArray[0]}`;
+      }
+
       console.log(numCreditsInserted, 'creditsToBeInserted');
     }
   });
@@ -744,6 +785,7 @@ const gameInit = () => {
   createSwapCardsBtn();
 };
 
+// Function that creates a 'slotMachine' obj for each column of the display abv
 const createScrollDisplayMachines = () => {
   combiDisplayCol = document.querySelector('.nameOfCombiDisplay');
   pOut1Col = document.querySelector('.pCol1');
@@ -759,6 +801,7 @@ const createScrollDisplayMachines = () => {
   pOut5Machine = new SlotMachine(pOut5Col, { active: 9 });
 };
 
+// Function that destroys each of the 'slotMachine' objs previously created
 const destroyScrollDisplayMachines = () => {
   combiDisplayCol = null;
   pOut1Col = null;
@@ -772,5 +815,5 @@ const destroyScrollDisplayMachines = () => {
 
 gameInit();
 
-// To be refactored
+// Execute the creation of the scroll display machine - To be refactored
 createScrollDisplayMachines();

@@ -1,4 +1,5 @@
-// Test Cases
+// Test Cases - To be further refined for any other bugs
+
 // // Five of Kind
 // const playerHand = [
 //   {name: 2, suit: 'diamond', rank: 2},
@@ -112,15 +113,10 @@
 
 // Normal Straight Flush Hand
 // Result of isFlush is true and isStraight is true
-const simulatedHand = [
-  { name: 9, suit: 'spade', rank: 9 },
-  { name: 8, suit: 'diamond', rank: 8 },
-  { name: 'Jack', suit: 'club', rank: 11 },
-  { name: 7, suit: 'diamond', rank: 7 },
-  { name: 10, suit: 'heart', rank: 10 },
-  { name: 9, suit: 'spade', rank: 9 },
-  { name: 8, suit: 'diamond', rank: 8 },
-  { name: 'Jack', suit: 'club', rank: 11 },
-  { name: 7, suit: 'diamond', rank: 7 },
-  { name: 10, suit: 'heart', rank: 10 },
-];
+// const simulatedHand = [
+//   { name: 2, suit: 'diamond', rank: 2 },
+//   { name: 2, suit: 'heart', rank: 2 },
+//   { name: 2, suit: 'spade', rank: 2 },
+//   { name: 2, suit: 'club', rank: 2 },
+//   { name: 3, suit: 'club', rank: 3 },
+// ];

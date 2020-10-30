@@ -121,6 +121,7 @@
   background-color: pink;
   flex: 0.2;
 }
+
 .buttonsContainer {
   background-color: grey;
   flex: 0.2;
@@ -179,6 +180,19 @@
   text-align: right;
 }
 
+.arrow-down {
+  position: relative;
+  top: 10px;
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 10px solid rgb(246, 255, 0);
+  margin-top: -9px;
+  /* Default position */
+  left: 350px;
+}
+
 /* for half screen*/
 @media screen and (max-width: 1000px) {
   .overallScreen {
@@ -191,7 +205,6 @@
     flex: 0.07;
     font-size: 25px;
   }
-
   .cardsContainer {
     flex: 1;
     flex-wrap: wrap;
@@ -218,7 +231,6 @@
     text-align: center;
     margin-top: -15px;
   }
-
   #availCredits {
     font-size: 25px;
   }

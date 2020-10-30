@@ -4,13 +4,56 @@ body{
   font-family: sans-serif, serif;
 }
 
+.game{
+  display: inline-flex;
+}
+
+.game > div{
+  margin-left: 20px;
+}
+
+.game-play .pay-table{
+  display: flex;
+  vertical-align: top;
+  flex-wrap: wrap;
+  /* margin: 20px 30px; */
+}
+
+.game-play{
+  text-align: center;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid olive;
+  border-radius: 9px;
+}
+
+.inputs{
+  margin-top: 10px;
+}
+.bet-amount{
+  border-radius: 3px;
+  border: 1px solid olive;
+}
+
+ 
+.pay-table{
+  justify-content: flex-start;
+} 
+
+table, th, td{
+  border:1px solid olive;
+  border-collapse: collapse;
+  padding: 10px;
+  font-size: 90%;
+}
+
 .button-common{
   background-color: #3B6855;
   color: white;
   text-align: center;
   border-radius: 9px;
-  margin-bottom: 10px;
-  margin-left: 10px;
+  margin: 10px;
   padding: 7px 7px ;
 }
 
@@ -20,17 +63,13 @@ body{
   padding: 10px 15px ;
 }
 
-.game-play .pay-table{
-  display: inline-block;
-  vertical-align: top;
-  margin: 20px;
-}
+
 .single-card{
   display: inline-block;
   vertical-align: top;
   margin: 10px;
-  width: 50px;
-  height: 80px;
+  width: 100px;
+  height: 125px;
   background-color: #cee0c4;  
   border-radius: 5px;
   text-align:center;
@@ -83,7 +122,8 @@ body{
   font-weight: lighter;
   font-style: italic;
   font-size: 90%;
-  margin: 10px 10px 20px;
+  margin: 10px 10px;
+  line-height: 1.5em;
 }
 
 .result{
@@ -91,17 +131,6 @@ body{
 }
 .score-card-container{
   margin: 20px;
-}
-
-
-table, th, td{
-  border:1px solid olive;
-  border-collapse: collapse;
-  padding: 10px;
-}
-
-.pay-table{
-  margin-top: 20px;
 }
 
 .tooltip .tooltip-text {

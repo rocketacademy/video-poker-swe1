@@ -17,6 +17,7 @@ let divGameStatus = null;
 let divDealtCardBoardElement = null;
 // Element to show the current credit in hand
 let divCurrentCreditHand = null;
+let inputBetAmountElement = null;
 let deck = null;
 let isGameOver = false;
 let gameResultType = '';
@@ -571,6 +572,18 @@ const displayCardElement = (cardElement, cardInfo, isScoreCardElement = false) =
   return cardElement;
 };
 
+// Function that handles the Bet SUbmit button click
+const onClickSubmitBet = () => {
+  setGameStatus('');
+  betAmount = inputBetAmountElement.valueAsNumber;
+  // Have to check whether the input given by the user is a number or not
+  // eslint-disable-next-line no-restricted-globals
+  if (isNaN(betAmount)) {
+    betAmount = 0;
+    setGameStatus('Please provide a valid number as bet amount');
+  }
+};
+
 // Function to create a table cell that displays the card
 const createCardCell = (cardDeck) => {
   /**
@@ -634,8 +647,8 @@ const addScoreCard = (dealtCardBoard) => {
 // Function to handle result score card display
 const displayScoreCard = () => {
   // const gameInfoMessage = (hasPlayerWon()) ? `You won!! ${gameResultType}` : 'You lost!!';
-  setGameStatus(`Game Over. \n
-  ${gameResultType}.
+  setGameStatus(`Game Over.<br>
+  <b>${gameResultType}</b>. <br>
   Please check score card for more details.`);
   // Display the current cards in the score cards
   addScoreCard(boardOfDealtCards);
@@ -687,9 +700,10 @@ const onClickDealDrawButton = () =>
     isGameOver = false;
     setGameStatus('');
   }
-
-  currentCreditsInHand -= betAmount;
-  setCurrentCreditInfo();
+  if (!drawAndReplaceCards) {
+    currentCreditsInHand -= betAmount;
+    setCurrentCreditInfo();
+  }
 
   for (let i = 0; i < boardOfDealtCards.length; i += 1)
   {
@@ -784,23 +798,24 @@ const createInputContainer = () => {
   const divGameInputContainer = document.createElement('div');
   divGameInputContainer.classList.add('inputs');
 
-  const inputBetAmount = document.createElement('input');
-  inputBetAmount.setAttribute('type', 'Number');
-  inputBetAmount.placeholder = 'Enter bet Amount';
-  divGameInputContainer.appendChild(inputBetAmount);
+  inputBetAmountElement = document.createElement('input');
+  inputBetAmountElement.classList.add('bet-amount');
+  inputBetAmountElement.setAttribute('type', 'Number');
+  inputBetAmountElement.placeholder = 'Enter bet Amount';
+  divGameInputContainer.appendChild(inputBetAmountElement);
 
   const buttonSubmitBet = document.createElement('button');
   buttonSubmitBet.classList.add('button-common');
   buttonSubmitBet.innerText = 'Submit Bet Amount';
-  buttonSubmitBet.addEventListener('click', () => {
-    betAmount = inputBetAmount.valueAsNumber;
-  });
+  buttonSubmitBet.addEventListener('click', onClickSubmitBet);
   divGameInputContainer.appendChild(buttonSubmitBet);
   return divGameInputContainer;
 };
 
 // Set of functions that creates all the elements for game play div
 const createGameContainerElements = (divGameContainer) => {
+  // createPayTableContainer(divGameContainer);
+
   // Game playing container
   // <div class="game-play">
   const divGamePlayContainer = document.createElement('div');
@@ -847,8 +862,6 @@ const createGameContainerElements = (divGameContainer) => {
   divGamePlayContainer.appendChild(divGameStatus);
 
   divGameContainer.appendChild(divGamePlayContainer);
-
-  createPayTableContainer(divGameContainer);
 };
 
 // Function to define column headers for the Score table

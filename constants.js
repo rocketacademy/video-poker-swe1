@@ -59,7 +59,7 @@ const GameTypeList = [PairOfJacksBetterRank,
 
 const PayTableObjects = [
   {
-    gameName: 'Pair of jacks or better',
+    gameName: 'Pair of Jacks or Better',
     gameRank: PairOfJacksBetterRank,
     gameCredit: 5,
     gameDesc: 'Two jacks, queens, kings, or aces.',

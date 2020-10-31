@@ -62,6 +62,10 @@ let coverCardShown = true;
 // Five of a kind being 0 and Jacks or Better being 8, no winning hand = 9;
 let rankOfHand = 9;
 
+// Track displays relating to gameOver messages
+let gameOverDisplay;
+let insertCreditsToContinueDisplay;
+
 // --- Scroll Display Management ----//
 let combiDisplayCol;
 let pOut1Col;
@@ -544,13 +548,13 @@ const createGameOverDisplay = () => {
   }
 
   // Create 'gameOver' display that will overlay the cards when game ends
-  const gameOverDisplay = document.createElement('div');
+  gameOverDisplay = document.createElement('div');
   gameOverDisplay.classList.add('gameOver');
   gameOverDisplay.classList.add('animate__animated');
   gameOverDisplay.classList.add('animate__fadeIn');
   gameOverDisplay.innerHTML = 'GAME OVER';
 
-  const insertCreditsToContinueDisplay = document.createElement('div');
+  insertCreditsToContinueDisplay = document.createElement('div');
   insertCreditsToContinueDisplay.innerText = 'Please insert credits to continue.';
   insertCreditsToContinueDisplay.classList.add('finalInsertCredits');
   insertCreditsToContinueDisplay.classList.add('animate__animated');
@@ -560,14 +564,21 @@ const createGameOverDisplay = () => {
   cardsContainer.appendChild(insertCreditsToContinueDisplay);
 };
 
+const fadeOutGameOverDisplay = () => {
+  gameOverDisplay.classList.remove('animate__fadeIn');
+  gameOverDisplay.classList.add('animate__fadeOut');
+  insertCreditsToContinueDisplay.classList.remove('animate__fadeIn');
+  insertCreditsToContinueDisplay.classList.add('animate__fadeOut');
+};
+
 // Function that draws the initial hand when the game begins
 const drawInitialHand = () => {
   for (let i = 0; i < 5; i += 1) {
     // Draw a card from top of deck
 
     // // For testing on different card combis
-    const card = simulatedHand.pop();
-    // const card = shuffledDeck.pop();
+    // const card = simulatedHand.pop();
+    const card = shuffledDeck.pop();
     card.holdStatus = false;
 
     playerHand.push(card);
@@ -620,7 +631,7 @@ const drawInitialHand = () => {
 // Function that generates the static onscreen display of the different
 // winning combinations (and their prize monies)
 const generateCombinationsTopDisplay = () => {
-  const winningCombiArray = ['Five-of-a-kind', 'Straight Flush', 'Four-of-a-kind', 'Full-House', 'Flush', 'Straight', 'Three-of-a-kind', 'Two-Pair', 'Jacks-or-better', 'No Combo'];
+  const winningCombiArray = ['Five-of-a-kind', 'Straight Flush', 'Four-of-a-kind', 'Full-House', 'Flush', 'Straight', 'Three-of-a-kind', 'Two-Pairs', 'Jacks-or-better', 'No Combo'];
 
   // Create column that describe winning combinations
   const nameOfCombiDisplay = document.createElement('div');
@@ -715,6 +726,7 @@ const dealCardsAndAnimateMsg = () => {
 };
 
 // Perform the relevant animations, calculation of scores and displays of stats
+// when cards are dealt
 const runDealCardsEngine = () => {
   // Change delay in MS depending on whether covercards are present
   let delayInDrawingCardsAnimation;
@@ -726,6 +738,7 @@ const runDealCardsEngine = () => {
   } else if (coverCardShown === false) {
     const existHoldStatusDisplay = document.querySelector('.holdStatus');
     existHoldStatusDisplay.innerText = '';
+    fadeOutGameOverDisplay();
     fadeOutCurrHandAnimation();
 
     setTimeout(() => {
@@ -808,8 +821,8 @@ const createSwapCardsBtn = () => {
       gameState = 'gameOver';
       playerHand.map((currentCard, index) => {
         if (currentCard.holdStatus === false) {
-          // const newCard = shuffledDeck.pop();
-          const newCard = simulatedHand.pop();
+          const newCard = shuffledDeck.pop();
+          // const newCard = simulatedHand.pop();
           playerHand.splice(index, 1, newCard);
           displayNewDrawnCards(newCard, index);
         }
@@ -950,6 +963,6 @@ const instructionsAlert = () => {
 // Instructions on how to play
 
 gameInit();
-setTimeout(() => {
-  instructionsAlert();
-}, 2000);
+// setTimeout(() => {
+//   instructionsAlert();
+// }, 2000);

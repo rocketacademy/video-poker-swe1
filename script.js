@@ -20,7 +20,7 @@ let nameOfWinCombi = 'Deal to begin.';
 
 // -------- Html Elements---------------------//
 let overallScreen;
-let payoutLevelPointer;
+let payOutLevelPointer;
 let payOutScheduleDisplay;
 let cardsContainer;
 let statsDisplay;
@@ -37,7 +37,7 @@ let numCreditsInserted = 1;
 let creditsLeft = 100;
 let currAmtWon = 0;
 // Track payout level separate from creditsInserted
-let payoutLevel = 0;
+let payOutLevel = 0;
 
 // Hardcoded individual credit payouts for X amount of credits used
 const oneCreditPayOut = [250, 50, 25, 9, 6, 4, 3, 2, 1, 0];
@@ -83,16 +83,17 @@ let gameState = 'startGame';
 
 //= ================== Helper Functions =========================//
 
+// Function that determines payoutLevel
+const calcPayOutLevel = () => {
+  if (numCreditsInserted > 0) {
+    payOutLevel = numCreditsInserted - 1;
+    console.log(payOutLevel, 'payoutlevel');
+  }
+};
+
 // Calculate the score of the hand and add to user's credits
 const calcHandScore = () => {
-  let amtWon = 0;
-
-  if (numCreditsInserted > 0) {
-    payoutLevel = numCreditsInserted - 1;
-    console.log(payoutLevel, 'payoutlevel');
-  }
-
-  amtWon = payOutSchedule[payoutLevel][rankOfHand];
+  const amtWon = payOutSchedule[payOutLevel][rankOfHand];
   currAmtWon += amtWon;
   console.log(amtWon, 'amtWon');
   return currAmtWon;
@@ -295,8 +296,8 @@ const buildUI = () => {
   overallScreen = document.createElement('div');
   overallScreen.classList.add('overallScreen');
 
-  payoutLevelPointer = document.createElement('div');
-  payoutLevelPointer.classList.add('arrow-down');
+  payOutLevelPointer = document.createElement('div');
+  payOutLevelPointer.classList.add('arrow-down');
 
   payOutScheduleDisplay = document.createElement('div');
   payOutScheduleDisplay.classList.add('combinationsDisplay');
@@ -315,7 +316,7 @@ const buildUI = () => {
 
   // Create the elements and information of combinations
   generateCombinationsTopDisplay();
-  overallScreen.appendChild(payoutLevelPointer);
+  overallScreen.appendChild(payOutLevelPointer);
   overallScreen.appendChild(payOutScheduleDisplay);
   overallScreen.appendChild(cardsContainer);
   overallScreen.appendChild(statsDisplay);
@@ -418,16 +419,15 @@ const topScoreScrollDisplay = () => {
   // Rank of Hand:
   // 9 8 7 6 5 4 3 2 1 0
   // total length = 9 - rank of hand = 0
-
+  console.log('rankOfHand', rankOfHand);
   const numTimesToScrollUp = oneCreditPayOut.length - 1 - rankOfHand;
-  console.log(rankOfHand, 'rankOfHand');
-  console.log(numTimesToScrollUp, 'numTimesToScrollUp');
+  console.log(numTimesToScrollUp, 'numTimesUp');
   const animationDelay = delay * numTimesToScrollUp;
-  console.log(animationDelay, 'animationDelay');
+  console.log('animationDelay', animationDelay);
   if (numTimesToScrollUp > 0) {
     const combiRoller = setInterval(() => {
       combiDisplayMachine.next();
-      switch (payoutLevel) {
+      switch (payOutLevel) {
         case 0:
           pOut1Machine.next();
           break;
@@ -541,7 +541,6 @@ const createGameOverDisplay = () => {
   }
 
   // Create 'gameOver' display that will overlay the cards when game ends
-  const gameOver = false;
   const gameOverDisplay = document.createElement('div');
   gameOverDisplay.classList.add('gameOver');
   gameOverDisplay.classList.add('animate__animated');
@@ -562,12 +561,6 @@ const drawInitialHand = () => {
     card.holdStatus = false;
 
     playerHand.push(card);
-
-    // // Create 'gameOver' display that will overlay the cards when game ends
-    // const gameOver = false;
-    // const gameOverDisplay = document.createElement('div');
-    // gameOverDisplay.classList.add('gameOver');
-    // gameOverDisplay.innerHTML = 'GAME OVER';
 
     // Create 'hold' display on top of card pressed ;
     let holdStatus = false;
@@ -625,7 +618,7 @@ const generateCombinationsTopDisplay = () => {
   for (let i = 0; i < winningCombiArray.length; i += 1) {
     const winCombi = document.createElement('div');
     winCombi.innerText = winningCombiArray[i];
-    winCombi.classList.add('winCombi');
+    winCombi.classList.add('pOutBox');
     winCombi.setAttribute('id', `winCombi${i}`);
     nameOfCombiDisplay.appendChild(winCombi);
   }
@@ -657,26 +650,22 @@ const createInsertCreditsBtn = () => {
       const leftPxArray = ['350px', '489px', '630px', '770px', '908px'];
       switch (numCreditsInserted) {
         case 1:
-          payoutLevelPointer.style.left = `${leftPxArray[0]}`;
+          payOutLevelPointer.style.left = `${leftPxArray[0]}`;
           break;
         case 2:
-          payoutLevelPointer.style.left = `${leftPxArray[1]}`;
+          payOutLevelPointer.style.left = `${leftPxArray[1]}`;
           break;
-
         case 3:
-          payoutLevelPointer.style.left = `${leftPxArray[2]}`;
+          payOutLevelPointer.style.left = `${leftPxArray[2]}`;
           break;
-
         case 4:
-          payoutLevelPointer.style.left = `${leftPxArray[3]}`;
+          payOutLevelPointer.style.left = `${leftPxArray[3]}`;
           break;
-
         case 5:
-          payoutLevelPointer.style.left = `${leftPxArray[4]}`;
+          payOutLevelPointer.style.left = `${leftPxArray[4]}`;
           break;
-
         default:
-          payoutLevelPointer.style.left = `${leftPxArray[0]}`;
+          payOutLevelPointer.style.left = `${leftPxArray[0]}`;
       }
 
       console.log(numCreditsInserted, 'creditsToBeInserted');
@@ -693,7 +682,8 @@ const dealCardsAndAnimateMsg = () => {
     runDealCardsEngine();
     gameState = 'playerNextMove';
     // When player decides to either 'deal' or 'swap'
-  } else if (gameState === 'playerNextMove') {
+  } else if (gameState === 'playerNextMove' || gameState === 'gameOver') {
+    calcHandScore();
     createGameOverDisplay();
     statsDisplay.innerText = '';
     // Empty currAmtWon to total credits left
@@ -705,9 +695,9 @@ const dealCardsAndAnimateMsg = () => {
       creditsLeftDisplay.classList.add('animate__fast');
       creditsLeftDisplay.classList.add('animate__repeat-3');
     }
-
     // Reset curr amt won tracker to 0;
     currAmtWon = 0;
+    gameState = 'playerNextMove';
 
     setTimeout(() => {
       runDealCardsEngine();
@@ -753,8 +743,8 @@ const runDealCardsEngine = () => {
     checkForWinCombi();
     console.log('creditsLeft', creditsLeft);
 
-    // calculate score and add to creditsLeft
-    calcHandScore();
+    // // calculate score and add to creditsLeft
+    calcPayOutLevel();
 
     // Scroll the top header to display the winning combi
     topScoreScrollDisplay();
@@ -782,11 +772,7 @@ const createDealCardsBtn = () => {
 
     if (numCreditsInserted > 0) {
       if (gameRound > 0) {
-        const topDisplay = document.querySelector('.combinationsDisplay');
-        topDisplay.innerText = '';
-        generateCombinationsTopDisplay();
-        destroyScrollDisplayMachines();
-        createScrollDisplayMachines();
+        refreshScrollMachineDisplay();
       }
       dealCardsAndAnimateMsg();
     } else {
@@ -807,30 +793,46 @@ const createSwapCardsBtn = () => {
   swapBtn.innerText = 'SWAP';
 
   swapBtn.addEventListener('click', () => {
-    playerHand.map((currentCard, index) => {
-      if (currentCard.holdStatus === false) {
-        // const newCard = shuffledDeck.pop();
-        const newCard = simulatedHand.pop();
-        playerHand.splice(index, 1, newCard);
-        displayNewDrawnCards(newCard, index);
-      }
-    });
-    checkForWinCombi();
+    if (gameState === 'playerNextMove') {
+      gameState = 'gameOver';
+      playerHand.map((currentCard, index) => {
+        if (currentCard.holdStatus === false) {
+          // const newCard = shuffledDeck.pop();
+          const newCard = simulatedHand.pop();
+          playerHand.splice(index, 1, newCard);
+          displayNewDrawnCards(newCard, index);
+        }
+      });
+      checkForWinCombi();
+      refreshScrollMachineDisplay();
+      // calculate score and add to creditsLeft
+      calcHandScore();
 
-    // calculate score and add to creditsLeft
-    calcHandScore();
-
-    // Scroll the top header to display the winning combi
-    topScoreScrollDisplay();
-
-    // reset stats display and make a new one;
-    statsDisplay.innerText = '';
-    createGameStatsDisplay();
-    setTimeout(() => createGameOverDisplay(), 1500);
+      // Scroll the top header to display the winning combi
+      console.log('rankOfHand', rankOfHand);
+      topScoreScrollDisplay();
+      // reset stats display and make a new one;
+      statsDisplay.innerText = '';
+      createGameStatsDisplay();
+      setTimeout(() => createGameOverDisplay(), 1500);
+    } else if (gameState === 'gameOver') {
+      statsDisplay.innerText = '';
+      createGameStatsDisplay('Please insert \ncredits to deal!');
+      outputMsgDisplay.classList.add('animate__animated');
+      outputMsgDisplay.classList.add('animate__flash');
+    }
   });
   buttonsContainer.appendChild(swapBtn);
 };
 
+// Function that refreshes scroll machine display
+const refreshScrollMachineDisplay = () => {
+  const topDisplay = document.querySelector('.combinationsDisplay');
+  topDisplay.innerText = '';
+  generateCombinationsTopDisplay();
+  destroyScrollDisplayMachines();
+  createScrollDisplayMachines();
+};
 // Function that creates the display on the statistics on the gameplay below
 const createGameStatsDisplay = (outputMsg) => {
   // Display how much credits to play for this game
@@ -892,11 +894,9 @@ const gameInit = () => {
   createInsertCreditsBtn();
   createDealCardsBtn();
   createSwapCardsBtn();
+  createScrollDisplayMachines();
 };
 
 // ==== EXECUTE GAME =====//
 
 gameInit();
-
-// Execute the creation of the scroll display machine - To be refactored
-createScrollDisplayMachines();

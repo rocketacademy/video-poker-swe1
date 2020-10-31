@@ -556,8 +556,8 @@ const drawInitialHand = () => {
     // Draw a card from top of deck
 
     // // For testing on different card combis
-    const card = simulatedHand.pop();
-    // const card = shuffledDeck.pop();
+    // const card = simulatedHand.pop();
+    const card = shuffledDeck.pop();
     card.holdStatus = false;
 
     playerHand.push(card);
@@ -641,12 +641,14 @@ const generateCombinationsTopDisplay = () => {
 // Function that creates a button that allows users to increment credits
 const createInsertCreditsBtn = () => {
   const insertCreditsBtn = document.createElement('button');
+  insertCreditsBtn.classList.add('btn');
+  insertCreditsBtn.classList.add('btn-design1');
   insertCreditsBtn.innerText = 'INSERT \n 1 CREDIT';
   insertCreditsBtn.setAttribute('id', 'insertCreditsBtn');
   insertCreditsBtn.addEventListener('click', () => {
     if (numCreditsInserted < 5) {
       numCreditsInserted += 1;
-      creditsInsertedDisplay.innerText = `INSERT CREDITS: ${numCreditsInserted}`;
+      creditsInsertedDisplay.innerText = `Insert Credit(s): ${numCreditsInserted}`;
       const leftPxArray = ['490px', '598px', '707px', '816px', '925px'];
       switch (numCreditsInserted) {
         case 1:
@@ -764,6 +766,8 @@ const runDealCardsEngine = () => {
 // Function that creates a button for dealing cards and run corresponding events
 const createDealCardsBtn = () => {
   const dealBtn = document.createElement('button');
+  dealBtn.classList.add('btn');
+  dealBtn.classList.add('btn-design5');
   dealBtn.setAttribute('id', 'dealBtn');
   dealBtn.innerText = 'DEAL';
   dealBtn.addEventListener('click', () => {
@@ -789,6 +793,8 @@ const createDealCardsBtn = () => {
 // Function that creates a button that allows user to swap cards
 const createSwapCardsBtn = () => {
   const swapBtn = document.createElement('button');
+  swapBtn.classList.add('btn');
+  swapBtn.classList.add('btn-design1');
   swapBtn.setAttribute('id', 'swapBtn');
   swapBtn.innerText = 'SWAP';
 
@@ -797,8 +803,8 @@ const createSwapCardsBtn = () => {
       gameState = 'gameOver';
       playerHand.map((currentCard, index) => {
         if (currentCard.holdStatus === false) {
-          // const newCard = shuffledDeck.pop();
-          const newCard = simulatedHand.pop();
+          const newCard = shuffledDeck.pop();
+          // const newCard = simulatedHand.pop();
           playerHand.splice(index, 1, newCard);
           displayNewDrawnCards(newCard, index);
         }
@@ -837,7 +843,7 @@ const refreshScrollMachineDisplay = () => {
 const createGameStatsDisplay = (outputMsg) => {
   // Display how much credits to play for this game
   creditsInsertedDisplay = document.createElement('div');
-  creditsInsertedDisplay.innerText = `INSERT CREDITS: ${numCreditsInserted}`;
+  creditsInsertedDisplay.innerText = `Insert Credit(s): ${numCreditsInserted}`;
   creditsInsertedDisplay.setAttribute('id', 'creditsInserted');
 
   // Display what combination is present
@@ -852,7 +858,7 @@ const createGameStatsDisplay = (outputMsg) => {
 
   // Display how much credits the player has left
   creditsLeftDisplay = document.createElement('div');
-  creditsLeftDisplay.innerText = `CREDITS LEFT: ${creditsLeft}`;
+  creditsLeftDisplay.innerText = `Credits Left: ${creditsLeft}`;
   creditsLeftDisplay.setAttribute('id', 'availCredits');
 
   statsDisplay.appendChild(creditsInsertedDisplay);

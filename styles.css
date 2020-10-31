@@ -1,5 +1,7 @@
 body {
   background-color: lightblue;
+  display: flex;
+  align-items:center;
 }
 .playing-area {
   display: flex;
@@ -12,4 +14,49 @@ body {
   border: solid black;
   border-width: 2px;
   margin: 2px;
+}
+
+html, body{
+  height:100%
+}
+
+.container{
+background-color: #00A1FF;
+  height: 800px;
+  border: black solid;
+  border-width: 1px;
+  padding: 20px;
+  align-items:stretch;
+
+}
+
+.row{
+  background-color: white;
+  height:15%;
+  border: solid black;
+  border-width: 1px;
+  align-items: center;
+  justify-content: space-around;
+}
+
+#bidDisplay{
+  height:60%;
+  border: solid black;
+  border-width: 1px;
+  display:flex;
+  justify-content:center;
+  align-items: center;
+}
+
+button{
+  display:flex;
+  flex-wrap: wrap;;
+}
+
+.arsenalColumns{
+  height: 100%;
+}
+#outputBox{
+  border-left: solid black;
+  border-width: 1px;
 }

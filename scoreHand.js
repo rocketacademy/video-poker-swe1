@@ -139,7 +139,7 @@ const checkWin = (outcomeOfCheckPairs, outcomeOfCheckStraight, outcomeOfCheckFlu
     return 'jacksOrLarger';
   }
   console.log('lose');
-  return 'Sorry, you don\'t have a winning hand';
+  return 'lose';
 };
 
 //------------------------------------------

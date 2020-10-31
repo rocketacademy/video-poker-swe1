@@ -1,11 +1,19 @@
+html, body{
+  height:100%;
+}
 body {
   background-color: lightblue;
   display: flex;
   align-items:center;
 }
-.playing-area {
-  display: flex;
-  background-color: teal;
+
+.container{
+background-color: #00A1FF;
+  height: 80%;
+  width:100%;
+  border:black solid;
+  border-width: 1px;
+  padding:20px;
 }
 
 .cardElement {
@@ -18,21 +26,9 @@ body {
   border-radius: 10%;
 }
 
-html, body{
-  height:100%
-}
-
-.container{
-background-color: #00A1FF;
-  height: 800px;
-  border: black solid;
-  border-width: 1px;
-  padding: 20px;
-  align-items:stretch;
-
-}
 
 .row{
+  display: flex;
   background-color: white;
   height:15%;
   border: solid black;
@@ -41,7 +37,7 @@ background-color: #00A1FF;
   justify-content: space-around;
 }
 
-#bidDisplay{
+#bidDisplayID{
   height:60%;
   border: solid black;
   border-width: 1px;
@@ -64,7 +60,26 @@ button{
 }
 
 #arsenalID{
-  display: flex;
-  flex-wrap: wrap;
+  height:80%;
+}
+
+.backOfPlayingCard{
+  height: 80%;
+}
+
+
+
+#cardElementRow{
+  border: solid green;
+  background-color: orange;
+  height:30px;
+
+}
+
+#keepCardIndicationID{
+background-color:#D5D5D5;
+font-size:10px;
+word-break: break-word;
+width: 30px
 }
 

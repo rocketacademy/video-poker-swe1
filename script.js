@@ -10,7 +10,6 @@ const player = {
 };
 let deck = [];
 let keepCardCanClick = true;
-let bidButtonCanClick = true;
 let bidTracker = 0;
 
 //= =========HELPER FUNCTIONS===================
@@ -138,10 +137,14 @@ const buildBoardElements = () => {
   // addBidButton.innerText = 'Bid/Add Bid';
   // addBidButton.setAttribute('id', 'addBidButtonID');
   document.getElementById('bidButton').addEventListener('click', () => {
-    if (bidButtonCanClick === true) {
+    if (bidTracker < 5) {
       bidTracker += 1;
     }
+    console.log(bidTracker);
   });
+
+  // update the bid display
+  document.getElementById('bidDisplayID').innerText = bidTracker;
 
   // add a display to show the
 
@@ -182,6 +185,9 @@ const showCredits = (message) => {
 
 // -------initialise user's hand----------
 const intialiseHand = () => {
+  // ensure the player's hand is empty
+  player.hand = [];
+
   // Make a deck and shuffle it
   deck = shuffleCards(makeDeck());
   // push 5 cards to the hand
@@ -198,9 +204,11 @@ const createCardsElements = () => {
     console.log(player.hand[i]);
     // create a card element, and append it to the arsenal
     const cardElement = document.createElement('div');
-    cardElement.setAttribute('id', 'cardElementID');
     cardElement.classList.add('cardElement');
     cardElement.classList.add('btn-outline-dark');
+    cardElement.classList.add('col-md-2');
+    cardElement.classList.add('col-lg-4');
+    cardElement.setAttribute('id', 'cardElementID');
     document.getElementById('arsenalID').appendChild(cardElement);
     // assign current cardElement the details for card[i]
     cardElement.innerHTML = player.hand[i].display + player.hand[i].suitSymbol;
@@ -286,6 +294,14 @@ const getStakes = () => {
   return stakesArray[bidTracker];
 };
 
+const clickRestart = () => {
+// reset bidTracker to 0
+  bidTracker = 0;
+  // reset bidding button to ensure it is click-able
+  document.getElementById('bidButton').removeAttribute('disabled');
+  // initialise the game
+  initGame();
+};
 //= ===========GAME FLOW========================
 const initGame = () => {
   // build the board
@@ -296,8 +312,9 @@ const initGame = () => {
   createCardsElements();
 
   // Display the user's credits
-  // note: 100 credits were assigned to the player via default (as a global V)
-  console.log(`Your credits: ${player.credits}`);
+
+  // Logic to decide whether player is going forward with his current hand,
+  // or if he wants to return/draw new cards:
 
   // if player clicks the draw button and has selected cards to keep, then draw new cards for him;
   document.getElementById('dealOrDrawButtonID').addEventListener('click', () => {
@@ -307,11 +324,12 @@ const initGame = () => {
       console.log('player temp hand is empty');
 
       // prevent user from increasing bid here-on-out
-      bidButtonCanClick = false;
+      document.getElementById('bidButton').setAttribute('disabled', 'disabled');
       // Analyse the player's hand
       getHandScore();
     }
-    // else if the player has chosen some cards to keep and others to dispose
+
+    // else if the player has chosen some cards to keep and others to dispose:
     else if (player.tempHand.length !== 0) {
       // empty the player.hand and push temphand objects into the player.hand
       player.hand = [];
@@ -329,6 +347,8 @@ const initGame = () => {
       player.tempHand = [];
     }
   });
+  // give functionality to let player restart game after he is finished:
+  document.getElementById('restartButtonID').addEventListener('click', clickRestart);
 };
 
 initGame();

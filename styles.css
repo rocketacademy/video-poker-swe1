@@ -14,7 +14,9 @@ body {
 }
 
 .overallScreen {
-  background-color: blue;
+  background-color: #f3880b;
+
+  border-radius: 10px;
   margin: auto;
   display: flex;
   flex-direction: column;
@@ -24,6 +26,9 @@ body {
 
 .combinationsDisplay {
   background-color: green;
+  /* box-shadow: 0px 0px 10px #f38a0a, 0px 0px 20px #f38a0a, 0px 0px 30px #f38a0a, */
+  /* 0px 0px 40px #f38a0a; */
+  border-radius: 10px;
   flex: 0.06;
   display: flex;
   flex-direction: row;
@@ -36,51 +41,56 @@ body {
 
 .nameOfCombiDisplay {
   list-style-type: none;
-  /* padding-top: 5px; */
-  /* margin-top: -10px; */
   background-color: aquamarine;
-  flex: 2.1;
+  flex: 4;
   display: flex;
   flex-direction: column;
   font-size: 32px;
 }
 
-/* .winCombi {
-  flex: 1;
-  text-align: center;
-  padding-top: 2px;
-  margin-top: 1px;
-  border-style: dashed;
-} */
-
 .pCol1 {
   flex: 1;
-  background-color: red;
+  background-color: black;
   padding-top: 1px;
+  color: #fff;
+  text-shadow: 0px 0px 10px #c9cece, 0px 0px 20px #c9cece, 0px 0px 30px #c9cece,
+    0px 0px 40px #c9cece;
 }
 
 .pCol2 {
   flex: 1;
-  background-color: magenta;
+  background-color: black;
   padding-top: 2px;
+  color: #fff;
+  text-shadow: 0px 0px 10px #c7c345, 0px 0px 20px #c7c345, 0px 0px 30px #c7c345,
+    0px 0px 40px #c7c345;
 }
 
 .pCol3 {
   flex: 1;
-  background-color: aliceblue;
+  background-color: black;
   padding-top: 2px;
+  color: #fff;
+  text-shadow: 0px 0px 10px #46bbbb, 0px 0px 20px #46bbbb, 0px 0px 30px #46bbbb,
+    0px 0px 40px #46bbbb;
 }
 
 .pCol4 {
   flex: 1;
-  background-color: darkcyan;
+  background-color: black;
   padding-top: 2px;
+  color: #fff;
+  text-shadow: 0px 0px 10px #f95dab, 0px 0px 20px #f95dab, 0px 0px 30px #f95dab,
+    0px 0px 40px #f95dab;
 }
 
 .pCol5 {
   flex: 1;
-  background-color: gold;
+  background-color: black;
   padding-top: 2px;
+  color: #fff;
+  text-shadow: 0px 0px 10px #f38a0a, 0px 0px 20px #f38a0a, 0px 0px 30px #f38a0a,
+    0px 0px 40px #f38a0a;
 }
 
 .pOutBox {
@@ -90,7 +100,7 @@ body {
 }
 
 .cardsContainer {
-  background-color: beige;
+  background-color: black;
   position: relative;
   flex: 0.6;
   display: flex;
@@ -110,6 +120,7 @@ body {
   top: 30px;
   left: 414px;
   font-size: 30px;
+  color: white;
 }
 
 .card {
@@ -128,6 +139,7 @@ body {
   flex: 1;
   margin-top: -54px;
   font-size: 30px;
+  color: white;
 }
 
 .cardImage {
@@ -211,12 +223,11 @@ body {
   height: 0;
   border-left: 10px solid transparent;
   border-right: 10px solid transparent;
-  border-top: 10px solid rgb(246, 255, 0);
+  border-top: 10px solid #4edbb5;
   margin-top: -9px;
   /* Default position */
-  left: 350px;
+  left: 490px;
   font-size: 100px;
-  color: black;
 }
 
 /* for half screen*/

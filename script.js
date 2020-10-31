@@ -647,7 +647,7 @@ const createInsertCreditsBtn = () => {
     if (numCreditsInserted < 5) {
       numCreditsInserted += 1;
       creditsInsertedDisplay.innerText = `INSERT CREDITS: ${numCreditsInserted}`;
-      const leftPxArray = ['350px', '489px', '630px', '770px', '908px'];
+      const leftPxArray = ['490px', '598px', '707px', '816px', '925px'];
       switch (numCreditsInserted) {
         case 1:
           payOutLevelPointer.style.left = `${leftPxArray[0]}`;
@@ -743,7 +743,7 @@ const runDealCardsEngine = () => {
     checkForWinCombi();
     console.log('creditsLeft', creditsLeft);
 
-    // // calculate score and add to creditsLeft
+    // Calculate the level of payout and allow relevant pointer to scroll
     calcPayOutLevel();
 
     // Scroll the top header to display the winning combi

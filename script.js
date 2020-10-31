@@ -892,6 +892,15 @@ const destroyScrollDisplayMachines = () => {
   pOut5Col = null;
 };
 
+const playMusic = () => {
+  const shuffleAudio = document.createElement('audio');
+  shuffleAudio.src = './music/shuffle.mp3';
+  shuffleAudio.autoplay = true;
+  shuffleAudio.volume = 1.0;
+  document.body.appendChild(shuffleAudio);
+  console.log('test');
+};
+
 // Function that initializes the game with certain displays and cover-cards
 const gameInit = () => {
   buildUI();
@@ -901,6 +910,7 @@ const gameInit = () => {
   createDealCardsBtn();
   createSwapCardsBtn();
   createScrollDisplayMachines();
+  playMusic();
 };
 
 // ==== EXECUTE GAME =====//

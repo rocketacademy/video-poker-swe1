@@ -31,10 +31,11 @@ let buttonsContainer;
 let creditsLeftDisplay;
 let outputMsgDisplay;
 let creditsInsertedDisplay;
+
 // Track number of credits
 let numCreditsInserted = 1;
 let creditsLeft = 100;
-
+let currAmtWon = 0;
 // Track payout level separate from creditsInserted
 let payoutLevel = 0;
 
@@ -92,9 +93,9 @@ const calcHandScore = () => {
   }
 
   amtWon = payOutSchedule[payoutLevel][rankOfHand];
-  creditsLeft += amtWon;
+  currAmtWon += amtWon;
   console.log(amtWon, 'amtWon');
-  return amtWon;
+  return currAmtWon;
 };
 
 // Function that calculates the rank of the current hand
@@ -693,14 +694,21 @@ const dealCardsAndAnimateMsg = () => {
     gameState = 'playerNextMove';
     // When player decides to either 'deal' or 'swap'
   } else if (gameState === 'playerNextMove') {
-    console.log(gameState);
     createGameOverDisplay();
-    // Display a countdown timer till next hand is drawn
-
     statsDisplay.innerText = '';
+    // Empty currAmtWon to total credits left
+    creditsLeft += currAmtWon;
     createGameStatsDisplay('Dealing...');
+    if (currAmtWon > 0) {
+      creditsLeftDisplay.classList.add('animate__animated');
+      creditsLeftDisplay.classList.add('animate__pulse');
+      creditsLeftDisplay.classList.add('animate__fast');
+      creditsLeftDisplay.classList.add('animate__repeat-3');
+    }
 
-    // deal cards once countdown timer is done;
+    // Reset curr amt won tracker to 0;
+    currAmtWon = 0;
+
     setTimeout(() => {
       runDealCardsEngine();
     }, 1500);
@@ -745,8 +753,8 @@ const runDealCardsEngine = () => {
     checkForWinCombi();
     console.log('creditsLeft', creditsLeft);
 
-    // // calculate score and add to creditsLeft
-    // calcHandScore();
+    // calculate score and add to creditsLeft
+    calcHandScore();
 
     // Scroll the top header to display the winning combi
     topScoreScrollDisplay();

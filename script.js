@@ -219,7 +219,6 @@ const checkForStraight = () => {
   // Sort hand by descending order by rank (use spread operator to prevent original hand array
   //  from changing)
   const sortedHand = [...playerHand].sort((a, b) => b.rank - a.rank);
-  console.log(playerHand, 'playerHand');
 
   // loop through each element and check if difference between each is
   // exactly one...
@@ -240,9 +239,15 @@ const checkForStraight = () => {
       nameOfWinCombi = 'Ace-high Straight';
       rankOfHand = 5;
       isStraight = true;
+      // else this is a King-High Straight
+    } else {
+      nameOfWinCombi = `${highestCardName}-high Straight`;
+      rankOfHand = 5;
+      isStraight = true;
     }
+    // else it is just a normal straight
   } else if (countOfConsecutiveRankCards === sortedHand.length) {
-    nameOfWincombi = `${highestCardName}-high Straight`;
+    nameOfWinCombi = `${highestCardName}-high Straight`;
     rankOfHand = 5;
     isStraight = true;
   }
@@ -267,7 +272,6 @@ const resetAllWinningCombiStatus = () => {
   // reset the array that tracks number of common cards
   // per iteration of checks
   numCommonCardsArray.length = 0;
-  console.log('status is reset');
 };
 
 // Function that checks hand for any winning combination
@@ -336,7 +340,6 @@ const makeDeck = () => {
   while (suitIndex < suits.length) {
     // make a variable of current suit
     const currentSuit = suits[suitIndex];
-    // console.log("current suit : " + currentSuit)
 
     // loop to create all cards in this suit
     // rank 1 - 13
@@ -419,11 +422,8 @@ const topScoreScrollDisplay = () => {
   // Rank of Hand:
   // 9 8 7 6 5 4 3 2 1 0
   // total length = 9 - rank of hand = 0
-  console.log('rankOfHand', rankOfHand);
   const numTimesToScrollUp = oneCreditPayOut.length - 1 - rankOfHand;
-  console.log(numTimesToScrollUp, 'numTimesUp');
   const animationDelay = delay * numTimesToScrollUp;
-  console.log('animationDelay', animationDelay);
   if (numTimesToScrollUp > 0) {
     const combiRoller = setInterval(() => {
       combiDisplayMachine.next();
@@ -454,7 +454,6 @@ const topScoreScrollDisplay = () => {
     }, delay);
   }
   // reset rankOfHand after each calculation and animation
-  console.log(rankOfHand, 'rankOfHand');
   rankOfHand = 9;
 };
 
@@ -669,8 +668,6 @@ const createInsertCreditsBtn = () => {
         default:
           payOutLevelPointer.style.left = `${leftPxArray[0]}`;
       }
-
-      console.log(numCreditsInserted, 'creditsToBeInserted');
     }
   });
   buttonsContainer.appendChild(insertCreditsBtn);
@@ -680,7 +677,6 @@ const dealCardsAndAnimateMsg = () => {
   // Animation for output message in stats display when moving on to next round
   // When player begins gameRound 1
   if (gameState === 'startGame') {
-    console.log(gameState);
     runDealCardsEngine();
     gameState = 'playerNextMove';
     // When player decides to either 'deal' or 'swap'
@@ -743,7 +739,6 @@ const runDealCardsEngine = () => {
     nameOfWinCombi = 'No winning hand.\n Please insert credits to continue';
     drawInitialHand();
     checkForWinCombi();
-    console.log('creditsLeft', creditsLeft);
 
     // Calculate the level of payout and allow relevant pointer to scroll
     calcPayOutLevel();
@@ -771,7 +766,6 @@ const createDealCardsBtn = () => {
   dealBtn.setAttribute('id', 'dealBtn');
   dealBtn.innerText = 'DEAL';
   dealBtn.addEventListener('click', () => {
-    console.log(gameRound, 'gameRound');
     // reset the top scrolling machine displays and recreate it
 
     if (numCreditsInserted > 0) {
@@ -815,7 +809,6 @@ const createSwapCardsBtn = () => {
       calcHandScore();
 
       // Scroll the top header to display the winning combi
-      console.log('rankOfHand', rankOfHand);
       topScoreScrollDisplay();
       // reset stats display and make a new one;
       statsDisplay.innerText = '';
@@ -892,13 +885,20 @@ const destroyScrollDisplayMachines = () => {
   pOut5Col = null;
 };
 
+// Function that creates the music tag for bg music
+const createBgMusicTag = () => {
+  var bgMusic = document.createElement('audio');
+  bgMusic.setAttribute('id', 'bgMusic');
+  bgMusic.src = './music/zodiac.mp3';
+  bgMusic.volume = 0.2;
+  document.body.appendChild(bgMusic);
+};
+
+// Function that plays the music - note that chrome browsers require some user
+// iteraction with the website before music can be played
 const playMusic = () => {
-  const shuffleAudio = document.createElement('audio');
-  shuffleAudio.src = './music/shuffle.mp3';
-  shuffleAudio.autoplay = true;
-  shuffleAudio.volume = 1.0;
-  document.body.appendChild(shuffleAudio);
-  console.log('test');
+  document.getElementById('bgMusic').play();
+  document.removeEventListener('click', playMusic);
 };
 
 // Function that initializes the game with certain displays and cover-cards
@@ -910,7 +910,8 @@ const gameInit = () => {
   createDealCardsBtn();
   createSwapCardsBtn();
   createScrollDisplayMachines();
-  playMusic();
+  createBgMusicTag();
+  document.addEventListener('click', playMusic);
 };
 
 // ==== EXECUTE GAME =====//

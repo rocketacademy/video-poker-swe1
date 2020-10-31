@@ -16,7 +16,7 @@ let isStraight = false;
 let isStraightFlush = false;
 
 //  Global var that holds the name of the winning combi
-let nameOfWinCombi = 'Deal to begin.';
+let nameOfWinCombi = 'Deal to begin';
 
 // -------- Html Elements---------------------//
 let overallScreen;
@@ -80,6 +80,9 @@ let pOut5Machine;
 let gameRound = 0;
 // States are between 'startGame'/ 'playerNextMove'/ 'gameOver'
 let gameState = 'startGame';
+
+// ---Sound Mgmt--//
+let bgMusic;
 
 //= ================== Helper Functions =========================//
 
@@ -231,16 +234,17 @@ const checkForStraight = () => {
   // For checking if 1st 2 card is K and Q first
   const highestCardName = sortedHand[0].name;
   const secondHighestCardName = sortedHand[1].name;
+  const lowestCardName = sortedHand[sortedHand.length - 1].name;
 
-  if (highestCardName === 'King' && secondHighestCardName === 'Queen' && countOfConsecutiveRankCards >= 4) {
+  if (highestCardName === 'King' && secondHighestCardName === 'Queen' && countOfConsecutiveRankCards === 4) {
     // Check if last card in the sorted hand is an ace
     // because its rank is 0, it will not show up as a consecutive card
-    if (sortedHand[sortedHand.length - 1].name === 'Ace') {
+    if (lowestCardName.name === 'Ace') {
       nameOfWinCombi = 'Ace-high Straight';
       rankOfHand = 5;
       isStraight = true;
       // else this is a King-High Straight
-    } else {
+    } else if (lowestCardName === '10') {
       nameOfWinCombi = `${highestCardName}-high Straight`;
       rankOfHand = 5;
       isStraight = true;
@@ -287,7 +291,7 @@ const checkForWinCombi = () => {
   const countTrueArray = statusWinCombiArray.filter((status) => status === true);
   console.log(statusWinCombiArray);
   if (countTrueArray.length === 0) {
-    nameOfWinCombi = 'No winning hand';
+    nameOfWinCombi = 'No combo';
   }
   // reset nameOfWinCombi to all false;
   resetAllWinningCombiStatus();
@@ -546,7 +550,14 @@ const createGameOverDisplay = () => {
   gameOverDisplay.classList.add('animate__fadeIn');
   gameOverDisplay.innerHTML = 'GAME OVER';
 
+  const insertCreditsToContinueDisplay = document.createElement('div');
+  insertCreditsToContinueDisplay.innerText = 'Please insert credits to continue.';
+  insertCreditsToContinueDisplay.classList.add('finalInsertCredits');
+  insertCreditsToContinueDisplay.classList.add('animate__animated');
+  insertCreditsToContinueDisplay.classList.add('animate__fadeIn');
+
   cardsContainer.appendChild(gameOverDisplay);
+  cardsContainer.appendChild(insertCreditsToContinueDisplay);
 };
 
 // Function that draws the initial hand when the game begins
@@ -555,8 +566,8 @@ const drawInitialHand = () => {
     // Draw a card from top of deck
 
     // // For testing on different card combis
-    // const card = simulatedHand.pop();
-    const card = shuffledDeck.pop();
+    const card = simulatedHand.pop();
+    // const card = shuffledDeck.pop();
     card.holdStatus = false;
 
     playerHand.push(card);
@@ -609,7 +620,7 @@ const drawInitialHand = () => {
 // Function that generates the static onscreen display of the different
 // winning combinations (and their prize monies)
 const generateCombinationsTopDisplay = () => {
-  const winningCombiArray = ['Five-of-a-kind', 'Straight Flush', 'Four-of-a-kind', 'Full-House', 'Flush', 'Straight', 'Three-of-a-kind', 'Two-Pair', 'Jacks-or-better', 'No Win-Hand'];
+  const winningCombiArray = ['Five-of-a-kind', 'Straight Flush', 'Four-of-a-kind', 'Full-House', 'Flush', 'Straight', 'Three-of-a-kind', 'Two-Pair', 'Jacks-or-better', 'No Combo'];
 
   // Create column that describe winning combinations
   const nameOfCombiDisplay = document.createElement('div');
@@ -641,7 +652,7 @@ const generateCombinationsTopDisplay = () => {
 const createInsertCreditsBtn = () => {
   const insertCreditsBtn = document.createElement('button');
   insertCreditsBtn.classList.add('btn');
-  insertCreditsBtn.classList.add('btn-design1');
+  insertCreditsBtn.classList.add('btn-design5');
   insertCreditsBtn.innerText = 'INSERT \n 1 CREDIT';
   insertCreditsBtn.setAttribute('id', 'insertCreditsBtn');
   insertCreditsBtn.addEventListener('click', () => {
@@ -736,7 +747,7 @@ const runDealCardsEngine = () => {
     playerHand.length = 0;
 
     // clear cache of previous' hand's win combi
-    nameOfWinCombi = 'No winning hand.\n Please insert credits to continue';
+    nameOfWinCombi = 'No combo';
     drawInitialHand();
     checkForWinCombi();
 
@@ -762,7 +773,7 @@ const runDealCardsEngine = () => {
 const createDealCardsBtn = () => {
   const dealBtn = document.createElement('button');
   dealBtn.classList.add('btn');
-  dealBtn.classList.add('btn-design5');
+  dealBtn.classList.add('btn-design1');
   dealBtn.setAttribute('id', 'dealBtn');
   dealBtn.innerText = 'DEAL';
   dealBtn.addEventListener('click', () => {
@@ -788,7 +799,7 @@ const createDealCardsBtn = () => {
 const createSwapCardsBtn = () => {
   const swapBtn = document.createElement('button');
   swapBtn.classList.add('btn');
-  swapBtn.classList.add('btn-design1');
+  swapBtn.classList.add('btn-design5');
   swapBtn.setAttribute('id', 'swapBtn');
   swapBtn.innerText = 'SWAP';
 
@@ -797,8 +808,8 @@ const createSwapCardsBtn = () => {
       gameState = 'gameOver';
       playerHand.map((currentCard, index) => {
         if (currentCard.holdStatus === false) {
-          const newCard = shuffledDeck.pop();
-          // const newCard = simulatedHand.pop();
+          // const newCard = shuffledDeck.pop();
+          const newCard = simulatedHand.pop();
           playerHand.splice(index, 1, newCard);
           displayNewDrawnCards(newCard, index);
         }
@@ -822,6 +833,20 @@ const createSwapCardsBtn = () => {
     }
   });
   buttonsContainer.appendChild(swapBtn);
+};
+
+const createMuteSoundBtn = () => {
+  const muteSoundBtn = document.createElement('button');
+  muteSoundBtn.innerHTML = '<img class= "soundImg" src ="./icons/mute.png">';
+  muteSoundBtn.setAttribute('id', 'soundBtn');
+  muteSoundBtn.addEventListener('click', () => {
+    if (bgMusic.muted === true) {
+      bgMusic.muted = false;
+    } else {
+      bgMusic.muted = true;
+    }
+  });
+  document.body.appendChild(muteSoundBtn);
 };
 
 // Function that refreshes scroll machine display
@@ -887,8 +912,9 @@ const destroyScrollDisplayMachines = () => {
 
 // Function that creates the music tag for bg music
 const createBgMusicTag = () => {
-  var bgMusic = document.createElement('audio');
+  bgMusic = document.createElement('audio');
   bgMusic.setAttribute('id', 'bgMusic');
+  bgMusic.mute = false;
   bgMusic.src = './music/zodiac.mp3';
   bgMusic.volume = 0.2;
   document.body.appendChild(bgMusic);
@@ -911,9 +937,19 @@ const gameInit = () => {
   createSwapCardsBtn();
   createScrollDisplayMachines();
   createBgMusicTag();
+  createMuteSoundBtn();
   document.addEventListener('click', playMusic);
+};
+
+const instructionsAlert = () => {
+  window.alert('Instructions on how to play Video Poker:\n1. Insert at least 1 credits to play. The more credits inserted, the higher the payout.\n2. Press ‘Deal’ to deal cards.\n3. Hands are evaluated based on typical rank of poker card hands. \n4. Once cards are dealt, either choose to ‘hold’ the cards you want or insert credits to deal a new set of cards. \n5. To hold cards, simply press on the cards that you want to keep. Next, press ‘Swap’ to swap the cards that were not held.\n6. Finally, your score is evaluated and players have to insert credit(s) to deal cards again.\n');
 };
 
 // ==== EXECUTE GAME =====//
 
+// Instructions on how to play
+
 gameInit();
+setTimeout(() => {
+  instructionsAlert();
+}, 2000);

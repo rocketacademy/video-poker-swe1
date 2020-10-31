@@ -113,9 +113,18 @@ body {
 
 .gameOver {
   position: absolute;
+  text-align: center;
   width: 100%;
   top: 30px;
-  left: 414px;
+  font-size: 30px;
+  color: white;
+}
+
+.finalInsertCredits {
+  position: absolute;
+  text-align: center;
+  width: 100%;
+  top: 400px;
   font-size: 30px;
   color: white;
 }
@@ -170,7 +179,7 @@ body {
 }
 
 #swapBtn {
-   border-style: none;
+  border-style: none;
   margin-top: 10px;
   margin-bottom: 10px;
   width: 144px;
@@ -259,7 +268,7 @@ body {
 }
 .btn-design1 {
   background: none;
-  color: #22afca !important;
+  color: #f53461 !important;
   transition: all 280ms ease-in-out 0s;
   letter-spacing: 1px;
 }
@@ -273,47 +282,53 @@ body {
   position: relative;
   transition: all 280ms ease-in-out 0s;
   width: 0;
-  box-shadow: 0px 0px 0px #22afca;
+  box-shadow: 0px 0px 0px #f53461;
 }
 .btn-design1:hover {
   letter-spacing: 4px;
 }
 .btn-design1:hover::after,
 .btn-design1:hover::before {
-  border: 1px solid #22afca;
+  border: 1px solid #f53461;
   transition: width 350ms ease-in-out 0s;
   width: 100%;
-  box-shadow: 0 0 19px 1px #0c75d7;
+  box-shadow: 0 0 19px 1px #f53461;
 }
 
 /* For Deal Button */
-
+/* ffcc00 */
 .btn-design5 {
-	background: none;
-	color: #FFCC00 !important;
-	transition: all 280ms ease-in-out 0s;
-	letter-spacing: 1px;
+  background: none;
+  color: #f2d667 !important;
+  transition: all 280ms ease-in-out 0s;
+  letter-spacing: 1px;
 }
-.btn-design5::after, .btn-design5::before {
- border: 1px solid rgba(255, 255, 255, 0);
- bottom: 0;
- content: " ";
- display: block;
- margin: 15px auto;
- position: relative;
- transition: all 280ms ease-in-out 0s;
- width: 0;
- box-shadow: 0px 0px 0px #FFCC00;
+.btn-design5::after,
+.btn-design5::before {
+  border: 1px solid rgba(255, 255, 255, 0);
+  bottom: 0;
+  content: " ";
+  display: block;
+  margin: 15px auto;
+  position: relative;
+  transition: all 280ms ease-in-out 0s;
+  width: 0;
+  box-shadow: 0px 0px 0px #f2d667;
 }
 .btn-design5:hover {
-	letter-spacing: 4px;
+  letter-spacing: 4px;
 }
-.btn-design5:hover::after, .btn-design5:hover::before {
- border: 1px solid #FFE64D;
- transition: width 350ms ease-in-out 0s;
- width: 100%;
- box-shadow: 0 0 19px 1px #DF740C;
+.btn-design5:hover::after,
+.btn-design5:hover::before {
+  border: 1px solid #f2d667;
+  transition: width 350ms ease-in-out 0s;
+  width: 100%;
+  box-shadow: 0 0 19px 1px #f2d667;
 }
+
+.soundImg {
+  width: 20px;
+  height: 20px;
 }
 
 /* for half screen*/

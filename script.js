@@ -16,7 +16,7 @@ let isStraight = false;
 let isStraightFlush = false;
 
 //  Global var that holds the name of the winning combi
-let nameOfWinCombi = 'No winning hand.\n Please insert\n credits to continue';
+let nameOfWinCombi = 'Deal to begin.';
 
 // -------- Html Elements---------------------//
 let overallScreen;
@@ -29,7 +29,7 @@ let buttonsContainer;
 // -------- Game Stats - Credits Mgmt & Display-----------//
 // Html elements for credits displays
 let creditsLeftDisplay;
-let currentCombiDisplay;
+let outputMsgDisplay;
 let creditsInsertedDisplay;
 // Track number of credits
 let numCreditsInserted = 1;
@@ -75,8 +75,10 @@ let pOut3Machine;
 let pOut4Machine;
 let pOut5Machine;
 
-// -- Game Round Management --- //
+// -- Game Round/State Management --- //
 let gameRound = 0;
+// States are between 'startGame'/ 'playerNextMove'/ 'gameOver'
+let gameState = 'startGame';
 
 //= ================== Helper Functions =========================//
 
@@ -279,9 +281,7 @@ const checkForWinCombi = () => {
   const countTrueArray = statusWinCombiArray.filter((status) => status === true);
   console.log(statusWinCombiArray);
   if (countTrueArray.length === 0) {
-    console.log('You have no winning combination');
-  } else {
-    console.log(`You have a ${nameOfWinCombi}.`);
+    nameOfWinCombi = 'No winning hand';
   }
   // reset nameOfWinCombi to all false;
   resetAllWinningCombiStatus();
@@ -531,22 +531,48 @@ const fadeOutCurrHandAnimation = () => {
   }
 };
 
+const createGameOverDisplay = () => {
+  // First clear out holdstatus that will conflict with hold
+  for (let i = 0; i < playerHand.length; i += 1) {
+    const existingholdStatusDisplay = document.querySelector(`#holdStatus${i}`);
+    existingholdStatusDisplay.classList.add('animate__animated');
+    existingholdStatusDisplay.classList.add('animate__fadeOut');
+  }
+
+  // Create 'gameOver' display that will overlay the cards when game ends
+  const gameOver = false;
+  const gameOverDisplay = document.createElement('div');
+  gameOverDisplay.classList.add('gameOver');
+  gameOverDisplay.classList.add('animate__animated');
+  gameOverDisplay.classList.add('animate__fadeIn');
+  gameOverDisplay.innerHTML = 'GAME OVER';
+
+  cardsContainer.appendChild(gameOverDisplay);
+};
+
 // Function that draws the initial hand when the game begins
 const drawInitialHand = () => {
   for (let i = 0; i < 5; i += 1) {
     // Draw a card from top of deck
 
     // // For testing on different card combis
-    // const card = simulatedHand.pop();
-    const card = shuffledDeck.pop();
+    const card = simulatedHand.pop();
+    // const card = shuffledDeck.pop();
     card.holdStatus = false;
 
     playerHand.push(card);
+
+    // // Create 'gameOver' display that will overlay the cards when game ends
+    // const gameOver = false;
+    // const gameOverDisplay = document.createElement('div');
+    // gameOverDisplay.classList.add('gameOver');
+    // gameOverDisplay.innerHTML = 'GAME OVER';
 
     // Create 'hold' display on top of card pressed ;
     let holdStatus = false;
     const holdStatusDisplay = document.createElement('div');
     holdStatusDisplay.classList.add('holdStatus');
+    holdStatusDisplay.setAttribute('id', `holdStatus${i}`);
 
     // Create a break element to separate hold status display and poker card display
     const breakElement = document.createElement('br');
@@ -657,8 +683,87 @@ const createInsertCreditsBtn = () => {
   });
   buttonsContainer.appendChild(insertCreditsBtn);
 };
+// Helper Function that uses runDealCardsEngine and game state to output relevant msgs
+const dealCardsAndAnimateMsg = () => {
+  // Animation for output message in stats display when moving on to next round
+  // When player begins gameRound 1
+  if (gameState === 'startGame') {
+    console.log(gameState);
+    runDealCardsEngine();
+    gameState = 'playerNextMove';
+    // When player decides to either 'deal' or 'swap'
+  } else if (gameState === 'playerNextMove') {
+    console.log(gameState);
+    createGameOverDisplay();
+    // Display a countdown timer till next hand is drawn
 
-// Function that creates a button for dealing cards
+    statsDisplay.innerText = '';
+    createGameStatsDisplay('Dealing...');
+
+    // deal cards once countdown timer is done;
+    setTimeout(() => {
+      runDealCardsEngine();
+    }, 1500);
+  }
+};
+
+// Perform the relevant animations, calculation of scores and displays of stats
+const runDealCardsEngine = () => {
+  // Change delay in MS depending on whether covercards are present
+  let delayInDrawingCardsAnimation;
+  // Animate out cover-cards first if present
+  if (coverCardShown === true) {
+    coverCardAnimateOut();
+    coverCardShown = false;
+    delayInDrawingCardsAnimation = 800;
+  } else if (coverCardShown === false) {
+    const existHoldStatusDisplay = document.querySelector('.holdStatus');
+    existHoldStatusDisplay.innerText = '';
+    fadeOutCurrHandAnimation();
+
+    setTimeout(() => {
+      cardsContainer.innerText = '';
+      displayCoverCard();
+    }, 1000);
+
+    setTimeout(() => {
+      coverCardAnimateOut();
+    }, 2500);
+
+    delayInDrawingCardsAnimation = 3500;
+  }
+  shuffledDeck = shuffleCards(makeDeck());
+  setTimeout(() => {
+    cardsContainer.innerText = '';
+
+    // clear playerHand first before drawing initial hand
+    playerHand.length = 0;
+
+    // clear cache of previous' hand's win combi
+    nameOfWinCombi = 'No winning hand.\n Please insert credits to continue';
+    drawInitialHand();
+    checkForWinCombi();
+    console.log('creditsLeft', creditsLeft);
+
+    // // calculate score and add to creditsLeft
+    // calcHandScore();
+
+    // Scroll the top header to display the winning combi
+    topScoreScrollDisplay();
+
+    // reset insert credits and deduct from credits left:
+    creditsLeft -= numCreditsInserted;
+    numCreditsInserted = 0;
+
+    // reset stats display and make a new one;
+    statsDisplay.innerText = '';
+    createGameStatsDisplay();
+  }, delayInDrawingCardsAnimation);
+
+  gameRound += 1;
+};
+
+// Function that creates a button for dealing cards and run corresponding events
 const createDealCardsBtn = () => {
   const dealBtn = document.createElement('button');
   dealBtn.setAttribute('id', 'dealBtn');
@@ -666,68 +771,21 @@ const createDealCardsBtn = () => {
   dealBtn.addEventListener('click', () => {
     console.log(gameRound, 'gameRound');
     // reset the top scrolling machine displays and recreate it
-    if (gameRound > 0) {
-      const topDisplay = document.querySelector('.combinationsDisplay');
-      topDisplay.innerText = '';
-      generateCombinationsTopDisplay();
-      destroyScrollDisplayMachines();
-      createScrollDisplayMachines();
-    }
 
     if (numCreditsInserted > 0) {
-      // Change delay in MS depending on whether covercards are present
-      let delayInDrawingCardsAnimation;
-      // Animate out cover-cards first if present
-      if (coverCardShown === true) {
-        coverCardAnimateOut();
-        coverCardShown = false;
-        delayInDrawingCardsAnimation = 800;
-      } else if (coverCardShown === false) {
-        const existHoldStatusDisplay = document.querySelector('.holdStatus');
-        existHoldStatusDisplay.innerText = '';
-        fadeOutCurrHandAnimation();
-
-        setTimeout(() => {
-          cardsContainer.innerText = '';
-          displayCoverCard();
-        }, 1000);
-
-        setTimeout(() => {
-          coverCardAnimateOut();
-        }, 2500);
-
-        delayInDrawingCardsAnimation = 3500;
-      // Set different delays depending situation
+      if (gameRound > 0) {
+        const topDisplay = document.querySelector('.combinationsDisplay');
+        topDisplay.innerText = '';
+        generateCombinationsTopDisplay();
+        destroyScrollDisplayMachines();
+        createScrollDisplayMachines();
       }
-      shuffledDeck = shuffleCards(makeDeck());
-      setTimeout(() => {
-        cardsContainer.innerText = '';
-
-        // clear playerHand first before drawing initial hand
-        playerHand.length = 0;
-
-        // clear cache of previous' hand's win combi
-        nameOfWinCombi = 'No winning hand.\n Please insert credits to continue';
-        drawInitialHand();
-        checkForWinCombi();
-        console.log('creditsLeft', creditsLeft);
-
-        // calculate score and add to creditsLeft
-        calcHandScore();
-
-        // // Scroll the top header to display the winning combi
-        topScoreScrollDisplay();
-
-        // reset insert credits and deduct from credits left:
-        creditsLeft -= numCreditsInserted;
-        numCreditsInserted = 0;
-
-        // reset stats display and make a new one;
-        statsDisplay.innerText = '';
-        createGameStatsDisplay();
-      }, delayInDrawingCardsAnimation);
+      dealCardsAndAnimateMsg();
     } else {
-      console.log('cannot deal until you insert credits!');
+      statsDisplay.innerText = '';
+      createGameStatsDisplay('Please insert \ncredits to deal!');
+      outputMsgDisplay.classList.add('animate__animated');
+      outputMsgDisplay.classList.add('animate__flash');
     }
     gameRound += 1;
   });
@@ -743,7 +801,8 @@ const createSwapCardsBtn = () => {
   swapBtn.addEventListener('click', () => {
     playerHand.map((currentCard, index) => {
       if (currentCard.holdStatus === false) {
-        const newCard = shuffledDeck.pop();
+        // const newCard = shuffledDeck.pop();
+        const newCard = simulatedHand.pop();
         playerHand.splice(index, 1, newCard);
         displayNewDrawnCards(newCard, index);
       }
@@ -753,24 +812,33 @@ const createSwapCardsBtn = () => {
     // calculate score and add to creditsLeft
     calcHandScore();
 
+    // Scroll the top header to display the winning combi
+    topScoreScrollDisplay();
+
     // reset stats display and make a new one;
     statsDisplay.innerText = '';
     createGameStatsDisplay();
+    setTimeout(() => createGameOverDisplay(), 1500);
   });
   buttonsContainer.appendChild(swapBtn);
 };
 
 // Function that creates the display on the statistics on the gameplay below
-const createGameStatsDisplay = () => {
+const createGameStatsDisplay = (outputMsg) => {
   // Display how much credits to play for this game
   creditsInsertedDisplay = document.createElement('div');
   creditsInsertedDisplay.innerText = `INSERT CREDITS: ${numCreditsInserted}`;
   creditsInsertedDisplay.setAttribute('id', 'creditsInserted');
 
   // Display what combination is present
-  currentCombiDisplay = document.createElement('div');
-  currentCombiDisplay.setAttribute('id', 'currentCombi');
-  currentCombiDisplay.innerText = `${nameOfWinCombi}`;
+  outputMsgDisplay = document.createElement('div');
+  outputMsgDisplay.setAttribute('id', 'currentCombi');
+
+  if (!outputMsg) {
+    outputMsgDisplay.innerText = `${nameOfWinCombi}`;
+  } else {
+    outputMsgDisplay.innerText = `${outputMsg}`;
+  }
 
   // Display how much credits the player has left
   creditsLeftDisplay = document.createElement('div');
@@ -778,7 +846,7 @@ const createGameStatsDisplay = () => {
   creditsLeftDisplay.setAttribute('id', 'availCredits');
 
   statsDisplay.appendChild(creditsInsertedDisplay);
-  statsDisplay.appendChild(currentCombiDisplay);
+  statsDisplay.appendChild(outputMsgDisplay);
   statsDisplay.appendChild(creditsLeftDisplay);
 };
 

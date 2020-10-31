@@ -1,3 +1,12 @@
+.animate__animated.animate__fadeIn {
+  --animate-duration: 1s;
+}
+
+.gameTitle {
+  font-size: 100px;
+  text-align: center;
+}
+
 .overallScreen {
   background-color: grey;
   margin: auto;
@@ -80,6 +89,7 @@
 
 .cardsContainer {
   background-color: beige;
+  position: relative;
   flex: 0.5;
   display: flex;
   align-items: center;
@@ -90,6 +100,14 @@
   height: auto;
   width: 17%;
   border-radius: 15px;
+}
+
+.gameOver {
+  position: absolute;
+  width: 100%;
+  top: 30px;
+  left: 414px;
+  font-size: 30px;
 }
 
 .card {

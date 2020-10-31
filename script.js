@@ -101,8 +101,11 @@ const makeDeck = () => {
   return newDeck;
 };
 // make deck
-const deck = shuffleCards(makeDeck());
+let deck = shuffleCards(makeDeck());
 
+const loadDeck = () => {
+  deck = shuffleCards(makeDeck());
+};
 /* <==== Game element we need / what the user sees ===>
 1. Username input box (Done)
 2. Submit button (done)
@@ -181,7 +184,8 @@ const cardSelection = (selectedCard) => {
   // checking to see if there is any card in the array using the length of cards
   dealButton.disabled = false;
   dealButton.innerText = 'Click to Trade';
-  dealTurn = 'second';
+  // dealTurn = 'second';
+  isCardSelected = false;
   if (selectedCardsArray.length > 0) {
     for (let i = 0; i < selectedCardsArray.length; i += 1) {
       if (selectedCard === selectedCardsArray[i]) {
@@ -197,7 +201,6 @@ const cardSelection = (selectedCard) => {
 };
 
 // create the front of the card and add event listner to the card front
-let cardIDCounter = 0;
 const createCard = (cardInfo) => {
   const symbol = document.createElement('div');
   symbol.classList.add(cardInfo.display, cardInfo.color, 'suit', 'card-corner-suit', 'card-topleft', 'card__face', 'card__face--front');
@@ -217,7 +220,6 @@ const createCard = (cardInfo) => {
   const card = document.createElement('div');
   card.classList.add('card');
   card.setAttribute('id', 'card');
-  card.setAttribute('id', `position${cardIDCounter}`);
   card.appendChild(name);
   card.appendChild(symbol);
   card.appendChild(cardBack);
@@ -242,6 +244,7 @@ const tradeCards = () => {
       }
     }
   }
+  console.log(playerHand);
   // empty the cards in trade array after the trade is done
   selectedCardsArray = [];
   // clear display of current player's hand
@@ -250,7 +253,6 @@ const tradeCards = () => {
     const cardEl = createCard(playerHand[i]);
     cardContainer.appendChild(cardEl);
   }
-  dealTurn = 'null';
 };
 
 // appending child order/display order
@@ -336,15 +338,15 @@ const continuePlaying = () => {
   royalFlush = null;
   dealButton.disabled = false;
   dealButton.innerHTML = 'Deal';
-  playerHand = [];
   dealTurn = 'first';
   displayWinnings.value = winnings;
   bidAmountInput.disabled = false;
+  playerHand = [];
+  loadDeck();
   if (winnings === 0) {
     dealTurn = 'null';
     winnings += 100;
     displayWinnings.value = winnings;
-    bid = 5;
     dealButton.innerText = 'Restart';
   }
 };
@@ -447,7 +449,7 @@ const checkForTwoPairs = () => {
   if (rankHandArrayLength === 3 && threeOfAKind === null
       && ((rankHandArray[0].length === 2 && rankHandArray[1].length === 2)
           || (rankHandArray[1].length === 2 && rankHandArray[2].length === 2)
-          || (rankHandArray[2].length === 2 && rankHandArray[3].length === 2))) {
+          || (rankHandArray[2].length === 2 && rankHandArray[0].length === 2))) {
     twoPairs = true;
     console.log('Two Pairs');
     amountWon = 5 * bid;
@@ -644,13 +646,14 @@ const gamePlay = () => {
       for (let i = 0; i < playerHand.length; i += 1) {
         const cardEl = createCard(playerHand[i]);
         const selectedCard = playerHand[i];
-        cardIDCounter += 1;
         cardContainer.appendChild(cardEl);
         cardEl.addEventListener('click', () => {
           cardSelection(selectedCard);
+          // isCardSelected = false;
           cardEl.classList.toggle('is-flipped');
         });
       }
+      dealTurn = 'second';
     } else if (dealTurn === 'second') {
       tradeCards();
       // get array length to do comparison

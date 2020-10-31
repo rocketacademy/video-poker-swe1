@@ -19,13 +19,12 @@ body {
   width: 2.5em;
   height: 3.5em;
   background-color: #ffffff;
-  box-shadow: 0 0.0625em 0.125em rgba(0, 0, 0, 0.15);
+  /* box-shadow: 0 0.0625em 0.125em rgba(0, 0, 0, 0.15); */
   border-radius: 0.5em;
   margin-left: 10px;
   transition: transform 1s;
   transform-style: preserve-3d;
   cursor: pointer;
-  border-color: blue;
 }
 .card-topleft {
   /* position: absolute; */
@@ -109,11 +108,15 @@ body {
   width: 100%;
 }
 .card__face--back {
-  margin-left: -20px;
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  text-align: center;
   width: 2.5em;
   height: 3.5em;
   transform: rotateY(180deg);
-  border-color: red;
 }
 .card.is-flipped {
   transform: rotateY(180deg);

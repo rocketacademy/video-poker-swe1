@@ -139,14 +139,14 @@ const checkWin = (outcomeOfCheckPairs, outcomeOfCheckStraight, outcomeOfCheckFlu
     return 'jacksOrLarger';
   }
   console.log('lose');
-  return 'lose';
+  return 'Sorry, you don\'t have a winning hand';
 };
 
 //------------------------------------------
 const getHandScore = () => {
   // ===============================
 // for testing:
-  player.hand = player.fauxHand;
+  // player.hand = player.fauxHand;
 
   // ===============================
   // sort cards (bubble sort) in ascending order
@@ -182,6 +182,9 @@ const getHandScore = () => {
 
   // update player.credits according to the stakes and the performance of the player's hand
   player.credits += stakes['' + finalOutcome]; // the [''+] helps convert the variable into a string, which is needed to call that object's proprty.
+
+  // inform the player of the final outcome
+  document.getElementById('outputBox').innerHTML = finalOutcome;
 
   // display the credits to the user
   showCredits(player.credits);

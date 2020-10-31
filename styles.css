@@ -9,11 +9,13 @@ body {
 }
 
 .cardElement {
-  width: 50px;
-  height: 80px;
+  width: 15%;
+  height: 40%;
   border: solid black;
   border-width: 2px;
   margin: 2px;
+  padding: 1px;
+  border-radius: 10%;
 }
 
 html, body{
@@ -60,3 +62,9 @@ button{
   border-left: solid black;
   border-width: 1px;
 }
+
+#arsenalID{
+  display: flex;
+  flex-wrap: wrap;
+}
+

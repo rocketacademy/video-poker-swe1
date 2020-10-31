@@ -10,7 +10,7 @@ const player = {
 };
 let deck = [];
 let keepCardCanClick = true;
-const bidButtonCanClick = true;
+let bidButtonCanClick = true;
 let bidTracker = 0;
 
 //= =========HELPER FUNCTIONS===================
@@ -116,28 +116,28 @@ const makeDeck = () => {
 // ------------Build the board elements----------------
 const buildBoardElements = () => {
   // create the primary container
-  const priContainter = document.createElement('div');
-  priContainter.classList = 'priContainer';
+  // const priContainter = document.createElement('div');
+  // priContainter.classList = 'priContainer';
 
   // build the secondary container: Arsenal
-  const arsenal = document.createElement('div');
-  arsenal.classList = 'arsenal';
-  arsenal.setAttribute('id', 'arsenalID');
+  // const arsenal = document.createElement('div');
+  // arsenal.classList = 'arsenal';
+  // arsenal.setAttribute('id', 'arsenalID');
 
   // build secondary container1: credits management console
-  const creditsManagementConsoleElement = document.createElement('div');
-  creditsManagementConsoleElement.classList = 'creditsManagementConsoleElement';
+  // const creditsManagementConsoleElement = document.createElement('div');
+  // creditsManagementConsoleElement.classList = 'creditsManagementConsoleElement';
 
   // build the secondary container2: player interactionConsoleElement
-  const interactionConsoleElement = document.createElement('div');
-  interactionConsoleElement.classList = 'interactionConsoleElement';
+  // const interactionConsoleElement = document.createElement('div');
+  // interactionConsoleElement.classList = 'interactionConsoleElement';
 
   // build the bidding/ betting button:
-  const addBidButton = document.createElement('button');
-  addBidButton.classList = 'addBidButton';
-  addBidButton.innerText = 'Bid/Add Bid';
-  addBidButton.setAttribute('id', 'addBidButtonID');
-  addBidButton.addEventListener('click', () => {
+  // const addBidButton = document.createElement('button');
+  // addBidButton.classList = 'addBidButton';
+  // addBidButton.innerText = 'Bid/Add Bid';
+  // addBidButton.setAttribute('id', 'addBidButtonID');
+  document.getElementById('bidButton').addEventListener('click', () => {
     if (bidButtonCanClick === true) {
       bidTracker += 1;
     }
@@ -146,32 +146,32 @@ const buildBoardElements = () => {
   // add a display to show the
 
   // build the credits display: creditsDisplayElement
-  const creditsDisplayElement = document.createElement('div');
-  creditsDisplayElement.classList = 'creditsDisplayElement';
-  creditsDisplayElement.setAttribute('id', 'creditsDisplayElementID');
-  creditsDisplayElement.innerText = `CREDITS: ${player.credits}`;
+  // const creditsDisplayElement = document.createElement('div');
+  // creditsDisplayElement.classList = 'creditsDisplayElement';
+  // creditsDisplayElement.setAttribute('id', 'creditsDisplayElementID');
+  document.getElementById('creditsDisplayElementID').innerText = `CREDITS: ${player.credits}`;
 
   // build the start game button: starGame
-  const startGameButton = document.createElement('button');
-  startGameButton.classList = 'startGameButton';
-  startGameButton.innerText = ' Start';
+  // const startGameButton = document.createElement('button');
+  // startGameButton.classList = 'startGameButton';
+  // startGameButton.innerText = ' Start';
 
   // build the deal/draw button: dealOrDraw
-  const dealOrDrawButton = document.createElement('button');
-  dealOrDrawButton.classList = 'dealOrDrawButton';
-  dealOrDrawButton.setAttribute('id', 'dealOrDrawButtonID');
-  dealOrDrawButton.innerText = 'Deal/Draw';
+  // const dealOrDrawButton = document.createElement('button');
+  // dealOrDrawButton.classList = 'dealOrDrawButton';
+  // dealOrDrawButton.setAttribute('id', 'dealOrDrawButtonID');
+  // dealOrDrawButton.innerText = 'Deal/Draw';
 
   // append child according to logic: parent> child1>child nodes, child2>nodes
-  document.body.appendChild(priContainter);
-  priContainter.appendChild(arsenal);
-  priContainter.appendChild(creditsManagementConsoleElement);
-  creditsManagementConsoleElement.appendChild(addBidButton);
-  creditsManagementConsoleElement.appendChild(creditsDisplayElement);
+  // document.body.appendChild(priContainter);
+  // priContainter.appendChild(arsenal);
+  // priContainter.appendChild(creditsManagementConsoleElement);
+  // creditsManagementConsoleElement.appendChild(addBidButton);
+  // creditsManagementConsoleElement.appendChild(creditsDisplayElement);
 
-  priContainter.appendChild(interactionConsoleElement);
-  interactionConsoleElement.appendChild(startGameButton);
-  interactionConsoleElement.appendChild(dealOrDrawButton);
+  // priContainter.appendChild(interactionConsoleElement);
+  // interactionConsoleElement.appendChild(startGameButton);
+  // interactionConsoleElement.appendChild(dealOrDrawButton);
 };
 
 // -----------SHOW PLAYER CREDITS-----------
@@ -198,8 +198,9 @@ const createCardsElements = () => {
     console.log(player.hand[i]);
     // create a card element, and append it to the arsenal
     const cardElement = document.createElement('div');
-    cardElement.setAttribute('id', 'cardElementID' + i);
-    cardElement.classList = 'cardElement';
+    cardElement.setAttribute('id', 'cardElementID');
+    cardElement.classList.add('cardElement');
+    cardElement.classList.add('btn-outline-dark');
     document.getElementById('arsenalID').appendChild(cardElement);
     // assign current cardElement the details for card[i]
     cardElement.innerHTML = player.hand[i].display + player.hand[i].suitSymbol;

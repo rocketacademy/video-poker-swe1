@@ -1,23 +1,34 @@
-/* eslint-disable no-continue */
-// The above es lint rule is disabled, because if continue is not used
+// The below es lint rule is disabled to remove the error got while adding
+// variables defined in other js files into this file.
+/* eslint-disable no-undef */
+
+// The below es lint rule is disabled, because if continue is not used
 // most of the for loops will have numerous nested conditions and loops
 // which makes the code less readable.
+/* eslint-disable no-continue */
 
 // Global variables
 // DOM Elements
 // Table container to hold the result of the game.
-let tableScoreCard = null;
+let divScoreCardGrid = null;
+
 // Button to show and hide the score card
 let buttonShowHideScore = null;
+
 // Button to Deal / Draw
 let buttonDealDraw = null;
+
 // Game Status element
 let divGameStatus = null;
+
 // Container that holds the dealt cards board
 let divDealtCardBoardElement = null;
+
 // Element to show the current credit in hand
 let divCurrentCreditHand = null;
+
 let inputBetAmountElement = null;
+
 let deck = null;
 let isGameOver = false;
 let gameResultType = '';
@@ -26,16 +37,21 @@ let betAmount = 0;
 // Variable that holds the credits with the player at a given time
 // This is taken based on the bet amount placed and game type he won ( gameRank * 10)
 let currentCreditsInHand = INITIAL_CREDIT_PLAYER;
+
 // Holds the number of games the player lost
 let numOfGamesLost = 0;
+
 // Holds the number of games the player won
 let numOfGamesWon = 0;
+
 // Holds the overall credits he won.
 // Calculated based on the Credits for each game type
 // This different from the current credits in Hand
 let totalCreditsWon = 0;
+
 // This is the total amount of bet money player put
 let totalCreditsPlayed = 0;
+
 // This variable holds the net amount lost / win in the game
 // let netWinLossCredits = 0;
 // Credits tht will be added to player hand, if it's a win
@@ -69,15 +85,12 @@ const shuffleCards = (cardArray) => {
 const makeDeck = () => {
   // create the empty deck at the beginning
   const newDeck = [];
-  // Array to store the details of the card like Suit, Symbol and Color for respective suit
-  const suits = [['hearts', '♥', 'red'], ['diamonds', '♦', 'red'],
-    ['clubs', '♣', 'black'], ['spades', '♠', 'black']];
 
-  for (let suitIndex = 0; suitIndex < suits.length; suitIndex += 1) {
+  for (let suitIndex = 0; suitIndex < SuitsInfo.length; suitIndex += 1) {
     // make a variable of the current suit
-    const currentSuit = suits[suitIndex][0];
-    const currentSuitSymbol = suits[suitIndex][1];
-    const currentCardColor = suits[suitIndex][2];
+    const currentSuit = SuitsInfo[suitIndex][0];
+    const currentSuitSymbol = SuitsInfo[suitIndex][1];
+    const currentCardColor = SuitsInfo[suitIndex][2];
     // console.log(`current suit: ${currentSuit}`);
 
     // loop to create all cards in this suit
@@ -101,7 +114,10 @@ const makeDeck = () => {
         cardName = 'king';
         displayName = KING_DISPLAY_NAME;
       }
-
+      // Get the path of the image file
+      const cardImageInfo = CardRankToImagePath.find((tempCardImageInfo) => (
+        (rankCounter === tempCardImageInfo.cardRank)
+        && (currentSuitSymbol === tempCardImageInfo.cardSymbol)));
       // make a single card object variable
       const card = {
         name: cardName,
@@ -110,10 +126,19 @@ const makeDeck = () => {
         suitSymbol: currentSuitSymbol,
         rank: rankCounter,
         color: currentCardColor,
+        imagePath: cardImageInfo.cardImagePath,
         hold: false, // Indicates whether this card is on hold or not
       };
 
-      // console.log(`rank: ${rankCounter}`);
+      /*
+      console.log(`name: ${card.name},
+      display: ${card.display},
+      suit: ${card.suit},
+      suitSymbol: ${card.suitSymbol},
+      rank: ${card.rank},
+      color: ${card.color},
+      imagePath: ${card.imagePath},
+      hold: ${card.hold}`); */
 
       // add the card to the deck
       newDeck.push(card);
@@ -125,10 +150,6 @@ const makeDeck = () => {
 // To check whether it's a pair of Jack or better
 // Pair of jacks or better: Two jacks, queens, kings, or aces.
 const isPairOfJacksOrBetter = () => {
-  // Testing purpose
-  // boardOfDealtCards = TestArray1;
-  /// ////////////////////////////
-
   let hasPairFound = false;
   for (let i = 0; i < boardOfDealtCards.length - 1; i += 1)
   {
@@ -213,10 +234,6 @@ const isTwoPair = () => {
 // Three of a kind - Three cards of the same rank;
 // for example, 6 of hearts, 6 of clubs, 6 of diamonds.
 const isThreeOfAKind = () => {
-  /// ////////
-  // boardOfDealtCards = TestArray3;
-  /// ////////
-
   const totalCardCount = boardOfDealtCards.length;
   // The below array stores the indexes.
   // When a three of kind match is found, all those values will
@@ -280,7 +297,6 @@ const isStraight = () => {
 // for example, ace, 10, 7, 4, 3, all of diamonds.'
 const isFlush = () => {
   let prevoiusCardSuit = '';
-  // boardOfDealtCards = TestArray2;
   for (let i = 0; i < boardOfDealtCards.length; i += 1)
   {
     const currentCardSuit = boardOfDealtCards[i].suit;
@@ -333,10 +349,6 @@ const isFullHouse = () => {
 // 'Four of a kind', 'Four cards of the same rank;
 // for example, ace of hearts, ace of spades, ace of clubs, ace of diamonds.'
 const isFourOfAKind = () => {
-  // ////////////////////////////////////
-  // boardOfDealtCards = TestArray4;
-  // ///////////////////////////////////
-
   const totalCardCount = boardOfDealtCards.length;
   for (let i = 0; i < totalCardCount - 3; i += 1)
   {
@@ -371,8 +383,6 @@ const isFourOfAKind = () => {
 // 'Straight flush', 'Five consecutive cards of the same suit;
 // for example, 2-3-4-5-6, all of clubs.'
 const isStraightFlush = () => {
-//   boardOfDealtCards = TestArray7;
-
   let prevoiusCardSuit = '';
   let previousCardRank = 0;
   let prevRankDiff = 0;
@@ -414,10 +424,6 @@ const isStraightFlush = () => {
 // 'Royal flush', 'Ace-king-queen-jack-10 all of the same suit
 // (hearts, clubs, spades, or diamonds)'
 const isRoyalFlush = () => {
-  // //////////////////////////
-  // boardOfDealtCards = TestArray8;
-  // /////////////////////////////
-
   // First check whether all the cards are of the same suit
   if (!isFlush()) {
     return false;
@@ -491,13 +497,11 @@ const calcHandScore = () => {
   if (comparisonResult) {
     currentCreditsInHand += (finalRank * AddedCredits);
     numOfGamesWon += 1;
-    // netWinLossCredits += betAmount;
   }
   else
   {
     gameResultType = 'No Matches';
     numOfGamesLost += 1;
-    // netWinLossCredits -= betAmount;
   }
 };
 
@@ -510,8 +514,7 @@ const setCurrentCreditInfo = () => {
   divCurrentCreditHand.innerHTML = `Credits: ${currentCreditsInHand}`;
 };
 
-const toggleElementDisplay = (elementToToggle) => {
-  elementToToggle.style.display = (elementToToggle.style.display === 'none') ? 'block' : 'none';
+const toggleScoreDisplayButton = () => {
   buttonShowHideScore.innerText = (buttonShowHideScore.innerText === TXT_SHOW_RESULT)
     ? TXT_HIDE_RESULT : TXT_SHOW_RESULT;
 };
@@ -524,17 +527,13 @@ const displayEmptyCard = (cardElement) =>
 
   const divHoldStatusElement = document.createElement('div');
   divHoldStatusElement.classList.add('hold-status', 'default-fill');
+  cardElement.appendChild(divHoldStatusElement);
 
-  const divNameElement = document.createElement('div');
-  divNameElement.classList.add('name', 'default-fill');
-  // divNameElement.innerText = '***';
-
-  const divSuitElement = document.createElement('div');
-  divSuitElement.classList.add('suit', 'default-fill');
-
-  cardElement.appendChild(divNameElement);
-  cardElement.appendChild(divSuitElement);
-
+  const imageUnturnedCard = document.createElement('img');
+  imageUnturnedCard.classList.add('image-card');
+  imageUnturnedCard.src = 'Images\\card_back.jpg';
+  imageUnturnedCard.alt = 'card image';
+  cardElement.appendChild(imageUnturnedCard);
   return cardElement;
 };
 
@@ -555,19 +554,13 @@ const displayCardElement = (cardElement, cardInfo, isScoreCardElement = false) =
     cardElement.appendChild(divHoldStatusElement);
   }
 
-  // Creating the element for storing the card display name
-  // 2 Class names are applicable "name, <color>"
-  const divNameElement = document.createElement('div');
-  divNameElement.classList.add('name', cardInfo.color);
-  divNameElement.innerText = cardInfo.display;
-  cardElement.appendChild(divNameElement);
+  // Display the corresponding image for the card
+  const imageTurnedCard = document.createElement('img');
+  imageTurnedCard.classList.add('image-card');
+  imageTurnedCard.src = cardInfo.imagePath;
+  imageTurnedCard.alt = 'card image';
+  cardElement.appendChild(imageTurnedCard);
 
-  // Creating the element for storing the suit symbol of the card
-  // Class = "suit, <color>"
-  const divSuitElement = document.createElement('div');
-  divSuitElement.classList.add('suit', cardInfo.color);
-  divSuitElement.innerText = cardInfo.suitSymbol;
-  cardElement.appendChild(divSuitElement);
   // Card element is returned from this function
   return cardElement;
 };
@@ -584,23 +577,18 @@ const onClickSubmitBet = () => {
   }
 };
 
-// Function to create a table cell that displays the card
+// Function to create a table cell that displays the cards that are finally drawn
 const createCardCell = (cardDeck) => {
-  /**
-   * <div class="single-card reduced-card">
-   *   <div class="name red reduced-size">A</div>
-   *   <div class="suit red reduced-size">💗</div>
-   * </div>
-   */
-  const cellFinalCardSet = document.createElement('td');
+  const cellFinalCardSet = document.createElement('div');
+  cellFinalCardSet.classList.add('result-cards');
   for (let i = 0; i < cardDeck.length; i += 1)
   {
     const divSingleCardElement = document.createElement('div');
     divSingleCardElement.classList.add('single-card', 'reduced-card');
     displayCardElement(divSingleCardElement, cardDeck[i], true);
-    // Add the class 'reduced-size' to each card element div for name and suit
+    // Add the class 'reduced-image' to each card element div for name and suit
     divSingleCardElement.childNodes.forEach((childNode) => {
-      childNode.classList.add('reduced-size');
+      childNode.classList.add('reduced-image');
     });
     cellFinalCardSet.appendChild(divSingleCardElement);
   }
@@ -609,44 +597,35 @@ const createCardCell = (cardDeck) => {
 
 // Function to add the result of a game to the total score card table
 const addScoreCard = (dealtCardBoard) => {
-  // Define the column headers for rows
-  const rowElement = document.createElement('tr');
-
-  const cellGameCount = document.createElement('td');
+  const cellGameCount = document.createElement('div');
   cellGameCount.innerText = numOfGamesWon + numOfGamesLost;
-  rowElement.appendChild(cellGameCount);
+  divScoreCardGrid.appendChild(cellGameCount);
 
-  const cellGameResult = document.createElement('td');
+  const cellGameResult = document.createElement('div');
   cellGameResult.innerText = gameResultType;
-  rowElement.appendChild(cellGameResult);
+  divScoreCardGrid.appendChild(cellGameResult);
 
-  const cellBetAmount = document.createElement('td');
+  const cellBetAmount = document.createElement('div');
   cellBetAmount.innerText = betAmount;
-  rowElement.appendChild(cellBetAmount);
+  divScoreCardGrid.appendChild(cellBetAmount);
 
-  const cellCreditsPlayed = document.createElement('td');
+  const cellCreditsPlayed = document.createElement('div');
   cellCreditsPlayed.innerText = totalCreditsPlayed;
-  rowElement.appendChild(cellCreditsPlayed);
+  divScoreCardGrid.appendChild(cellCreditsPlayed);
 
-  // const cellCreditsWon = document.createElement('td');
-  // cellCreditsWon.innerText = ;
-  // rowElement.appendChild(cellCreditsWon);
-
-  const cellTotalCreditsWon = document.createElement('td');
+  const cellTotalCreditsWon = document.createElement('div');
   cellTotalCreditsWon.innerText = totalCreditsWon;
-  rowElement.appendChild(cellTotalCreditsWon);
+  divScoreCardGrid.appendChild(cellTotalCreditsWon);
 
-  const cellWinLoss = document.createElement('td');
+  const cellWinLoss = document.createElement('div');
   cellWinLoss.innerText = `${numOfGamesWon} - ${numOfGamesLost}`;
-  rowElement.appendChild(cellWinLoss);
+  divScoreCardGrid.appendChild(cellWinLoss);
 
-  rowElement.appendChild(createCardCell(dealtCardBoard));
-  tableScoreCard.appendChild(rowElement);
+  divScoreCardGrid.appendChild(createCardCell(dealtCardBoard));
 };
 
 // Function to handle result score card display
 const displayScoreCard = () => {
-  // const gameInfoMessage = (hasPlayerWon()) ? `You won!! ${gameResultType}` : 'You lost!!';
   setGameStatus(`Game Over.<br>
   <b>${gameResultType}</b>. <br>
   Please check score card for more details.`);
@@ -740,56 +719,70 @@ const onClickDealDrawButton = () =>
 };
 
 // Function to fill the pay-table data
-const fillPayTableData = (tablePayEl) => {
+const fillPayTableData = (divCreditListGrid) => {
   for (let i = 0; i < PayTableObjects.length; i += 1)
   {
     // Define the column headers for rows
-    const rowElement = document.createElement('tr');
-    const cellGameType = document.createElement('td');
+    const cellGameType = document.createElement('div');
     cellGameType.classList.add('tooltip');
     cellGameType.innerText = PayTableObjects[i].gameName;
     const spanGameDesc = document.createElement('span');
     spanGameDesc.classList.add('tooltip-text');
     spanGameDesc.innerText = PayTableObjects[i].gameDesc;
     cellGameType.appendChild(spanGameDesc);
-    rowElement.appendChild(cellGameType);
+    divCreditListGrid.appendChild(cellGameType);
 
-    const cellGamePoints = document.createElement('td');
+    const cellGamePoints = document.createElement('div');
     cellGamePoints.innerText = PayTableObjects[i].gameRank + 1;
-    rowElement.appendChild(cellGamePoints);
+    divCreditListGrid.appendChild(cellGamePoints);
 
-    const cellGameCredit = document.createElement('td');
+    const cellGameCredit = document.createElement('div');
     cellGameCredit.innerText = PayTableObjects[i].gameCredit;
-    rowElement.appendChild(cellGameCredit);
-
-    tablePayEl.appendChild(rowElement);
+    divCreditListGrid.appendChild(cellGameCredit);
   }
 };
 
 // Function that displays the list of possible hands that gives a score
-const createPayTableContainer = (divGameParentContainer) => {
+const createPayTableGrid = () => {
   // Pay Table container
   const divPayTableContainer = document.createElement('div');
-  divPayTableContainer.classList.add('pay-table');
-  divGameParentContainer.appendChild(divPayTableContainer);
+  divPayTableContainer.classList.add('modal');
+  divPayTableContainer.id = 'credit-list';
+  document.body.appendChild(divPayTableContainer);
 
-  const tablePayEl = document.createElement('table');
-  tablePayEl.createCaption('Pay Table');
-  // Define the column headers for rows
-  const rowElement = document.createElement('tr');
-  tablePayEl.appendChild(rowElement);
-  const rowHeaderGameType = document.createElement('th');
+  // Container to hold the result
+  const divContentContainer = document.createElement('div');
+  divContentContainer.classList.add('modal-content');
+  divPayTableContainer.appendChild(divContentContainer);
+
+  // Span element to display the close button for the pop-up
+  const spanCloseElement = document.createElement('span');
+  spanCloseElement.classList.add('close');
+  spanCloseElement.id = 'close-credit-list';
+  spanCloseElement.innerHTML = '&times;';
+  divContentContainer.appendChild(spanCloseElement);
+
+  const divCreditListGrid = document.createElement('div');
+  divCreditListGrid.classList.add('credit-grid-container');
+  divContentContainer.appendChild(divCreditListGrid);
+
+  // Define the column headers
+  const rowHeaderGameType = document.createElement('div');
+  rowHeaderGameType.classList.add('grid-col-header');
   rowHeaderGameType.innerText = 'Game Type';
-  rowElement.appendChild(rowHeaderGameType);
-  const rowHeaderGamePoints = document.createElement('th');
-  rowHeaderGamePoints.innerText = 'Rank';
-  rowElement.appendChild(rowHeaderGamePoints);
-  const rowHeaderGameCredits = document.createElement('th');
-  rowHeaderGameCredits.innerText = 'Credits';
-  rowElement.appendChild(rowHeaderGameCredits);
+  divCreditListGrid.appendChild(rowHeaderGameType);
 
-  fillPayTableData(tablePayEl);
-  divPayTableContainer.appendChild(tablePayEl);
+  const rowHeaderGameRank = document.createElement('div');
+  rowHeaderGameRank.classList.add('grid-col-header');
+  rowHeaderGameRank.innerText = 'Rank';
+  divCreditListGrid.appendChild(rowHeaderGameRank);
+
+  const rowHeaderCredit = document.createElement('div');
+  rowHeaderCredit.classList.add('grid-col-header');
+  rowHeaderCredit.innerText = 'Credit';
+  divCreditListGrid.appendChild(rowHeaderCredit);
+
+  fillPayTableData(divCreditListGrid);
 };
 
 // Function that creates an element for submitting Bet amount
@@ -814,8 +807,6 @@ const createInputContainer = () => {
 
 // Set of functions that creates all the elements for game play div
 const createGameContainerElements = (divGameContainer) => {
-  // createPayTableContainer(divGameContainer);
-
   // Game playing container
   // <div class="game-play">
   const divGamePlayContainer = document.createElement('div');
@@ -835,17 +826,26 @@ const createGameContainerElements = (divGameContainer) => {
   // The initial text on the button will be "Deal".
   // Once a deal is made and player has clicked any of the cards,
   // the text on the button should change to "Draw/Deal"
-  const divDealDrawButton = document.createElement('div');
-  divDealDrawButton.classList.add('buttons');
+  const divDealDrawScoreButton = document.createElement('div');
+  divDealDrawScoreButton.classList.add('buttons');
 
   // Button for Deal / draw
   buttonDealDraw = document.createElement('button');
   buttonDealDraw.classList.add('button-common', 'stand-alone-button');
   buttonDealDraw.innerText = TXT_DEAL;
   buttonDealDraw.addEventListener('click', onClickDealDrawButton);
+  divDealDrawScoreButton.appendChild(buttonDealDraw);
 
-  divDealDrawButton.appendChild(buttonDealDraw);
-  divGamePlayContainer.appendChild(divDealDrawButton);
+  // Button for Show/Hide the score card
+  buttonShowHideScore = document.createElement('button');
+  buttonShowHideScore.classList.add('button-common', 'stand-alone-button');
+  buttonShowHideScore.id = 'result-card';
+  buttonShowHideScore.innerText = `${TXT_SHOW_RESULT}`;
+  // Associate the button to the container display function
+  buttonShowHideScore.addEventListener('click', () => { toggleScoreDisplayButton(); });
+  divDealDrawScoreButton.appendChild(buttonShowHideScore);
+
+  divGamePlayContainer.appendChild(divDealDrawScoreButton);
 
   // Initialize the board of cards to be displayed
   for (let i = 0; i < NUM_OF_CARDS_DRAWN; i += 1)
@@ -864,79 +864,143 @@ const createGameContainerElements = (divGameContainer) => {
   divGameContainer.appendChild(divGamePlayContainer);
 };
 
-// Function to define column headers for the Score table
-const createScoreCardTable = () => {
+// Function to define column headers for the Score Grid
+const createScoreCardGrid = () => {
   // Table that shows the whole result of the game
-  tableScoreCard = document.createElement('table');
-  tableScoreCard.classList.add('result-table');
-  tableScoreCard.createCaption('Score Card');
+  divScoreCardGrid = document.createElement('div');
+  divScoreCardGrid.classList.add('grid-container');
 
-  // Define the column headers for rows
-  const rowElement = document.createElement('tr');
-  tableScoreCard.appendChild(rowElement);
-
-  const rowHeaderGameCount = document.createElement('th');
+  // Define the column headers
+  const rowHeaderGameCount = document.createElement('div');
+  rowHeaderGameCount.classList.add('grid-col-header');
   rowHeaderGameCount.innerText = 'Game Counter';
-  rowElement.appendChild(rowHeaderGameCount);
+  divScoreCardGrid.appendChild(rowHeaderGameCount);
 
-  const rowHeaderGameResult = document.createElement('th');
+  const rowHeaderGameResult = document.createElement('div');
+  rowHeaderGameResult.classList.add('grid-col-header');
   rowHeaderGameResult.innerText = 'Result';
-  rowElement.appendChild(rowHeaderGameResult);
+  divScoreCardGrid.appendChild(rowHeaderGameResult);
 
-  const rowHeaderBetAmount = document.createElement('th');
+  const rowHeaderBetAmount = document.createElement('div');
+  rowHeaderBetAmount.classList.add('grid-col-header');
   rowHeaderBetAmount.innerText = 'Bet Amount';
-  rowElement.appendChild(rowHeaderBetAmount);
+  divScoreCardGrid.appendChild(rowHeaderBetAmount);
 
-  const rowHeaderCreditsPlayed = document.createElement('th');
+  const rowHeaderCreditsPlayed = document.createElement('div');
+  rowHeaderCreditsPlayed.classList.add('grid-col-header');
   rowHeaderCreditsPlayed.innerText = 'Total Credits Played';
-  rowElement.appendChild(rowHeaderCreditsPlayed);
+  divScoreCardGrid.appendChild(rowHeaderCreditsPlayed);
 
-  // const rowHeaderCreditsWon = document.createElement('th');
-  // rowHeaderCreditsWon.innerText = 'Credits Won';
-  // rowElement.appendChild(rowHeaderCreditsWon);
-
-  const rowHeaderTotalCreditsWon = document.createElement('th');
+  const rowHeaderTotalCreditsWon = document.createElement('div');
+  rowHeaderTotalCreditsWon.classList.add('grid-col-header');
   rowHeaderTotalCreditsWon.innerText = 'Total Credits Won';
-  rowElement.appendChild(rowHeaderTotalCreditsWon);
+  divScoreCardGrid.appendChild(rowHeaderTotalCreditsWon);
 
-  const rowHeaderWinLoss = document.createElement('th');
+  const rowHeaderWinLoss = document.createElement('div');
+  rowHeaderWinLoss.classList.add('grid-col-header');
   rowHeaderWinLoss.innerText = 'Win-Loss Count';
-  rowElement.appendChild(rowHeaderWinLoss);
+  divScoreCardGrid.appendChild(rowHeaderWinLoss);
 
-  const rowHeaderFinalCardSet = document.createElement('th');
+  const rowHeaderFinalCardSet = document.createElement('div');
+  rowHeaderFinalCardSet.classList.add('grid-col-header');
   rowHeaderFinalCardSet.innerText = 'Final Set of Cards Played';
-  rowElement.appendChild(rowHeaderFinalCardSet);
+  divScoreCardGrid.appendChild(rowHeaderFinalCardSet);
 };
 
 // Function to create all the elements for displaying the Score Card
 const createResultContainerElements = () => {
   // Main container to hold the result of the game
   const divGameResultContainer = document.createElement('div');
-  divGameResultContainer.classList.add('result');
-
-  // Button to show and hide the result details
-  const divScoreButtonContainer = document.createElement('div');
-  buttonShowHideScore = document.createElement('button');
-  buttonShowHideScore.classList.add('button-common', 'stand-alone-button');
-  buttonShowHideScore.innerText = `${TXT_SHOW_RESULT}`;
-  divScoreButtonContainer.appendChild(buttonShowHideScore);
-  divGameResultContainer.appendChild(divScoreButtonContainer);
+  divGameResultContainer.classList.add('modal');
+  divGameResultContainer.id = 'result';
 
   // Container to hold the result
   const divScoreContainer = document.createElement('div');
-  divScoreContainer.classList.add('score-card-container');
-  // In the intial Stage this container will not be displayed.
-  divScoreContainer.style.display = 'none';
+  divScoreContainer.classList.add('score-card-container', 'modal-content');
   divGameResultContainer.appendChild(divScoreContainer);
 
-  // Associate the button to the container display function
-  buttonShowHideScore.addEventListener('click', () => {
-    toggleElementDisplay(divScoreContainer);
-  });
+  // Span element to display the close button for the pop-up
+  const spanCloseElement = document.createElement('span');
+  spanCloseElement.classList.add('close');
+  spanCloseElement.id = 'close-score-card';
+  spanCloseElement.innerHTML = '&times;';
+  divScoreContainer.appendChild(spanCloseElement);
+
   // Table that shows the whole result of the game
-  createScoreCardTable();
-  divScoreContainer.appendChild(tableScoreCard);
+  createScoreCardGrid();
+  divScoreContainer.appendChild(divScoreCardGrid);
   document.body.appendChild(divGameResultContainer);
+};
+
+const createHowToPlayModal = () => {
+  const divHowToPlayModal = document.createElement('div');
+  divHowToPlayModal.classList.add('modal');
+  divHowToPlayModal.id = 'how-to-play-modal';
+  document.body.appendChild(divHowToPlayModal);
+
+  // Container to hold the result
+  const divModalContent = document.createElement('div');
+  divModalContent.classList.add('modal-content');
+  divHowToPlayModal.appendChild(divModalContent);
+
+  // Span element to display the close button for the pop-up
+  const spanCloseElement = document.createElement('span');
+  spanCloseElement.classList.add('close');
+  spanCloseElement.id = 'close-how-to-play';
+  spanCloseElement.innerHTML = '&times;';
+  divModalContent.appendChild(spanCloseElement);
+
+  const parContent = document.createElement('p');
+  divModalContent.appendChild(parContent);
+  const orderedList = document.createElement('ol');
+  parContent.appendChild(orderedList);
+  // const listItem = document.createElement('li');
+  // orderedList.appendChild(listItem);
+  orderedList.innerHTML = `<li>Enter the bet amount and press "Submit Bet Amount"</li>
+  <li>Press the Deal Button for starting the game</li>
+  <li>Initially drawn cards will be shown</li>
+  <li>Press on those cards which you wish to hold on</li>
+  <li>If you wish to release a held card, press on the card again</li>
+  <li>Press the "Draw" button for swapping the cards that are not held</li>
+  <li>Result will be displayed in the screen</li>
+  <li>Press "Show Score Card" button to view the history of the game</li>`;
+};
+
+const handleModalBoxDisplay = () => {
+  // Get the modal
+  const modalHowToPlay = document.getElementById('how-to-play-modal');
+  const linkHowToPlay = document.getElementById('how-to-play');
+  linkHowToPlay.addEventListener('click', () => { modalHowToPlay.style.display = 'block'; });
+  const closeHowToPlay = document.getElementById('close-how-to-play');
+  closeHowToPlay.addEventListener('click', () => { modalHowToPlay.style.display = 'none'; });
+
+  const creditModal = document.getElementById('credit-list');
+  const creditLink = document.getElementById('pay-table');
+  creditLink.addEventListener('click', () => { creditModal.style.display = 'block'; });
+  const closeCreditList = document.getElementById('close-credit-list');
+  closeCreditList.addEventListener('click', () => { creditModal.style.display = 'none'; });
+
+  const resultModal = document.getElementById('result');
+  const scoreCardButton = document.getElementById('result-card');
+  scoreCardButton.addEventListener('click', () => { resultModal.style.display = 'block'; });
+  const scoreCardClose = document.getElementById('close-score-card');
+  scoreCardClose.addEventListener('click', () => {
+    resultModal.style.display = 'none';
+    toggleScoreDisplayButton();
+  });
+
+  // When the user clicks anywhere outside of the modal, close it
+  window.addEventListener('click', (event) => {
+    if (event.target === modalHowToPlay) {
+      modalHowToPlay.style.display = 'none';
+    }
+    else if (event.target === resultModal) {
+      resultModal.style.display = 'none';
+    }
+    else if (event.target === creditModal) {
+      creditModal.style.display = 'none';
+    }
+  });
 };
 
 // Function that initializes the DOM element during the game load
@@ -949,11 +1013,18 @@ const gameInit = () => {
   createGameContainerElements(divGameContainer);
   document.body.appendChild(divGameContainer);
 
-  // Create all elements to show the result
-  createResultContainerElements();
-
+  // Make and shuffle the card deck
   deck = makeDeck();
   deck = shuffleCards(deck);
+
+  // Create all elements to show the result
+  createResultContainerElements();
+  // Create the list to show the credits for each game type
+  createPayTableGrid();
+  // Displays instructions for the user
+  createHowToPlayModal();
+  // Function to display the pop-up boxes
+  handleModalBoxDisplay();
 };
 
 gameInit();

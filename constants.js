@@ -1,3 +1,6 @@
+// The variables declared in this file are used in the main script.js file.
+/* eslint-disable no-unused-vars */
+
 // Texts to be displayed in the Draw/Deal button
 const TXT_DRAW = 'Draw';
 const TXT_DEAL = 'Deal';
@@ -122,147 +125,286 @@ const PayTableObjects = [
   },
 ];
 
-// Test Arrays
+const HEARTS_CARD_DESC = 'hearts';
+const HEARTS_CARD_SYMBOL = '♥';
+const CLUBS_CARD_DESC = 'clubs';
+const CLUBS_CARD_SYMBOL = '♣';
+const DIAMONDS_CARD_DESC = 'diamonds';
+const DIAMONDS_CARD_SYMBOL = '♦';
+const SPADES_CARD_DESC = 'spades';
+const SPADES_CARD_SYMBOL = '♠';
+const COLOR_RED = 'red';
+const COLOR_BLACK = 'black';
 
-// Pair of Jacks or Better
-const TestArray1 = [];
-TestArray1.push({
-  name: 'king', display: 'K', suit: 'hearts', suitSymbol: '♥', rank: 13, color: 'red', hold: false,
-});
-TestArray1.push({
-  name: 'queen', display: 'Q', suit: 'clubs', suitSymbol: '♣', rank: 12, color: 'black', hold: false,
-});
-TestArray1.push({
-  name: 'jack', display: 'J', suit: 'clubs', suitSymbol: '♣', rank: 11, color: 'black', hold: false,
-});
-TestArray1.push({
-  name: '9', display: '9', suit: 'diamonds', suitSymbol: '♦', rank: 9, color: 'red', hold: false,
-});
-TestArray1.push({
-  name: '5', display: '5', suit: 'spades', suitSymbol: '♠', rank: 5, color: 'black', hold: false,
-});
+// Array to store the details of the card like Suit, Symbol and Color for respective suit
+const SuitsInfo = [
+  [HEARTS_CARD_DESC, HEARTS_CARD_SYMBOL, COLOR_RED],
+  [DIAMONDS_CARD_DESC, DIAMONDS_CARD_SYMBOL, COLOR_RED],
+  [CLUBS_CARD_DESC, CLUBS_CARD_SYMBOL, COLOR_BLACK],
+  [SPADES_CARD_DESC, SPADES_CARD_SYMBOL, COLOR_BLACK]];
 
-const TestArray2 = [];
-TestArray2.push({
-  name: '3', display: '3', suit: 'diamonds', suitSymbol: '♦', rank: 3, color: 'red', hold: false,
-});
-TestArray2.push({
-  name: '7', display: '7', suit: 'diamonds', suitSymbol: '♦', rank: 7, color: 'red', hold: false,
-});
-TestArray2.push({
-  name: '5', display: '5', suit: 'diamonds', suitSymbol: '♦', rank: 5, color: 'red', hold: false,
-});
-TestArray2.push({
-  name: '2', display: '2', suit: 'diamonds', suitSymbol: '♦', rank: 2, color: 'red', hold: false,
-});
-TestArray2.push({
-  name: '8', display: '8', suit: 'diamonds', suitSymbol: '♦', rank: 8, color: 'red', hold: false,
-});
-
-// for 3 of a kind
-const TestArray3 = [];
-TestArray3.push({
-  name: '7', display: '7', suit: 'diamonds', suitSymbol: '♦', rank: 7, color: 'red', hold: false,
-});
-TestArray3.push({
-  name: 'king', display: 'K', suit: 'clubs', suitSymbol: '♣', rank: 13, color: 'black', hold: false,
-});
-TestArray3.push({
-  name: '10', display: '10', suit: 'hearts', suitSymbol: '♥', rank: 10, color: 'red', hold: false,
-});
-TestArray3.push({
-  name: '7', display: '7', suit: 'spades', suitSymbol: '♠', rank: 7, color: 'black', hold: false,
-});
-TestArray3.push({
-  name: '7', display: '7', suit: 'clubs', suitSymbol: '♣', rank: 7, color: 'black', hold: false,
-});
-
-// Four of a kind
-const TestArray4 = [];
-TestArray4.push({
-  name: '7', display: '7', suit: 'diamonds', suitSymbol: '♦', rank: 7, color: 'red', hold: false,
-});
-TestArray4.push({
-  name: '7', display: '7', suit: 'hearts', suitSymbol: '♥', rank: 7, color: 'red', hold: false,
-});
-TestArray4.push({
-  name: '7', display: '7', suit: 'spades', suitSymbol: '♠', rank: 7, color: 'black', hold: false,
-});
-TestArray4.push({
-  name: '7', display: '7', suit: 'clubs', suitSymbol: '♣', rank: 7, color: 'black', hold: false,
-});
-TestArray4.push({
-  name: 'king', display: 'K', suit: 'clubs', suitSymbol: '♣', rank: 13, color: 'black', hold: false,
-});
-
-// Straight Flush
-const TestArray5 = [];
-TestArray5.push({
-  name: 'king', display: 'K', suit: 'hearts', suitSymbol: '♥', rank: 13, color: 'red', hold: false,
-});
-TestArray5.push({
-  name: 'queen', display: 'Q', suit: 'hearts', suitSymbol: '♥', rank: 12, color: 'red', hold: false,
-});
-TestArray5.push({
-  name: 'jack', display: 'J', suit: 'hearts', suitSymbol: '♥', rank: 11, color: 'red', hold: false,
-});
-TestArray5.push({
-  name: '10', display: '10', suit: 'hearts', suitSymbol: '♥', rank: 10, color: 'red', hold: false,
-});
-TestArray5.push({
-  name: '9', display: '9', suit: 'hearts', suitSymbol: '♥', rank: 9, color: 'red', hold: false,
-});
-
-// Straight Flush
-const TestArray6 = [];
-TestArray6.push({
-  name: '9', display: '9', suit: 'hearts', suitSymbol: '♥', rank: 9, color: 'red', hold: false,
-});
-TestArray6.push({
-  name: '10', display: '10', suit: 'hearts', suitSymbol: '♥', rank: 10, color: 'red', hold: false,
-});
-TestArray6.push({
-  name: 'jack', display: 'J', suit: 'hearts', suitSymbol: '♥', rank: 11, color: 'red', hold: false,
-});
-TestArray6.push({
-  name: 'queen', display: 'Q', suit: 'hearts', suitSymbol: '♥', rank: 12, color: 'red', hold: false,
-});
-TestArray6.push({
-  name: 'king', display: 'K', suit: 'hearts', suitSymbol: '♥', rank: 13, color: 'red', hold: false,
-});
-
-// Stratight Flush
-const TestArray7 = [];
-TestArray7.push({
-  name: 'king', display: 'K', suit: 'hearts', suitSymbol: '♥', rank: 13, color: 'red', hold: false,
-});
-TestArray7.push({
-  name: 'queen', display: 'Q', suit: 'hearts', suitSymbol: '♥', rank: 12, color: 'red', hold: false,
-});
-TestArray7.push({
-  name: '10', display: '10', suit: 'hearts', suitSymbol: '♥', rank: 10, color: 'red', hold: false,
-});
-TestArray7.push({
-  name: '9', display: '9', suit: 'hearts', suitSymbol: '♥', rank: 9, color: 'red', hold: false,
-});
-TestArray7.push({
-  name: 'jack', display: 'J', suit: 'hearts', suitSymbol: '♥', rank: 11, color: 'red', hold: false,
-});
-
-// Royal Flush
-const TestArray8 = [];
-TestArray8.push({
-  name: 'ace', display: 'A', suit: 'hearts', suitSymbol: '♥', rank: 1, color: 'red', hold: false,
-});
-TestArray8.push({
-  name: 'king', display: 'K', suit: 'hearts', suitSymbol: '♥', rank: 13, color: 'red', hold: false,
-});
-TestArray8.push({
-  name: 'queen', display: 'Q', suit: 'hearts', suitSymbol: '♥', rank: 12, color: 'red', hold: false,
-});
-TestArray8.push({
-  name: 'jack', display: 'J', suit: 'hearts', suitSymbol: '♥', rank: 11, color: 'red', hold: false,
-});
-TestArray8.push({
-  name: '10', display: '10', suit: 'hearts', suitSymbol: '♥', rank: 10, color: 'red', hold: false,
-});
+const CardRankToImagePath = [
+  {
+    cardSymbol: HEARTS_CARD_SYMBOL,
+    cardRank: 1,
+    cardImagePath: 'Images\\ace-hearts.png',
+  },
+  {
+    cardSymbol: HEARTS_CARD_SYMBOL,
+    cardRank: 2,
+    cardImagePath: 'Images\\2-hearts.png',
+  },
+  {
+    cardSymbol: HEARTS_CARD_SYMBOL,
+    cardRank: 3,
+    cardImagePath: 'Images\\3-hearts.png',
+  },
+  {
+    cardSymbol: HEARTS_CARD_SYMBOL,
+    cardRank: 4,
+    cardImagePath: 'Images\\4-hearts.png',
+  },
+  {
+    cardSymbol: HEARTS_CARD_SYMBOL,
+    cardRank: 5,
+    cardImagePath: 'Images\\5-hearts.png',
+  },
+  {
+    cardSymbol: HEARTS_CARD_SYMBOL,
+    cardRank: 6,
+    cardImagePath: 'Images\\6-Hearts.png',
+  },
+  {
+    cardSymbol: HEARTS_CARD_SYMBOL,
+    cardRank: 7,
+    cardImagePath: 'Images\\7-hearts.png',
+  },
+  {
+    cardSymbol: HEARTS_CARD_SYMBOL,
+    cardRank: 8,
+    cardImagePath: 'Images\\8-Hearts.png',
+  },
+  {
+    cardSymbol: HEARTS_CARD_SYMBOL,
+    cardRank: 9,
+    cardImagePath: 'Images\\9-Hearts.png',
+  },
+  {
+    cardSymbol: HEARTS_CARD_SYMBOL,
+    cardRank: 10,
+    cardImagePath: 'Images\\10-Hearts.png',
+  },
+  {
+    cardSymbol: HEARTS_CARD_SYMBOL,
+    cardRank: 11,
+    cardImagePath: 'Images\\Jack-Hearts.png',
+  },
+  {
+    cardSymbol: HEARTS_CARD_SYMBOL,
+    cardRank: 12,
+    cardImagePath: 'Images\\Q-Hearts.png',
+  },
+  {
+    cardSymbol: HEARTS_CARD_SYMBOL,
+    cardRank: 13,
+    cardImagePath: 'Images\\K-Hearts.png',
+  },
+  // Diamonds
+  {
+    cardSymbol: DIAMONDS_CARD_SYMBOL,
+    cardRank: 1,
+    cardImagePath: 'Images\\Ace-Dia.png',
+  },
+  {
+    cardSymbol: DIAMONDS_CARD_SYMBOL,
+    cardRank: 2,
+    cardImagePath: 'Images\\2-Dia.png',
+  },
+  {
+    cardSymbol: DIAMONDS_CARD_SYMBOL,
+    cardRank: 3,
+    cardImagePath: 'Images\\3-Dia.png',
+  },
+  {
+    cardSymbol: DIAMONDS_CARD_SYMBOL,
+    cardRank: 4,
+    cardImagePath: 'Images\\4-Dia.png',
+  },
+  {
+    cardSymbol: DIAMONDS_CARD_SYMBOL,
+    cardRank: 5,
+    cardImagePath: 'Images\\5-Dia.png',
+  },
+  {
+    cardSymbol: DIAMONDS_CARD_SYMBOL,
+    cardRank: 6,
+    cardImagePath: 'Images\\6-Dia.png',
+  },
+  {
+    cardSymbol: DIAMONDS_CARD_SYMBOL,
+    cardRank: 7,
+    cardImagePath: 'Images\\7-Dia.png',
+  },
+  {
+    cardSymbol: DIAMONDS_CARD_SYMBOL,
+    cardRank: 8,
+    cardImagePath: 'Images\\8-Dia.png',
+  },
+  {
+    cardSymbol: DIAMONDS_CARD_SYMBOL,
+    cardRank: 9,
+    cardImagePath: 'Images\\9-Dia.png',
+  },
+  {
+    cardSymbol: DIAMONDS_CARD_SYMBOL,
+    cardRank: 10,
+    cardImagePath: 'Images\\10-Dia.png',
+  },
+  {
+    cardSymbol: DIAMONDS_CARD_SYMBOL,
+    cardRank: 11,
+    cardImagePath: 'Images\\Jack-Dia.png',
+  },
+  {
+    cardSymbol: DIAMONDS_CARD_SYMBOL,
+    cardRank: 12,
+    cardImagePath: 'Images\\Q-Dia.png',
+  },
+  {
+    cardSymbol: DIAMONDS_CARD_SYMBOL,
+    cardRank: 13,
+    cardImagePath: 'Images\\K-dia.png',
+  },
+  // Clubs
+  {
+    cardSymbol: CLUBS_CARD_SYMBOL,
+    cardRank: 1,
+    cardImagePath: 'Images\\ace-club.png',
+  },
+  {
+    cardSymbol: CLUBS_CARD_SYMBOL,
+    cardRank: 2,
+    cardImagePath: 'Images\\2-club.png',
+  },
+  {
+    cardSymbol: CLUBS_CARD_SYMBOL,
+    cardRank: 3,
+    cardImagePath: 'Images\\3-club.png',
+  },
+  {
+    cardSymbol: CLUBS_CARD_SYMBOL,
+    cardRank: 4,
+    cardImagePath: 'Images\\4-club.png',
+  },
+  {
+    cardSymbol: CLUBS_CARD_SYMBOL,
+    cardRank: 5,
+    cardImagePath: 'Images\\5-club.png',
+  },
+  {
+    cardSymbol: CLUBS_CARD_SYMBOL,
+    cardRank: 6,
+    cardImagePath: 'Images\\6-club.png',
+  },
+  {
+    cardSymbol: CLUBS_CARD_SYMBOL,
+    cardRank: 7,
+    cardImagePath: 'Images\\7-club.png',
+  },
+  {
+    cardSymbol: CLUBS_CARD_SYMBOL,
+    cardRank: 8,
+    cardImagePath: 'Images\\8-club.png',
+  },
+  {
+    cardSymbol: CLUBS_CARD_SYMBOL,
+    cardRank: 9,
+    cardImagePath: 'Images\\9-club.png',
+  },
+  {
+    cardSymbol: CLUBS_CARD_SYMBOL,
+    cardRank: 10,
+    cardImagePath: 'Images\\10-club.png',
+  },
+  {
+    cardSymbol: CLUBS_CARD_SYMBOL,
+    cardRank: 11,
+    cardImagePath: 'Images\\Jack-club.png',
+  },
+  {
+    cardSymbol: CLUBS_CARD_SYMBOL,
+    cardRank: 12,
+    cardImagePath: 'Images\\Q-club.png',
+  },
+  {
+    cardSymbol: CLUBS_CARD_SYMBOL,
+    cardRank: 13,
+    cardImagePath: 'Images\\K-club.png',
+  },
+  // Spades
+  {
+    cardSymbol: SPADES_CARD_SYMBOL,
+    cardRank: 1,
+    cardImagePath: 'Images\\A-Spade.png',
+  },
+  {
+    cardSymbol: SPADES_CARD_SYMBOL,
+    cardRank: 2,
+    cardImagePath: 'Images\\2-Spade.png',
+  },
+  {
+    cardSymbol: SPADES_CARD_SYMBOL,
+    cardRank: 3,
+    cardImagePath: 'Images\\3-Spade.png',
+  },
+  {
+    cardSymbol: SPADES_CARD_SYMBOL,
+    cardRank: 4,
+    cardImagePath: 'Images\\4-Spade.png',
+  },
+  {
+    cardSymbol: SPADES_CARD_SYMBOL,
+    cardRank: 5,
+    cardImagePath: 'Images\\5-Spade.png',
+  },
+  {
+    cardSymbol: SPADES_CARD_SYMBOL,
+    cardRank: 6,
+    cardImagePath: 'Images\\6-Spade.png',
+  },
+  {
+    cardSymbol: SPADES_CARD_SYMBOL,
+    cardRank: 7,
+    cardImagePath: 'Images\\7-Spade.png',
+  },
+  {
+    cardSymbol: SPADES_CARD_SYMBOL,
+    cardRank: 8,
+    cardImagePath: 'Images\\8-Spade.png',
+  },
+  {
+    cardSymbol: SPADES_CARD_SYMBOL,
+    cardRank: 9,
+    cardImagePath: 'Images\\9-Spade.png',
+  },
+  {
+    cardSymbol: SPADES_CARD_SYMBOL,
+    cardRank: 10,
+    cardImagePath: 'Images\\10-Spade.png',
+  },
+  {
+    cardSymbol: SPADES_CARD_SYMBOL,
+    cardRank: 11,
+    cardImagePath: 'Images\\Jack-Spade.png',
+  },
+  {
+    cardSymbol: SPADES_CARD_SYMBOL,
+    cardRank: 12,
+    cardImagePath: 'Images\\Q-Spade.png',
+  },
+  {
+    cardSymbol: SPADES_CARD_SYMBOL,
+    cardRank: 13,
+    cardImagePath: 'Images\\K-Spade.png',
+  },
+];

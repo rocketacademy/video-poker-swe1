@@ -189,5 +189,6 @@ const getHandScore = () => {
   // display the credits to the user
   showCredits(player.credits);
 
-  // reset the game (except the credits)
+  // make the start/reset button click-able so that the user can play again
+  document.getElementById('restartButtonID').removeAttribute('disabled');
 };

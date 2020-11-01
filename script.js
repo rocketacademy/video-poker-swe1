@@ -137,14 +137,16 @@ const buildBoardElements = () => {
   // addBidButton.innerText = 'Bid/Add Bid';
   // addBidButton.setAttribute('id', 'addBidButtonID');
   document.getElementById('bidButton').addEventListener('click', () => {
-    if (bidTracker < 5) {
+    if (bidTracker < 4) {
+      console.log(`3-bidtracker is...${bidTracker}`);
       bidTracker += 1;
+      console.log(`4-bidtracker is...${bidTracker}`);
+      document.getElementById('bidDisplayID').innerText = bidTracker;
     }
-    console.log(bidTracker);
   });
 
-  // update the bid display
-  document.getElementById('bidDisplayID').innerText = bidTracker;
+  // // update the bid display
+  // document.getElementById('bidDisplayID').innerText = bidTracker;
 
   // add a display to show the
 
@@ -196,8 +198,17 @@ const intialiseHand = () => {
   }
 };
 const createCardsElements = () => {
-  // ensure that the container is empty before creating anything:
-  document.getElementById('arsenalID').innerHTML = '';
+  console.log('emptying cardContainer...');
+  // empty out the containers
+
+  document.getElementById('arsenalID0').innerHTML = '';
+  document.getElementById('arsenalID1').innerHTML = '';
+  document.getElementById('arsenalID2').innerHTML = '';
+  document.getElementById('arsenalID3').innerHTML = '';
+  document.getElementById('arsenalID4').innerHTML = '';
+
+  // // ensure that the container is empty before creating anything:
+  // document.getElementById('arsenalID').innerHTML = '';
 
   // display the player's hand
   for (let i = 0; i < player.hand.length; i += 1) {
@@ -206,10 +217,9 @@ const createCardsElements = () => {
     const cardElement = document.createElement('div');
     cardElement.classList.add('cardElement');
     cardElement.classList.add('btn-outline-dark');
-    cardElement.classList.add('col-md-2');
-    cardElement.classList.add('col-lg-4');
-    cardElement.setAttribute('id', 'cardElementID');
-    document.getElementById('arsenalID').appendChild(cardElement);
+
+    document.getElementById('arsenalID' + i).append(cardElement);
+    console.log(`card ${i} added`);
     // assign current cardElement the details for card[i]
     cardElement.innerHTML = player.hand[i].display + player.hand[i].suitSymbol;
 
@@ -295,8 +305,13 @@ const getStakes = () => {
 };
 
 const clickRestart = () => {
-// reset bidTracker to 0
+  console.log(`bidtracker is ...${bidTracker}`);
+  // reset bidTracker to 0
   bidTracker = 0;
+  // display new bidtracker value
+  document.getElementById('bidDisplayID').innerText = bidTracker;
+
+  console.log(`bidtracker is ...${bidTracker}`);
   // reset bidding button to ensure it is click-able
   document.getElementById('bidButton').removeAttribute('disabled');
   // initialise the game
@@ -351,4 +366,13 @@ const initGame = () => {
   document.getElementById('restartButtonID').addEventListener('click', clickRestart);
 };
 
-initGame();
+// press start to start the game
+
+document.getElementById('restartButtonID').addEventListener('click', () => {
+  initGame();
+
+  // make the start game button unclickable
+  document.getElementById('restartButtonID').setAttribute('disabled', 'disabled');
+
+  document.getElementById('restartButtonID').removeEventListener('click');
+});

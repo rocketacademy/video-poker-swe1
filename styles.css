@@ -23,9 +23,10 @@ background-color: #00A1FF;
 
 
 .cardElement {
-  width: 15%;
-  height: 40%;
+  width: 40px;
+  height: 50px;
   border: solid black;
+  background-color: whitesmoke;
   border-width: 2px;
   margin: 2px;
   padding: 1px;
@@ -90,6 +91,7 @@ justify-content: flex-start; */
 
 #keepCardIndicationID{
 background-color:#D5D5D5;
+padding-left: 3px;
 font-size:10px;
 word-break: break-word;
 width: 30px

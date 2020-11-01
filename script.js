@@ -111,12 +111,12 @@ const calcPayOutLevel = () => {
   }
 };
 
-// Calculate the score of the hand and add the score to a temp variable before adding to user's total
-const calcHandScore = () => {
+// Function that calculates the score of the current hand and
+// saves it into a temp variable 'currAmtWon'
+const updateCurrAmtWon = () => {
   const amtWon = payOutSchedule[payOutLevel][rankOfHand];
   currAmtWon += amtWon;
   console.log(amtWon, 'amtWon');
-  return currAmtWon;
 };
 
 // Function that calculates the rank of the current hand
@@ -550,6 +550,8 @@ const fadeOutCurrHandAnimation = () => {
   }
 };
 
+// Function generates the "gameOver" and 'insert credits' text,
+// complete with entrance animations
 const createGameOverDisplay = () => {
   // First clear out holdstatus that will conflict with hold
   for (let i = 0; i < playerHand.length; i += 1) {
@@ -575,6 +577,7 @@ const createGameOverDisplay = () => {
   cardsContainer.appendChild(insertCreditsToContinueDisplay);
 };
 
+// Function that generates exit animations for gameOverDisplay
 const fadeOutGameOverDisplay = () => {
   gameOverDisplay.classList.remove('animate__fadeIn');
   gameOverDisplay.classList.add('animate__fadeOut');
@@ -714,7 +717,7 @@ const dealCardsAndAnimateMsg = () => {
     gameState = 'playerNextMove';
     // When player decides to either 'deal' or 'swap'
   } else if (gameState === 'playerNextMove' || gameState === 'gameOver') {
-    calcHandScore();
+    updateCurrAmtWon();
     console.log(currAmtWon, 'currAmtWon');
     createGameOverDisplay();
     statsDisplay.innerText = '';
@@ -857,7 +860,7 @@ const createSwapCardsBtn = () => {
   });
   buttonsContainer.appendChild(swapBtn);
 };
-
+// Function that creates a button to mute sound
 const createMuteSoundBtn = () => {
   const muteSoundBtn = document.createElement('button');
   muteSoundBtn.innerText = 'Mute';
@@ -978,9 +981,4 @@ const gameInit = () => {
 
 // ==== EXECUTE GAME =====//
 
-// Instructions on how to play
-
 gameInit();
-// setTimeout(() => {
-//   instructionsAlert();
-// }, 2000);

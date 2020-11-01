@@ -575,8 +575,8 @@ const drawInitialHand = () => {
     // Draw a card from top of deck
 
     // // For testing on different card combis
-    // const card = simulatedHand.pop();
-    const card = shuffledDeck.pop();
+    const card = simulatedHand.pop();
+    // const card = shuffledDeck.pop();
     card.holdStatus = false;
 
     playerHand.push(card);
@@ -820,16 +820,14 @@ const createSwapCardsBtn = () => {
       gameState = 'gameOver';
       playerHand.map((currentCard, index) => {
         if (currentCard.holdStatus === false) {
-          const newCard = shuffledDeck.pop();
-          // const newCard = simulatedHand.pop();
+          // const newCard = shuffledDeck.pop();
+          const newCard = simulatedHand.pop();
           playerHand.splice(index, 1, newCard);
           displayNewDrawnCards(newCard, index);
         }
       });
       checkForWinCombi();
       refreshScrollMachineDisplay();
-      // calculate score and track the amtWon
-      calcHandScore();
 
       // Scroll the top header to display the winning combi
       topScoreScrollDisplay();

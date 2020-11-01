@@ -330,6 +330,24 @@ body {
   height: 20px;
 }
 
+/* for 13 inch full screens */
+@media screen and (max-width:1300px){
+ 
+.overallScreen {
+  height: 641px;
+}
+
+.combinationsDisplay{
+  flex:0.08;
+}
+
+.finalInsertCredits{
+  top:300px;
+}
+.gameOver{
+  top:15px;
+}
+
 /* for half screen*/
 @media screen and (max-width: 1000px) {
   .overallScreen {

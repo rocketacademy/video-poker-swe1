@@ -569,6 +569,7 @@ const fadeOutGameOverDisplay = () => {
   gameOverDisplay.classList.add('animate__fadeOut');
   insertCreditsToContinueDisplay.classList.remove('animate__fadeIn');
   insertCreditsToContinueDisplay.classList.add('animate__fadeOut');
+  console.log('fadeout ran');
 };
 
 // Function that draws the initial hand when the game begins

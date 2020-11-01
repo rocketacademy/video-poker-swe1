@@ -20,5 +20,10 @@
     "eslint": "^7.6.0",
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-plugin-import": "^2.22.0"
+  },
+  "dependencies": {
+    "animate.css": "^4.1.1",
+    "jquery": "^3.5.1",
+    "jquery-slotmachine": "^4.0.1"
   }
 }

@@ -1,0 +1,16 @@
+@import url("https://fonts.googleapis.com/css2?family=Codystar&display=swap");
+.neons {
+  margin-top: 1em;
+  text-align: center;
+}
+
+.neons h1 {
+  font-family: "Codystar" !important;
+  font-size: 3rem;
+  text-align: center;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 0 0 10px #00fff2, 0 0 20px #00fff2, 0 0 30px #00fff2,
+    0 0 40px #00fff2, 0 0 50px #00fff2, 0 0 60px #00fff2, 0 0 70px #00fff2,
+    0 0 90px #00fff2;
+}

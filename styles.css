@@ -1,0 +1,573 @@
+@import url("https://fonts.googleapis.com/css2?family=Play&display=swap");
+body {
+  font-family: "Play", sans-serif;
+  background-color: black;
+}
+
+.animate__animated.animate__fadeIn {
+  --animate-duration: 1s;
+}
+
+.gameTitle {
+  font-size: 100px;
+  text-align: center;
+}
+
+.overallScreen {
+  background-color: #000000;
+  border-radius: 10px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  height: 800px;
+  width: 1000px;
+}
+
+.combinationsDisplay {
+  border-radius: 10px;
+  flex: 0.06;
+  display: flex;
+  flex-direction: row;
+  align-items: space-around;
+  font-size: 32px;
+  margin: 10px;
+  position: relative;
+  overflow: hidden;
+}
+
+.nameOfCombiDisplay {
+  list-style-type: none;
+  background-color: rgb(31, 31, 31);
+  color: white;
+  flex: 4;
+  display: flex;
+  flex-direction: column;
+  font-size: 32px;
+}
+
+.pCol1 {
+  flex: 1;
+  background-color: black;
+  padding-top: 1px;
+  color: #fff;
+  text-shadow: 0px 0px 10px #c9cece, 0px 0px 20px #c9cece, 0px 0px 30px #c9cece,
+    0px 0px 40px #c9cece;
+}
+
+.pCol2 {
+  flex: 1;
+  background-color: black;
+  padding-top: 2px;
+  color: #fff;
+  text-shadow: 0px 0px 10px #c7c345, 0px 0px 20px #c7c345, 0px 0px 30px #c7c345,
+    0px 0px 40px #c7c345;
+}
+
+.pCol3 {
+  flex: 1;
+  background-color: black;
+  padding-top: 2px;
+  color: #fff;
+  text-shadow: 0px 0px 10px #46bbbb, 0px 0px 20px #46bbbb, 0px 0px 30px #46bbbb,
+    0px 0px 40px #46bbbb;
+}
+
+.pCol4 {
+  flex: 1;
+  background-color: black;
+  padding-top: 2px;
+  color: #fff;
+  text-shadow: 0px 0px 10px #f95dab, 0px 0px 20px #f95dab, 0px 0px 30px #f95dab,
+    0px 0px 40px #f95dab;
+}
+
+.pCol5 {
+  flex: 1;
+  background-color: black;
+  padding-top: 2px;
+  color: #fff;
+  text-shadow: 0px 0px 10px #f38a0a, 0px 0px 20px #f38a0a, 0px 0px 30px #f38a0a,
+    0px 0px 40px #f38a0a;
+}
+
+.pOutBox {
+  padding: 4px;
+  text-align: center;
+}
+
+.cardsContainer {
+  background-color: black;
+  position: relative;
+  flex: 0.6;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.cover-card {
+  height: auto;
+  width: 17%;
+  border-radius: 15px;
+}
+
+.gameOver {
+  position: absolute;
+  text-align: center;
+  width: 100%;
+  top: 30px;
+  font-size: 30px;
+  color: white;
+}
+
+.finalInsertCredits {
+  position: absolute;
+  text-align: center;
+  width: 100%;
+  top: 400px;
+  font-size: 30px;
+  color: white;
+}
+
+.card {
+  vertical-align: top;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  height: 55%;
+  width: auto;
+}
+
+.holdStatus {
+  align-items: center;
+  text-align: center;
+  flex: 1;
+  margin-top: -54px;
+  font-size: 30px;
+  color: white;
+}
+
+.cardImage {
+  vertical-align: top;
+  flex: 5;
+  height: 100%;
+  width: auto;
+}
+
+.statsDisplay {
+  background-color: black;
+  flex: 0.2;
+}
+
+.buttonsContainer {
+  /* background-color: grey; */
+  flex: 0.2;
+  display: flex;
+  flex-direction: row;
+  align-items: space-around;
+  justify-content: space-around;
+}
+
+#dealBtn {
+  border-style: none;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  text-align: center;
+  width: 144px;
+  font-size: 20px;
+}
+
+#swapBtn {
+  border-style: none;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  width: 144px;
+  font-size: 20px;
+}
+
+#insertCreditsBtn {
+  border-style: none;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  text-align: center;
+  width: 144px;
+  font-size: 20px;
+}
+
+#inputCredits {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.statsDisplay {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 25px;
+}
+
+#creditsInserted {
+  flex: 1;
+  margin-left: 15px;
+  text-align: center;
+  color: white;
+  border-color: #f38a0a;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px #f38a0a, 0px 0px 20px #f38a0a;
+}
+
+#currentCombi {
+  flex: 1;
+  margin-left: 15px;
+  text-align: center;
+  color: white;
+  border-color: #f38a0a;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px #f38a0a, 0px 0px 20px #f38a0a;
+}
+
+#availCredits {
+  flex: 1;
+  margin-left: 15px;
+  margin-right: 15px;
+  text-align: center;
+  color: white;
+  border-color: #f38a0a;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px #f38a0a, 0px 0px 20px #f38a0a;
+}
+
+.arrow-down {
+  position: relative;
+  top: 10px;
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 10px solid #f38a0a;
+  margin-top: -9px;
+  /* Default position */
+  left: 490px;
+  font-size: 100px;
+}
+.arrow-down::after {
+  position: relative;
+  top: 5px;
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid #0c0700;
+  margin-top: -9px;
+  /* Default position */
+  left: 490px;
+  font-size: 100px;
+}
+
+/* For inserting Credits */
+.btn {
+  font-family: "Montserrat", sans-serif;
+  border-radius: 0;
+  margin: 0;
+  padding: 0;
+  font-weight: 700;
+  display: block;
+  width: 100%;
+  font-size: 15px;
+  vertical-align: middle;
+  outline: none !important;
+}
+.btn-design1 {
+  background: none;
+  color: #f53461 !important;
+  transition: all 280ms ease-in-out 0s;
+  letter-spacing: 1px;
+}
+.btn-design1::after,
+.btn-design1::before {
+  border: 1px solid rgba(255, 255, 255, 0);
+  bottom: 0;
+  content: " ";
+  display: block;
+  margin: 15px auto;
+  position: relative;
+  transition: all 280ms ease-in-out 0s;
+  width: 0;
+  box-shadow: 0px 0px 0px #f53461;
+}
+.btn-design1:hover {
+  letter-spacing: 4px;
+}
+.btn-design1:hover::after,
+.btn-design1:hover::before {
+  border: 1px solid #f53461;
+  transition: width 350ms ease-in-out 0s;
+  width: 100%;
+  box-shadow: 0 0 19px 1px #f53461;
+}
+
+/* For Deal Button */
+.btn-design5 {
+  background: none;
+  color: #f2d667 !important;
+  transition: all 280ms ease-in-out 0s;
+  letter-spacing: 1px;
+}
+.btn-design5::after,
+.btn-design5::before {
+  border: 1px solid rgba(255, 255, 255, 0);
+  bottom: 0;
+  content: " ";
+  display: block;
+  margin: 15px auto;
+  position: relative;
+  transition: all 280ms ease-in-out 0s;
+  width: 0;
+  box-shadow: 0px 0px 0px #f2d667;
+}
+.btn-design5:hover {
+  letter-spacing: 4px;
+}
+.btn-design5:hover::after,
+.btn-design5:hover::before {
+  border: 1px solid #f2d667;
+  transition: width 350ms ease-in-out 0s;
+  width: 100%;
+  box-shadow: 0 0 19px 1px #f2d667;
+}
+/* For both mute and help buttons */
+.helpButton {
+  width: auto;
+  height: 20px;
+  color: white;
+  background: rgb(0, 0, 0);
+  transform: translate(10px, -57px);
+}
+
+/* for 13 inch full screens */
+@media screen and (max-width: 1300px) {
+  .overallScreen {
+    height: 641px;
+  }
+  .combinationsDisplay {
+    flex: 0.08;
+  }
+  .finalInsertCredits {
+    top: 300px;
+  }
+  .gameOver {
+    top: 15px;
+  }
+}
+/* Intermediate size on 24 inch screen */
+@media screen and (max-width: 1000px) {
+  .overallScreen {
+    width: auto;
+    height: 100vh;
+    margin: auto;
+    box-sizing: border-box;
+  }
+  .combinationsDisplay {
+    flex: 0.06;
+    font-size: 25px;
+  }
+  .cardsContainer {
+    flex: 0.1;
+    flex-wrap: wrap;
+    flex-basis: 33.33%;
+    box-sizing: border-box;
+    margin: -2px;
+  }
+  .pOutBox {
+    padding: 4px;
+  }
+  .card {
+    height: 40%;
+    box-sizing: border-box;
+  }
+  .cardImage {
+    width: 90%;
+    height: auto;
+  }
+  .cover-card {
+    width: 17%;
+    height: auto;
+  }
+  .holdStatus {
+    color: white;
+    display: inline;
+    text-align: center;
+    /* margin-top: -15px; */
+  }
+  .statsDisplay {
+    font-size: 20px;
+  }
+  .gameOver {
+    top: 35px;
+  }
+
+  .finalInsertCredits {
+    top: 330px;
+  }
+}
+/* for smallest window on my 24 inch screen */
+@media screen and (max-width: 500px) {
+  .neon h1 {
+    font-size: 1rem;
+  }
+  .overallScreen {
+    width: auto;
+    height: 100vh;
+    margin: auto;
+    box-sizing: border-box;
+  }
+  .nameOfCombiDisplay {
+    font-size: 12px;
+  }
+  .combinationsDisplay {
+    flex: 0.06;
+    font-size: 25px;
+  }
+  .cardsContainer {
+    flex: 0.15;
+    flex-wrap: wrap;
+    flex-basis: 33%;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+  }
+  .pOutBox {
+    padding: 4px;
+    font-size: 20px;
+  }
+  .card {
+    height: auto;
+    width: auto;
+    display: flex;
+    margin-top: 65px;
+  }
+  .cardImage {
+    width: 120px;
+    height: auto;
+  }
+  .cover-card {
+    width: 26%;
+    height: auto;
+    border-radius: 3px;
+  }
+  .holdStatus {
+    color: white;
+    display: inline;
+    text-align: center;
+    font-size: 16px;
+    height: 16px;
+  }
+  .statsDisplay {
+    font-size: 15px;
+    margin-top: 10px;
+  }
+  .gameOver {
+    top: 5px;
+    font-size: 19px;
+  }
+  .finalInsertCredits {
+    top: 415px;
+    font-size: 19px;
+  }
+  .soundBtn {
+    position: absolute;
+    transform: translate(20px, -250px);
+    background-color: white;
+  }
+}
+/* for iphone 6/7/8 */
+@media screen and (max-width: 375px) {
+  .overallScreen {
+    width: auto;
+    height: 100vh;
+    margin: auto;
+    box-sizing: border-box;
+  }
+  .combinationsDisplay {
+    flex: 0.4;
+  }
+  .cardsContainer {
+    flex: 1;
+    flex-wrap: wrap;
+    flex-basis: 33.33%;
+    box-sizing: border-box;
+    margin: -2px;
+  }
+  .card {
+    height: 40%;
+    box-sizing: border-box;
+  }
+  .cardImage {
+    width: 57%;
+    height: auto;
+  }
+  .cover-card {
+    width: 28%;
+    height: 148px;
+  }
+  .holdStatus {
+    color: black;
+    position: relative;
+    top: 100px;
+    font-size: 14px;
+    text-align: center;
+  }
+  #availCredits {
+    font-size: 15px;
+  }
+  #creditsInserted {
+    font-size: 15px;
+  }
+  #currentCombi {
+    font-size: 15px;
+  }
+}
+/*for iphone X */
+@media screen and (max-width: 414px) {
+  .overallScreen {
+    width: auto;
+    height: 100vh;
+    margin: auto;
+    box-sizing: border-box;
+  }
+  .combinationsDisplay {
+    flex: 0.4;
+  }
+  .cardsContainer {
+    flex: 1;
+    flex-wrap: wrap;
+    flex-basis: 33.33%;
+    box-sizing: border-box;
+    margin: -2px;
+  }
+  .card {
+    height: 40%;
+    box-sizing: border-box;
+  }
+  .cardImage {
+    width: 102px;
+  }
+  .cover-card {
+    width: 28%;
+    height: 148px;
+  }
+  .holdStatus {
+    color: green;
+    display: inline;
+    text-align: center;
+  }
+  #availCredits {
+    font-size: 15px;
+  }
+  #creditsInserted {
+    font-size: 15px;
+  }
+  #currentCombi {
+    font-size: 15px;
+  }
+}

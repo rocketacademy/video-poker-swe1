@@ -846,17 +846,17 @@ const createSwapCardsBtn = () => {
 };
 
 const createMuteSoundBtn = () => {
-  const muteSoundBtnImg = document.createElement('IMG');
-  muteSoundBtnImg.classList.add('soundBtn');
-  muteSoundBtnImg.src = './icons/mute.png';
-  muteSoundBtnImg.addEventListener('click', () => {
+  const muteSoundBtn = document.createElement('button');
+  muteSoundBtn.innerText = 'Mute';
+  muteSoundBtn.classList.add('helpButton');
+  muteSoundBtn.addEventListener('click', () => {
     if (bgMusic.muted === true) {
       bgMusic.muted = false;
     } else {
       bgMusic.muted = true;
     }
   });
-  document.body.appendChild(muteSoundBtnImg);
+  document.body.appendChild(muteSoundBtn);
 };
 
 // Function that refreshes scroll machine display
@@ -937,6 +937,17 @@ const playMusic = () => {
   document.removeEventListener('click', playMusic);
 };
 
+// Function that creates an alert that tells users how to play the game
+const createInstructionsAlertBtn = () => {
+  const helpButton = document.createElement('button');
+  helpButton.innerText = 'Help';
+  helpButton.classList.add('helpButton');
+  helpButton.addEventListener('click', () => {
+    window.alert('Instructions on how to play Video Poker:\n1. Insert at least 1 credits to play. The more credits inserted, the higher the payout.\n2. Press ‘Deal’ to deal cards.\n3. Hands are evaluated based on typical rank of poker card hands. \n4. Once cards are dealt, either choose to ‘hold’ the cards you want or insert credits to deal a new set of cards. \n5. To hold cards, simply press on the cards that you want to keep. Next, press ‘Swap’ to swap the cards that were not held.\n6. Finally, your score is evaluated and players have to insert credit(s) to deal cards again.\n');
+  });
+  document.body.appendChild(helpButton);
+};
+
 // Function that initializes the game with certain displays and cover-cards
 const gameInit = () => {
   buildUI();
@@ -948,11 +959,8 @@ const gameInit = () => {
   createScrollDisplayMachines();
   createBgMusicTag();
   createMuteSoundBtn();
+  createInstructionsAlertBtn();
   document.addEventListener('click', playMusic);
-};
-
-const instructionsAlert = () => {
-  window.alert('Instructions on how to play Video Poker:\n1. Insert at least 1 credits to play. The more credits inserted, the higher the payout.\n2. Press ‘Deal’ to deal cards.\n3. Hands are evaluated based on typical rank of poker card hands. \n4. Once cards are dealt, either choose to ‘hold’ the cards you want or insert credits to deal a new set of cards. \n5. To hold cards, simply press on the cards that you want to keep. Next, press ‘Swap’ to swap the cards that were not held.\n6. Finally, your score is evaluated and players have to insert credit(s) to deal cards again.\n');
 };
 
 // ==== EXECUTE GAME =====//

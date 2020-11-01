@@ -846,17 +846,17 @@ const createSwapCardsBtn = () => {
 };
 
 const createMuteSoundBtn = () => {
-  const muteSoundBtn = document.createElement('button');
-  muteSoundBtn.innerHTML = '<img class= "soundImg" src ="./icons/mute.png">';
-  muteSoundBtn.setAttribute('id', 'soundBtn');
-  muteSoundBtn.addEventListener('click', () => {
+  const muteSoundBtnImg = document.createElement('IMG');
+  muteSoundBtnImg.classList.add('soundBtn');
+  muteSoundBtnImg.src = './icons/mute.png';
+  muteSoundBtnImg.addEventListener('click', () => {
     if (bgMusic.muted === true) {
       bgMusic.muted = false;
     } else {
       bgMusic.muted = true;
     }
   });
-  document.body.appendChild(muteSoundBtn);
+  document.body.appendChild(muteSoundBtnImg);
 };
 
 // Function that refreshes scroll machine display

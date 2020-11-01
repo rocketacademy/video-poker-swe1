@@ -238,7 +238,7 @@ body {
   box-shadow: 0px 0px 10px #f38a0a, 0px 0px 20px #f38a0a;
 }
 
-.arrow-down {
+.arrow-down{
   position: relative;
   top: 10px;
   width: 0;
@@ -246,6 +246,19 @@ body {
   border-left: 10px solid transparent;
   border-right: 10px solid transparent;
   border-top: 10px solid #f38a0a;
+  margin-top: -9px;
+  /* Default position */
+  left: 490px;
+  font-size: 100px;
+}
+.arrow-down::after{
+  position: relative;
+  top: 5px;
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid #0c0700;
   margin-top: -9px;
   /* Default position */
   left: 490px;
@@ -324,9 +337,13 @@ body {
   box-shadow: 0 0 19px 1px #f2d667;
 }
 
-.soundImg {
+.soundBtn {
   width: 20px;
   height: 20px;
+  background:white;
+  box-shadow:0px 0px 10px #67a8d4, 0px 0px 20px #67a8d4, 0px 0px 30px #67a8d4,
+    0px 0px 40px #67a8d4;
+  border-radius:10px;
 }
 
 /* for 13 inch full screens */
@@ -334,7 +351,6 @@ body {
   .overallScreen {
     height: 641px;
   }
-
   .combinationsDisplay {
     flex: 0.08;
   }
@@ -397,155 +413,169 @@ body {
     }
   }
 
-   @media screen and (max-width: 500px) {
-    .overallScreen {
-      width: auto;
-      height: 100vh;
-      margin: auto;
-      box-sizing: border-box;
-    }
-    .nameOfCombiDisplay{
-      font-size:12px;
-      margin-top:10px;
-  
-    }
-     .combinationsDisplay {
-      flex: 0.06;
-      font-size: 25px;
-    }
-    .cardsContainer {
-      flex: 0.1;
-      flex-wrap: wrap;
-      flex-basis: 33.33%;
-      box-sizing: border-box;
-      margin: -2px;
-    }
-    .pOutBox {
-      padding: 4px;
-    }
-    .card {
-      height: 70%;
-      box-sizing: border-box;
-    }
-    .cardImage {
-      width: 90%;
-      height: auto;
-    }
-    .cover-card {
-      width: 17%;
-      height: auto;
-      border-radius:3px;
-    }
-    .holdStatus {
-      color: white;
-      display: inline;
-      text-align: center;
-      /* margin-top: -15px; */
-    }
-    .statsDisplay {
-      font-size: 20px;
-    }
-    .gameOver {
-      top: 35px;
-    }
-
-    .finalInsertCredits {
-      top: 330px;
-    }
+  @media screen and (max-width: 500px) {
+  .neon h1{
+    font-size:1rem;
   }
-
-  /* for iphone 6/7/8 */
- @media screen and (max-width: 375px) {
   .overallScreen {
     width: auto;
     height: 100vh;
     margin: auto;
     box-sizing: border-box;
   }
-  .combinationsDisplay {
-    flex: 0.4;
+  .nameOfCombiDisplay{
+    font-size:12px;
   }
-
+  .combinationsDisplay {
+    flex: 0.06;
+    font-size: 25px;
+  }
   .cardsContainer {
-    flex: 1;
+    flex: 0.15;
     flex-wrap: wrap;
-    flex-basis: 33.33%;
+    flex-basis: 33%;
     box-sizing: border-box;
     margin: -2px;
   }
-  .card {
-    height: 40%;
-    box-sizing: border-box;
+
+  .pOutBox {
+    padding: 4px;
+    font-size:20px;
   }
+
+  .card {
+    height: auto;
+    width:auto;
+    display:flex;
+    margin-top:65px;
+    }
+
   .cardImage {
-    width: 102px;
+    width: 115px;
+    height: auto;
   }
   .cover-card {
-    width: 28%;
-    height: 148px;
+    width: 26%;
+    height: auto;
+    border-radius:3px;
   }
   .holdStatus {
-    background: lightgrey;
-    color: green;
-    position: relative;
-    top: 100px;
-    font-size: 14px;
-    text-align: center;
-  }
-
-  #availCredits {
-    font-size: 15px;
-  }
-  #creditsInserted {
-    font-size: 15px;
-  }
-  #currentCombi {
-    font-size: 15px;
-  }
-
-
-  /*for iphone X */
-  @media screen and (max-width: 414px) {
-  .overallScreen {
-    width: auto;
-    height: 100vh;
-    margin: auto;
-    box-sizing: border-box;
-  }
-  .combinationsDisplay {
-    flex: 0.4;
-  }
-  .cardsContainer {
-    flex: 1;
-    flex-wrap: wrap;
-    flex-basis: 33.33%;
-    box-sizing: border-box;
-    margin: -2px;
-  }
-  .card {
-    height: 40%;
-    box-sizing: border-box;
-  }
-  .cardImage {
-    width: 102px;
-  }
-  .cover-card {
-    width: 28%;
-    height: 148px;
-  }
-  .holdStatus {
-    background: lightgrey;
-    color: green;
+        color: white;
     display: inline;
     text-align: center;
+    font-size:16px;    
   }
-  #availCredits {
+  .statsDisplay {
     font-size: 15px;
+    margin-top:10px;
   }
-  #creditsInserted {
-    font-size: 15px;
+  .gameOver {
+    top:5px;
+    font-size:19px;
   }
-  #currentCombi {
-    font-size: 15px;
+
+  .finalInsertCredits {
+    top: 410px;
+    font-size:19px;
   }
+  .soundBtn{
+    position:absolute;
+    transform: translate(20px,-250px);
+    background-color:white;
   }
+}
+
+/* for iphone 6/7/8 */
+@media screen and (max-width: 375px) {
+.overallScreen {
+  width: auto;
+  height: 100vh;
+  margin: auto;
+  box-sizing: border-box;
+}
+.combinationsDisplay {
+  flex: 0.4;
+}
+
+.cardsContainer {
+  flex: 1;
+  flex-wrap: wrap;
+  flex-basis: 33.33%;
+  box-sizing: border-box;
+  margin: -2px;
+}
+.card {
+  height: 40%;
+  box-sizing: border-box;
+}
+.cardImage {
+  width: 57%;
+  height:auto;
+
+}
+.cover-card {
+  width: 28%;
+  height: 148px;
+}
+.holdStatus {
+  color: black;
+  position: relative;
+  top: 100px;
+  font-size: 14px;
+  text-align: center;
+}
+
+#availCredits {
+  font-size: 15px;
+}
+#creditsInserted {
+  font-size: 15px;
+}
+#currentCombi {
+  font-size: 15px;
+}
+
+
+/*for iphone X */
+@media screen and (max-width: 414px) {
+.overallScreen {
+  width: auto;
+  height: 100vh;
+  margin: auto;
+  box-sizing: border-box;
+}
+.combinationsDisplay {
+  flex: 0.4;
+}
+.cardsContainer {
+  flex: 1;
+  flex-wrap: wrap;
+  flex-basis: 33.33%;
+  box-sizing: border-box;
+  margin: -2px;
+}
+.card {
+  height: 40%;
+  box-sizing: border-box;
+}
+.cardImage {
+  width: 102px;
+}
+.cover-card {
+  width: 28%;
+  height: 148px;
+}
+.holdStatus {
+  color: green;
+  display: inline;
+  text-align: center;
+}
+#availCredits {
+  font-size: 15px;
+}
+#creditsInserted {
+  font-size: 15px;
+}
+#currentCombi {
+  font-size: 15px;
+}

@@ -36,6 +36,19 @@ let creditsInsertedDisplay;
 let numCreditsInserted = 1;
 let creditsLeft = 100;
 let currAmtWon = 0;
+
+// Rank of Combination constants
+const RANK_OF_FIVE_OF_A_KIND = 0;
+const RANK_OF_STRAIGHT_FLUSH = 1;
+const RANK_OF_FOUR_OF_A_KIND = 2;
+const RANK_OF_FULL_HOUSE = 3;
+const RANK_OF_FLUSH = 4;
+const RANK_OF_STRAIGHT = 5;
+const RANK_OF_THREE_OF_A_KIND = 6;
+const RANK_OF_TWO_PAIRS = 7;
+const RANK_OF_JACKS_OR_BETTER = 8;
+const RANK_OF_NO_COMBO = 9;
+
 // Track payout level separate from creditsInserted
 let payOutLevel = 0;
 
@@ -60,7 +73,7 @@ let coverCardShown = true;
 
 // Track Rank of Hand
 // Five of a kind being 0 and Jacks or Better being 8, no winning hand = 9;
-let rankOfHand = 9;
+let rankOfHand = RANK_OF_NO_COMBO;
 
 // Track displays relating to gameOver messages
 let gameOverDisplay;
@@ -150,12 +163,12 @@ const checkForKindsnPairs = () => {
   // Next Check for a joker for 5 of a kind
     if (playerHand.some((card) => card.name === 'Joker')) {
       nameOfWinCombi = '5 of a kind!';
-      rankOfHand = 0;
+      rankOfHand = RANK_OF_FIVE_OF_A_KIND;
       isAnyKindOrPair = true;
       return isAnyKindOrPair;
     }
     nameOfWinCombi = '4 of a kind!';
-    rankOfHand = 2;
+    rankOfHand = RANK_OF_FOUR_OF_A_KIND;
     isAnyKindOrPair = true;
 
   // Check for 3 of a kind
@@ -165,12 +178,12 @@ const checkForKindsnPairs = () => {
     const uniqueCards = [...new Set(playerHand.map((card) => card.name))];
     if (uniqueCards.length === 2) {
       nameOfWinCombi = 'Full House';
-      rankOfHand = 0;
+      rankOfHand = RANK_OF_FULL_HOUSE;
       isFullHouse = true;
       return isFullHouse;
     }
     nameOfWinCombi = '3 of a kind';
-    rankOfHand = 6;
+    rankOfHand = RANK_OF_THREE_OF_A_KIND;
     isAnyKindOrPair = true;
     return isAnyKindOrPair;
 
@@ -184,13 +197,13 @@ const checkForKindsnPairs = () => {
 
     if (numPairs.length === 2) {
       nameOfWinCombi = '2 Pairs';
-      rankOfHand = 7;
+      rankOfHand = RANK_OF_TWO_PAIRS;
       isAnyKindOrPair = true;
       return isAnyKindOrPair;
     } if (countJacksInHand.length === 2 || countQueensInHand.length === 2
       || countKingsInHand.length === 2 || countAcesInHand.length === 2) {
       nameOfWinCombi = 'Pair of Jacks or better';
-      rankOfHand = 8;
+      rankOfHand = RANK_OF_JACKS_OR_BETTER;
       isAnyKindOrPair = true;
       return isAnyKindOrPair;
     }
@@ -215,7 +228,7 @@ const checkForFlush = (numCardsToCheck) => {
   // check if the 2 cards are the same
   if (playerHand[i].suit === playerHand[i - 1].suit) {
     nameOfWinCombi = 'Flush!';
-    rankOfHand = 4;
+    rankOfHand = RANK_OF_FLUSH;
     isFlush = true;
     return isFlush;
   }
@@ -245,18 +258,18 @@ const checkForStraight = () => {
     // because its rank is 0, it will not show up as a consecutive card
     if (lowestCardName.name === 'Ace') {
       nameOfWinCombi = 'Ace-high Straight';
-      rankOfHand = 5;
+      rankOfHand = RANK_OF_STRAIGHT;
       isStraight = true;
       // else this is a King-High Straight
     } else if (lowestCardName === '10') {
       nameOfWinCombi = `${highestCardName}-high Straight`;
-      rankOfHand = 5;
+      rankOfHand = RANK_OF_STRAIGHT;
       isStraight = true;
     }
     // else it is just a normal straight
   } else if (countOfConsecutiveRankCards === sortedHand.length) {
     nameOfWinCombi = `${highestCardName}-high Straight`;
-    rankOfHand = 5;
+    rankOfHand = RANK_OF_STRAIGHT;
     isStraight = true;
   }
 };
@@ -266,7 +279,7 @@ const checkForStraightFlush = () => {
   if (isFlush === true && isStraight === true) {
     isStraightFlush = true;
     nameOfWinCombi = 'Straight Flush!';
-    rankOfHand = 1;
+    rankOfHand = RANK_OF_STRAIGHT_FLUSH;
   }
 };
 
@@ -717,7 +730,7 @@ const dealCardsAndAnimateMsg = () => {
     // Reset curr amt won tracker to 0;
     currAmtWon = 0;
     // Reset rankOfHand after each calculation and animation
-    rankOfHand = 9;
+    rankOfHand = RANK_OF_NO_COMBO;
     gameState = 'playerNextMove';
 
     setTimeout(() => {

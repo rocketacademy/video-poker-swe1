@@ -34,23 +34,35 @@
     -->
 
   <div class='container' id='container'>
-    <div class='row' id='row1'>
+    <div class='row mainRow' id='row1'>
       <div class='col-6' id="row1"> Jeremy's Video-Poker Project</div>
     </div>
-    <div class='row' id="row2">
+    <div class='row mainRow' id="row2">
       row2
     </div>
-    <div class='row' id="row3">
-      <!-- <div class='row' id='thisID' style='background-color:yellowgreen; width: 100%;'>
-                <div class='col-2' style='background-color: violet;'>Hello</div>
-              </div> -->
-      <div class='col-md-1 sm-md-2 arsenalColumns' id='arsenalID1'>
-        <img class='backOfPlayingCard' src='https://playcards.live/cards/back.jpg' alt='back of playing card'>
+    <div class='row mainRow' id="row3">
+      <div class=' col arsenalColumns' id='arsenalLeft'> hello
+        <div class='row' id='arsenalContainer'>
+          <div class='col-md-2 col-xs-3 cardContainer' id='arsenalID1'>
+            <img class='backOfPlayingCard' src='https://playcards.live/cards/back.jpg' alt='back of playing card'>
+          </div>
+          <div class='col-md-2 col-xs-3 cardContainer' id='arsenalID2'>
+            <img class='backOfPlayingCard' src='https://playcards.live/cards/back.jpg' alt='back of playing card'>
+          </div>
+          <div class='col-md-2 col-xs-3 cardContainer' id='arsenalID3'>
+            <img class='backOfPlayingCard' src='https://playcards.live/cards/back.jpg' alt='back of playing card'>
+          </div>
+          <div class='col-md-2 col-xs-3 cardContainer' id='arsenalID4'>
+            <img class='backOfPlayingCard' src='https://playcards.live/cards/back.jpg' alt='back of playing card'>
+          </div>
+          <div class='col-md-2 col-xs-3 cardContainer' id='arsenalID5'>
+            <img class='backOfPlayingCard' src='https://playcards.live/cards/back.jpg' alt='back of playing card'>
+          </div>
+        </div>
       </div>
-
       <div class=' col-4 arsenalColumns' id='outputBox'>outputbox</div>
     </div>
-    <div class='row' id="row4">
+    <div class='row mainRow' id="row4">
       <button type="button" class='col-3 btn btn-danger btn-lg' id='bidButton'>
         Bid</button>
       <div class='col-4' id='bidDisplayID'>
@@ -60,10 +72,10 @@
         <span>creditsDisplay</span>
       </div>
     </div>
-    <div class='row' id="row5">
-      <button class='col-2 btn btn-outline-primary' id='restartButtonID'><span>Restart</span>
+    <div class='row mainRow' id="row5">
+      <button class='col-2 btn btn-outline-primary' id='restartButtonID'>Restart
       </button>
-      <button class='col-2 btn btn btn-outline-primary' id='dealOrDrawButtonID'><span>Deal/draw</span>
+      <button class='col-2 btn btn btn-outline-primary' id='dealOrDrawButtonID'>Deal/draw
       </button>
 
     </div>

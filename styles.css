@@ -10,11 +10,17 @@ body {
 .container{
 background-color: #00A1FF;
   height: 80%;
-  width:100%;
+  max-width: 800px;
   border:black solid;
   border-width: 1px;
   padding:20px;
 }
+
+/* #row1{
+  background-image: url("https://static.vecteezy.com/system/resources/previews/000/146/249/large_2x/vector-gaucho-silhouette-with-vintage-style.jpg" );
+  background-size: cover;
+} */
+
 
 .cardElement {
   width: 15%;
@@ -27,10 +33,10 @@ background-color: #00A1FF;
 }
 
 
-.row{
+.mainRow{
   display: flex;
   background-color: white;
-  height:15%;
+  min-height:100px;
   border: solid black;
   border-width: 1px;
   align-items: center;
@@ -38,7 +44,7 @@ background-color: #00A1FF;
 }
 
 #bidDisplayID{
-  height:60%;
+  height:60px;
   border: solid black;
   border-width: 1px;
   display:flex;
@@ -46,34 +52,40 @@ background-color: #00A1FF;
   align-items: center;
 }
 
-button{
+.arsenalColumns{
+  /* height: 100%; */
   display:flex;
-  flex-wrap: wrap;;
+  align-self:stretch;
+  /* flex-wrap:wrap; */
+}
+#arsenalLeft{
+background-image: url('https://image.freepik.com/free-vector/poker-table-background-green-color_47243-1068.jpg');
+/* display: flex;
+justify-content: flex-start; */
+
+
 }
 
-.arsenalColumns{
-  height: 100%;
+#arsenalContainer{
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  width: 100%;
 }
+
+.cardContainer{
+  height:70px;
+  width:60px;
+}
+.backOfPlayingCard{
+  width:40px;
+  height: 60px;
+}
+
 #outputBox{
   border-left: solid black;
   border-width: 1px;
-}
-
-#arsenalID{
-  height:80%;
-}
-
-.backOfPlayingCard{
-  height: 80%;
-}
-
-
-
-#cardElementRow{
-  border: solid green;
-  background-color: orange;
-  height:30px;
-
 }
 
 #keepCardIndicationID{
@@ -83,3 +95,15 @@ word-break: break-word;
 width: 30px
 }
 
+#pokerTable{
+  width:100%;
+}
+
+button{
+  white-space: normal;
+}
+/* 
+    overflow: hidden;
+  white-space: nowrap;
+  display: inline-block;
+  text-overflow: ellipsis; */

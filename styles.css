@@ -93,7 +93,6 @@ body {
 .pOutBox {
   padding: 4px;
   text-align: center;
-  /* border-style: dashed; */
 }
 
 .cardsContainer {
@@ -331,74 +330,132 @@ body {
 }
 
 /* for 13 inch full screens */
-@media screen and (max-width:1300px){
- 
-.overallScreen {
-  height: 641px;
-}
-
-.combinationsDisplay{
-  flex:0.08;
-}
-
-.finalInsertCredits{
-  top:300px;
-}
-.gameOver{
-  top:15px;
-}
-
-/* for half screen*/
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 1300px) {
   .overallScreen {
-    width: auto;
-    height: 100vh;
-    margin: auto;
-    box-sizing: border-box;
+    height: 641px;
   }
-  .combinationsDisplay {
-    flex: 0.07;
-    font-size: 25px;
-  }
-  .cardsContainer {
-    flex: 1;
-    flex-wrap: wrap;
-    flex-basis: 33.33%;
-    box-sizing: border-box;
-    margin: -2px;
-  }
-  .card {
-    height: 40%;
-    box-sizing: border-box;
-  }
-  .cardImage {
-    width: 200px;
-    height: auto;
-  }
-  .cover-card {
-    width: 28%;
-    height: auto;
-  }
-  .holdStatus {
-    background: lightgrey;
-    color: green;
-    display: inline;
-    text-align: center;
-    margin-top: -15px;
-  }
-  #availCredits {
-    font-size: 25px;
-  }
-  #creditsInserted {
-    font-size: 25px;
-  }
-  #currentCombi {
-    font-size: 25px;
-  }
-}
 
-/* for iphone 6/7/8 */
-@media screen and (max-width: 375px) {
+  .combinationsDisplay {
+    flex: 0.08;
+  }
+
+  .finalInsertCredits {
+    top: 300px;
+  }
+  .gameOver {
+    top: 15px;
+  }
+
+  @media screen and (max-width: 1000px) {
+    .overallScreen {
+      width: auto;
+      height: 100vh;
+      margin: auto;
+      box-sizing: border-box;
+    }
+    .combinationsDisplay {
+      flex: 0.06;
+      font-size: 25px;
+    }
+    .cardsContainer {
+      flex: 0.1;
+      flex-wrap: wrap;
+      flex-basis: 33.33%;
+      box-sizing: border-box;
+      margin: -2px;
+    }
+    .pOutBox {
+      padding: 4px;
+    }
+    .card {
+      height: 40%;
+      box-sizing: border-box;
+    }
+    .cardImage {
+      width: 90%;
+      height: auto;
+    }
+    .cover-card {
+      width: 17%;
+      height: auto;
+    }
+    .holdStatus {
+      color: white;
+      display: inline;
+      text-align: center;
+      /* margin-top: -15px; */
+    }
+    .statsDisplay {
+      font-size: 20px;
+    }
+    .gameOver {
+      top: 35px;
+    }
+
+    .finalInsertCredits {
+      top: 330px;
+    }
+  }
+
+   @media screen and (max-width: 500px) {
+    .overallScreen {
+      width: auto;
+      height: 100vh;
+      margin: auto;
+      box-sizing: border-box;
+    }
+    .nameOfCombiDisplay{
+      font-size:12px;
+      margin-top:10px;
+  
+    }
+     .combinationsDisplay {
+      flex: 0.06;
+      font-size: 25px;
+    }
+    .cardsContainer {
+      flex: 0.1;
+      flex-wrap: wrap;
+      flex-basis: 33.33%;
+      box-sizing: border-box;
+      margin: -2px;
+    }
+    .pOutBox {
+      padding: 4px;
+    }
+    .card {
+      height: 70%;
+      box-sizing: border-box;
+    }
+    .cardImage {
+      width: 90%;
+      height: auto;
+    }
+    .cover-card {
+      width: 17%;
+      height: auto;
+      border-radius:3px;
+    }
+    .holdStatus {
+      color: white;
+      display: inline;
+      text-align: center;
+      /* margin-top: -15px; */
+    }
+    .statsDisplay {
+      font-size: 20px;
+    }
+    .gameOver {
+      top: 35px;
+    }
+
+    .finalInsertCredits {
+      top: 330px;
+    }
+  }
+
+  /* for iphone 6/7/8 */
+ @media screen and (max-width: 375px) {
   .overallScreen {
     width: auto;
     height: 100vh;
@@ -445,10 +502,10 @@ body {
   #currentCombi {
     font-size: 15px;
   }
-}
 
-/* for iphone X */
-@media screen and (max-width: 414px) {
+
+  /*for iphone X */
+  @media screen and (max-width: 414px) {
   .overallScreen {
     width: auto;
     height: 100vh;
@@ -458,7 +515,6 @@ body {
   .combinationsDisplay {
     flex: 0.4;
   }
-
   .cardsContainer {
     flex: 1;
     flex-wrap: wrap;
@@ -479,13 +535,10 @@ body {
   }
   .holdStatus {
     background: lightgrey;
-    /* padding: 10px; */
     color: green;
     display: inline;
-    /* font-size: 14px; */
     text-align: center;
   }
-
   #availCredits {
     font-size: 15px;
   }
@@ -495,4 +548,4 @@ body {
   #currentCombi {
     font-size: 15px;
   }
-}
+  }

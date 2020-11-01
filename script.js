@@ -98,7 +98,7 @@ const calcPayOutLevel = () => {
   }
 };
 
-// Calculate the score of the hand and add to user's credits
+// Calculate the score of the hand and add the score to a temp variable before adding to user's total
 const calcHandScore = () => {
   const amtWon = payOutSchedule[payOutLevel][rankOfHand];
   currAmtWon += amtWon;
@@ -461,8 +461,6 @@ const topScoreScrollDisplay = () => {
       }, animationDelay - 100);
     }, delay);
   }
-  // reset rankOfHand after each calculation and animation
-  rankOfHand = 9;
 };
 
 // Function that generates the path to each individual card
@@ -569,7 +567,6 @@ const fadeOutGameOverDisplay = () => {
   gameOverDisplay.classList.add('animate__fadeOut');
   insertCreditsToContinueDisplay.classList.remove('animate__fadeIn');
   insertCreditsToContinueDisplay.classList.add('animate__fadeOut');
-  console.log('fadeout ran');
 };
 
 // Function that draws the initial hand when the game begins
@@ -705,6 +702,7 @@ const dealCardsAndAnimateMsg = () => {
     // When player decides to either 'deal' or 'swap'
   } else if (gameState === 'playerNextMove' || gameState === 'gameOver') {
     calcHandScore();
+    console.log(currAmtWon, 'currAmtWon');
     createGameOverDisplay();
     statsDisplay.innerText = '';
     // Empty currAmtWon to total credits left
@@ -718,6 +716,8 @@ const dealCardsAndAnimateMsg = () => {
     }
     // Reset curr amt won tracker to 0;
     currAmtWon = 0;
+    // Reset rankOfHand after each calculation and animation
+    rankOfHand = 9;
     gameState = 'playerNextMove';
 
     setTimeout(() => {
@@ -737,10 +737,9 @@ const runDealCardsEngine = () => {
     coverCardShown = false;
     delayInDrawingCardsAnimation = 800;
   } else if (coverCardShown === false) {
-    const existHoldStatusDisplay = document.querySelector('.holdStatus');
-    existHoldStatusDisplay.innerText = '';
-    fadeOutGameOverDisplay();
     fadeOutCurrHandAnimation();
+    fadeOutGameOverDisplay();
+    console.log('test2');
 
     setTimeout(() => {
       cardsContainer.innerText = '';
@@ -792,7 +791,6 @@ const createDealCardsBtn = () => {
   dealBtn.innerText = 'DEAL';
   dealBtn.addEventListener('click', () => {
     // reset the top scrolling machine displays and recreate it
-
     if (numCreditsInserted > 0) {
       if (gameRound > 0) {
         refreshScrollMachineDisplay();
@@ -830,7 +828,7 @@ const createSwapCardsBtn = () => {
       });
       checkForWinCombi();
       refreshScrollMachineDisplay();
-      // calculate score and add to creditsLeft
+      // calculate score and track the amtWon
       calcHandScore();
 
       // Scroll the top header to display the winning combi

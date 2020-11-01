@@ -118,11 +118,15 @@
 
 // Normal Straight Flush Hand
 // Straight
-// const simulatedHand = [
-//   { name: 9, suit: 'heart', rank: 9 },
-//   { name: 'Queen', suit: 'spade', rank: 12 },
-//   { name: 'King', suit: 'club', rank: 13 },
-//   { name: 'Jack', suit: 'club', rank: 11 },
-//   { name: 'Queen', suit: 'club', rank: 12 },
-//   { name: 10, suit: 'heart', rank: 10 },
-// ];
+const simulatedHand = [
+  { name: 7, suit: 'club', rank: 7 },
+  { name: 9, suit: 'spade', rank: 9 },
+  { name: 7, suit: 'heart', rank: 7 },
+  { name: 10, suit: 'diamond', rank: 10 },
+  { name: 7, suit: 'club', rank: 9 },
+  { name: 'Queen', suit: 'spade', rank: 12 },
+  { name: 'King', suit: 'club', rank: 13 },
+  { name: 'Jack', suit: 'club', rank: 11 },
+  { name: 'Queen', suit: 'club', rank: 12 },
+  { name: 'Jack', suit: 'spade', rank: 11 },
+];

@@ -304,6 +304,7 @@ const reorderCards = () => {
     j += 1;
   }
 };
+
 // store similar ranks together and used to check for winning conditions
 const groupPlayerCardsByRank = () => {
   // empty rankedHand of previous round

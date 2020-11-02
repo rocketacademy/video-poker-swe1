@@ -158,6 +158,11 @@ td {
     margin: 0 20px;
     width: 250px;
   }
+  #player-hand-container {
+    width: 80vw;
+    height: 250px;
+    margin: 0 auto;
+  }
 }
 @media (min-width: 992px) {
   h2 {

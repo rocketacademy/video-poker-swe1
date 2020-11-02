@@ -207,7 +207,7 @@ const createCard = (cardInfo) => {
 
   // creation of back of card element
   const cardBack = document.createElement('img');
-  cardBack.setAttribute('src', 'video-poker-swe1/Assets/cardback.png');
+  cardBack.setAttribute('src', 'https://kenrickles.github.io/video-poker-swe1/Assets/cardback.png);
   cardBack.setAttribute('width', '300');
   cardBack.setAttribute('height', '300');
   cardBack.classList.add('card__face', 'card__face--back');

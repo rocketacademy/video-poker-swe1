@@ -207,7 +207,7 @@ const createCard = (cardInfo) => {
 
   // creation of back of card element
   const cardBack = document.createElement('img');
-  cardBack.setAttribute('src', 'Assets/cardBack.png');
+  cardBack.src = 'Assets/cardBack.png';
   cardBack.setAttribute('width', '300');
   cardBack.setAttribute('height', '300');
   cardBack.classList.add('card__face', 'card__face--back');

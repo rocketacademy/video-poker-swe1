@@ -159,7 +159,7 @@ td {
     width: 250px;
   }
   #player-hand-container {
-    width: 80vw;
+    width: 70vw;
     height: 250px;
     margin: 0 auto;
   }
@@ -171,5 +171,8 @@ td {
   ol {
     width: 600px;
     margin: 0 auto;
+  }
+  #player-hand-container {
+    width: 700px;
   }
 }

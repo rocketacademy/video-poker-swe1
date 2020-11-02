@@ -19,6 +19,7 @@ const checkPairs = (card) => {
       handRankScore += player.hand[i].rank;
     }
   }
+  console.log(`matches is... ${match}`);
 
   if ((match === 1) && (rankLargerThanTen >= 2) && (handRankScore > 20)) {
     console.log('match is 1');

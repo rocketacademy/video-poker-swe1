@@ -292,7 +292,7 @@ const toggleBidStakesDisplay = () => {
 // ---------CLICK RESET-----------
 const clickReset = () => {
   // reset the bidStakes Display
-  document.getElementById('bidstakes' + bidTracker).removeAttribute('class', 'currentBidStakes');
+  document.getElementById('bidstakes' + bidTracker).classList.remove('currentBidStakes');
 
   // reset bidTracker to 0
   bidTracker = 0;

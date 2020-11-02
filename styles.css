@@ -43,6 +43,7 @@ li {
   border-width: 5px;
   border-color: chocolate;
   border-radius: 10px;
+  overflow: hidden;
 }
 .card {
   margin: 2px;
@@ -52,6 +53,8 @@ li {
   border-radius: 8px;
   border-width: 4px;
   border-color: yellowgreen;
+  animation: flipInY;
+  animation-duration: 1s;
 }
 .card-border {
   border-color: blue;

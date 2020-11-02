@@ -38,7 +38,7 @@ li {
   margin: 0;
   padding: 5px;
   background-color: yellowgreen;
-  height: 300px;
+  min-height: 250px;
   border-style: ridge;
   border-width: 5px;
   border-color: chocolate;
@@ -160,7 +160,7 @@ td {
   }
   #player-hand-container {
     width: 70vw;
-    height: 250px;
+    min-height: 250px;
     margin: 0 auto;
   }
 }
@@ -173,6 +173,8 @@ td {
     margin: 0 auto;
   }
   #player-hand-container {
-    width: 700px;
+    min-height: 280px;
+    min-width: 700px;
+    max-width: 1000px;
   }
 }

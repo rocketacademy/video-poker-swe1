@@ -15,9 +15,11 @@ header {
   overflow-x: hidden;
 }
 
-@media (max-width: 650) {
+@media (max-width: 650px) {
   header {
     flex-wrap: wrap;
+
+    position: relative;
   }
 }
 
@@ -33,6 +35,10 @@ header {
 }
 
 @media (max-width: 650px) {
+  .banner {
+    width: auto;
+  }
+
   .banner > img {
     margin: 0;
   }
@@ -42,6 +48,7 @@ header {
     width: 650px;
     height: auto;
     justify-content: flex-start;
+    align-items: center;
   }
 }
 
@@ -59,7 +66,7 @@ nav {
 }
 
 nav > ul {
-  width: 35vw;
+  /* width: 35vw; */
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
@@ -90,15 +97,29 @@ nav > ul {
     flex-wrap: wrap;
     flex-direction: column;
     padding: 0px;
+
+    position: absolute;
+    top: 5px;
+    left: 20px;
+    right: 0px;
   }
   nav > ul {
     flex-direction: column;
     margin-top: 0%;
     align-items: flex-start;
+
+    width: 100%;
+    flex-wrap: wrap;
+    /* margin: 2.5px 35px 2.5px 190px; */
   }
 
   nav li {
     margin: 0;
+  }
+
+  .nav-list {
+    width: 200px;
+    text-align: center;
   }
 
   #nav-bar a {
@@ -173,9 +194,16 @@ nav > ul {
   border-radius: 5px;
   text-align: center;
   color: black;
+
+  position: relative;
 }
 .hold-status {
   font-size: 20px;
+
+  position: absolute;
+  margin-left: 40%;
+  top: 0;
+  right: 0;
 }
 
 .image-card {

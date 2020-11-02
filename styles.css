@@ -16,11 +16,26 @@ background-color: #00A1FF;
   padding:20px;
 }
 
-/* #row1{
-  background-image: url("https://static.vecteezy.com/system/resources/previews/000/146/249/large_2x/vector-gaucho-silhouette-with-vintage-style.jpg" );
-  background-size: cover;
-} */
 
+
+ol{
+  font-size: 10px;
+  list-style-type: none;
+  padding-left:2px;
+}
+ul{
+  font-size: 10px;
+  list-style-type: none;
+  padding-left:2px;
+  display: flex;
+  justify-content: center;
+
+}
+
+
+#row2{
+  justify-content: flex-start;
+}
 
 .cardElement {
   width: 40px;
@@ -42,7 +57,15 @@ background-color: #00A1FF;
   border-width: 1px;
   align-items: center;
   justify-content: space-around;
+
 }
+
+.currentBidStakes{
+  border:solid #FF1922;
+  border-width: 1px;
+  border-radius: 0.25;
+}
+
 
 #bidDisplayID{
   height:60px;
@@ -61,10 +84,8 @@ background-color: #00A1FF;
 }
 #arsenalLeft{
 background-image: url('https://image.freepik.com/free-vector/poker-table-background-green-color_47243-1068.jpg');
-/* display: flex;
-justify-content: flex-start; */
-
-
+display: flex;
+align-items: stretch;
 }
 
 #arsenalContainer{
@@ -89,7 +110,7 @@ justify-content: flex-start; */
   border-width: 1px;
 }
 
-#keepCardIndicationID{
+.keepCardIndication{
 background-color:#D5D5D5;
 padding-left: 3px;
 font-size:10px;
@@ -104,8 +125,22 @@ width: 30px
 button{
   white-space: normal;
 }
+
+#dealOrDrawButtonID {
+white-space: normal;
+}
+
 /* 
     overflow: hidden;
   white-space: nowrap;
   display: inline-block;
   text-overflow: ellipsis; */
+
+#row1{
+  font-family: 'Libre Baskerville', serif;
+  font-size: 15px;
+}
+
+button{
+  white-space: normal;
+}

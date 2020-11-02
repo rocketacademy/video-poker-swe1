@@ -7,10 +7,13 @@ const checkPairs = (card) => {
   let outcome = null;
   let handRankScore = 0;
 
+  // look through the player's hand
   for (let i = 0; i < player.hand.length - 1; i += 1) {
+    // for each match between adjacent cards, increment 'match' by 1
     if (player.hand[i].rank === player.hand[i + 1].rank) {
       match += 1;
     }
+    // if a card has a rank larger than 10, increment the rankLargerThanTen by 1
     if (player.hand[i].rank > 10) {
       rankLargerThanTen += 1;
       handRankScore += player.hand[i].rank;
@@ -152,7 +155,7 @@ const getHandScore = () => {
   // sort cards (bubble sort) in ascending order
   for (let j = 0; j < player.hand.length; j += 1) {
     for (let i = 0; i < player.hand.length - 1; i += 1) {
-      console.log(`start iteration ${i}`);
+      // console.log(`start iteration ${i}`);
       if (player.hand[i].rank > player.hand[i + 1].rank) {
         [player.hand[i], player.hand[i + 1]] = [player.hand[i + 1], player.hand[i]];
         console.log(`end iteration ${i}`);
@@ -162,15 +165,12 @@ const getHandScore = () => {
 
   // check for pairs
   const outcomeOfCheckPairs = checkPairs();
-  // console.log(`outcomeOfCheckPairs is ${outcomeOfCheckPairs}`);
 
   // check for straights;
   const outcomeOfCheckStraight = checkStraight();
-  // console.log(`outcomeOfCheckStraight is:  ${outcomeOfCheckStraight}`);
 
   // check for flushes;
   const outcomeOfCheckFlush = checkFlush();
-  // console.log(`outcomeOfCheckFlush is: ${outcomeOfCheckFlush}`);
 
   // based on the 3 checks above, determine if the player has a winning hand
   const finalOutcome = checkWin(outcomeOfCheckPairs, outcomeOfCheckStraight, outcomeOfCheckFlush);
@@ -188,7 +188,4 @@ const getHandScore = () => {
 
   // display the credits to the user
   showCredits(player.credits);
-
-  // make the start/reset button click-able so that the user can play again
-  document.getElementById('restartButtonID').removeAttribute('disabled');
 };

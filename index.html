@@ -1,3 +1,7 @@
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&display=swap" rel="stylesheet">
+
+
 <!doctype html>
 <html lang="en">
 
@@ -11,8 +15,10 @@
     integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
   <link rel="stylesheet" href="styles.css" />
 
+  <title>Video Poker</title>
 
-  <title>Hello, world!</title>
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -35,32 +41,91 @@
 
   <div class='container' id='container'>
     <div class='row mainRow' id='row1'>
-      <div class='col-6' id="row1"> Jeremy's Video-Poker Project</div>
+      <div class='col-6' id="row1"> Jeremy's Video-Poker Project 🤠</div>
     </div>
     <div class='row mainRow' id="row2">
-      row2
+      <div class='col-5'>
+        <ol>
+          <li>STRAIGHT FLUSH</li>
+          <li>FOUR OF A KIND</li>
+          <li>FULL HOUSE</li>
+          <li>FLUSH</li>
+          <li>STRAIGHT</li>
+          <li>THREE OF A KIND</li>
+          <li>TWO PAIRS</li>
+          <li>JACKS OR BETTER</li>
+        </ol>
+      </div>
+      <div class='col-1 bid' id='bidstakes1'>
+        <ol>
+          <li>50</li>
+          <li>25</li>
+          <li>9</li>
+          <li>6</li>
+          <li>4</li>
+          <li>3</li>
+          <li>2</li>
+          <li>1</li>
+        </ol>
+      </div>
+      <div class='col-1' id='bidstakes2'>
+        <ol>
+          <li>100</li>
+          <li>50</li>
+          <li>18</li>
+          <li>12</li>
+          <li>8</li>
+          <li>6</li>
+          <li>4</li>
+          <li>2</li>
+        </ol>
+      </div>
+      <div class='col-1' id='bidstakes3'>
+        <ol>
+          <li>150</li>
+          <li>75</li>
+          <li>27</li>
+          <li>18</li>
+          <li>12</li>
+          <li>9</li>
+          <li>6</li>
+          <li>3</li>
+        </ol>
+      </div>
+      <div class='col-1' id='bidstakes4'>
+        <ol>
+          <li>200</li>
+          <li>100</li>
+          <li>36</li>
+          <li>24</li>
+          <li>16</li>
+          <li>12</li>
+          <li>8</li>
+          <li>4</li>
+        </ol>
+      </div>
     </div>
     <div class='row mainRow' id="row3">
-      <div class=' col arsenalColumns' id='arsenalLeft'> hello
+      <div class=' col arsenalColumns' id='arsenalLeft'>
         <div class='row' id='arsenalContainer'>
           <div class='col-md-2 col-xs-3 cardContainer' id='arsenalID0'>
-            <img class='backOfPlayingCard' src='https://playcards.live/cards/back.jpg' alt='back of playing card'>
+            <!-- <img class='backOfPlayingCard' src='https://playcards.live/cards/back.jpg' alt='back of playing card'> -->
           </div>
           <div class='col-md-2 col-xs-3 cardContainer' id='arsenalID1'>
-            <img class='backOfPlayingCard' src='https://playcards.live/cards/back.jpg' alt='back of playing card'>
+            <!-- <img class='backOfPlayingCard' src='https://playcards.live/cards/back.jpg' alt='back of playing card'> -->
           </div>
           <div class='col-md-2 col-xs-3 cardContainer' id='arsenalID2'>
-            <img class='backOfPlayingCard' src='https://playcards.live/cards/back.jpg' alt='back of playing card'>
+            <!-- <img class='backOfPlayingCard' src='https://playcards.live/cards/back.jpg' alt='back of playing card'> -->
           </div>
           <div class='col-md-2 col-xs-3 cardContainer' id='arsenalID3'>
-            <img class='backOfPlayingCard' src='https://playcards.live/cards/back.jpg' alt='back of playing card'>
+            <!-- <img class='backOfPlayingCard' src='https://playcards.live/cards/back.jpg' alt='back of playing card'> -->
           </div>
           <div class='col-md-2 col-xs-3 cardContainer' id='arsenalID4'>
-            <img class='backOfPlayingCard' src='https://playcards.live/cards/back.jpg' alt='back of playing card'>
+            <!-- <img class='backOfPlayingCard' src='https://playcards.live/cards/back.jpg' alt='back of playing card'> -->
           </div>
         </div>
       </div>
-      <div class=' col-4 arsenalColumns' id='outputBox'>outputbox</div>
+      <div class=' col-4 arsenalColumns' id='outputBox'>Choose a Bid, then click 'Start' to begin</div>
     </div>
     <div class='row mainRow' id="row4">
       <button type="button" class='col-3 btn btn-danger btn-lg' id='bidButton'>
@@ -74,9 +139,11 @@
       </div>
     </div>
     <div class='row mainRow' id="row5">
-      <button class='col-2 btn btn-outline-primary' id='restartButtonID'>Restart
+      <button class='col-2 btn btn-outline-primary' id='startButtonID' disabled>Start
       </button>
-      <button class='col-2 btn btn btn-outline-primary' id='dealOrDrawButtonID'>Deal/draw
+      <button class='col-3 btn btn btn-outline-primary' id='dealOrDrawButtonID' disabled>Deal/draw
+      </button>
+      <button class='col-2 btn btn-warning' id='resetButtonID' disabled>Reset
       </button>
 
     </div>

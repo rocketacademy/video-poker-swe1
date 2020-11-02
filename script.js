@@ -190,7 +190,7 @@ const isTwoPair = () => {
   const totalCardCount = boardOfDealtCards.length;
   // Variable to store the indices that are already a part of a pair
   const isPairFoundArray = [];
-  for (let idx = 0; idx < totalCardCount; idx += 1)
+  for (let i = 0; i < totalCardCount; i += 1)
   {
     isPairFoundArray.push(false);
   }
@@ -224,11 +224,7 @@ const isTwoPair = () => {
   console.log(`numOfPairsFound: ${numOfPairsFound}`);
   console.log(`isPairFoundArray: ${isPairFoundArray}`);
   // If 2 pairs are found, return true;
-  if (numOfPairsFound >= 2)
-  {
-    return true;
-  }
-  return false;
+  return (numOfPairsFound >= 2);
 };
 
 // Three of a kind - Three cards of the same rank;

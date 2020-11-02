@@ -1,292 +1,266 @@
-*{
-  font-family: sans-serif;
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-header{
+body {
+  font-family: sans-serif;
+}
+
+header {
   display: flex;
   justify-content: center;
   align-items: center;
-  /* padding: 0px 20px; */
+  overflow-x: hidden;
 }
 
-
-@media (max-width: 600px) {
-header {
-  flex-wrap: wrap;
-}
-}
-
-.banner{
-  width: 60vw;
-  /* position: relative; */
+@media (max-width: 650) {
+  header {
+    flex-wrap: wrap;
+  }
 }
 
-@media (max-width: 650px) {
 .banner {
-  margin-top: 15px;
-  width: 100%;
-  position: relative;
-}
+  width: 60vw;
 }
 
-/* .banner > img{ */
-#header-banner{
+#header-banner {
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
-  
 }
-
-
-/* .game-name{
-position: absolute;
-top: 50%;
-left: 50%;
-transform: translate(-50%, -50%);
-} */
-
-
 
 @media (max-width: 650px) {
-.banner > img {
-  margin: 0;
-}
+  .banner > img {
+    margin: 0;
+  }
 
-#header-banner{
-  margin: 0;
-  width: 650px;
-  height: auto;
-  justify-content: flex-start
-}
+  #header-banner {
+    margin: 0;
+    width: 650px;
+    height: auto;
+    justify-content: flex-start;
+  }
 }
 
 /*Top navigation bar*/
-
 nav {
-font-weight: 400;
-overflow: hidden;
-display: flex;
-margin-block-start: auto;
-/* flex-direction: row-reverse;
+  font-weight: 400;
+  overflow: hidden;
+  display: flex;
+  flex-wrap: wrap;
+  /*To place the nav element exactly on the header image*/
+  margin-block-start: auto;
+  flex-direction: row-reverse;
   justify-content: flex-start;
-  align-items: flex-end; */
+  align-items: flex-end;
 }
 
-.nav-list{
+nav > ul {
+  width: 35vw;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-self: center;
+  margin-top: 30%;
+}
+
+.nav-list {
   list-style: none;
 }
 
-@media (max-width: 650px) {
-nav {
-  margin-top: 0px ;
-  margin-left: 80%;
-  margin-right: 0%;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  /* align-items: center;
-  text-align: center; */
-  padding: 0px;
-  
-}
-nav li {
-  flex-direction: row;
-  /* text-align: center; */
-  padding: 0px 5px;
-  text-decoration: none;
-}
-}
-
-
-nav > ul {
-width: 35vw;
-display: flex;
-flex-direction: row;
-justify-content: flex-end;
-/* text-align: center; */
-margin-top: 30%;
-}
-
-@media (max-width: 650px) {
-nav > ul {
-  flex-direction: row;
-  margin-top: 0%;
-  align-items: flex-start;
-}
-}
-
-#nav-bar a{
-/* float: right; */
-display: flex;
-color: white;
-/* text-align: center; */
-padding: 14px 20px 0px;
-text-decoration: none;
-background-color: orangered;
-}
-
-@media (max-width: 650px) {
 #nav-bar a {
+  display: flex;
+  color: white;
+  padding: 15px 10px 10px;
+  text-decoration: none;
+  background-color: orangered;
+}
+
+@media (max-width: 650px) {
+  nav {
+    margin-top: 0px;
+    margin-left: 40%;
+    margin-right: 0%;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    padding: 0px;
+  }
+  nav > ul {
+    flex-direction: column;
+    margin-top: 0%;
+    align-items: flex-start;
+  }
+
+  nav li {
+    margin: 0;
+  }
+
+  #nav-bar a {
+    display: block;
+    /* flex-direction: column;
+    padding: 0;
+    text-align: end;
+    margin: 0; */
+  }
+}
+
+.nav-link:hover {
+  background-color: rgb(1, 41, 1);
+  text-emphasis-color: cornsilk;
+}
+
+/*Section where game is plyed*/
+/* Outer container */
+.game {
+  display: flex;
+  justify-content: center;
   flex-direction: column;
-  padding: 0;
-  text-align: end;
-  margin: 0;
-}
+  align-items: center;
+  flex-wrap: wrap;
 }
 
-.nav-link:hover{
-background-color: rgb(1, 41, 1);
-text-emphasis-color: cornsilk;
+.game-play {
+  border: 1px solid orangered;
+  border-radius: 9px;
+  background-color: rgb(255, 145, 0);
 }
 
-.game{
-display: flex;
-justify-content: center;
-flex-direction: column;
-align-items: center;
-
+.game-play > div {
+  margin-top: 20px;
+  text-align: center;
 }
 
-
-.game-play{
-border: 1px solid orangered;
-border-radius: 9px;
-background-color: rgb(255, 145, 0);
+.bet-amount {
+  border-radius: 3px;
+  border: 1px solid orangered;
 }
 
-
-.game-play > div{
-margin-top: 20px;
-text-align: center;
+.status {
+  color: white;
+}
+/* Settings common for all the buttons */
+.button-common {
+  background-color: orangered;
+  color: white;
+  text-align: center;
+  border: 1px solid orangered;
+  border-radius: 9px;
+  margin: 10px;
+  padding: 7px 7px;
 }
 
-.bet-amount{
-border-radius: 3px;
-border: 1px solid orangered;
+/* Button specific settings */
+.stand-alone-button {
+  font-size: 1.1em;
+  border-radius: 6px;
+  padding: 10px 15px;
 }
 
-
-.button-common{
-background-color: orangered;
-color: white;
-text-align: center;
-border: 1px solid orangered;
-border-radius: 9px;
-margin: 10px;
-padding: 7px 7px ;
+/* For displaying cards */
+.single-card {
+  display: inline-block;
+  vertical-align: top;
+  margin: 10px;
+  width: 100px;
+  height: 135px;
+  /* background-color: rgb(247, 206, 160);   */
+  border-radius: 5px;
+  text-align: center;
+  color: black;
+}
+.hold-status {
+  font-size: 20px;
 }
 
-.stand-alone-button{
-font-size: 1.1em;
-border-radius: 6px;
-padding: 10px 15px ;
+.image-card {
+  width: 100%;
 }
-
-.single-card{
-display: inline-block;
-vertical-align: top;
-margin: 10px;
-width: 100px;
-height: 135px;
-/* background-color: rgb(247, 206, 160);   */
-border-radius: 5px;
-text-align:center;
-color:black;
-}
-.hold-status{
-font-size: 20px;
-}
-
-.image-card{
-width: 100%;
-}
-
-
 
 /* The Modal (background) */
-.modal{
-display: none; /* Hidden by default */
-position: fixed; /* Stay in place */
-z-index: 1; /* Sit on top */
-padding-top: 100px; /* Location of the box */
-left: 0;
-top: 0;
-width: 100%; /* Full width */
-height: 100%; /* Full height */
-overflow: auto; /* Enable scroll if needed */
-background-color: rgb(1,1,1); /* Fallback color */
-background-color: rgba(248, 215, 172, 0.4); /* Black w/ opacity */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(1, 1, 1); /* Fallback color */
+  background-color: rgba(248, 215, 172, 0.4); /* Black w/ opacity */
 }
 
 /* Modal Content */
 .modal-content {
-background-color: rgb(255, 217, 147);
-margin: auto;
-padding: 20px;
-border: 1px solid #888;
-width: 80%;
-line-height: 1.5em;
+  background-color: rgb(255, 217, 147);
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  line-height: 1.5em;
 }
 /* The Close Button */
 .close {
-color: orangered;
-float: right;
-font-size: 28px;
-font-weight: bold;
+  color: orangered;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
 }
 
 .close:hover,
 .close:focus {
-color: #000;
-text-decoration: none;
-cursor: pointer;
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
 }
 
-.credit-grid-container{
-display: grid;
-grid-template-columns: auto auto auto;
-grid-gap: 2px;
-padding: 10px;
+/* For the grid that displays the credit list */
+.credit-grid-container {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  grid-gap: 2px;
+  padding: 10px;
 }
 
+/* For the grid that displays the result list */
 .grid-container {
-display: grid;
-grid-template-columns: 60px 60px 60px 70px 70px 60px auto;
-grid-gap: 2px;
-/* background-color: #2196F3; */
-padding: 10px;
-line-height: 1em;
+  display: grid;
+  grid-template-columns: 60px 60px 60px 70px 70px 60px auto;
+  grid-gap: 2px;
+  padding: 10px;
+  line-height: 1em;
 }
 
 .grid-container > div {
-background-color: rgba(255, 255, 255, 0.8);
-text-align: center;
-padding: 10px 0;
-font-size: 12px;
+  background-color: rgba(255, 255, 255, 0.8);
+  text-align: center;
+  padding: 10px 0;
+  font-size: 12px;
 }
 
-.grid-col-header{
-font-style: italic;
-font-weight: bold;
+.grid-col-header {
+  font-style: italic;
+  font-weight: bold;
 }
 
-.result-cards{
-text-align: start;
+.result-cards {
+  text-align: start;
 }
 
-
-.reduced-card{ 
-margin: 1px;
+.reduced-card {
+  margin: 1px;
 }
 
-.reduced-image{
-width: 70%;
+.reduced-image {
+  width: 70%;
 }
-
 
 .tooltip .tooltip-text {
   visibility: hidden;
@@ -301,7 +275,7 @@ width: 70%;
   z-index: 1;
   left: 10%;
   margin-left: -70px;
-  margin-top: -10px;;
+  margin-top: -10px;
 }
 
 /*Adding arrows on the tool tip*/

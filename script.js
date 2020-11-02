@@ -7,7 +7,6 @@ let dealTurn = 'first';
 let amountWon = 0;
 // helper functions (Make Deck) (Shuffle Cards)
 
-// cards is an array of card objects
 const shuffleCards = (cards) => {
   // get a random index from an array given it's size
   const getRandomIndex = (size) => Math.floor(Math.random() * size);
@@ -30,6 +29,7 @@ const shuffleCards = (cards) => {
   // give back the shuffled deck
   return cards;
 };
+// cards is an array of card objects
 const makeDeck = () => {
   // create the empty deck at the beginning
   const newDeck = [];
@@ -106,15 +106,6 @@ let deck = shuffleCards(makeDeck());
 const loadDeck = () => {
   deck = shuffleCards(makeDeck());
 };
-/* <==== Game element we need / what the user sees ===>
-1. Username input box (Done)
-2. Submit button (done)
-3. Bid amount input box (done)
-4. Display of 5 Cards + Card Container (done)
-5. Winnings shown on screen (done)
-6. Click to deal button (done)
-*/
-
 // Creating the elements on screen
 
 // output message div
@@ -170,10 +161,14 @@ const dealButton = document.createElement('button');
 dealButton.classList.add('btn', 'btn-success', 'button');
 dealButton.innerText = 'Deal Cards';
 
-// creation of back of card element
-// const cardBack2 = document.createElement('img');
-// cardBack2.setAttribute('src', 'https://tinyurl.com/y4bvjuw9');
-// cardBack2.classList.add('cardback', 'card');
+// appending child order/display order
+mainDisplayDiv.appendChild(bidAmountLabel);
+mainDisplayDiv.appendChild(bidAmountInput);
+mainDisplayDiv.appendChild(brEL);
+mainDisplayDiv.appendChild(brEL.cloneNode());
+mainDisplayDiv.appendChild(dealButton);
+mainDisplayDiv.appendChild(brEL.cloneNode());
+mainDisplayDiv.appendChild(cardContainer);
 
 // card selection to trade
 let selectedCardsArray = [];
@@ -255,14 +250,6 @@ const tradeCards = () => {
   }
 };
 
-// appending child order/display order
-mainDisplayDiv.appendChild(bidAmountLabel);
-mainDisplayDiv.appendChild(bidAmountInput);
-mainDisplayDiv.appendChild(brEL);
-mainDisplayDiv.appendChild(brEL.cloneNode());
-mainDisplayDiv.appendChild(dealButton);
-mainDisplayDiv.appendChild(brEL.cloneNode());
-mainDisplayDiv.appendChild(cardContainer);
 // store the cards based on rank, each rank has a different row in the array
 let rankHandArray = [[]];
 
@@ -283,18 +270,6 @@ const arrangeCards = () => {
   }
 };
 const groupRankedPlayerCards = () => {
-  // empty hand from previous games
-  // playerHand[0].rank = 13;
-  // playerHand[1].rank = 12;
-  // playerHand[2].rank = 11;
-  // playerHand[3].rank = 10;
-  // playerHand[4].rank = 1;
-  // playerHand[0].suit = 'diamonds';
-  // playerHand[1].suit = 'diamonds';
-  // playerHand[2].suit = 'diamonds';
-  // playerHand[3].suit = 'diamonds';
-  // playerHand[4].suit = 'diamonds';
-  // arrangeCards();
   rankHandArray = [[]];
   rankHandArray[0].push(playerHand[0]);
   let rankRow = 0;
@@ -310,32 +285,32 @@ const groupRankedPlayerCards = () => {
   }
 };
 let rankHandArrayLength = 0;
-let straightFlush = null;
-let fourOfAKind = null;
-let fullHouse = null;
-let flush = null;
-let straights = null;
-let straightsToAce = null;
-let threeOfAKind = null;
-let twoPairs = null;
-let pair = null;
-let highCard = null;
-let royalFlush = null;
+let straightFlushPresent = null;
+let fourOfAKindPresent = null;
+let fullHousePresent = null;
+let flushPresent = null;
+let straightsPresent = null;
+let straightsToAcePresent = null;
+let threeOfAKindPresent = null;
+let twoPairsPresent = null;
+let pairPresent = null;
+let highCardPresent = null;
+let royalFlushPresent = null;
 
 // reset global variables to continue gameplay
 const continuePlaying = () => {
   rankHandArrayLength = 0;
-  straightFlush = null;
-  fourOfAKind = null;
-  fullHouse = null;
-  flush = null;
-  straights = null;
-  straightsToAce = null;
-  threeOfAKind = null;
-  twoPairs = null;
-  pair = null;
-  highCard = null;
-  royalFlush = null;
+  straightFlushPresent = null;
+  fourOfAKindPresent = null;
+  fullHousePresent = null;
+  flushPresent = null;
+  straightsPresent = null;
+  straightsToAcePresent = null;
+  threeOfAKindPresent = null;
+  twoPairsPresent = null;
+  pairPresent = null;
+  highCardPresent = null;
+  royalFlushPresent = null;
   dealButton.disabled = false;
   dealButton.innerHTML = 'Deal';
   dealTurn = 'first';
@@ -352,15 +327,15 @@ const continuePlaying = () => {
 };
 
 const checkForStraightFlush = () => {
-  if (straights === true && flush === true && straightsToAce === null) {
-    straightFlush = true;
+  if (straightsPresent === true && flushPresent === true && straightsToAcePresent === null) {
+    straightFlushPresent = true;
     console.log('Straight Flush');
     amountWon = 240 * bid;
     winnings = amountWon + winnings;
     outputMessage(`Congrats! Your hand is a Straight Flush!<br> You won ${amountWon}!<br> Click deal again to play!`);
     continuePlaying();
-  } else if (straights === true && flush === true && straightsToAce === true) {
-    royalFlush = true;
+  } else if (straightsPresent === true && flushPresent === true && straightsToAcePresent === true) {
+    royalFlushPresent = true;
     console.log('Royal Flush');
     amountWon = 360 * bid;
     winnings = amountWon + winnings;
@@ -372,7 +347,7 @@ const checkForFourOfAKind = () => {
   if (rankHandArrayLength === 2
     && (rankHandArray[0].length === 4
     || rankHandArray[1].length === 4)) {
-    fourOfAKind = true;
+    fourOfAKindPresent = true;
     console.log('Four of a kind!');
     amountWon = 120 * bid;
     winnings = amountWon + winnings;
@@ -384,7 +359,7 @@ const checkForFullHouse = () => {
   if (rankHandArrayLength === 2
     && (rankHandArray[0].length === 3
       || rankHandArray[1].length === 3)) {
-    fullHouse = true;
+    fullHousePresent = true;
     console.log('full house');
     amountWon = 60 * bid;
     winnings = amountWon + winnings;
@@ -398,8 +373,8 @@ const checkForStraights = () => {
     if (Math.abs(rankHandArray[0][0].rank - rankHandArray[1][0].rank
       + rankHandArray[1][0].rank - rankHandArray[2][0].rank
       + rankHandArray[2][0].rank - rankHandArray[3][0].rank) === 3) {
-      straights = true;
-      straightsToAce = true;
+      straightsPresent = true;
+      straightsToAcePresent = true;
       console.log('straights to ace');
       amountWon = 15 * bid;
       winnings = amountWon + winnings;
@@ -411,7 +386,7 @@ const checkForStraights = () => {
         + (rankHandArray[1][0].rank - rankHandArray[2][0].rank)
         + (rankHandArray[2][0].rank - rankHandArray[3][0].rank)
         + (rankHandArray[3][0].rank - rankHandArray[4][0].rank)) === 4) {
-    straights = true;
+    straightsPresent = true;
     console.log('straights');
     amountWon = 15 * bid;
     winnings = amountWon + winnings;
@@ -424,7 +399,7 @@ const checkForFlush = () => {
     && rankHandArray[1][0].suit === rankHandArray[2][0].suit
     && rankHandArray[2][0].suit === rankHandArray[3][0].suit
     && rankHandArray[3][0].suit === rankHandArray[4][0].suit)) {
-    flush = true;
+    flushPresent = true;
     console.log('flush');
     amountWon = 20 * bid;
     winnings = amountWon + winnings;
@@ -437,7 +412,7 @@ const checkForThreeOfAKind = () => {
         && (rankHandArray[0].length === 3
           || rankHandArray[1].length === 3
           || rankHandArray[2].length === 3)) {
-    threeOfAKind = true;
+    threeOfAKindPresent = true;
     console.log('Three of a Kind!');
     amountWon = 10 * bid;
     winnings = amountWon + winnings;
@@ -446,11 +421,11 @@ const checkForThreeOfAKind = () => {
   } };
 
 const checkForTwoPairs = () => {
-  if (rankHandArrayLength === 3 && threeOfAKind === null
+  if (rankHandArrayLength === 3 && threeOfAKindPresent === null
       && ((rankHandArray[0].length === 2 && rankHandArray[1].length === 2)
           || (rankHandArray[1].length === 2 && rankHandArray[2].length === 2)
           || (rankHandArray[2].length === 2 && rankHandArray[0].length === 2))) {
-    twoPairs = true;
+    twoPairsPresent = true;
     console.log('Two Pairs');
     amountWon = 5 * bid;
     winnings = amountWon + winnings;
@@ -464,7 +439,7 @@ const checkForPair = () => {
             || (rankHandArray[2].length === 2)
             || (rankHandArray[3].length === 2)
             || (rankHandArray[4].length === 2))) {
-    pair = true;
+    pairPresent = true;
     console.log('One Pair');
     amountWon = 1 * bid;
     winnings = amountWon + winnings;
@@ -473,16 +448,16 @@ const checkForPair = () => {
   } };
 const checkForHighCard = () => {
   if (rankHandArrayLength === 5
-    && royalFlush === null
-    && straightFlush === null
-    && fourOfAKind === null
-    && fullHouse === null
-    && flush === null
-    && straights === null
-    && threeOfAKind === null
-    && twoPairs === null
-    && pair === null) {
-    highCard = true;
+    && royalFlushPresent === null
+    && straightFlushPresent === null
+    && fourOfAKindPresent === null
+    && fullHousePresent === null
+    && flushPresent === null
+    && straightsPresent === null
+    && threeOfAKindPresent === null
+    && twoPairsPresent === null
+    && pairPresent === null) {
+    highCardPresent = true;
     console.log('High Card');
     amountWon = bid;
     winnings -= amountWon;
@@ -507,104 +482,6 @@ const checkPlayerHand = () => {
   checkForHighCard();
   checkForStraightFlush();
 };
-
-// const calHandScore = () => {
-// //   // check for straight flush
-
-/* Point Tabulation:
-Check winning
-1. High card = none of the below citerias are met
-
-2. Pair = when the rank of only two cards are the same
-
-3. Two pair = when there are 2 sets of 2 same rank cards
-
-4. Three of a kind = when there is a set of 3 of the same rank cards
-
-5. Straight - when there card rank are in numerical order
-(possibly using absolute number = -1, total = -4 to check if it is a straight
-
-6. Flush = when 5 suits are all the same
-// Check hand to see if they are all
-
-7. Full house = when there is a three of a kind and a pair
-
-8. Four of a kind = where there is 4 of the same rank card
-   // Check hand to see if there are 4 of the same cards.
-
-9. Straight flush = when there is a straight together with the same suits
-*/
-
-// const calHandScore = (playerHand) => {
-// Straight Flush - A flush and a straights logic.
-// if (Math.abs(playerHand[4].rank - playerHand[3].rank
-//     + playerHand[3].rank - playerHand[2].rank
-//     + playerHand[2].rank - playerHand[1].rank
-//     + playerHand[1].rank - playerHand[0].rank) === 4
-//     && playerHand[0].suit === playerHand[1].suit
-//       && playerHand[1].suit === playerHand[2].suit
-//       && playerHand[2].suit === playerHand[3].suit
-//       && playerHand[3].suit === playerHand[4].suit)
-// {
-//   console.log('straight flush');
-// } else {
-//   console.log('not straight');
-// }
-
-// Four of a Kind
-// if (playerHand[0].rank === playerHand[1].rank
-//   && playerHand[0].rank === playerHand[1].rank)
-// {
-//   console.log();
-// }
-// Full house
-
-// Flush
-// if (playerHand[0].suit === playerHand[1].suit
-//   && playerHand[1].suit === playerHand[2].suit
-//   && playerHand[2].suit === playerHand[3].suit
-//   && playerHand[3].suit === playerHand[4].suit) {
-//   console.log('flush');
-// } else {
-// //   console.log('no');
-// }
-
-// Straights - Sort out an array and then use absolute distance.
-// If you have a total of 4, it is a straight
-// if (Math.abs(playerHand[4].rank - playerHand[3].rank
-//   + playerHand[3].rank - playerHand[2].rank
-//   + playerHand[2].rank - playerHand[1].rank
-//   + playerHand[1].rank - playerHand[0].rank) === 4) {
-//   console.log('straight');
-// } else {
-//   console.log('not straight');
-// }
-
-// Three of a kind
-
-// Two Pairs
-
-// Pair
-// if(playerHand[0].rank == playerHand[1].rank ||
-//   playerHand[1].rank == playerHand[2].rank ||
-//   playerHand[2].rank == playerHand[3].rank ||
-//   playerHand[3].rank == playerHand[4].rank ||
-//   )
-// };
-
-/*
-Score ranking to return bet amount
-1. High Card - User loses, minus bet amount from winning
-2. Pair - bet amount * 1 , add to bet amount
-3. Two pairs - bet amount * 2 , add to bet amount
-4. Three of a kind - bet amount * 3, add to bet amount
-5. Straights - bet amount * 4, add to bet amount
-6. Flush- bet amount * 5, add to bet amount
-7. Full house - bet amount * 6, add to bet amount
-8. four of a kind - bet amount * 7, add to bet amount
-9. Straight Flush - bet amount * 8, add to bet amount
-
-*/
 
 // creating username input and carry on the game after
 const gamePlay = () => {

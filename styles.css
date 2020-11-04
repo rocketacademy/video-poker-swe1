@@ -1,0 +1,183 @@
+body {
+  padding-right: 0;
+  padding-left: 0;
+  font-family: "Chakra Petch", sans-serif;
+}
+
+h1 {
+  padding: 20px 0;
+  background-color: turquoise;
+  font-size: 25px;
+}
+#how-to-play,
+#scoring-table,
+#game-display {
+  margin-bottom: 35px;
+}
+
+/* for how-to-play section */
+ol {
+  text-align: justify;
+  padding-inline-start: 1em;
+  margin-right: 1em;
+  font-family: serif;
+}
+li {
+  padding-bottom: 0.5em;
+}
+
+/* for game section */
+#game-background {
+  background-color: rgba(245, 222, 179, 0.7);
+}
+#game-display {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+#player-hand-container {
+  margin: 0;
+  padding: 5px;
+  background-color: yellowgreen;
+  min-height: 250px;
+  border-style: ridge;
+  border-width: 5px;
+  border-color: chocolate;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.card {
+  margin: 2px;
+  padding: 2% 4%;
+  background-color: white;
+  text-align: center;
+  border-radius: 8px;
+  border-width: 4px;
+  border-color: yellowgreen;
+  animation: flipInY;
+  animation-duration: 1s;
+}
+.card-border {
+  border-color: blue;
+}
+.suit {
+  margin: 2px;
+  font-size: 150%;
+}
+.name {
+  margin: 2px;
+  font-size: 100%;
+}
+.red {
+  color: rgb(221, 7, 7);
+}
+.black {
+  color: black;
+}
+#game-info-container {
+  display: flex;
+  justify-content: center;
+  background-color: whitesmoke;
+  border-style: ridge;
+  border-width: 3px;
+  border-radius: 7px;
+  padding: 5px;
+  margin: 2px 0 10px 0;
+}
+#buttons-container {
+  margin-left: 0;
+  margin-right: 0;
+  justify-content: space-evenly;
+}
+#deal-button,
+#exchange-button {
+  font-size: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+#deal-button {
+  background-color: rgb(255, 208, 0);
+}
+#exchange-button {
+  background-color: paleturquoise;
+}
+#total-points-container {
+  display: inline-block;
+  margin-top: 15px;
+  margin-left: 40px;
+  width: 20vw;
+}
+#bid-points-container {
+  display: inline-block;
+  margin-top: 15px;
+  margin-left: 20px;
+  width: 20vw;
+}
+#bid-points-input-container {
+  margin-bottom: 10px;
+  margin-left: 20px;
+}
+
+/* for scoring table section */
+table,
+th,
+td {
+  border: 1px solid black;
+}
+.score {
+  text-align: end;
+}
+
+@media (min-width: 768px) {
+  /* for how-to-play section */
+  ol {
+    font-size: 110%;
+  }
+
+  /* for game section */
+  .card {
+    margin: 4px;
+    padding: 5% 8%;
+    background-color: white;
+    text-align: center;
+    border-radius: 12px;
+    border-width: 6px;
+    border-color: yellowgreen;
+  }
+  .card-border {
+    border-color: blue;
+  }
+  #deal-button,
+  #exchange-button {
+    font-size: 18px;
+  }
+  #bid-points-container {
+    width: 120px;
+  }
+  #total-points-container {
+    width: 100px;
+  }
+  #bid-points-input-container {
+    display: inline-block;
+    margin: 0 20px;
+    width: 250px;
+  }
+  #player-hand-container {
+    width: 70vw;
+    min-height: 250px;
+    margin: 0 auto;
+  }
+}
+@media (min-width: 992px) {
+  h2 {
+    text-align: center;
+  }
+  ol {
+    width: 600px;
+    margin: 0 auto;
+  }
+  #player-hand-container {
+    min-height: 280px;
+    min-width: 700px;
+    max-width: 1000px;
+  }
+}

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+      integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2"
+      crossorigin="anonymous"
+    />
+
+    <!-- Animate.css -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+
+    <!-- My own css -->
+    <link rel="stylesheet" href="styles.css" />
+
+    <!-- special fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+
+    <title>✨Video Poker🎮🃏✨</title>
+  </head>
+
+  <body>
+    <h1 id="header" class="row justify-content-center">✨Video Poker🎮🃏✨</h1>
+    <!-- Instructions -->
+    <div id="how-to-play" class="container justify-content-center">
+      <h2>How to Play</h2>
+      <ol>
+        <li>
+          You start with 100 points. Input the number of points you want to bid
+          and click 'submit points' to start playing.
+        </li>
+        <li>Click 'deal cards' to deal your hand.</li>
+        <li>
+          Click the cards you want to exchange. You can click on the card again
+          to unselect it. You do not need to click on any cards if you do not
+          want to exchange any. Then, click on 'exchange/hold cards' to
+          exchange/keep your cards.
+        </li>
+        <li>
+          You will earn points = your hand score multiplied by points bidded
+          (eg. If your hand score is 2 and you bidded 3 points, you earn 6
+          points). The scoring table can be found
+          <a href="#scoring-table">here</a>. Repeat step 1 to begin the next
+          round.
+        </li>
+      </ol>
+    </div>
+
+    <!-- Game display -->
+    <div id="game-background">
+      <div id="game-display" class="container justify-content-center">
+        <h2 id="game-heading">Game</h2>
+      </div>
+    </div>
+
+    <!-- Scoring table -->
+    <div id="scoring-table" class="container justify-content-center">
+      <h2>Scoring</h2>
+      <table class="container col-md-5 offset-md-0 col-lg-4 offset-lg-4">
+        <thead>
+          <tr>
+            <th>HAND</th>
+            <th class="score">SCORE</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>ROYAL FLUSH</td>
+            <td class="score">10</td>
+          </tr>
+          <tr>
+            <td>STRAIGHT FLUSH</td>
+            <td class="score">9</td>
+          </tr>
+          <tr>
+            <td>4 OF A KIND</td>
+            <td class="score">8</td>
+          </tr>
+          <tr>
+            <td>FULL HOUSE</td>
+            <td class="score">7</td>
+          </tr>
+          <tr>
+            <td>FLUSH</td>
+            <td class="score">6</td>
+          </tr>
+          <tr>
+            <td>STRAIGHT</td>
+            <td class="score">5</td>
+          </tr>
+          <tr>
+            <td>3 OF A KIND</td>
+            <td class="score">4</td>
+          </tr>
+          <tr>
+            <td>2 PAIRS</td>
+            <td class="score">3</td>
+          </tr>
+          <tr>
+            <td>1 PAIR</td>
+            <td class="score">2</td>
+          </tr>
+          <tr>
+            <td>ONE JACK OR HIGHER</td>
+            <td class="score">1</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+      integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js"
+      integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- Import program logic -->
+    <script src="script.js"></script>
+  </body>
+</html>

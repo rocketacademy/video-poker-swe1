@@ -3,7 +3,9 @@ import { readFile } from 'fs';
 import { extname } from 'path';
 
 // set a variable that contains info on what port the server should listen on
-const PORT = process.argv[3];
+const PORT = process.argv[2];
+console.log(`argv2 is ${process.argv[2]}`);
+console.log(`Port is: ${PORT}`);
 
 // create the function that will respond to a request
 const whenIncomingRequest = (request, response) => {
@@ -11,9 +13,9 @@ const whenIncomingRequest = (request, response) => {
   console.log(`request URL: ${request.url}`); // (e.g. index.html, textFile.txt, etc.)
 
   // use logic to direct the client to the main file (ie stuff.txt) even if he doesn't specify it
-  let filePath = `/home/ubuntu/swe1/VP-Jeremy/${request.url}`;
+  let filePath = `./${request.url}`;
   if (request.url === '/') { // ('/' is the default request.url if no path is specified)
-    filePath += '/stuff.html'; // (here, we are setting /stuff.html as the default path)
+    filePath += '/index.html'; // (here, we are setting /stuff.html as the default path)
   }
 
   // examine the extention of the files being requested, to see if it matches a MIME type.

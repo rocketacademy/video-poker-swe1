@@ -1,39 +1,36 @@
-html, body{
-  height:100%;
+html,
+body {
+  height: 100%;
 }
 body {
   background-color: lightblue;
   display: flex;
-  align-items:center;
+  align-items: center;
 }
 
-.container{
-background-color: #00A1FF;
+.container {
+  background-color: #00a1ff;
   height: 80%;
   max-width: 800px;
-  border:black solid;
+  border: black solid;
   border-width: 1px;
-  padding:20px;
+  padding: 20px;
 }
 
-
-
-ol{
+ol {
   font-size: 10px;
   list-style-type: none;
-  padding-left:2px;
+  padding-left: 2px;
 }
-ul{
+ul {
   font-size: 10px;
   list-style-type: none;
-  padding-left:2px;
+  padding-left: 2px;
   display: flex;
   justify-content: center;
-
 }
 
-
-#row2{
+#row2 {
   justify-content: flex-start;
 }
 
@@ -48,86 +45,83 @@ ul{
   border-radius: 10%;
 }
 
-
-.mainRow{
+.mainRow {
   display: flex;
   background-color: white;
-  min-height:100px;
+  min-height: 100px;
   border: solid black;
   border-width: 1px;
   align-items: center;
   justify-content: space-around;
-
 }
 
-.currentBidStakes{
-  border:solid #FF1922;
+.currentBidStakes {
+  border: solid #ff1922;
   border-width: 1px;
   border-radius: 0.25;
 }
 
-
-#bidDisplayID{
-  height:60px;
+#bidDisplayID {
+  height: 60px;
   border: solid black;
   border-width: 1px;
-  display:flex;
-  justify-content:center;
+  display: flex;
+  justify-content: center;
   align-items: center;
 }
 
-.arsenalColumns{
+.arsenalColumns {
   /* height: 100%; */
-  display:flex;
-  align-self:stretch;
+  display: flex;
+  align-self: stretch;
   /* flex-wrap:wrap; */
 }
-#arsenalLeft{
-background-image: url('https://image.freepik.com/free-vector/poker-table-background-green-color_47243-1068.jpg');
-display: flex;
-align-items: stretch;
+#arsenalLeft {
+  background-image: url("https://image.freepik.com/free-vector/poker-table-background-green-color_47243-1068.jpg");
+  display: flex;
+  align-items: stretch;
 }
 
-#arsenalContainer{
-  display:flex;
+#arsenalContainer {
+  display: flex;
   justify-content: center;
   align-items: center;
   background-color: transparent;
   width: 100%;
 }
 
-.cardContainer{
-  height:70px;
-  width:60px;
+.cardContainer {
+  height: 70px;
+  width: 60px;
 }
-.backOfPlayingCard{
-  width:40px;
+.backOfPlayingCard {
+  width: 40px;
   height: 60px;
 }
 
-#outputBox{
+#outputBox {
   border-left: solid black;
   border-width: 1px;
 }
 
-.keepCardIndication{
-background-color:#D5D5D5;
-padding-left: 3px;
-font-size:10px;
-word-break: break-word;
-width: 30px
+.keepCardIndication {
+  background-color: #d5d5d5;
+  padding-left: 3px;
+  font-size: 10px;
+  word-break: break-word;
+  width: 30px;
 }
 
-#pokerTable{
-  width:100%;
+#pokerTable {
+  width: 100%;
 }
 
-button{
+button {
   white-space: normal;
 }
 
 #dealOrDrawButtonID {
-white-space: normal;
+  white-space: normal;
 }
 
 /* 
@@ -136,11 +130,11 @@ white-space: normal;
   display: inline-block;
   text-overflow: ellipsis; */
 
-#row1{
-  font-family: 'Libre Baskerville', serif;
+#row1 {
+  font-family: "Libre Baskerville", serif;
   font-size: 15px;
 }
 
-button{
+button {
   white-space: normal;
 }

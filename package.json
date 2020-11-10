@@ -1,4 +1,3 @@
-
 {
   "name": "video-poker-swe1",
   "version": "1.0.0",
@@ -12,6 +11,7 @@
     "url": "git+https://github.com/rocketacademy/video-poker-swe1.git"
   },
   "author": "",
+  "type": "module",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/rocketacademy/video-poker-swe1/issues"

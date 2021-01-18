@@ -1,0 +1,75 @@
+body {
+  background-color: rgb(30, 29, 36);
+  display: block;
+  text-align: center;
+}
+
+h1 {
+  font-size: 60px;
+  font-family: Fantasy;
+  color: green;
+}
+
+.image {
+  width: 100%;
+}
+
+.mainContainer {
+  background-color: rgb(23, 72, 163);
+  height: 500px;
+  width: 80%;
+  margin: auto;
+  padding: 10px;
+  border-radius: 2%;
+}
+
+.msgResult {
+  height: 50px;
+}
+
+.flexContainers {
+  display: flex;
+  justify-content: space-between;
+  background-color: grey;
+  height: 10%;
+}
+
+.cardsContainer {
+  height: 30%;
+}
+
+.bottomContainer {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: rgb(182, 136, 52);
+  height: 10%;
+}
+
+.bottomContainerElements {
+  height: 80%;
+  width: 30%;
+  font-size: 30px;
+}
+
+.betAmtElement {
+  vertical-align: top;
+  float: left;
+  width: 50%;
+  height: 100%;
+  font-size: 30px;
+}
+
+.betBtns {
+  display: inline-block;
+  vertical-align: top;
+  /* margin-left: 25%; */
+  width: 28%;
+  height: 20px;
+}
+
+.dealDrawBtn {
+  height: 80%;
+  width: 200px;
+  font-size: 25px;
+}

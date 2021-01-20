@@ -1,16 +1,17 @@
 // Global variables
-const playerHand = [];
-const gameMode = 'placeBet';
-const credits = 100;
-const betAmt = 5;
+let gameMode = 'welcome!';
+let credits = 100;
+let betAmt = 0;
 let deck;
+const deckStatus = [];
+const playerHand = [];
 
 // Declare game elements
 const projectTitle = document.createElement('h1');
 const gameContainer = document.createElement('div');
 const bettingTableRef = document.createElement('div');
 const imgTable = document.createElement('img');
-const msgResult = document.createElement('div');
+const gameMessage = document.createElement('div');
 const cardStatusContainer = document.createElement('div');
 const cardsContainer = document.createElement('div');
 const msgGameOver = document.createElement('div'); // don't append yet
@@ -26,30 +27,27 @@ const betDownBtn = document.createElement('button');
 gameContainer.classList.add('mainContainer');
 imgTable.src = 'img/bet-table.png';
 imgTable.classList.add('image');
-msgResult.classList.add('msgResult');
-cardStatusContainer.classList.add('flexContainers');
-cardsContainer.classList.add('flexContainers');
-cardStatusContainer.classList.add('cardStatusContainer');
-cardsContainer.classList.add('cardsContainer');
-msgResult.classList.add('msgResult');
+gameMessage.classList.add('gameMessage');
+cardStatusContainer.classList.add('grey-background', 'cardStatusContainer');
+cardsContainer.classList.add('grey-background', 'cardsContainer');
 bottomContainer.classList.add('bottomContainer');
 betContainer.classList.add('bottomContainerElements');
-betAmtElement.classList.add('betAmtElement');
-creditContainer.classList.add('bottomContainerElements');
+creditContainer.classList.add('bottomContainerElements', 'big-words');
+dealDrawBtn.classList.add('bottomContainerElements', 'dealDrawBtn');
+betAmtElement.classList.add('betAmtElement', 'big-words');
 betUpBtn.classList.add('betBtns');
 betDownBtn.classList.add('betBtns');
-dealDrawBtn.classList.add('dealDrawBtn');
 
 // Function 1: Create Deck
 const createDeck = () => {
-  const deck = [];
-  const suits = ['diamonds', 'clubs', 'hearts', 'spades'];
+  const newDeck = [];
+  const suits = ['DIAMOND', 'CLUB', 'HEART', 'SPADE'];
 
   for (let i = 0; i < suits.length; i += 1) {
     const currentSuit = suits[i];
     for (let j = 1; j <= 13; j += 1) {
-      currentRank = j;
-      currentName = j;
+      const currentRank = j;
+      let currentName = j;
       if (currentName === 1) {
         currentName = 'Ace';
       } else if (currentName === 11) {
@@ -67,34 +65,76 @@ const createDeck = () => {
         rank: currentRank,
       };
       // push the cards
-      deck.push(card);
+      newDeck.push(card);
+      // console.log(`${card.name} of ${card.suit}`);
     }
   }
-  return deck;
+  return newDeck;
 };
 
 // Function 2: Select random number
-const returnRandomNo = (ceiling) => Math.floor(Math.random() * ceiling + 1);
+const returnRandomNo = (ceiling) => Math.floor(Math.random() * ceiling);
 
 // Function 3: Shuffle Deck
 const shuffleDeck = (array) => {
-  for (let i = 0; i < array.length; i += 1) {
-    const randomNumber = returnRandomNo(array.length);
+  const deckLen = array.length;
+  console.log(deckLen);
+  for (let i = 0; i < deckLen; i += 1) {
+    const randomNumber = returnRandomNo(deckLen);
     const currentCard = array[i];
-    array[i] = array[randomNumber];
+    const randomCard = array[randomNumber];
+    array[i] = randomCard;
     array[randomNumber] = currentCard;
   }
   return array;
 };
 
 // Function 4: Calculate score on player's hand
-const calcHandScore = () => {};
+const calcHandScore = () => {
+  // if () TO DOO!!! ####################################################
+};
 
 // Function 5: Click card
-const clickCard = () => {};
+const clickCard = (cardIndex, statusObj) => {
+  if (gameMode === 'deal2') {
+    if (deckStatus[cardIndex] === 'cancel') {
+      deckStatus[cardIndex] = 'hold';
+    } else {
+      deckStatus[cardIndex] = 'cancel';
+    }
+    statusObj.innerHTML = deckStatus[cardIndex];
+  }
+};
 
 // Function 6: Update cards on the
-const updateTableCards = () => {};
+const buildCardTable = () => {
+  cardStatusContainer.innerHTML = '';
+  cardsContainer.innerHTML = '';
+  for (let i = 0; i < 5; i += 1) {
+    // Create status element for each card
+    const singleStatus = document.createElement('div');
+    singleStatus.classList.add('card-style');
+    cardStatusContainer.appendChild(singleStatus);
+
+    // Create img element for each card
+    const singleCard = document.createElement('img');
+    singleCard.classList.add('card-style');
+    cardsContainer.appendChild(singleCard);
+    singleCard.addEventListener('click', () => {
+      console.log('clicked');
+      clickCard(i, singleStatus);
+    });
+
+    // Add card image and status based on gameMode
+    if (gameMode === 'welcome!') {
+      singleCard.src = 'Single_Cards/Card_back.png';
+      singleStatus.innerHTML = '';
+    } else {
+      singleCard.src = `Single_Cards/${playerHand[i].suit}-${playerHand[i].rank}.png`;
+      singleStatus.innerHTML = deckStatus[i];
+    }
+  }
+};
 
 // Function 7: The game
 const initGame = () => {
@@ -105,7 +145,7 @@ const initGame = () => {
   document.body.appendChild(gameContainer);
   gameContainer.appendChild(bettingTableRef);
   bettingTableRef.appendChild(imgTable);
-  gameContainer.appendChild(msgResult);
+  gameContainer.appendChild(gameMessage);
   gameContainer.appendChild(cardStatusContainer);
   gameContainer.appendChild(cardsContainer);
   gameContainer.appendChild(msgGameOver);
@@ -124,16 +164,65 @@ const initGame = () => {
   dealDrawBtn.innerText = 'Deal / Submit';
   betAmtElement.innerHTML = `BET: ${betAmt}`;
   // Temp placeholders
-  msgResult.innerHTML = 'Game Message will come here';
+  gameMessage.innerHTML = 'Place your bet';
   cardStatusContainer.innerHTML = 'card status will be updated here';
   cardsContainer.innerHTML = 'cards will be placed here';
 
+  // Initial layout
+  buildCardTable();
+
   // Add functionality to buttons
+  // to refactor
+  betUpBtn.addEventListener('click', () => {
+    if (betAmt < 5 && (gameMode === 'welcome!' || gameMode === 'deal2')) {
+      betAmt += 1;
+      credits -= 1;
+      betAmtElement.innerHTML = `BET: ${betAmt}`;
+      creditContainer.innerHTML = `CREDITS: ${credits}`;
+    }
+  });
+  betDownBtn.addEventListener('click', () => {
+    if (betAmt > 0 && (gameMode === 'welcome!' || gameMode === 'deal2')) {
+      betAmt -= 1;
+      credits += 1;
+      betAmtElement.innerHTML = `BET: ${betAmt}`;
+      creditContainer.innerHTML = `CREDITS: ${credits}`;
+    }
+  });
+  dealDrawBtn.addEventListener('click', () => {
+    // update gameMode
+    console.log(gameMode);
+    console.log(playerHand);
+    if (gameMode === 'welcome!') {
+      gameMode = 'deal1';
+    }
+
+    // deal fresh set of cards
+    if (gameMode === 'deal1' && betAmt > 0) {
+      for (let i = 0; i < 5; i += 1) {
+        deckStatus[i] = 'cancel';
+        playerHand[i] = deck.pop();
+      }
+      buildCardTable();
+      gameMessage.innerHTML = 'Click on cards to hold/cancel';
+      gameMode = 'deal2';
+    } else if (gameMode === 'deal2' && betAmt > 0) {
+      for (let i = 0; i < 5; i += 1) {
+        if (deckStatus[i] === 'cancel') {
+          playerHand[i] = deck.pop();
+        }
+      }
+      buildCardTable();
+      gameMessage.innerHTML = 'Game result';
+      gameMode = 'results';
+    }
+
+    // update gameMode
+    console.log(gameMode);
+    console.log(playerHand);
+  });
 
   // Deal cards to player
-  for (let i = 0; i < 5; i += 1) {
-    playerHand.push(deck.pop());
-  }
 };
 
 initGame();

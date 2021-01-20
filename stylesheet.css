@@ -16,60 +16,82 @@ h1 {
 
 .mainContainer {
   background-color: rgb(23, 72, 163);
-  height: 500px;
+  /* height: 500px; */
   width: 80%;
   margin: auto;
   padding: 10px;
   border-radius: 2%;
 }
 
-.msgResult {
+.gameMessage {
   height: 50px;
+  font-size: 30px;
+  /* margin-top: 10px; */
 }
 
-.flexContainers {
-  display: flex;
-  justify-content: space-between;
+.grey-background {
+  /* display: flex; */
+  /* justify-content: space-around; */
   background-color: grey;
-  height: 10%;
+  /* height: 5%; */
 }
 
 .cardsContainer {
-  height: 30%;
+  /* height: 35%; */
+  min-height: 180px;
+}
+
+.card-style {
+  display: inline-block;
+  width: 18%;
+  margin: 5px 5px;
 }
 
 .bottomContainer {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
+  box-sizing: border-box;
+  /* display: flex;
+  justify-content: space-around; */
+  display: block;
+  width: 100%;
+  /* align-items: center; */
   background-color: rgb(182, 136, 52);
-  height: 10%;
+  padding: 5px;
+  /* height: 10%; */
+  /* margin-top: 2; */
 }
 
 .bottomContainerElements {
+  display: inline-block;
+  box-sizing: border-box;
   height: 80%;
-  width: 30%;
-  font-size: 30px;
+  width: 33%;
+  margin: 5px auto;
+  vertical-align: middle;
+  padding: 5px 5px;
 }
 
 .betAmtElement {
-  vertical-align: top;
+  vertical-align: middle;
   float: left;
   width: 50%;
-  height: 100%;
-  font-size: 30px;
+  /* height: 100%; */
 }
 
 .betBtns {
-  display: inline-block;
+  /* display: inline-block; */
   vertical-align: top;
-  /* margin-left: 25%; */
+  float: right;
   width: 28%;
-  height: 20px;
+  height: 40%;
 }
 
 .dealDrawBtn {
   height: 80%;
-  width: 200px;
-  font-size: 25px;
+  width: 30%;
+  font-size: 3vw;
+}
+
+.big-words {
+  font-size: 3.5vw;
+  text-align: left;
 }

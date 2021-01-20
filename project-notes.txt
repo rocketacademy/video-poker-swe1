@@ -1,6 +1,4 @@
 GAMEPLAY
-
-
 1. At the start, the player will place his bets. 5 card slots will be empty
 2. After he has placed his bet, player will click deal
 3. 5 cards will be dealt into his hand
@@ -11,7 +9,7 @@ GAMEPLAY
 8. Credit will be issued depending on which winning condition he got.
 
 Game Modes
-1. placeBet
+1. welcome!
 2. deal1
 3. deal2
 4. results
@@ -24,4 +22,6 @@ To Do:
 
 Questions to ask: 
 + How to make text vertically align middle?
-+ In betContainer: how to position both buttons one after the other? Why is there the space? (this happened after setting font size to 30px for bottomContainerElements)
+
+deckStatus
+playerHand

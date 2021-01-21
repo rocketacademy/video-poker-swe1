@@ -8,11 +8,31 @@ GAMEPLAY
 7. Winning conditions will be checked
 8. Credit will be issued depending on which winning condition he got.
 
-Game Modes
+GAME MODES
 1. welcome!
+  + you can press betUpBtn/ betDownBtn
+  + will cause buildCardTable to show card_Back
+  + pressing submit: 
+    >>> welcome! => deal1
+
 2. deal1
+  + you can't press betUpBtn/ betDownBtn
+  + pressing submit: 
+    + create & shuffle deck. pop to playerHand
+    + rebuild with buildCardTable()
+    >>> deal1 => deal2
+
 3. deal2
+  + pressing submit: 
+    + replace the cards marked cancel
+    + rebuild with buildCardTable()
+    + determine result with calcHandScore()
+    >>> deal2 => result
+
 4. results
+  + you can press betUpBtn/ betDownBtn
+  + pressing submit: 
+    + 
 
 WIN CONDITIONS 
 + matchesArray

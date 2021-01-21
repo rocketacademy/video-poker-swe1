@@ -26,6 +26,7 @@ h1 {
 .gameMessage {
   height: 50px;
   font-size: 30px;
+  /* min-height: 25px; */
   /* margin-top: 10px; */
 }
 

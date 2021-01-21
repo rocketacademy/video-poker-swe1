@@ -14,6 +14,17 @@ Game Modes
 3. deal2
 4. results
 
+WIN CONDITIONS 
++ matchesArray
+  1 pair - matchesArray.length === 1
+  2 pair - matchesArray.length === 2 and different
+  3-kind - matchesArray.length === 2 and same
+  4-kind - matchesArray.length === 3 and same
+  full house - matchesArray.length === 3 and diff
+
+Note: 
++ bet 5, royal flush is 4000 points
+
 To Do: 
 1. Plan & create the game layout
 2. Program game layout using DOM

@@ -89,9 +89,81 @@ const shuffleDeck = (array) => {
   return array;
 };
 
+// Function 4: Sort an Array
+const sortArray = (inputArray) => {
+  let sorted = false;
+  while (sorted === false) {
+    let swapCounts = 0;
+    for (let i = 0; i < inputArray.length - 1; i += 1) {
+      if (inputArray[i].rank > inputArray[i + 1].rank) {
+        const tempObj = inputArray[i + 1];
+        inputArray[i + 1] = inputArray[i];
+        inputArray[i] = tempObj;
+        swapCounts += 1;
+      } else if (i === inputArray.length - 2 && swapCounts === 0) {
+        sorted = true;
+      }
+    }
+  }
+  return inputArray;
+};
+
 // Function 4: Calculate score on player's hand
 const calcHandScore = () => {
   // if () TO DOO!!! ####################################################
+  let result = 'lose';
+  const sortedHand = sortArray(playerHand);
+  const winFactor = [1, 2, 3, 4, 6, 9, 25, 50, 250];
+
+  // Create comparison arrays
+  const royalFlushArray = [1, 10, 11, 12, 13];
+
+  // Create status arrays
+  const matchesArray = [];
+  let straightStatus = true;
+  let flushStatus = true;
+  let royalFlushStatus = true;
+
+  // Loop through sortedHand
+  for (let i = 0; i < 4; i += 1) {
+    // if matches are found, push to matchesArray
+    if (sortedHand[i].rank === sortedHand[i + 1].rank) {
+      matchesArray.push(sortedHand[i].rank);
+    }
+    // if any two have a different suit, set flush status to false
+    if (sortedHand[i].suit !== sortedHand[i + 1].suit) {
+      flushStatus = false;
+    }
+    // if any two numbers are not consecutive, set straight status to false
+    if (sortedHand[i].rank !== sortedHand[i + 1].rank - 1) {
+      straightStatus = false;
+    }
+    if (sortedHand[i].rank !== royalFlushArray[i]) {
+      royalFlushStatus = false;
+    }
+  }
+  console.log(matchesArray);
+  // Determine result
+  if (matchesArray.length === 1 && (matchesArray[0] > 10 || matchesArray[0] === 1)) {
+    result = 'JACKS OR BETTER';
+  } else if (matchesArray.length === 2 && matchesArray[0] !== matchesArray[1]) {
+    result = 'TWO PAIR';
+  } else if (matchesArray.length === 2 && matchesArray[0] === matchesArray[1]) {
+    result = 'THREE OF A KIND';
+  } else if (straightStatus === true && flushStatus === false) {
+    result = 'STRAIGHT';
+  } else if (flushStatus === true && straightStatus === false && royalFlushStatus === false) {
+    result = 'FLUSH';
+  } else if (matchesArray.length === 3 && matchesArray[0] !== matchesArray[2]) {
+    result = 'FULL HOUSE';
+  } else if (matchesArray.length === 3 && matchesArray[0] === matchesArray[2]) {
+    result = 'FOUR OF A KIND';
+  } else if (straightStatus === true && flushStatus === true) {
+    result = 'STRAIGHT FLUSH';
+  } else if (royalFlushStatus === true && flushStatus === true) {
+    result = 'ROYAL FLUSH';
+  }
+  return result;
 };
 
 // Function 5: Click card
@@ -138,8 +210,6 @@ const buildCardTable = () => {
 
 // Function 7: The game
 const initGame = () => {
-  deck = shuffleDeck(createDeck());
-
   // Create page layout
   document.body.appendChild(projectTitle);
   document.body.appendChild(gameContainer);
@@ -174,7 +244,7 @@ const initGame = () => {
   // Add functionality to buttons
   // to refactor
   betUpBtn.addEventListener('click', () => {
-    if (betAmt < 5 && (gameMode === 'welcome!' || gameMode === 'deal2')) {
+    if (betAmt < 5 && (gameMode === 'welcome!' || gameMode === 'result')) {
       betAmt += 1;
       credits -= 1;
       betAmtElement.innerHTML = `BET: ${betAmt}`;
@@ -182,7 +252,7 @@ const initGame = () => {
     }
   });
   betDownBtn.addEventListener('click', () => {
-    if (betAmt > 0 && (gameMode === 'welcome!' || gameMode === 'deal2')) {
+    if (betAmt > 0 && (gameMode === 'welcome!' || gameMode === 'result')) {
       betAmt -= 1;
       credits += 1;
       betAmtElement.innerHTML = `BET: ${betAmt}`;
@@ -193,12 +263,17 @@ const initGame = () => {
     // update gameMode
     console.log(gameMode);
     console.log(playerHand);
-    if (gameMode === 'welcome!') {
+    if (gameMode === 'welcome!' || gameMode === 'result') {
       gameMode = 'deal1';
     }
 
-    // deal fresh set of cards
-    if (gameMode === 'deal1' && betAmt > 0) {
+    // if user did not bet, don't start
+    if (betAmt === 0) {
+      gameMessage.innerHTML = 'Please place a bet amount';
+      gameMode = 'result';
+      // If player submits bet, create new deck and deal first hand
+    } else if (gameMode === 'deal1' && betAmt > 0) {
+      deck = shuffleDeck(createDeck());
       for (let i = 0; i < 5; i += 1) {
         deckStatus[i] = 'cancel';
         playerHand[i] = deck.pop();
@@ -206,6 +281,7 @@ const initGame = () => {
       buildCardTable();
       gameMessage.innerHTML = 'Click on cards to hold/cancel';
       gameMode = 'deal2';
+      // if second time, replce 'cancel' cards and determine result
     } else if (gameMode === 'deal2' && betAmt > 0) {
       for (let i = 0; i < 5; i += 1) {
         if (deckStatus[i] === 'cancel') {
@@ -213,8 +289,8 @@ const initGame = () => {
         }
       }
       buildCardTable();
-      gameMessage.innerHTML = 'Game result';
-      gameMode = 'results';
+      gameMessage.innerHTML = `Game result: ${calcHandScore()} </br> Change your bet and deal again`;
+      gameMode = 'result';
     }
 
     // update gameMode
@@ -226,3 +302,30 @@ const initGame = () => {
 };
 
 initGame();
+const testHand = [
+  {
+    rank: 10,
+    suit: 'DIAMOND',
+    name: '10',
+  },
+  {
+    rank: 1,
+    suit: 'DIAMOND',
+    name: 'ace',
+  },
+  {
+    rank: 13,
+    suit: 'DIAMOND',
+    name: 'King',
+  },
+  {
+    rank: 11,
+    suit: 'DIAMOND',
+    name: 'Jack',
+  },
+  {
+    rank: 12,
+    suit: 'DIAMOND',
+    name: 'Queen',
+  },
+];

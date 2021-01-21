@@ -23,6 +23,7 @@ h1 {
 
 .mainContainer {
   background-color: rgb(23, 72, 163);
+
   width: 80%;
   margin: 0px auto;
   padding: 10px;
@@ -114,4 +115,16 @@ h1 {
 .big-words {
   font-size: 3.5vw;
   text-align: left;
+}
+
+@media (min-width: 750px) {
+  .mainContainer {
+    max-width: 750px;
+  }
+  .big-words {
+    font-size: 30px;
+  }
+  .dealDrawBtn {
+    font-size: 30px;
+  }
 }

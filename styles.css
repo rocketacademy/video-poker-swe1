@@ -1,0 +1,232 @@
+/* Theme */
+body {
+  background-color: rgb(48, 48, 48);
+  font-family: "Josefin Sans", sans-serif;
+}
+
+.main {
+  padding: 4%;
+  margin: 5% auto;
+  border: white solid;
+  border-radius: 40px;
+  background: linear-gradient(27deg, #03001d 5px, transparent 5px) 0 5px,
+    linear-gradient(207deg, #03001d 5px, transparent 5px) 10px 0px,
+    linear-gradient(27deg, rgb(5, 0, 54) 5px, transparent 5px) 0px 10px,
+    linear-gradient(207deg, rgb(5, 0, 54) 5px, transparent 5px) 10px 5px,
+    linear-gradient(90deg, #1b1b1b 10px, transparent 10px),
+    linear-gradient(
+      #1d1d1d 25%,
+      #1a1a1a 25%,
+      #1a1a1a 50%,
+      transparent 50%,
+      transparent 75%,
+      #242424 75%,
+      #242424
+    );
+  background-size: 20px 20px;
+  background-color: #000a99;
+  width: 1300px;
+  height: 850px;
+}
+
+/* Game Info */
+.title {
+  -webkit-text-stroke: 2px goldenrod;
+  font-size: 3rem;
+  color: rgb(209, 26, 2);
+  letter-spacing: 0.1em;
+}
+
+.credits {
+  float: right;
+  margin: 0.5%;
+  font-size: 2.5rem;
+  color: gold;
+}
+
+.credits-update {
+  margin: 4% 1rem;
+  text-align: right;
+  font-size: 2.5rem;
+  color: gold;
+}
+
+/* Cards Related */
+.cards-container {
+  position: relative;
+  text-align: center;
+  height: 50%;
+  width: 1300px;
+  margin: 3% auto 5% auto;
+}
+
+.card:hover {
+  border: goldenrod solid;
+}
+
+.card {
+  display: inline-block;
+  background-color: #e9e7e8;
+  background-image: url("graphics/cardback.gif");
+  background-size: contain;
+  border: #e9e7e8 solid;
+  border-radius: 15px;
+  margin: 1.2em;
+  height: 65.3%;
+  width: 15.3%;
+  cursor: pointer;
+}
+
+.card-name {
+  float: left;
+  margin: 10px;
+  font-size: 3.7em;
+  visibility: hidden;
+}
+
+.card-suit {
+  clear: left;
+  text-align: center;
+  margin: 60% auto;
+  font-size: 3.5em;
+  visibility: hidden;
+}
+
+.clicked-card {
+  display: inline-block;
+  background-color: #e9e7e8;
+  border-radius: 15px;
+  border: goldenrod solid;
+  margin: 1.2em;
+  height: 65.3%;
+  width: 15.3%;
+}
+
+/* Messages */
+.message {
+  display: block;
+  min-height: 2.6rem;
+  margin-top: 9%;
+  margin-left: 65px;
+  text-align: center;
+  font-size: 2.5rem;
+  color: red;
+}
+
+.message-blink {
+  display: block;
+  margin-top: 9%;
+  margin-left: 65px;
+  text-align: center;
+  font-size: 2.5rem;
+  color: gold;
+  text-shadow: 2px 2px #ff0000;
+}
+
+.game-over {
+  position: absolute;
+  margin: -185px 490px;
+  padding: 12px 45px;
+  text-align: center;
+  font-size: 2.8em;
+  background-color: #000a99;
+  color: rgb(209, 26, 2);
+  border: yellow solid 2px;
+  box-sizing: border-box;
+  z-index: 5;
+  white-space: nowrap;
+  visibility: hidden;
+}
+
+/* Buttons */
+.deal-btn {
+  display: block;
+  padding: 10px 33px;
+  margin-left: 550px;
+  color: gold;
+  border: goldenrod solid;
+  border-style: groove;
+  border-radius: 15px;
+  background-color: rgb(209, 26, 2);
+  font-size: 2.5rem;
+  letter-spacing: 0.5rem;
+  position: absolute;
+  z-index: 1;
+  cursor: pointer;
+}
+
+.draw-btn:hover {
+  color: gold;
+  background-color: black;
+}
+
+.draw-btn {
+  display: block;
+  padding: 10px 30px;
+  margin-left: 550px;
+  color: black;
+  background-color: gold;
+  border: goldenrod solid;
+  border-style: groove;
+  border-radius: 15px;
+  font-size: 2.5rem;
+  letter-spacing: 0.3rem;
+  position: absolute;
+  cursor: pointer;
+}
+
+/* Mobile Size */
+@media screen and (max-width: 1200px) {
+  .title {
+    -webkit-text-stroke: 2px goldenrod;
+    font-size: 4rem;
+    color: rgb(209, 26, 2);
+  }
+
+  .credits {
+    float: right;
+    margin: 0.5%;
+    font-size: 3rem;
+    color: gold;
+  }
+
+  .credits-update {
+    margin: 4% 1rem;
+    text-align: right;
+    font-size: 3rem;
+    color: gold;
+  }
+
+  .deal-btn {
+    display: block;
+    padding: 20px 40px;
+    margin-left: 550px;
+    margin-bottom: 100px;
+    color: gold;
+    border: goldenrod solid;
+    border-style: groove;
+    border-radius: 15px;
+    background-color: rgb(209, 26, 2);
+    font-size: 3rem;
+    letter-spacing: 0.6rem;
+    position: absolute;
+    z-index: 1;
+    cursor: pointer;
+  }
+
+  .draw-btn {
+    display: block;
+    padding: 20px 40px;
+    margin-left: 550px;
+    margin-bottom: 100px;
+    color: gold;
+    border: goldenrod solid;
+    border-style: groove;
+    border-radius: 15px;
+    background-color: black;
+    font-size: 3rem;
+    letter-spacing: 0.3rem;
+    position: absolute;
+    cursor: pointer;
+  }
+}

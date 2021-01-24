@@ -1,4 +1,4 @@
-// Video Poker V1
+// Video Poker V2
 
 /**
  * Outputs a random integer.
@@ -71,10 +71,8 @@ const shuffleDeck = (deckArr) => {
 
 // Global Variables
 const deck = shuffleDeck(makeDeck());
-let playerCredits = 100;
-// window.localStorage.setItem('credits', startCredits);
-// const playerCredits = window.localStorage.getItem('credits');
-
+let startCredits = 100;
+// const playerCredits = window.sessionStorage.getItem('credits');
 let roundEnd = false;
 const playerHand = [];
 // const playerHandTest = [
@@ -86,10 +84,9 @@ const playerHand = [];
 // ];
 
 // Audio
-const flipAudio = new Audio('sounds/card-flip.mp3');
 const clickAudio = new Audio('sounds/click-sound.mp3');
 const coinsAudio = new Audio('sounds/coins.mp3');
-
+const flipAudio = new Audio('sounds/card-flip.mp3');
 flipAudio.playbackRate = 4;
 
 /**
@@ -188,6 +185,8 @@ const calcHandScore = (hand) => {
       matchingType = 'FLUSH';
     } else if (inRunningOrder(valArr) && suitsMatch(suitsArr)) {
       matchingType = 'STRAIGHT FLUSH';
+    } else if (inRunningOrder(valArr) && suitsMatch(suitsArr) && matchedCardsTotal === 60 && valArr.includes('♠️')) {
+      matchingType = 'ROYAL FLUSH';
     }
   });
   return matchingType;
@@ -199,31 +198,29 @@ const calcHandScore = (hand) => {
  */
 const updatePlayerCredit = (matchingType) => {
   if (matchingType === 'JACKS OR BETTER') {
-    playerCredits += 5;
+    startCredits += 5;
   } else if (matchingType === 'TWO PAIR') {
-    playerCredits += 10;
+    startCredits += 10;
   } else if (matchingType === 'THREE OF A KIND') {
-    playerCredits += 15;
+    startCredits += 15;
   } else if (matchingType === 'FULL HOUSE') {
-    playerCredits += 15;
+    startCredits += 45;
   } else if (matchingType === 'FOUR OF A KIND') {
-    playerCredits += 45;
+    startCredits += 45;
   } else if (matchingType === 'FULL HOUSE') {
-    playerCredits += 125;
+    startCredits += 125;
   } else if (matchingType === 'STRAIGHT') {
-    playerCredits += 20;
+    startCredits += 20;
   } else if (matchingType === 'FLUSH') {
-    playerCredits += 30;
+    startCredits += 30;
   } else if (matchingType === 'STRAIGHT FLUSH') {
-    playerCredits += 250;
-  } else {
-    playerCredits -= 5;
+    startCredits += 250;
+  } else if (matchingType === 'ROYAL FLUSH') {
+    startCredits += 4000;
   }
+  window.sessionStorage.setItem('credits', startCredits);
 };
 
-// -----------------------
-// HTML & CSS Related
-// -----------------------
 /**  Creates HTML element, assigns class & fills inner text.
  *  @param {document} element - HTML element tag type.
  *  @param {string} text - Fill inner text.
@@ -273,13 +270,22 @@ const createCardElement = (deckArr) => {
 
 /** Initialise Game */
 const initGame = () => {
+  // Create a local storage for player credits.
+  if (window.sessionStorage.length === 0) {
+    window.sessionStorage.setItem('credits', startCredits);
+  } else {
+    startCredits -= 5;
+  }
+
+  const playerCredits = window.sessionStorage.getItem('credits');
+
   // Create HTML Elements
   const title = customCreate('span', 'VIDEO POKER', 'title');
   const screenDiv = customCreate('div', '', 'main');
   const messageDiv = customCreate('div', 'HIT DEAL TO START', 'message');
   const cardsDiv = customCreate('div', '', 'cards-container');
   const creditsDiv = customCreate('div', 'CREDITS : ', 'credits');
-  const creditUpdateDiv = customCreate('div', '0', 'credits-update');
+  const creditUpdateDiv = customCreate('div', playerCredits, 'credits-update');
   const drawBtn = customCreate('button', 'DRAW', 'draw-btn');
   const dealBtn = customCreate('button', 'DEAL', 'deal-btn');
   const gameOverDiv = customCreate('div', 'GAME OVER', 'game-over');
@@ -379,7 +385,6 @@ const initGame = () => {
         currentCardElement.innerHTML = newCard.cardContainer.innerHTML;
         playerHand.push(newCard.jsObj);
       }
-
       flipAudio.play();
     }
 

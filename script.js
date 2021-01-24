@@ -71,9 +71,9 @@ const shuffleDeck = (deckArr) => {
 
 // Global Variables
 const deck = shuffleDeck(makeDeck());
-let startCredits = 100;
-window.localStorage.setItem('credits', startCredits);
-const playerCredits = window.localStorage.getItem('credits');
+let playerCredits = 100;
+// window.localStorage.setItem('credits', startCredits);
+// const playerCredits = window.localStorage.getItem('credits');
 
 let roundEnd = false;
 const playerHand = [];
@@ -199,25 +199,25 @@ const calcHandScore = (hand) => {
  */
 const updatePlayerCredit = (matchingType) => {
   if (matchingType === 'JACKS OR BETTER') {
-    startCredits += 5;
+    playerCredits += 5;
   } else if (matchingType === 'TWO PAIR') {
-    startCredits += 10;
+    playerCredits += 10;
   } else if (matchingType === 'THREE OF A KIND') {
-    startCredits += 15;
+    playerCredits += 15;
   } else if (matchingType === 'FULL HOUSE') {
-    startCredits += 15;
+    playerCredits += 15;
   } else if (matchingType === 'FOUR OF A KIND') {
-    startCredits += 45;
+    playerCredits += 45;
   } else if (matchingType === 'FULL HOUSE') {
-    startCredits += 125;
+    playerCredits += 125;
   } else if (matchingType === 'STRAIGHT') {
-    startCredits += 20;
+    playerCredits += 20;
   } else if (matchingType === 'FLUSH') {
-    startCredits += 30;
+    playerCredits += 30;
   } else if (matchingType === 'STRAIGHT FLUSH') {
-    startCredits += 250;
+    playerCredits += 250;
   } else {
-    startCredits -= 5;
+    playerCredits -= 5;
   }
 };
 
@@ -273,14 +273,6 @@ const createCardElement = (deckArr) => {
 
 /** Initialise Game */
 const initGame = () => {
-  // const storedData = playerCredits;
-  // // Set localStorage item
-  // localStorage.setItem('storedData', storedData);
-  // // Retrieve the object from localStorage
-  // const retrievedData = localStorage.getItem('storedData');
-  // // console.log retrieved item
-  // console.log('retrieved data Object: ', retrievedData);
-
   // Create HTML Elements
   const title = customCreate('span', 'VIDEO POKER', 'title');
   const screenDiv = customCreate('div', '', 'main');

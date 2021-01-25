@@ -1,0 +1,328 @@
+/* reset browser styles */
+html,
+body,
+div,
+span,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+body {
+  line-height: 1.2;
+}
+ol {
+  padding-left: 1.4em;
+  list-style: decimal;
+}
+ul {
+  padding-left: 1.4em;
+  list-style: square;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+/* end reset browser styles */
+
+body {
+  background: url(/Users/michellemok/Documents/swe1/projects/video-poker/blue-background.jpg);
+}
+
+.main {
+  display: block;
+}
+
+.messageBoard {
+  position: relative;
+  max-width: 500px;
+  height: 150px;
+  width: 100%;
+
+  padding: 35px 0;
+  border: red solid 5px;
+  color: white;
+  text-shadow: 2px 2px 5px black;
+  font-size: 30px;
+  font-family: "Erica One", cursive;
+  border-radius: 25px;
+  margin: 10px auto;
+  text-align: center;
+  background: rgba(65, 64, 64, 0.7);
+  box-sizing: border-box;
+}
+
+.messageBoard2 {
+  position: absolute;
+  top: 80px;
+  right: 140px;
+  max-width: 300px;
+  width: 100%;
+  font-size: 16px;
+  font-family: monospace;
+  margin: 30px auto 0;
+  text-align: center;
+}
+
+.red {
+  background-color: red;
+}
+
+.black {
+  background-color: black;
+}
+
+.cardContainer {
+  display: inline-block;
+  width: 80%;
+  max-width: 290px;
+  min-height: 620px;
+  border: rgb(241, 117, 1) solid 5px;
+  border-radius: 25px 20px 20px;
+  padding: 20px 40px;
+  background: rgba(65, 64, 64, 0.7);
+  box-sizing: border-box;
+  text-align: center;
+}
+.money {
+  border: lightblue solid 5px;
+  max-width: 500px;
+  width: 100%;
+  background: rgba(65, 64, 64, 0.7);
+  box-sizing: border-box;
+  margin: 10px auto;
+  border-radius: 25px;
+  padding: 10px 0;
+}
+
+.card {
+  margin: 10px;
+  padding: 10px;
+  background-color: grey;
+  width: 65px;
+  height: 75px;
+  text-align: center;
+  border-radius: 8px;
+  display: inline-block;
+}
+.suit {
+  margin: 5px;
+  font-size: 20px;
+}
+.name {
+  margin: 5px;
+  font-size: 24px;
+  font-weight: bold;
+  font-family: sans-serif;
+}
+
+.black {
+  color: black;
+}
+
+.red {
+  color: red;
+}
+
+.display {
+  width: 30%;
+  color: rgb(119, 150, 174);
+  background-color: black;
+  text-align: center;
+  box-sizing: border-box;
+  margin: 0 50px;
+  border: rgb(131, 204, 228) solid 2px;
+  padding: 20px 55px;
+}
+
+.console {
+  display: inline-block;
+  right: 5px;
+  top: 5px;
+  max-width: 200px;
+  min-height: 620px;
+  height: 400px;
+  vertical-align: top;
+  border: rgb(241, 185, 1) solid 5px;
+
+  border-radius: 25px;
+  background: rgba(65, 64, 64, 0.7);
+  box-sizing: border-box;
+  text-align: center;
+  margin-left: 10px;
+}
+
+.holdButton {
+  background-color: black;
+  margin: 5px auto;
+  width: 150px;
+  height: 80px;
+  margin: 20px auto;
+  border-radius: 25px;
+  border: rgb(236, 233, 233) solid 2px;
+  text-shadow: 1px 1px 2px black;
+  color: white;
+  text-align: center;
+}
+
+.text {
+  color: lightblue;
+  text-align: right;
+  padding: 0 50px;
+  font-size: 15px;
+}
+
+.box {
+  display: inline-block;
+  width: 25%;
+  text-align: center;
+}
+
+.credits {
+  max-width: 500px;
+  width: 100%;
+  display: block;
+  border: rgb(235, 158, 34) solid 5px;
+  background: rgba(65, 64, 64, 0.7);
+  box-sizing: border-box;
+  margin: 5px auto;
+  border-radius: 25px;
+  padding: 10px 0;
+  text-align: center;
+  vertical-align: top;
+}
+
+.creditButton {
+  display: inline-block;
+  background-color: rgb(46, 62, 238);
+  margin: 0px 8px 15px 8px;
+  width: 100px;
+  height: 60px;
+  border-radius: 25px;
+  border: darkgrey solid 2px;
+  text-shadow: 1px 1px 2px black;
+  color: white;
+  text-align: center;
+}
+
+.reset {
+  display: inline-block;
+  background-color: red;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  margin: 15px 5px 5px 20px;
+  border: darkgrey solid 2px;
+  text-align: center;
+}
+
+.drawButton {
+  display: inline-block;
+  background-color: rgb(19, 102, 179);
+  margin: 15px 20px 5px 10px;
+  width: 90px;
+  height: 60px;
+  border-radius: 25px;
+  border: darkgrey solid 2px;
+  text-shadow: 1px 1px 2px black;
+  color: white;
+  text-align: center;
+  float: right;
+}
+
+.cardAndConsole {
+  margin: 0 auto;
+  max-width: 500px;
+  width: 100%;
+}

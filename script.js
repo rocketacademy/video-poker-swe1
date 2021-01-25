@@ -71,8 +71,7 @@ const shuffleDeck = (deckArr) => {
 
 // Global Variables
 const deck = shuffleDeck(makeDeck());
-let startCredits = 100;
-// const playerCredits = window.sessionStorage.getItem('credits');
+let startCredits = 0;
 let roundEnd = false;
 const playerHand = [];
 // const playerHandTest = [
@@ -197,28 +196,29 @@ const calcHandScore = (hand) => {
  * @param {string>} matchingType - Winning card combination.
  */
 const updatePlayerCredit = (matchingType) => {
+  let playerCredits = Number(window.sessionStorage.getItem('credits', startCredits));
   if (matchingType === 'JACKS OR BETTER') {
-    startCredits += 5;
+    playerCredits += 5;
   } else if (matchingType === 'TWO PAIR') {
-    startCredits += 10;
+    playerCredits += 10;
   } else if (matchingType === 'THREE OF A KIND') {
-    startCredits += 15;
+    playerCredits += 15;
   } else if (matchingType === 'FULL HOUSE') {
-    startCredits += 45;
+    playerCredits += 45;
   } else if (matchingType === 'FOUR OF A KIND') {
-    startCredits += 45;
-  } else if (matchingType === 'FULL HOUSE') {
-    startCredits += 125;
+    playerCredits += 125;
   } else if (matchingType === 'STRAIGHT') {
-    startCredits += 20;
+    playerCredits += 20;
   } else if (matchingType === 'FLUSH') {
-    startCredits += 30;
+    playerCredits += 30;
   } else if (matchingType === 'STRAIGHT FLUSH') {
-    startCredits += 250;
+    playerCredits += 250;
   } else if (matchingType === 'ROYAL FLUSH') {
-    startCredits += 4000;
+    playerCredits += 4000;
+  } else {
+    playerCredits += 0;
   }
-  window.sessionStorage.setItem('credits', startCredits);
+  window.sessionStorage.setItem('credits', playerCredits);
 };
 
 /**  Creates HTML element, assigns class & fills inner text.
@@ -270,14 +270,15 @@ const createCardElement = (deckArr) => {
 
 /** Initialise Game */
 const initGame = () => {
-  // Create a local storage for player credits.
-  if (window.sessionStorage.length === 0) {
-    window.sessionStorage.setItem('credits', startCredits);
-  } else {
-    startCredits -= 5;
-  }
+  let playerCredits = window.sessionStorage.getItem('credits');
+  console.log(playerCredits);
 
-  const playerCredits = window.sessionStorage.getItem('credits');
+  // Create a local storage for player credits.
+  if (!window.sessionStorage.hasOwnProperty('credits')) {
+    startCredits = 0;
+    playerCredits = 0;
+    window.sessionStorage.setItem('credits', startCredits);
+  }
 
   // Create HTML Elements
   const title = customCreate('span', 'VIDEO POKER', 'title');
@@ -285,6 +286,7 @@ const initGame = () => {
   const messageDiv = customCreate('div', 'HIT DEAL TO START', 'message');
   const cardsDiv = customCreate('div', '', 'cards-container');
   const creditsDiv = customCreate('div', 'CREDITS : ', 'credits');
+
   const creditUpdateDiv = customCreate('div', playerCredits, 'credits-update');
   const drawBtn = customCreate('button', 'DRAW', 'draw-btn');
   const dealBtn = customCreate('button', 'DEAL', 'deal-btn');
@@ -346,6 +348,10 @@ const initGame = () => {
 
       // Hide "Hit Deal to Start" message.
       messageDiv.style.visibility = 'hidden';
+
+      if (playerCredits < 1) {
+        playerCredits = 100;
+      }
       creditUpdateDiv.innerText = playerCredits;
 
       // Turn over cards face-up.
@@ -370,22 +376,25 @@ const initGame = () => {
     }, 200);
   });
 
+  // Pushes new card objects to playerHand & reflects it on screen.
   drawBtn.addEventListener('click', () => {
+    flipAudio.play();
     // Remove cards that are not held.
     const firstHandElementsArr = document.getElementsByClassName('card');
+
+    // Loop through each card element on screen & card object in array.
     for (let i = 0; i < firstHandElementsArr.length; i += 1) {
+      const currentCardElement = firstHandElementsArr[i];
       const newCard = createCardElement(deck);
+
       newCard.cardContainer.children[0].style.visibility = 'visible';
       newCard.cardContainer.children[1].style.visibility = 'visible';
-
-      const currentCardElement = firstHandElementsArr[i];
 
       // Replace playerHand card objects with NEW card elements drawn from top of deck
       if (!currentCardElement.classList.contains('clicked-card')) {
         currentCardElement.innerHTML = newCard.cardContainer.innerHTML;
         playerHand.push(newCard.jsObj);
       }
-      flipAudio.play();
     }
 
     // const winningMsg = calcHandScore(playerHandTest); // Used for testing custom hand.
@@ -401,7 +410,7 @@ const initGame = () => {
       coinsAudio.play();
     }
 
-    // Blinking behaviour for win message.
+    // Add blinking behaviour for win message.
     let blinkTimes = 9;
     const ref = setInterval(() => {
       messageDiv.classList.toggle('message-blink');

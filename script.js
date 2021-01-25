@@ -74,13 +74,13 @@ const deck = shuffleDeck(makeDeck());
 let startCredits = 0;
 let roundEnd = false;
 const playerHand = [];
-// const playerHandTest = [
-//   { name: 'J', suit: '♣️', value: 11 },
-//   { name: 'K', suit: '♣️', value: 13 },
-//   { name: 'A', suit: '♣️', value: 14 },
-//   { name: 'Q', suit: '♣️', value: 12 },
-//   { name: '10', suit: '❤️', value: 10 },
-// ];
+const playerHandTest = [
+  { name: 'J', suit: '♠️', value: 11 },
+  { name: 'K', suit: '♠️', value: 13 },
+  { name: 'A', suit: '♠️', value: 14 },
+  { name: 'Q', suit: '♠️', value: 12 },
+  { name: '10', suit: '♠️', value: 10 },
+];
 
 // Audio
 const clickAudio = new Audio('sounds/click-sound.mp3');
@@ -164,6 +164,7 @@ const calcHandScore = (hand) => {
   }
 
   let matchingType = ' ';
+  const valArrSum = valArr.reduce((a, b) => a + b);
   const cardCounterKeys = Object.keys(cardCounter);
 
   // Run through cardCounter & extract cards that appear twice.
@@ -180,11 +181,11 @@ const calcHandScore = (hand) => {
       matchingType = 'FOUR OF A KIND';
     } else if (inRunningOrder(valArr) && !suitsMatch(suitsArr)) {
       matchingType = 'STRAIGHT';
-    } else if (suitsMatch(suitsArr)) {
+    } else if (suitsMatch(suitsArr) && !inRunningOrder(valArr)) {
       matchingType = 'FLUSH';
-    } else if (inRunningOrder(valArr) && suitsMatch(suitsArr)) {
+    } else if (inRunningOrder(valArr) && suitsMatch(suitsArr) && valArrSum < 60) {
       matchingType = 'STRAIGHT FLUSH';
-    } else if (inRunningOrder(valArr) && suitsMatch(suitsArr) && matchedCardsTotal === 60 && valArr.includes('♠️')) {
+    } else if (inRunningOrder(valArr) && suitsMatch(suitsArr) && valArrSum === 60 && suitsArr.includes('♠️')) {
       matchingType = 'ROYAL FLUSH';
     }
   });

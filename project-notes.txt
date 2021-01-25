@@ -56,3 +56,21 @@ Questions to ask:
 
 deckStatus
 playerHand
+
+
+###### Instructor Code Review ######
+
+### 1. Technical Review ###
+1A What part of the project went well, technically? Give at least one link to your repo as an example.
+
+1B  What part the project was a struggle, technically? Give at least one link to your repo as an example.
+
+1C What technical adjustments would you make for the next project? Why?
+
+
+### 2. Process Review ###
+2A What in the approach and process during this project went well?
+
+2B What in the approach and process during this project did not go well?
+
+2C What would you change in your process and approach in the next project? Why?

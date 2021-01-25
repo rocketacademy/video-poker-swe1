@@ -41,14 +41,9 @@ h1 {
   height: 100%;
 }
 .pop-up-style {
-  /* position: fixed; */
-  /* top: 60%; */
-  /* left: 40%; */
-  /* margin: auto; */
   background-color: rgb(23, 163, 140);
   color: orange;
   font-size: 50px;
-  /* height: 10%; */
 }
 
 /* TABLE CONTAINER */

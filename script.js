@@ -157,7 +157,7 @@ const updateCreditsOnHand = (outcomeIndex) => {
 
 // Function 6: Flash message banner across screen
 const flashPopUpMsg = (message, flashCount) => {
-  popUpMsgContainer.style.zIndex = 1;
+  popUpMsgContainer.style.zIndex = 10;
   let timeEndCounter = 0;
   msgGameOver.innerText = message;
   const timeEnd = setInterval(() => {
@@ -313,6 +313,7 @@ const initGame = () => {
   gameContainer.appendChild(gameMessage);
   gameContainer.appendChild(cardStatusContainer);
   gameContainer.appendChild(cardsContainer);
+  // gameContainer.appendChild(popUpMsgContainer);
   popUpMsgContainer.appendChild(msgGameOver);
   gameContainer.appendChild(bottomContainer);
   bottomContainer.appendChild(creditContainer);
@@ -429,6 +430,7 @@ const initGame = () => {
     }
 
     // if user did not bet, don't start
+
     if (betAmt === 0) {
       gameMessage.innerHTML = 'Please place a bet amount';
       gameMode = 'welcome!';

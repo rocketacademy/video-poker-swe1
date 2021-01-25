@@ -3,6 +3,8 @@ let gameMode = 'welcome!';
 let credits = 100;
 let betAmt = 0;
 let deck;
+const resultArray = ['LOSE', 'JACKS OR BETTER', 'TWO PAIR', 'THREE OF A KIND', 'STRAIGHT', 'FLUSH', 'FULL HOUSE', 'FOUR OF A KIND', 'STRAIGHT FLUSH', 'ROYAL FLUSH'];
+const resultFactor = [0, 1, 2, 3, 4, 6, 9, 25, 50, 250];
 const deckStatus = [];
 const playerHand = [];
 
@@ -12,11 +14,12 @@ const cardGif2 = document.createElement('img');
 const projectTitle = document.createElement('h1');
 const headerContainer = document.createElement('div');
 const gameContainer = document.createElement('div');
-const bettingTableRef = document.createElement('div');
-const imgTable = document.createElement('img');
+// const bettingTableRef = document.createElement('div');
+// const imgTable = document.createElement('img');
 const gameMessage = document.createElement('div');
 const cardStatusContainer = document.createElement('div');
 const cardsContainer = document.createElement('div');
+const popUpMsgContainer = document.createElement('div');
 const msgGameOver = document.createElement('div'); // don't append yet
 const bottomContainer = document.createElement('div');
 const betContainer = document.createElement('div');
@@ -32,10 +35,11 @@ beepSound.volume = 0.2;
 gameContainer.classList.add('mainContainer');
 cardGif1.src = 'img/chip2-webthumb.gif';
 cardGif2.src = 'img/chip2-webthumb.gif';
-imgTable.src = 'img/bet-table.png';
-imgTable.classList.add('image');
+// imgTable.src = 'img/bet-table.png';
+// imgTable.classList.add('image');
 cardGif1.classList.add('header-gif-style');
 cardGif2.classList.add('header-gif-style');
+popUpMsgContainer.classList.add('popUpMsgContainer');
 msgGameOver.classList.add('pop-up-style');
 gameMessage.classList.add('gameMessage');
 cardStatusContainer.classList.add('grey-background', 'cardStatusContainer');
@@ -47,6 +51,11 @@ dealDrawBtn.classList.add('bottomContainerElements', 'dealDrawBtn');
 betAmtElement.classList.add('betAmtElement', 'big-words');
 betUpBtn.classList.add('betBtns');
 betDownBtn.classList.add('betBtns');
+
+// Special: HTML and CSS: Create table
+const tableContainer = document.createElement('div');
+tableContainer.classList.add('tableElement');
+const tableCol = [];
 
 // Function 1: Create Deck
 const createDeck = () => {
@@ -148,6 +157,7 @@ const updateCreditsOnHand = (outcomeIndex) => {
 
 // Function 6: Flash message banner across screen
 const flashPopUpMsg = (message, flashCount) => {
+  popUpMsgContainer.style.zIndex = 1;
   let timeEndCounter = 0;
   msgGameOver.innerText = message;
   const timeEnd = setInterval(() => {
@@ -161,7 +171,8 @@ const flashPopUpMsg = (message, flashCount) => {
     timeEndCounter += 1;
     if (timeEndCounter > flashCount * 2) {
       clearInterval(timeEnd);
-      msgGameOver.style.visibility = 'visible';
+      msgGameOver.style.visibility = 'hidden';
+      popUpMsgContainer.style.zIndex = -1;
     }
   }, 500);
 };
@@ -227,7 +238,7 @@ const calcHandScore = () => {
   updateCreditsOnHand(outcome);
 
   // Flash message banner here
-  flashPopUpMsg(resultArray[outcome], 2);
+  flashPopUpMsg(resultArray[outcome], 3);
 
   return resultArray[outcome];
 };
@@ -291,16 +302,18 @@ const buildCardTable = () => {
 const initGame = () => {
   // Create page layout
   document.body.appendChild(headerContainer);
+  document.body.appendChild(popUpMsgContainer);
   headerContainer.appendChild(cardGif1);
   headerContainer.appendChild(projectTitle);
   headerContainer.appendChild(cardGif2);
   document.body.appendChild(gameContainer);
-  gameContainer.appendChild(bettingTableRef);
-  bettingTableRef.appendChild(imgTable);
+  // gameContainer.appendChild(bettingTableRef);
+  gameContainer.appendChild(tableContainer);
+  // bettingTableRef.appendChild(imgTable);
   gameContainer.appendChild(gameMessage);
   gameContainer.appendChild(cardStatusContainer);
   gameContainer.appendChild(cardsContainer);
-  gameContainer.appendChild(msgGameOver);
+  popUpMsgContainer.appendChild(msgGameOver);
   gameContainer.appendChild(bottomContainer);
   bottomContainer.appendChild(creditContainer);
   bottomContainer.appendChild(betContainer);
@@ -320,12 +333,35 @@ const initGame = () => {
   cardStatusContainer.innerHTML = 'card status will be updated here';
   cardsContainer.innerHTML = 'cards will be placed here';
 
+  // Specially for table
+  for (let i = 0; i < 6; i += 1) {
+    tableCol[i] = document.createElement('div');
+    tableContainer.appendChild(tableCol[i]);
+    if (i === 0) {
+      for (let j = 9; j > 0; j -= 1) {
+        tableCol[i].classList.add('firsttableCol');
+        tableCol[i].innerHTML += `${resultArray[j]} </br>`;
+      }
+    }
+    if (i > 0) {
+      for (let j = 9; j > 0; j -= 1) {
+        tableCol[i].classList.add('numbertableCol');
+        if (i === 5 && j === 9) {
+          tableCol[i].innerHTML += '4000 </br>';
+        } else {
+          tableCol[i].innerHTML += `${resultFactor[j] * i} </br>`;
+        }
+      }
+    }
+  }
+
   // Initial layout
   buildCardTable();
 
   // Add functionality to buttons
   // to refactor
   betUpBtn.addEventListener('click', () => {
+    msgGameOver.style.visibility = 'hidden';
     if (gameMode === 'result') {
       credits -= betAmt;
       gameMode = 'welcome!';
@@ -336,9 +372,17 @@ const initGame = () => {
     }
     betAmtElement.innerHTML = `BET: ${betAmt}`;
     creditContainer.innerHTML = `CREDITS: ${credits}`;
+    for (let i = 1; i < 6; i += 1) {
+      if (i === betAmt) {
+        tableCol[i].style.backgroundColor = '#df0029';
+      } else {
+        tableCol[i].style.backgroundColor = 'transparent';
+      }
+    }
   });
 
   betDownBtn.addEventListener('click', () => {
+    msgGameOver.style.visibility = 'hidden';
     if (gameMode === 'result') {
       credits -= betAmt;
       gameMode = 'welcome!';
@@ -350,6 +394,13 @@ const initGame = () => {
     }
     betAmtElement.innerHTML = `BET: ${betAmt}`;
     creditContainer.innerHTML = `CREDITS: ${credits}`;
+    for (let i = 1; i < 6; i += 1) {
+      if (i === betAmt) {
+        tableCol[i].style.backgroundColor = '#df0029';
+      } else {
+        tableCol[i].style.backgroundColor = 'transparent';
+      }
+    }
   });
 
   dealDrawBtn.addEventListener('click', () => {

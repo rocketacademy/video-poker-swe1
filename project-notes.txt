@@ -1,0 +1,76 @@
+GAMEPLAY
+1. At the start, the player will place his bets. 5 card slots will be empty
+2. After he has placed his bet, player will click deal
+3. 5 cards will be dealt into his hand
+4. player will choose which of the five cards he wants to hold/cancel
+5. Player will click deal
+6. Cancelled cards will be replaced
+7. Winning conditions will be checked
+8. Credit will be issued depending on which winning condition he got.
+
+GAME MODES
+1. welcome!
+  + you can press betUpBtn/ betDownBtn
+  + will cause buildCardTable to show card_Back
+  + pressing submit: 
+    >>> welcome! => deal1
+
+2. deal1
+  + you can't press betUpBtn/ betDownBtn
+  + pressing submit: 
+    + create & shuffle deck. pop to playerHand
+    + rebuild with buildCardTable()
+    >>> deal1 => deal2
+
+3. deal2
+  + pressing submit: 
+    + replace the cards marked cancel
+    + rebuild with buildCardTable()
+    + determine result with calcHandScore()
+    >>> deal2 => result
+
+4. results
+  + you can press betUpBtn/ betDownBtn
+  + pressing submit: 
+    + 
+
+WIN CONDITIONS 
++ matchesArray
+  1 pair - matchesArray.length === 1
+  2 pair - matchesArray.length === 2 and different
+  3-kind - matchesArray.length === 2 and same
+  4-kind - matchesArray.length === 3 and same
+  full house - matchesArray.length === 3 and diff
+
+Note: 
++ bet 5, royal flush is 4000 points
+
+To Do: 
+1. Plan & create the game layout
+2. Program game layout using DOM
+3. Add game functionality to buttons. Weave in game Modes
+4. Add pictures to the five card slots
+
+Questions to ask: 
++ How to make text vertically align middle?
+
+deckStatus
+playerHand
+
+
+###### Instructor Code Review ######
+
+### 1. Technical Review ###
+1A What part of the project went well, technically? Give at least one link to your repo as an example.
+
+1B  What part the project was a struggle, technically? Give at least one link to your repo as an example.
+
+1C What technical adjustments would you make for the next project? Why?
+
+
+### 2. Process Review ###
+2A What in the approach and process during this project went well?
+
+2B What in the approach and process during this project did not go well?
+
+2C What would you change in your process and approach in the next project? Why?

@@ -1,4 +1,15 @@
-// Video Poker V2
+// Video Poker V3
+
+// Winning Conditons
+const JACKS_OR_BETTER = 'JACKS OR BETTER';
+const TWO_PAIR = 'TWO PAIR';
+const THREE_OF_A_KIND = 'THREE OF A KIND';
+const FULL_HOUSE = 'FULL HOUSE';
+const FOUR_OF_A_KIND = 'FOUR OF A KIND';
+const STRAIGHT = 'STRAIGHT';
+const FLUSH = 'FLUSH';
+const STRAIGHT_FLUSH = 'STRAIGHT FLUSH';
+const ROYAL_FLUSH = 'ROYAL_FLUSH';
 
 /**
  * Outputs a random integer.
@@ -100,10 +111,7 @@ const suitsMatch = (suitArr) => {
       trueCounter += 1;
     }
   }
-  if (trueCounter === suitArr.length) {
-    return true;
-  }
-  return false;
+  return trueCounter === suitArr.length;
 };
 
 /**
@@ -129,10 +137,7 @@ const inRunningOrder = (valueArr) => {
     }
   }
   // True, if total of 4x truthy vals.
-  if (trueCounter === sortedArr.length - 1) {
-    return true;
-  }
-  return false;
+  return trueCounter === sortedArr.length - 1;
 };
 
 /**
@@ -147,6 +152,7 @@ const calcHandScore = (hand) => {
 
   for (let i = 0; i < hand.length; i += 1) {
     const cardObj = hand[i];
+
     const cardName = cardObj.name;
     const cardVal = cardObj.value;
     const cardSuit = cardObj.suit;
@@ -167,32 +173,35 @@ const calcHandScore = (hand) => {
     hasJacksOrGreater = true;
   }
 
-  let matchingType = ' '; // Set default as blank.
+  let matchingType = ' '; // Set default matching type as blank.
   const valArrSum = valArr.reduce((a, b) => a + b); // Calculate total points of valArr.
   const cardCounterKeys = Object.keys(cardCounter); // Create array of keys in cardCounterKeys.
 
-  // Run through cardCounter & extract cards that appear twice.
+  // Run through each key,value pair in cardCounter object to count no. of times card appears.
   cardCounterKeys.forEach((key) => {
     if (cardCounter[key] === 2 && cardCounterKeys.length === 4 && hasJacksOrGreater) {
-      matchingType = 'JACKS OR BETTER';
+      matchingType = JACKS_OR_BETTER;
     } else if (cardCounter[key] === 2 && cardCounterKeys.length === 3) {
-      matchingType = 'TWO PAIR';
+      matchingType = TWO_PAIR;
     } else if (cardCounter[key] === 3 && cardCounterKeys.length === 3) {
-      matchingType = 'THREE OF A KIND';
+      matchingType = THREE_OF_A_KIND;
     } else if (cardCounter[key] === 3 && cardCounterKeys.length === 2) {
-      matchingType = 'FULL HOUSE';
+      matchingType = FULL_HOUSE;
     } else if (cardCounter[key] === 4) {
-      matchingType = 'FOUR OF A KIND';
-    } else if (inRunningOrder(valArr) && !suitsMatch(suitsArr)) {
-      matchingType = 'STRAIGHT';
-    } else if (suitsMatch(suitsArr) && !inRunningOrder(valArr)) {
-      matchingType = 'FLUSH';
-    } else if (inRunningOrder(valArr) && suitsMatch(suitsArr) && valArrSum < 60) {
-      matchingType = 'STRAIGHT FLUSH';
-    } else if (inRunningOrder(valArr) && suitsMatch(suitsArr) && valArrSum === 60 && suitsArr.includes('♠️')) {
-      matchingType = 'ROYAL FLUSH';
+      matchingType = FOUR_OF_A_KIND;
     }
   });
+
+  // Check for following conditions using value & suit arrays.
+  if (inRunningOrder(valArr) && !suitsMatch(suitsArr)) {
+    matchingType = STRAIGHT;
+  } else if (suitsMatch(suitsArr) && !inRunningOrder(valArr)) {
+    matchingType = FLUSH;
+  } else if (inRunningOrder(valArr) && suitsMatch(suitsArr) && valArrSum < 60) {
+    matchingType = STRAIGHT_FLUSH;
+  } else if (inRunningOrder(valArr) && suitsMatch(suitsArr) && valArrSum === 60 && suitsArr.includes('♠️')) {
+    matchingType = ROYAL_FLUSH;
+  }
   return matchingType;
 };
 
@@ -201,24 +210,23 @@ const calcHandScore = (hand) => {
  * @param {string>} matchingType - Winning card combination.
  */
 const updatePlayerCredit = (matchingType, playerCredits) => {
-  // let playerCredits = Number(window.sessionStorage.getItem('credits', startCredits));
-  if (matchingType === 'JACKS OR BETTER') {
+  if (matchingType === JACKS_OR_BETTER) {
     playerCredits += 5;
-  } else if (matchingType === 'TWO PAIR') {
+  } else if (matchingType === TWO_PAIR) {
     playerCredits += 10;
-  } else if (matchingType === 'THREE OF A KIND') {
+  } else if (matchingType === THREE_OF_A_KIND) {
     playerCredits += 15;
-  } else if (matchingType === 'FULL HOUSE') {
+  } else if (matchingType === FULL_HOUSE) {
     playerCredits += 45;
-  } else if (matchingType === 'FOUR OF A KIND') {
+  } else if (matchingType === FOUR_OF_A_KIND) {
     playerCredits += 125;
-  } else if (matchingType === 'STRAIGHT') {
+  } else if (matchingType === STRAIGHT) {
     playerCredits += 20;
-  } else if (matchingType === 'FLUSH') {
+  } else if (matchingType === FLUSH) {
     playerCredits += 30;
-  } else if (matchingType === 'STRAIGHT FLUSH') {
+  } else if (matchingType === STRAIGHT_FLUSH) {
     playerCredits += 250;
-  } else if (matchingType === 'ROYAL FLUSH') {
+  } else if (matchingType === ROYAL_FLUSH) {
     playerCredits += 4000;
   } else {
     playerCredits += 0;
@@ -273,12 +281,53 @@ const createCardElement = (deckArr) => {
   return cardElementObj;
 };
 
+/* Create hand & attach an event listener to hold the cards */
+const createHandElements = (deckArr, numCards, divToRenderTo) => {
+  for (let currentIndex = 0; currentIndex < numCards; currentIndex += 1) {
+    // Call both card object & card HTML element.
+    const cardElementObj = createCardElement(deckArr);
+
+    // Attach return values of createCardElement() accordingly.
+    const cardElement = cardElementObj.cardContainer;
+    const topCard = cardElementObj.jsObj;
+    const topCardName = String(topCard.name);
+    const topCardSuit = topCard.suit;
+
+    // eslint-disable-next-line no-loop-func
+    // Can use anonymous functions for my EventListeners.
+    cardElement.addEventListener('click', (e) => {
+      clickAudio.play();
+
+      // Add new CSS class to show selected (yellow border).
+      toggleCardClass(e.currentTarget, 'clicked-card');
+
+      // Push to playerHand if clicked
+      const heldCard = cardElement;
+      const heldCardName = heldCard.children[0].innerHTML;
+      const heldCardSuit = heldCard.children[1].innerHTML;
+
+      // Only push cards that have been intended by user to be held.
+      if (topCardName === heldCardName && topCardSuit === heldCardSuit) {
+        // Only push to playerHand if it doesn't currently exist
+        if (!playerHand.some((existingCard) => existingCard === topCard)) {
+          playerHand.push(topCard);
+        }
+      }
+      // Ensure deselected cards are removed from playerHand.
+      const topCardIndex = playerHand.indexOf(topCard); // This is currenIndex
+      if (heldCard.classList.value === 'card') {
+        playerHand.splice(topCardIndex, 1);
+      }
+    });
+    // Render to DOM.
+    divToRenderTo.appendChild(cardElement);
+  }
+  return divToRenderTo;
+};
+
 /** Initialise Game */
 const initGame = () => {
-  // let playerCredits = window.sessionStorage.getItem('credits');
   let playerCredits = Number(window.sessionStorage.getItem('credits', startCredits));
-
-  console.log(playerCredits);
 
   // Create a local storage for player credits.
   if (!window.sessionStorage.hasOwnProperty('credits')) {
@@ -293,66 +342,22 @@ const initGame = () => {
   const messageDiv = customCreate('div', 'HIT DEAL TO START', 'message');
   const cardsDiv = customCreate('div', '', 'cards-container');
   const creditsDiv = customCreate('div', 'CREDITS : ', 'credits');
-
   const creditUpdateDiv = customCreate('div', playerCredits, 'credits-update');
   const drawBtn = customCreate('button', 'DRAW', 'draw-btn');
   const dealBtn = customCreate('button', 'DEAL', 'deal-btn');
   const gameOverDiv = customCreate('div', 'GAME OVER', 'game-over');
 
-  /** Create hand & attach an event listener to hold the cards */
-  const createHandElements = (deckArr, numCards) => {
-    for (let currentIndex = 0; currentIndex < numCards; currentIndex += 1) {
-      // Call both card object & card HTML element.
-      const cardElementObj = createCardElement(deckArr);
-
-      // Attach return values of createCardElement() accordingly.
-      const cardElement = cardElementObj.cardContainer;
-      const topCard = cardElementObj.jsObj;
-      const topCardName = String(topCard.name);
-      const topCardSuit = topCard.suit;
-
-      // eslint-disable-next-line no-loop-func
-      cardElement.addEventListener('click', (e) => {
-        clickAudio.play();
-
-        // Add new CSS class to show selected (yellow border).
-        toggleCardClass(e.currentTarget, 'clicked-card');
-
-        // Push to playerHand if clicked
-        const heldCard = document.getElementsByClassName('card')[currentIndex];
-        const heldCardName = heldCard.children[0].innerHTML;
-        const heldCardSuit = heldCard.children[1].innerHTML;
-
-        // Only push cards that have been intended by user to be held.
-        if (topCardName === heldCardName && topCardSuit === heldCardSuit) {
-          // Only push to playerHand if it doesn't currently exist
-          if (!playerHand.some((existingCard) => existingCard === topCard)) {
-            playerHand.push(topCard);
-          }
-        }
-        // Ensure deselected cards are removed from playerHand.
-        const topCardIndex = playerHand.indexOf(topCard);
-        if (heldCard.classList.value === 'card') {
-          playerHand.splice(topCardIndex, 1);
-        }
-      });
-      // Render to DOM.
-      cardsDiv.appendChild(cardElement);
-    }
-    return cardsDiv;
-  };
-
   // Render 5x cards to the DOM.
-  createHandElements(deck, 5); // 5 represents a standard poker hand.
+  createHandElements(deck, 5, cardsDiv); // 5 represents a standard poker hand.
 
-  // Add event listeners to Deal & Draw buttons.
+  // Add event listeners to Deal & Draw buttons. (from here to 388 can be a function.)
   dealBtn.addEventListener('click', () => {
     // Upon dealing the cards, replace dealBtn with drawBtn.
     setTimeout(() => {
       if (roundEnd === true) {
         window.location.reload();
+        // Call resetGame() function where it replaces only the card elements & creates new deck.
       }
-
       // Hide "Hit Deal to Start" message.
       messageDiv.style.visibility = 'hidden';
 

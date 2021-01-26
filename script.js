@@ -74,13 +74,13 @@ const deck = shuffleDeck(makeDeck());
 let startCredits = 0;
 let roundEnd = false;
 const playerHand = [];
-const playerHandTest = [
-  { name: 'J', suit: '♠️', value: 11 },
-  { name: 'K', suit: '♠️', value: 13 },
-  { name: 'A', suit: '♠️', value: 14 },
-  { name: 'Q', suit: '♠️', value: 12 },
-  { name: '10', suit: '♠️', value: 10 },
-];
+// const playerHandTest = [
+//   { name: 'J', suit: '♠️', value: 11 },
+//   { name: 'K', suit: '♠️', value: 13 },
+//   { name: 'A', suit: '♠️', value: 14 },
+//   { name: 'Q', suit: '♠️', value: 12 },
+//   { name: '10', suit: '♠️', value: 10 },
+// ];
 
 // Audio
 const clickAudio = new Audio('sounds/click-sound.mp3');
@@ -143,7 +143,7 @@ const calcHandScore = (hand) => {
   const cardCounter = {};
   const suitsArr = [];
   const valArr = [];
-  let matchedCardsTotal = 0;
+  let hasJacksOrGreater = false;
 
   for (let i = 0; i < hand.length; i += 1) {
     const cardObj = hand[i];
@@ -154,22 +154,26 @@ const calcHandScore = (hand) => {
     suitsArr.push(cardSuit);
     valArr.push(cardVal);
 
-    // If cardName exists, increase, otherwise set to 1.
+    // If cardName exists, increase by 1, otherwise set to 1.
     if (cardCounter[cardName]) {
       cardCounter[cardName] += 1;
-      matchedCardsTotal = cardVal * cardCounter[cardName];
     } else {
       cardCounter[cardName] = 1;
     }
   }
 
-  let matchingType = ' ';
-  const valArrSum = valArr.reduce((a, b) => a + b);
-  const cardCounterKeys = Object.keys(cardCounter);
+  // Condition to address Jacks Or Better.
+  if (cardCounter.J === 2 || cardCounter.Q === 2 || cardCounter.K === 2 || cardCounter.A === 2) {
+    hasJacksOrGreater = true;
+  }
+
+  let matchingType = ' '; // Set default as blank.
+  const valArrSum = valArr.reduce((a, b) => a + b); // Calculate total points of valArr.
+  const cardCounterKeys = Object.keys(cardCounter); // Create array of keys in cardCounterKeys.
 
   // Run through cardCounter & extract cards that appear twice.
   cardCounterKeys.forEach((key) => {
-    if (cardCounter[key] === 2 && matchedCardsTotal >= 22 && cardCounterKeys.length === 4) {
+    if (cardCounter[key] === 2 && cardCounterKeys.length === 4 && hasJacksOrGreater) {
       matchingType = 'JACKS OR BETTER';
     } else if (cardCounter[key] === 2 && cardCounterKeys.length === 3) {
       matchingType = 'TWO PAIR';
@@ -196,8 +200,8 @@ const calcHandScore = (hand) => {
  * Calculates & updates player credits according to win.
  * @param {string>} matchingType - Winning card combination.
  */
-const updatePlayerCredit = (matchingType) => {
-  let playerCredits = Number(window.sessionStorage.getItem('credits', startCredits));
+const updatePlayerCredit = (matchingType, playerCredits) => {
+  // let playerCredits = Number(window.sessionStorage.getItem('credits', startCredits));
   if (matchingType === 'JACKS OR BETTER') {
     playerCredits += 5;
   } else if (matchingType === 'TWO PAIR') {
@@ -271,7 +275,9 @@ const createCardElement = (deckArr) => {
 
 /** Initialise Game */
 const initGame = () => {
-  let playerCredits = window.sessionStorage.getItem('credits');
+  // let playerCredits = window.sessionStorage.getItem('credits');
+  let playerCredits = Number(window.sessionStorage.getItem('credits', startCredits));
+
   console.log(playerCredits);
 
   // Create a local storage for player credits.
@@ -400,7 +406,7 @@ const initGame = () => {
 
     // const winningMsg = calcHandScore(playerHandTest); // Used for testing custom hand.
     const winningMsg = calcHandScore(playerHand);
-    updatePlayerCredit(winningMsg);
+    updatePlayerCredit(winningMsg, playerCredits);
 
     // Determine player hand condition.
     messageDiv.innerHTML = winningMsg;

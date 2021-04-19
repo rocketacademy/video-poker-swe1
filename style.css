@@ -1,0 +1,53 @@
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: black;
+  color: white;
+  padding: 1px;
+}
+
+button {
+  height: 40px;
+  width: 200px;
+  border-radius: 10px;
+  margin: 20px;
+  cursor: pointer;
+}
+
+.main-container {
+  max-width: 800px;
+  height: 500px;
+  margin: 80px auto; /* left and right margin auto*/
+  padding: 1px;
+  background-color: rgb(22, 22, 22);
+}
+
+.display-container {
+  background: linear-gradient(180deg, #6900ff 0%, #000066 100%);
+  height: 80%;
+  border-radius: 20px;
+  padding: 15px;
+  margin: 20px;
+  border-style: solid;
+  border-color: rgb(34, 34, 255);
+}
+
+.button-container {
+  height: 20%;
+  background-color: orange;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.info-container {
+  height: 60%;
+}
+
+.cards-container {
+  height: 40%;
+}

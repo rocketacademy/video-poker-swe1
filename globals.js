@@ -1,0 +1,2 @@
+// GLOBAL VARIABLES FOR PROJECT
+let deckOfCards;

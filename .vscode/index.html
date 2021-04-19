@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Video Poker</title>
+    <link rel="stylesheet" href="styles.css" />
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="https://unpkg.com/xp.css" />
+  </head>
+
+  <body>
+    <div class="main">
+      <!-- Over 18 Window -->
+      <div class="entry-div">
+        <div class="window small-window">
+          <div class="title-bar">
+            <div class="title-bar-text">Video Poker</div>
+
+            <div class="title-bar-controls">
+              <button aria-label="Minimize"></button>
+              <button aria-label="Maximize"></button>
+              <button aria-label="Close"></button>
+            </div>
+          </div>
+          <div class="window-body">
+            <p>I am over eighteen years old.</p>
+            <section class="field-row">
+              <button>Yes</button>
+              <button>No</button>
+            </section>
+          </div>
+        </div>
+      </div>
+
+      <div class="game-div">
+        <div class="window game-window">
+          <div class="title-bar">
+            <div class="title-bar-text">Video Poker</div>
+
+            <!-- Video poker title bar -->
+            <div class="title-bar-controls">
+              <button aria-label="Minimize"></button>
+              <button aria-label="Maximize"></button>
+              <button aria-label="Close"></button>
+            </div>
+          </div>
+
+          <!-- Video poker window body -->
+          <div class="game-window-body window-body">
+            <div class="green-bg">
+              <!-- Player views cards -->
+              <div class="cards-div"></div>
+
+              <div class="controls-div">
+                <button class="deal-btn">Deal</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Import program logic -->
+    <script src="script.js"></script>
+  </body>
+</html>

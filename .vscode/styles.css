@@ -1,0 +1,78 @@
+@font-face {
+  font-family: "Ms Sans Serif";
+  src: url("assets/ms_sans_serif_bold.cb1c7473.woff2") format("woff2");
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: "Ms Sans Serif";
+  src: url("assets/ms_sans_serif.1d4d404a.woff2") format("woff2");
+  font-weight: normal;
+}
+
+body {
+  background-image: url(https://news-cdn.softpedia.com/images/news2/did-you-know-the-windows-xp-wallpaper-was-so-expensive-fedex-refused-to-ship-it-520483-2.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+h1 {
+  /* font-family: "Ms Sans Serif"; */
+  font-size: 16px;
+}
+
+.main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.small-window {
+  margin: 32px;
+  width: 250px;
+}
+
+.field-row {
+  justify-content: flex-end;
+}
+
+.game-window,
+.game-window-body {
+  width: 720px;
+  height: 720px;
+}
+
+.green-bg {
+  background-color: #017f02;
+  height: 100%;
+  width: 100%;
+  display: relative;
+  text-align: center;
+}
+
+.green-bg,
+.window {
+  box-shadow: inset -1px -1px #00138c, inset 1px 1px #0831d9,
+    inset -2px -2px #001ea0, inset 2px 2px #166aee, inset -3px -3px #003bda,
+    inset 3px 3px #0855dd;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  padding: 0 0 3px 0;
+  margin: -8px;
+}
+
+.deal-btn {
+  position: relative;
+  top: 0px;
+}
+
+/* Container which holds the player's cards */
+.cards-div {
+  margin: 2px;
+  max-width: 715px;
+  height: 680px;
+  position: relative;
+}

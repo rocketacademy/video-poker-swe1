@@ -17,6 +17,15 @@ const dealBtn = document.querySelector(".deal-btn");
 // Rank 1: Five of a kind
 // Rank 2: Straight flush
 
+// Takes in an array and returns a number score
+const calcHandScore = (arr) => {
+  const score = 0;
+  for (i = 0; i < arr.length; i += 1) {
+    score += arr[i].rank;
+  }
+  return score;
+};
+
 // Rank 3: Four of a kind
 const is4OfAKind = (arr) => {};
 
@@ -42,7 +51,6 @@ const is1Pair = (arr) => {};
 const isHighCard = (arr) => {};
 
 // Take an array of card objects and return the number of points that the user scored for the cards in their hand
-const calcHandScore = (arr) => {};
 
 /* ------- WINNING LOGIC ------ */
 
@@ -61,16 +69,24 @@ const handLength = 5;
 startBtn.addEventListener("click", () => {
   // Deal the first five random cards
   // The shift() method removes the first element from an array and returns that removed element.
-  for (i = 0; i < handLength; i += 1) {
-    hand.push(deck.shift());
-  }
-  // hand = [ cardObj, cardObj, cardObj, cardObj, cardObj ]
-  // position of the hand = 0,1,2,3,4
 
-  for (j = 0; j < hand.length; j += 1) {
-    displayCard(hand[j].img);
+  // For every card object, put it inside an array
+  for (i = 0; i < handLength; i += 1) {
+    hand.push([]);
+    // Push one object inside the array
+    hand[i].push(deck.shift());
+    console.log(hand[i]);
   }
-  // cardsDiv.appendChild(hand);
+
+  // hand = [ [cardObj], [cardObj], [cardObj], [cardObj], [cardObj] ]
+  // position of the array inside the array = 0,1,2,3,4
+
+  // Display hand
+  // Access the arrays of arrays
+  for (j = 0; j < handLength; j += 1) {
+    console.log(`card image path is` + hand[j][0].img);
+    displayCard(hand[j][0].img);
+  }
 });
 
 initGame();

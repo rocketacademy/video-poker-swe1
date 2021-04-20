@@ -136,6 +136,49 @@ a {
   text-align: center;
   padding: 15px 30px;
   margin: 5px 15px;
+  display: none;
+}
+
+.back-btn-div {
+  opacity: 0.4;
+}
+
+.back-btn-div:hover {
+  transform: scale(1.2);
+  opacity: 1;
+  transition: 0.3s;
+}
+
+/******* GAME RULES SECTION  *******/
+.game-rules-section {
+  background-color: RGBA(0, 0, 0, 0.44);
+  padding: 20px 15px;
+  margin: 25px 20px;
+  box-shadow: 0px 5px 15px 7px #000;
+  display: block;
+}
+
+.rules-header {
+  margin: 5px auto;
+  padding: 5px 10px;
+}
+.rules-para {
+  padding: 10px 15px;
+  margin: 5px auto;
+}
+
+.lets-go-btn {
+  max-width: 100px;
+  background-color: orangered;
+  border-radius: 15px;
+  padding: 5px 8px;
+  margin: 15px auto;
+  text-align: center;
+  transition: 0.3s;
+}
+
+.lets-go-btn:hover {
+  transform: scale(1.2);
 }
 
 /******* DECK VIEW SECTION  *******/
@@ -194,16 +237,18 @@ a {
 }
 
 .game-buttons-section {
-  display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: space-around;
   align-items: center;
   width: 100%;
   padding: 8px 10px;
   margin-top: 55px;
+  display: none;
 }
 
 .change-cards-div,
-.deal-button-div {
+.deal-button-div,
+.bet-button-div {
   background-color: orangered;
   padding: 5px 10px;
   margin-top: 10px;
@@ -211,10 +256,16 @@ a {
   max-width: 100px;
   border-radius: 20px;
 }
-
+.bet-button-div a,
 .change-cards-div a,
 .deal-button-div a {
   color: #fff;
   font-size: 120%;
   padding: 5px 8px;
+}
+
+/* REMOVE CLICK CLASS */
+.disable-click {
+  pointer-events: none;
+  opacity: 0.5;
 }

@@ -35,7 +35,7 @@ const handleCreateDeck = () => {
   return newDeck;
 };
 
-// Shuffle an array of cards
+// SHUFFLE CARDS
 const handleShuffleCards = (cards) => {
   // Get a random index ranging from 0 (inclusive) to max (exclusive).
   const getRandomIndex = (max) => Math.floor(Math.random() * max);
@@ -56,5 +56,58 @@ const handleShuffleCards = (cards) => {
   return cards;
 };
 
-// DEAL CARDS
-// const handleDealCards;
+// DEAL CARDS SHOULD ONLY CARE ABOUT PUSHING 5 CARDS INTO USER HAND
+const handleDealCard = (userHand) => {
+  for (i = 0; i < 5; i += 1) {
+    userHand.push(gameState.deck[i]);
+  }
+  console.log("THIS IS PLAYER HAND AFTER DEALING", user.hand);
+
+  // // CHECK FOR EXISTING CARDS ON VISIBLE DOM
+  // // THIS SHOULD GO INTO DOM.JS (handleDrawDom)
+  // if (domSelector.deckList.firstChild) {
+  //   while (domSelector.deckList.firstChild) {
+  //     domSelector.deckList.removeChild(domSelector.deckList.firstChild);
+  //     console.log("REMOVING ", domSelector.deckList.firstChild);
+  //   }
+  // }
+
+  // //  LOOP THROUGH THE PLAYER HAND ARRAY AND DRAW CARD TO DOM
+  // playerHand.forEach((cardOnHand) => {
+  //   // console.log("THIS IS CARD FOREACH ", cardOnHand);
+
+  //   // CREATE DOM ELEMENTS
+  //   const deckItem = document.createElement("li");
+  //   const card = document.createElement("div");
+  //   const topLeftValue = document.createElement("div");
+  //   const suit = document.createElement("div");
+  //   const bottomRightValue = document.createElement("div");
+
+  //   // ADD CLASS NAMES TO ELEMENTS
+  //   deckItem.classList.add("deck-item");
+  //   card.classList.add("card");
+  //   topLeftValue.classList.add("top-left-value");
+  //   suit.classList.add("suit");
+  //   bottomRightValue.classList.add("bottom-right-value");
+
+  //   // ADD INNERTEXT TO ELEMENTS
+  //   topLeftValue.innerText = cardOnHand.value;
+  //   bottomRightValue.innerText = cardOnHand.value;
+  //   suit.innerText = cardOnHand.suit;
+
+  //   // APPEND TO DOM
+
+  //   // append all children
+  //   card.appendChild(topLeftValue);
+  //   card.appendChild(suit);
+  //   card.appendChild(bottomRightValue);
+  //   // <LI>
+  //   deckItem.appendChild(card);
+  //   // <UL> (parent DOM)
+  //   domSelector.deckList.appendChild(deckItem);
+  // });
+};
+
+// HANDLES GIVING OUT NEW CARDS TO PLAYER IF REQUESTED
+// only care about replacing selected cards
+const handleNewCards = (oldCards) => {};

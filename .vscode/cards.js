@@ -33,60 +33,44 @@ const calculateRank = (deck) => {
     if (deck[i].suit === "◆") {
       if (deck[i].rank === 2) {
         deck[i].rank = 1;
-        console.log("first 2 ", deck[i].rank, deck[i].suit);
       }
       // For every diamond that is not a "2"
       if (deck[i].name !== "2" && deck[i].rank <= 14 && dRankInc < 52) {
         deck[i].rank = 1 + dRankInc;
-        console.log(`deck suit is `, deck[i].suit);
-        console.log("deck rank is now ", deck[i].rank);
         dRankInc += 4;
-        console.log(`rank increase is `, dRankInc);
       }
     }
 
     if (deck[i].suit === "♣") {
       if (deck[i].rank === 2) {
         deck[i].rank = 2;
-        console.log("first 2 ", deck[i].rank, deck[i].suit);
       }
       // For every club that is not a "2"
       if (deck[i].name !== "2" && deck[i].rank <= 14 && cRankInc < 52) {
         deck[i].rank = 2 + cRankInc;
-        console.log(`deck suit is `, deck[i].suit);
-        console.log("deck rank is now ", deck[i].rank);
         cRankInc += 4;
-        console.log(`rank increase is `, cRankInc);
       }
     }
 
     if (deck[i].suit === "❤︎") {
       if (deck[i].rank === 2) {
         deck[i].rank = 3;
-        console.log("first 2 ", deck[i].rank, deck[i].suit);
       }
       // For every club that is not a "2"
       if (deck[i].name !== "2" && deck[i].rank <= 14 && hRankInc < 52) {
         deck[i].rank = 3 + hRankInc;
-        console.log(`deck suit is `, deck[i].suit);
-        console.log("deck rank is now ", deck[i].rank);
         hRankInc += 4;
-        console.log(`rank increase is `, hRankInc);
       }
     }
 
     if (deck[i].suit === "♠") {
       if (deck[i].rank === 2) {
         deck[i].rank = 4;
-        console.log("first 2 ", deck[i].rank, deck[i].suit);
       }
       // For every club that is not a "2"
       if (deck[i].name !== "2" && deck[i].rank <= 14 && sRankInc < 52) {
         deck[i].rank = 4 + sRankInc;
-        console.log(`deck suit is `, deck[i].suit);
-        console.log("deck rank is now ", deck[i].rank);
         sRankInc += 4;
-        console.log(`rank increase is `, sRankInc);
       }
     }
   }
@@ -134,6 +118,7 @@ const makeDeck = () => {
         name: cardName,
         suit: currentSuit,
         rank: cardIndex,
+        img: `cards/${currentSuit}/${cardName}.png`,
       };
 
       // Add the new card to the deck
@@ -147,4 +132,12 @@ const makeDeck = () => {
   return newDeck;
 };
 
-const deck = makeDeck();
+const deck = shuffleCards(makeDeck());
+
+// Create and display the card
+const displayCard = (imgPath) => {
+  const imageTag = document.createElement("img");
+  imageTag.classList.add("card");
+  imageTag.src = `${imgPath}`;
+  cardsDiv.appendChild(imageTag);
+};

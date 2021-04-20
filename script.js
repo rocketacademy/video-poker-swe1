@@ -103,9 +103,22 @@ function playerCardsSuitArr(drawnCardsArr) {
 }
 
 // check for suits
-function checkForSuits() {
-  const cardSuits = playerCardsSuitArr();
+function checkForSuits(cards) {
+  const cardSuits = playerCardsSuitArr(cards);
+  let count = 0;
+  for (let i = 0; i < 1; i++) {
+    for (let j = i + 1; j < cardSuits.length; j += 1) {
+      if (cardSuits[i] === cardSuits[j]) {
+        count += 1;
+      }
+    }
+  }
+  console.log(`count of suits: ${count}`);
+  if (count === 4) {
+    return 'flush';
+  }
 }
+
 function checkForStraight(cards) {
   let matches = 0;
   for (let i = 0; i < cards.length; i++) {
@@ -127,6 +140,10 @@ function checkForStraight(cards) {
 // check for one pair
 function checkForPairs(dealtCardsArr) {
   const cardRanks = playerCardsRankArr(dealtCardsArr);
+  const flushCards = checkForSuits(dealtCardsArr);
+  if (flushCards === 'flush') {
+    return 'flush';
+  }
   const straightCards = checkForStraight(cardRanks);
   if (straightCards === 'straight') {
     return 'straight';
@@ -178,6 +195,10 @@ function calcHandScore(cardsArr) {
   if (matchedNum === 'straight') {
     totalPoints += 50;
     return `Straight. Earned 50 points in the round. Total points: ${totalPoints}`;
+  }
+  if (matchedNum === 'flush') {
+    totalPoints += 60;
+    return `Flush. Earned 60 points in the round. Total points: ${totalPoints}`;
   }
   return 'either no match or something went wrong.';
 }
@@ -235,10 +256,10 @@ startBtn.addEventListener('click', () => {
   // example hand
   const playerHand = [
     { rank: 7, suit: 'hearts', name: '7' },
-    { rank: 8, suit: 'diamonds', name: '8' },
-    { rank: 9, suit: 'spades', name: '9' },
-    { rank: 10, suit: 'spades', name: '10' },
-    { rank: 6, suit: 'hearts', name: 'jack' },
+    { rank: 8, suit: 'hearts', name: '8' },
+    { rank: 9, suit: 'hearts', name: '9' },
+    { rank: 10, suit: 'hearts', name: '10' },
+    { rank: 11, suit: 'hearts', name: 'jack' },
   ];
   displayCards(playerHand);
   // diplay the cards to the players.

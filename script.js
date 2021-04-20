@@ -137,9 +137,31 @@ function checkForStraight(cards) {
   }
 }
 
+function xOfAKind(cards) {
+  let matches = 0;
+  for (let i = 0; i < 1; i++) {
+    for (let j = 1; j < cards.length; j++) {
+      if (cards[i] === cards[j]) {
+        matches += 1;
+      }
+    }
+  }
+  console.log(matches);
+  return matches;
+}
 // check for one pair
 function checkForPairs(dealtCardsArr) {
   const cardRanks = playerCardsRankArr(dealtCardsArr);
+  const cardNums = xOfAKind(cardRanks);
+  if (cardNums === 1) {
+    return 'pair';
+  }
+  if (cardNums === 2) {
+    return 'three of a kind';
+  }
+  if (cardNums === 3) {
+    return 'four of a kind';
+  }
   const flushCards = checkForSuits(dealtCardsArr);
   if (flushCards === 'flush') {
     return 'flush';
@@ -176,6 +198,7 @@ function checkForPairs(dealtCardsArr) {
 // function takes an array of card objects and returns the number of points.
 function calcHandScore(cardsArr) {
   let matchedNum = checkForPairs(cardsArr);
+
   if (matchedNum === 2) {
     totalPoints += 20;
     return `One Pair. Earned 20 points in the round. Total points: ${totalPoints}`;
@@ -200,6 +223,15 @@ function calcHandScore(cardsArr) {
     totalPoints += 60;
     return `Flush. Earned 60 points in the round. Total points: ${totalPoints}`;
   }
+  if (matchedNum === 'three of a kind') {
+    totalPoints += 40;
+    return `Three of a kind. Earned 40 points in the round. Total points: ${totalPoints}`;
+  }
+  if (matchedNum === 'four of a kind') {
+    totalPoints += 80;
+    return `Four of a kind. Earned 80 points in the round. Total points: ${totalPoints}`;
+  }
+
   return 'either no match or something went wrong.';
 }
 
@@ -255,10 +287,10 @@ startBtn.addEventListener('click', () => {
   // const fiveDealtcards = gameStarted(deck);
   // example hand
   const playerHand = [
-    { rank: 7, suit: 'hearts', name: '7' },
+    { rank: 8, suit: 'hearts', name: '7' },
     { rank: 8, suit: 'hearts', name: '8' },
-    { rank: 9, suit: 'hearts', name: '9' },
-    { rank: 10, suit: 'hearts', name: '10' },
+    { rank: 8, suit: 'spades', name: '9' },
+    { rank: 8, suit: 'hearts', name: '10' },
     { rank: 11, suit: 'hearts', name: 'jack' },
   ];
   displayCards(playerHand);

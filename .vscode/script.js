@@ -90,3 +90,5 @@ startBtn.addEventListener("click", () => {
 });
 
 initGame();
+
+// Add event listeners on the image array[0]

@@ -19,6 +19,79 @@ const shuffleCards = (cards) => {
   return cards;
 };
 
+// Each card has a rank from 1(+1) to 52(+1)
+// 2◆ = 1; 2♣ = 2; 2❤️ = 3; 2♠ = 4; 3◆ = 5 ...
+// returns the array of card objects with altered ranks
+let dRankInc = 4;
+let cRankInc = 4;
+let hRankInc = 4;
+let sRankInc = 4;
+
+const calculateRank = (deck) => {
+  for (i = 0; i < deck.length; i += 1) {
+    // For each suit
+    if (deck[i].suit === "◆") {
+      if (deck[i].rank === 2) {
+        deck[i].rank = 1;
+        console.log("first 2 ", deck[i].rank, deck[i].suit);
+      }
+      // For every diamond that is not a "2"
+      if (deck[i].name !== "2" && deck[i].rank <= 14 && dRankInc < 52) {
+        deck[i].rank = 1 + dRankInc;
+        console.log(`deck suit is `, deck[i].suit);
+        console.log("deck rank is now ", deck[i].rank);
+        dRankInc += 4;
+        console.log(`rank increase is `, dRankInc);
+      }
+    }
+
+    if (deck[i].suit === "♣") {
+      if (deck[i].rank === 2) {
+        deck[i].rank = 2;
+        console.log("first 2 ", deck[i].rank, deck[i].suit);
+      }
+      // For every club that is not a "2"
+      if (deck[i].name !== "2" && deck[i].rank <= 14 && cRankInc < 52) {
+        deck[i].rank = 2 + cRankInc;
+        console.log(`deck suit is `, deck[i].suit);
+        console.log("deck rank is now ", deck[i].rank);
+        cRankInc += 4;
+        console.log(`rank increase is `, cRankInc);
+      }
+    }
+
+    if (deck[i].suit === "❤︎") {
+      if (deck[i].rank === 2) {
+        deck[i].rank = 3;
+        console.log("first 2 ", deck[i].rank, deck[i].suit);
+      }
+      // For every club that is not a "2"
+      if (deck[i].name !== "2" && deck[i].rank <= 14 && hRankInc < 52) {
+        deck[i].rank = 3 + hRankInc;
+        console.log(`deck suit is `, deck[i].suit);
+        console.log("deck rank is now ", deck[i].rank);
+        hRankInc += 4;
+        console.log(`rank increase is `, hRankInc);
+      }
+    }
+
+    if (deck[i].suit === "♠") {
+      if (deck[i].rank === 2) {
+        deck[i].rank = 4;
+        console.log("first 2 ", deck[i].rank, deck[i].suit);
+      }
+      // For every club that is not a "2"
+      if (deck[i].name !== "2" && deck[i].rank <= 14 && sRankInc < 52) {
+        deck[i].rank = 4 + sRankInc;
+        console.log(`deck suit is `, deck[i].suit);
+        console.log("deck rank is now ", deck[i].rank);
+        sRankInc += 4;
+        console.log(`rank increase is `, sRankInc);
+      }
+    }
+  }
+};
+
 const makeDeck = () => {
   // Initialise an empty deck array
   const newDeck = [];
@@ -34,19 +107,19 @@ const makeDeck = () => {
     // Loop from 1 to 13 to create all cards for a given suit
     // Notice Index(i) starts at 1 and not 0, and ends at 13 and not 12.
     // This is an example of a loop without an array.
-    for (let cardIndex = 1; cardIndex <= 13; cardIndex += 1) {
+    for (let cardIndex = 2; cardIndex <= 14; cardIndex += 1) {
       // By default, the card name which is a number is the same as index
 
       // Calculate the rank counter for each card before I turn the cardIndex into a string
-      // Store cardRank as a number to compare later
+      // Store rank as a number to compare later
       // I.e suits[suitIndex][cardIndex] => 13♠️
-      let cardRank = calculateRank(suits[suitIndex][cardIndex]);
+      // let cardRank = calculateRank(suits[suitIndex][cardIndex]);
 
       // cardName is a string because of AJQK
       let cardName = `${cardIndex}`;
 
       // If rank is 1, 11, 12, or 13, set cardName to the ace or face card's name
-      if (cardName === "1") {
+      if (cardName === "14") {
         cardName = "A";
       } else if (cardName === "11") {
         cardName = "J";
@@ -60,25 +133,18 @@ const makeDeck = () => {
       const card = {
         name: cardName,
         suit: currentSuit,
-        rank: cardRank,
+        rank: cardIndex,
       };
 
       // Add the new card to the deck
       newDeck.push(card);
-
-      // A◆, 2◆, 3◆, 4◆, 5◆ ...  6◆
-      // Calculate rank counter for each card inside the newDeck
-      // for (i = 0; i < newDeck.length; i +=1 ) {
-      //   newDeck[i].rank = calculateRank(newDeck[i]);
-      // }
     }
+    // A◆, 2◆, 3◆, 4◆, 5◆ ...  6◆
+    // Calculate rank counter for each card inside the newDeck
+    calculateRank(newDeck);
   }
-
   // Return the completed card deck
   return newDeck;
 };
 
-// Each card has a rank from 1 to 52
-// 2◆ = 1; 2♣ = 2; 2❤️ = 3; 2♠ = 4; 3◆ = 5 ...
-// returns the rank of the card
-const calculateRank = (cardObj) => {};
+const deck = makeDeck();

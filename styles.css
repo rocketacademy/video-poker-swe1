@@ -163,11 +163,27 @@ a {
 
 .deck-item {
   display: inline-flex;
-  padding: 70px 35px;
   margin-left: 5px;
   margin-top: 5px;
+}
+
+.card {
   background-color: orangered;
   border: 0.5px solid #dbdbdb;
+  padding: 80px 65px;
+  position: relative;
+}
+
+.top-left-value {
+  position: absolute;
+  top: 10%;
+  left: 10%;
+}
+
+.bottom-right-value {
+  position: absolute;
+  bottom: 10%;
+  right: 10%;
 }
 
 /******* GAME BUTTON SECTION  *******/

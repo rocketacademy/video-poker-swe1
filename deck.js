@@ -1,5 +1,5 @@
 // CREATING THE DECK
-const createDeck = () => {
+const handleCreateDeck = () => {
   const deckSuit = ["♠️", "♣️", "♥️", "♦️"];
   const deckValues = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
 
@@ -36,7 +36,7 @@ const createDeck = () => {
 };
 
 // Shuffle an array of cards
-const shuffleCards = (cards) => {
+const handleShuffleCards = (cards) => {
   // Get a random index ranging from 0 (inclusive) to max (exclusive).
   const getRandomIndex = (max) => Math.floor(Math.random() * max);
 
@@ -55,3 +55,6 @@ const shuffleCards = (cards) => {
   // Return the shuffled deck
   return cards;
 };
+
+// DEAL CARDS
+// const handleDealCards;

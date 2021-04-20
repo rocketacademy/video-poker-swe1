@@ -1,4 +1,4 @@
 // APP STARTS HERE
 
 // INITIALISING THE DECK OF CARDS
-deckOfCards = shuffleCards(createDeck());
+console.log((deckOfCards = handleShuffleCards(handleCreateDeck())));

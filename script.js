@@ -73,14 +73,57 @@ const makeDeck = () => {
 
 const deck = shuffleCards(makeDeck());
 
-const totalPoints = 100;
+let totalPoints = 100;
+let resultText = '';
 
-const reducedArr = [];
+function viewResult() {
+  const resultBtn = document.createElement('button');
+  resultBtn.innerText = 'Result';
+  document.body.appendChild(resultBtn);
+  return resultBtn;
+}
+
+function playerCardsRankArr(drawnCardsArr) {
+  const ranksOnlyArr = [];
+  for (let i = 0; i < drawnCardsArr.length; i += 1) {
+    const card = drawnCardsArr[i].rank;
+    ranksOnlyArr.push(card);
+  }
+  console.log(`cardRanks: ${ranksOnlyArr}`);
+  return ranksOnlyArr;
+}
+
+// check for one pair
+function checkForPairs(dealtCardsArr) {
+  const cardRanks = playerCardsRankArr(dealtCardsArr);
+  let matches = 1;
+  for (let i = 0; i < cardRanks.length; i += 1) {
+    for (let j = i + 1; j < cardRanks.length; j += 1) {
+      if (cardRanks[i] === cardRanks[j]) {
+        matches += 1;
+        console.log(`matches: ${matches}`);
+      }
+    }
+  }
+  return matches;
+}
 
 // function takes an array of card objects and returns the number of points.
 function calcHandScore(cardsArr) {
-  const score = 10;
-  return score;
+  let matchedNum = checkForPairs(cardsArr);
+  if (matchedNum === 2) {
+    totalPoints += 20;
+    return `One Pair. Earned 20 points in the round. Total points: ${totalPoints}`;
+  }
+  if (matchedNum === 3) {
+    totalPoints += 40;
+    return `Three Of a Kind. Earned 40 points in the round. Total points: ${totalPoints}`;
+  }
+  if (matchedNum === 1) {
+    // const score = 10;
+    return `No Match :( . Total points: ${totalPoints}`;
+  }
+  return 'either no match or something went wrong.';
 }
 
 // deals the cards
@@ -118,7 +161,14 @@ function displayCards(cardsArr) {
       }, 3000);
     });
   }
+  const finalScore = calcHandScore(cardsArr);
+  console.log(`final score: ${finalScore}`);
+
+  resultText = finalScore;
+
+  return cardsArr;
 }
+
 // click the button to start the game.
 const startBtn = document.createElement('button');
 startBtn.innerText = 'Play';
@@ -130,11 +180,10 @@ startBtn.addEventListener('click', () => {
   displayCards(fiveDealtcards);
 });
 
-// cards user decided to keep.
-// onclick add the card to usersChosenCard.
-// newcards dealt to the user.
+let result = viewResult();
 
-// player is given the final score.
-const finalScore = calcHandScore();
-console.log(`final score: ${finalScore}`);
-// mobile version.
+result.addEventListener('click', () => {
+  const resultDiv = document.createElement('p');
+  resultDiv.innerText = resultText;
+  document.body.appendChild(resultDiv);
+});

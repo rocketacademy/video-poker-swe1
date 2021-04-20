@@ -6,16 +6,36 @@
   <link rel="stylesheet" href="style.css" />
   <body>
     <section class="main-container">
-      <div class="display-container">
+      <div class="primary-display-container">
         <div class="info-container"></div>
         <div class="cards-container"></div>
       </div>
-      <div class="button-container">
-        <button class="btn-bet-one" type="button">BET ONE</button>
-        <button class="btn-bet-max" type="button">BET MAX</button>
-        <button class="btn-deal" type="button">DEAL</button>
+      <div class="secondary-display-container">
+        <div class="credits-container">
+          <h4 class="credits-text">TOTAL CREDITS: 000</h4>
+        </div>
+        <div class="button-container">
+          <button class="btn-bet-one pushable" type="button">
+            <span class="shadow"></span>
+            <span class="edge"></span>
+            <span class="front"> BET ONE </span>
+          </button>
+          <button class="btn-bet-max pushable" type="button">
+            <span class="shadow"></span>
+            <span class="edge"></span>
+            <span class="front"> BET MAX </span>
+          </button>
+          <button class="btn-deal pushable" type="button">
+            <span class="shadow"></span>
+            <span class="edge"></span>
+            <span class="front"> DEAL </span>
+          </button>
+        </div>
       </div>
     </section>
-    <!-- <script src="script.js"></script> -->
+    <script src="script.js"></script>
   </body>
 </html>
+
+<!-- design ref
+https://www.youtube.com/watch?v=h26X-4tJytw -->

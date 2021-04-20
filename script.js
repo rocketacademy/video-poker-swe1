@@ -75,6 +75,8 @@ const deck = shuffleCards(makeDeck());
 
 const totalPoints = 100;
 
+const reducedArr = [];
+
 // function takes an array of card objects and returns the number of points.
 function calcHandScore(cardsArr) {
   const score = 10;
@@ -90,10 +92,10 @@ function gameStarted(cards) {
   }
   return dealtCardsArr;
 }
-// function replaceCard(cardId) {
-//   const removeCard = document.getElementById(cardId);
-//   removeCard.remove();
-// }
+function removeCard(cardId) {
+  const selectedCard = document.getElementById(cardId);
+  selectedCard.remove();
+}
 
 function displayCards(cardsArr) {
   const parentDiv = document.getElementById('display-cards');
@@ -104,9 +106,17 @@ function displayCards(cardsArr) {
     card.innerText = `${cardsArr[i].rank}  ${cardsArr[i].suit}`;
     parentDiv.appendChild(card);
 
-    // card.addEventListener('click', () => {
-    //   replaceCard(i);
-    // });
+    card.addEventListener('click', () => {
+      removeCard(i);
+      // get a new card for replacement.
+      const newDealtCard = deck.pop();
+      cardsArr.splice(i, 1, newDealtCard);
+
+      setTimeout(() => {
+        parentDiv.innerHTML = '';
+        displayCards(cardsArr);
+      }, 3000);
+    });
   }
 }
 // click the button to start the game.

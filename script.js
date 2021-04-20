@@ -92,11 +92,59 @@ function playerCardsRankArr(drawnCardsArr) {
   console.log(`cardRanks: ${ranksOnlyArr}`);
   return ranksOnlyArr;
 }
+function playerCardsSuitArr(drawnCardsArr) {
+  const suitsOnlyArr = [];
+  for (let i = 0; i < drawnCardsArr.length; i += 1) {
+    const card = drawnCardsArr[i].suit;
+    suitsOnlyArr.push(card);
+  }
+  console.log(`cardRanks: ${suitsOnlyArr}`);
+  return suitsOnlyArr;
+}
+
+// check for suits
+function checkForSuits() {
+  const cardSuits = playerCardsSuitArr();
+}
+function checkForStraight(cards) {
+  let matches = 0;
+  for (let i = 0; i < cards.length; i++) {
+    if (
+      cards[i] === 6 ||
+      cards[i] === 7 ||
+      cards[i] === 8 ||
+      cards[i] === 9 ||
+      cards[i] === 10
+    ) {
+      matches += 1;
+    }
+  }
+  if (matches === 5) {
+    return 'straight';
+  }
+}
 
 // check for one pair
 function checkForPairs(dealtCardsArr) {
   const cardRanks = playerCardsRankArr(dealtCardsArr);
+  const straightCards = checkForStraight(cardRanks);
+  if (straightCards === 'straight') {
+    return 'straight';
+  }
   let matches = 1;
+  let largestRank = Math.max(...cardRanks);
+  console.log(largestRank);
+  let smallestRank = Math.min(...cardRanks);
+  console.log(smallestRank);
+  let sum = 0;
+
+  for (let i = 0; i < cardRanks.length; i += 1) {
+    sum += cardRanks[i];
+  }
+  console.log(sum);
+  if (largestRank === 11 && smallestRank === 7 && sum === 45) {
+    return 'straight flush';
+  }
   for (let i = 0; i < cardRanks.length; i += 1) {
     for (let j = i + 1; j < cardRanks.length; j += 1) {
       if (cardRanks[i] === cardRanks[j]) {
@@ -122,6 +170,14 @@ function calcHandScore(cardsArr) {
   if (matchedNum === 1) {
     // const score = 10;
     return `No Match :( . Total points: ${totalPoints}`;
+  }
+  if (matchedNum === 'straight flush') {
+    totalPoints += 90;
+    return `Straight flush. Earned 90 points in the round. Total points: ${totalPoints}`;
+  }
+  if (matchedNum === 'straight') {
+    totalPoints += 50;
+    return `Straight. Earned 50 points in the round. Total points: ${totalPoints}`;
   }
   return 'either no match or something went wrong.';
 }
@@ -175,9 +231,18 @@ startBtn.innerText = 'Play';
 document.body.appendChild(startBtn);
 startBtn.addEventListener('click', () => {
   // cards are dealt to the player.
-  const fiveDealtcards = gameStarted(deck);
+  // const fiveDealtcards = gameStarted(deck);
+  // example hand
+  const playerHand = [
+    { rank: 7, suit: 'hearts', name: '7' },
+    { rank: 8, suit: 'diamonds', name: '8' },
+    { rank: 9, suit: 'spades', name: '9' },
+    { rank: 10, suit: 'spades', name: '10' },
+    { rank: 6, suit: 'hearts', name: 'jack' },
+  ];
+  displayCards(playerHand);
   // diplay the cards to the players.
-  displayCards(fiveDealtcards);
+  // displayCards(fiveDealtcards);
 });
 
 let result = viewResult();

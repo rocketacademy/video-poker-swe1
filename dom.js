@@ -26,7 +26,12 @@ const handleDrawDom = (userHand) => {
     const bottomRightValue = document.createElement("div");
 
     // ADD CLASS NAMES TO ELEMENTS
-    deckItem.classList.add("deck-item");
+    deckItem.classList.add(
+      "deck-item",
+      "animate__animated",
+      "animate__flipInX",
+      "animate__delay-0.5s"
+    );
     card.classList.add("card");
     topLeftValue.classList.add("top-left-value");
     suit.classList.add("suit");

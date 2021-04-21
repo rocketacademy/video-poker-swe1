@@ -175,6 +175,7 @@ a {
   margin: 15px auto;
   text-align: center;
   transition: 0.3s;
+  cursor: pointer;
 }
 
 .lets-go-btn:hover {

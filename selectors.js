@@ -7,4 +7,5 @@ const domSelector = {
   gameRulesSection: document.querySelector(".game-rules-section"),
   gameButtonSection: document.querySelector(".game-buttons-section"),
   betButton: document.querySelector(".bet-button"),
+  changeCardButton: document.querySelector(".change-card-button"),
 };

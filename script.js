@@ -6,6 +6,8 @@
 // dealCardButton.addEventListener("click", (e) => {
 domSelector.dealCardButton.addEventListener("click", (e) => {
   domSelector.dealCardButton.classList.add("disable-click");
+  domSelector.betButton.classList.remove("disable-click");
+  domSelector.changeCardButton.classList.remove("disable-click");
   e.preventDefault();
   console.log("CLICKED DEAL BUTTON");
   // INITIALISING THE DECK OF CARDS
@@ -29,12 +31,18 @@ domSelector.dealCardButton.addEventListener("click", (e) => {
 });
 
 // REMOVES GAME RULES AND SHOWS PLAYING SCREEN
-domSelector.letsGoButton.addEventListener("click", handleEraseGameRules);
+domSelector.letsGoButton.addEventListener("click", () => {
+  domSelector.betButton.classList.add("disable-click");
+  domSelector.changeCardButton.classList.add("disable-click");
+  handleEraseGameRules();
+});
 
 // EVENT TO CALCULATE CARD IN HAND
 // also remove pointerEvents from other buttons
 domSelector.betButton.addEventListener("click", () => {
   domSelector.dealCardButton.classList.remove("disable-click");
+  domSelector.changeCardButton.classList.add("disable-click");
+  domSelector.betButton.classList.add("disable-click");
 });
 
 //                    ********  TO DO ********

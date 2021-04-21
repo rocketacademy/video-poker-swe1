@@ -12,6 +12,6 @@ const gameState = {
   gameInit: false,
   gameLoss: 0,
   gameWon: 0,
-  firstDeal: false,
+  secondDeal: false,
   deck: [],
 };

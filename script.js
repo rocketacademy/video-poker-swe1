@@ -46,7 +46,48 @@ domSelector.betButton.addEventListener("click", () => {
   domSelector.changeCardButton.classList.add("disable-click");
   domSelector.betButton.classList.add("disable-click");
   console.log(handleCheckFiveKind(user.hand));
+
+  if (handleCheckStraightFlush(user.hand)) {
+    // UPDATE POINTS
+  } else {
+    // BREAK
+  }
+
+  // RESHUFFLE AND CREATE NEW DECK
+
+  // DEAL CARDS AGAIN
 });
+
+// ******** TO CONSIDER *********
+// // CHANGE CARD BUTTON
+// domSelector.changeCardButton.addEventListener("click", () => {
+//   // CHECK IF USER IS STILL ALLOWED TO SAWP (max 2x)
+//   // !gameState.secondDeal ? alert("Can SwaP") : (gameState.secondDeal = true);
+//   // console.log("GAME STATE ==> ", gameState.secondDeal);
+//   // if (gameState.secondDeal === false) {
+//   //   gameState.secondDeal = true;
+//   //   alert("Can swap");
+//   // }
+
+//   // GET ARRAY OF CARDS SELECTED
+//   // GO AHEAD SWAP CARDS
+//   // TOGGLE BUTTON CLASSES
+//   // -if swap count at 2
+//   if (gameState.secondDeal) {
+//     console.log(gameState.secondDeal);
+//     domSelector.dealCardButton.classList.add("disable-click");
+//     domSelector.changeCardButton.classList.add("disable-click");
+//     domSelector.betButton.classList.remove("disable-click");
+//   }
+
+//   // only testing function here
+//   // if (handleCheckStraightFlush(user.hand)) {
+//   //   // UPDATE POINTS
+//   // } else {
+//   //   alert("FALSE3");
+//   // }
+//   // RUN HANDLECEHCK FUNCTIONS AND ADD TO POUNTS IF RETURNS TRUE
+// });
 
 //                    ********  TO DO ********
 
@@ -60,3 +101,5 @@ domSelector.betButton.addEventListener("click", () => {
 // * CREATE AN ARRAY OF WINNING COMBINATIONS
 
 // * FIND ANIMATION LIBRARY FOR UI
+
+// console.log(handleCheckStraightFlush(user.hand));

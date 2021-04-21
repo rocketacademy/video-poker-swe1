@@ -21,13 +21,13 @@ const makeDeck = () => {
 
       // 1, 11, 12 ,13
       if (cardName === "1") {
-        cardName = "ace";
+        cardName = "A";
       } else if (cardName === "11") {
-        cardName = "jack";
+        cardName = "J";
       } else if (cardName === "12") {
-        cardName = "queen";
+        cardName = "Q";
       } else if (cardName === "13") {
-        cardName = "king";
+        cardName = "K";
       }
 
       // make a single card object variable
@@ -92,7 +92,7 @@ const card5SuitCenter = document.getElementsByClassName("card-5p2")[1];
 
 const generateCards = () => {
   card1Text = outputCards(cards, 0);
-  card1rank.innerText = card1Text.rank;
+  card1rank.innerText = card1Text.name;
   card1SuitCenter.innerText = card1Text.suit;
   card1suit.innerText = card1Text.suit;
   card1.addEventListener("click", () => {
@@ -100,7 +100,7 @@ const generateCards = () => {
     card1Text = outputCards(cards, 0);
   });
   card2Text = outputCards(cards, 1);
-  card2rank.innerText = card2Text.rank;
+  card2rank.innerText = card2Text.name;
   card2SuitCenter.innerText = card2Text.suit;
   card2suit.innerText = card2Text.suit;
   card2.addEventListener("click", () => {
@@ -108,7 +108,7 @@ const generateCards = () => {
     card2Text = outputCards(cards, 1);
   });
   card3Text = outputCards(cards, 2);
-  card3rank.innerText = card3Text.rank;
+  card3rank.innerText = card3Text.name;
   card3SuitCenter.innerText = card3Text.suit;
   card3suit.innerText = card3Text.suit;
   card3.addEventListener("click", () => {
@@ -116,7 +116,7 @@ const generateCards = () => {
     card3Text = outputCards(cards, 2);
   });
   card4Text = outputCards(cards, 3);
-  card4rank.innerText = card4Text.rank;
+  card4rank.innerText = card4Text.name;
   card4SuitCenter.innerText = card4Text.suit;
   card4suit.innerText = card4Text.suit;
   card4.addEventListener("click", () => {
@@ -124,7 +124,7 @@ const generateCards = () => {
     card4Text = outputCards(cards, 3);
   });
   card5Text = outputCards(cards, 4);
-  card5rank.innerText = card5Text.rank;
+  card5rank.innerText = card5Text.name;
   card5SuitCenter.innerText = card5Text.suit;
   card5suit.innerText = card5Text.suit;
   card5.addEventListener("click", () => {
@@ -143,6 +143,7 @@ const outputCards = (cards, cardNo) => {
 document
   .getElementsByClassName("complete-turn")[0]
   .addEventListener("click", () => {
+    document.getElementById('click-audio').play();
     card1rank.innerText = card1Text.rank;
     card1SuitCenter.innerText = card1Text.suit;
     card1suit.innerText = card1Text.suit;
@@ -164,10 +165,14 @@ document
     document.getElementsByClassName("cards")[3].style.border = "none";
     document.getElementsByClassName("cards")[4].style.border = "none";
     checkWinningConditions();
+    if(creditWon>19){
+      document.getElementById('click-win').play();
+    }
+    playAgain();
   });
 
 //produce result
-const rankCounter = {};
+let rankCounter = {};
 let suitCounter = {};
 let rankCounterKeysNo = [];
 const tallyCounts = () => {
@@ -274,29 +279,33 @@ const checkWinningConditions = () => {
       console.log("Straight");
     } else {
       console.log("Nothing");
-      creditWon = 20;
+      creditWon = -20;
       remainingCredit -= 20;
     }
   }
-  playerScore.innerHTML = `Player: ${creditWon} Credits`;
+  playerScore.innerHTML = `Player: ${remainingCredit} Credits`;
 };
 //play again
 const playAgain = () => {
   const popUp = document.createElement("div");
   popUp.classList.add("pop-up");
+  document.body.appendChild(popUp)
   const popUpText = document.createElement("p");
   popUpText.classList.add("pop-up-text");
+  popUp.appendChild(popUpText);
   let displayMessage = "";
   if (creditWon > 0) {
-    displayMessage = "Congrats! You Won ";
+    displayMessage = `Congrats! You Won ${creditWon}`;
   } else {
-    displayMessage = "You Lost";
+    displayMessage = "You Lost 20";
   }
-  popUpText.innerText = `${displayMessage}${creditWon} Credits`;
+  popUpText.innerText = `${displayMessage} Credits`;
   const popUpButton = document.createElement("button");
   popUpButton.classList.add("pop-up-button");
   popUpButton.innerText = "Play Again";
+  popUp.appendChild(popUpButton)
   popUpButton.addEventListener("click", () => {
+    document.getElementById('click-audio').play();
     replayGame();
   });
 };
@@ -306,7 +315,9 @@ const replayGame = () => {
   rankCounterKeysNo = [];
   playerCardsNo = [];
   playerCardsSuit = [];
+  document.getElementsByClassName('pop-up')[0].remove();
   generateCards();
+  
 };
 //init game
 

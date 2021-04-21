@@ -114,6 +114,11 @@ button {
   background-color: rgba(26, 140, 246, 0.376);
 }
 
+/* info bet */
+.bet-green {
+  background-color: rgba(61, 255, 13, 0.438);
+}
+
 /* Main Card Container */
 .cards-container {
   height: 40%;

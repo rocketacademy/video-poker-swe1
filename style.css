@@ -1,3 +1,15 @@
+html {
+  max-width: 70%;
+}
+body {
+  font-family: 'Odibee Sans', cursive;
+}
+
+/* button {
+  background-color: rgb(245, 61, 61);
+  color: white;
+} */
+
 #display-cards {
   background-color: pink;
 }

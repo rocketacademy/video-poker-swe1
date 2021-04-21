@@ -135,14 +135,3 @@ const makeDeck = () => {
 };
 
 const deck = shuffleCards(makeDeck());
-
-// Create and display the card
-const displayCard = (imgPath) => {
-  const imageTag = document.createElement("img");
-  imageTag.classList.add("card");
-  imageTag.src = `${imgPath}`;
-  imageTag.addEventListener("click", () => {
-    console.log("card is clicked");
-  });
-  cardsDiv.appendChild(imageTag);
-};

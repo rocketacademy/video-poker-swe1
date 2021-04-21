@@ -1,15 +1,18 @@
-// Game play
+/* SELECTORS */
 
-// Selectors for containers
+// Containers
 const entryDiv = document.querySelector(".entry-div");
 const gameDiv = document.querySelector(".game-div");
 const cardsDiv = document.querySelector(".cards-div");
+const scoreTag = document.querySelector(".player-score");
 
-// Selectors for buttons
+// Buttons
 const startBtn = document.querySelector(".start-btn");
 const dealBtn = document.querySelector(".deal-btn");
+const playBtn = document.querySelector(".play-btn");
 
 /* ------- HAND RANKING FUNCTIONS ------ */
+
 // Detects whether poker hand contains a hand rank
 // Returns false otherwise
 
@@ -54,41 +57,123 @@ const isHighCard = (arr) => {};
 
 /* ------- WINNING LOGIC ------ */
 
+/* ------- HELPER FUNCTIONS FOR CARDS ------ */
+
+// Hand length is always 5.
+// Create array with 5 empty strings
+const hand = [];
+const createHand = () => {
+  for (i = 0; i < 5; i += 1) {
+    hand.push("");
+    console.log(`hand is `, hand);
+  }
+  return hand;
+};
+
+// Create equivalent div where I can add the click event at that position
+// Returns the cardTag that I can use to manipulate
+const createCardDiv = (index) => {
+  const cardTag = document.createElement("div");
+  cardTag.classList.add(`card-${index}`);
+  cardTag.addEventListener("click", () => {
+    console.log(`card has been clicked`);
+    removeCardDisplay(index);
+  });
+  cardsDiv.appendChild(cardTag);
+  return cardTag;
+};
+
+// Takes in a card object and displays as a card on DOM
+const displayCard = (cardObj, cardTag) => {
+  const imgPath = cardObj.img;
+  const imageTag = document.createElement("img");
+  imageTag.classList.add("card");
+  imageTag.src = `${imgPath}`;
+  cardTag.appendChild(imageTag);
+};
+
+// Finds empty space in the array hand and adds a random card object inside
+const replaceCards = () => {
+  for (i = 0; i < hand.length; i += 1) {
+    if (hand[i] === "") {
+      hand[i] = deck.shift();
+    }
+  }
+};
+
+// Removes card from display at that position and changes the hand array
+const removeCardDisplay = (index) => {
+  console.log("clicked on element number ", index);
+
+  // Checks that card that is clicked is not empty
+  if (hand[index] !== "") {
+    const clickedCard = hand[index]; // cardObj
+
+    const clickedCardTag = document.querySelector(`.card-${index} img`);
+
+    // Change image to empty card border
+    clickedCardTag.src = `cards/back/empty.png`;
+    console.log(`clicked card tag is `, clickedCardTag);
+
+    // Remove the card object from the array by reassigning it to empty string
+    hand[index] = "";
+  }
+};
+
 /* ------- GAME PLAY ------ */
 
-// Initiatlize game
+// Initialize game
 const initGame = () => {
   // Hide the opening window
   entryDiv.style.display = "none";
+  playBtn.style.display = "none";
 };
-
-const hand = [];
-const handLength = 5;
-
-// When the clicks "Start"
-startBtn.addEventListener("click", () => {
-  // Deal the first five random cards
-  // The shift() method removes the first element from an array and returns that removed element.
-
-  // For every card object, put it inside an array
-  for (i = 0; i < handLength; i += 1) {
-    hand.push([]);
-    // Push one object inside the array
-    hand[i].push(deck.shift());
-    console.log(hand[i]);
-  }
-
-  // hand = [ [cardObj], [cardObj], [cardObj], [cardObj], [cardObj] ]
-  // position of the array inside the array = 0,1,2,3,4
-
-  // Display hand
-  // Access the arrays of arrays
-  for (j = 0; j < handLength; j += 1) {
-    console.log(`card image path is` + hand[j][0].img);
-    displayCard(hand[j][0].img);
-  }
-});
 
 initGame();
 
-// Add event listeners on the image array[0]
+// When the clicks "Start"
+startBtn.addEventListener("click", () => {
+  // Show Play, hide Start
+  playBtn.style.display = "inline";
+  startBtn.style.display = "none";
+
+  // Deal the first five random cards in the array
+  createHand();
+  replaceCards();
+
+  // Creates the display for the hand of cards
+  for (i = 0; i < hand.length; i += 1) {
+    const cardTag = createCardDiv(i);
+    displayCard(hand[i], cardTag);
+  }
+});
+
+// When user clicks "Deal", the game deals the cards, add to hand
+dealBtn.addEventListener("click", () => {
+  console.log(`deal button was clicked`);
+  replaceCards();
+
+  // Empty previous div & display hand of cards
+  cardsDiv.innerHTML = "";
+  for (i = 0; i < hand.length; i += 1) {
+    const cardTag = createCardDiv(i);
+    displayCard(hand[i], cardTag);
+  }
+});
+
+// The users selects which cards they want to keep & signal "Play"
+playBtn.addEventListener("click", () => {
+  // Calculate the score
+  scoreTag.innerHTML = calcHand(hand);
+  // Remove the empty boxes that are not filled
+});
+
+// Takes in array and calculate score of the ranks
+const calcHand = (arr) => {
+  let score = 0;
+  for (i = 0; i < arr.length; i += 1) {
+    score += arr[i].rank;
+    // Should take in the multipliers for the type of hand we have (straight, flush etc.)
+  }
+  return score;
+};

@@ -16,6 +16,8 @@ const handleDrawDom = (userHand) => {
   userHand.forEach((cardOnHand) => {
     // console.log("THIS IS CARD FOREACH ", cardOnHand);
 
+    const testHere = { value: "Q", suit: "🌷" };
+
     // CREATE DOM ELEMENTS
     const deckItem = document.createElement("li");
     const card = document.createElement("div");

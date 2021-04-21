@@ -40,16 +40,15 @@ domSelector.letsGoButton.addEventListener("click", () => {
 // EVENT TO CALCULATE CARD IN HAND
 // also remove pointerEvents from other buttons
 domSelector.betButton.addEventListener("click", () => {
+  console.log("Bet button clicked");
+  // toggle disable class to buttons
   domSelector.dealCardButton.classList.remove("disable-click");
   domSelector.changeCardButton.classList.add("disable-click");
   domSelector.betButton.classList.add("disable-click");
+  console.log(handleCheckFiveKind(user.hand));
 });
 
 //                    ********  TO DO ********
-
-//  * ADD DISABLE-CLICK CLASS TO OTHER BUTTONS WHEN (LETSGOBUTTON IS CLICKED)
-
-// * DONT FORGET TO REMOVE CLASS AFTER CKLICKING ON NEXT STEPS OF GAME PlAY
 
 // * THINK ABOUT SOC ARCHITECTURE FOR ENTIRE PROJECT (FUCNTIONS FOR EVEVRY ACTIONS)
 // * ADD THE BET FUNCTIONALITY

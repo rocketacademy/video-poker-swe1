@@ -3,6 +3,9 @@ html {
 }
 body {
   font-family: 'Odibee Sans', cursive;
+  /* background-image: url('images/poker-table.jpeg');
+  background-size: auto; */
+  background-color: #508250;
 }
 
 /* button {

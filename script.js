@@ -92,6 +92,7 @@ function playerCardsRankArr(drawnCardsArr) {
   console.log(`cardRanks: ${ranksOnlyArr}`);
   return ranksOnlyArr;
 }
+
 function playerCardsSuitArr(drawnCardsArr) {
   const suitsOnlyArr = [];
   for (let i = 0; i < drawnCardsArr.length; i += 1) {
@@ -162,6 +163,47 @@ function checkForStraightFlush(cards) {
     return 'straight flush';
   }
 }
+
+function checkForPair(dealtCardsArr) {
+  const cardTypes = {};
+  for (let i = 0; i < dealtCardsArr.length; i += 1) {
+    const singleCard = dealtCardsArr[i].rank;
+    if (cardTypes[singleCard] === undefined) {
+      cardTypes[singleCard] = 1;
+    }
+    else {
+      cardTypes[singleCard] += 1;
+    }
+  }
+  return cardTypes;
+}
+function countPairs(pairObj) {
+  console.log(pairObj);
+  let result = 'no match found';
+  let numOfPair = 0;
+  for (let i = 0; i < Object.keys(pairObj).length; i += 1) {
+    const value = Object.values(pairObj)[i];
+    console.log(`value${value}`);
+    if (value === 2) {
+      result = 'pair';
+      numOfPair += 1;
+      if (numOfPair === 2) {
+        result = 'two pairs';
+        return result;
+      }
+    }
+    else if (value === 3) {
+      result = 'three of a kind';
+      return result;
+    }
+    else if (value === 4) {
+      result = 'four of a kind';
+      return result;
+    }
+  }
+  return result;
+}
+
 // takes player's cards(objects) array and returns the winning combination if any.
 function checkForWinningCond(dealtCardsArr) {
   const cardRanks = playerCardsRankArr(dealtCardsArr);
@@ -186,38 +228,16 @@ function checkForWinningCond(dealtCardsArr) {
   if (straightCards === 'straight') {
     return 'straight';
   }
-
-  // checks for no match OR pair.
-  let matches = 1;
-  for (let i = 0; i < cardRanks.length; i += 1) {
-    for (let j = i + 1; j < cardRanks.length; j += 1) {
-      if (cardRanks[i] === cardRanks[j]) {
-        matches += 1;
-        console.log(`matches: ${matches}`);
-      }
-    }
-  }
-  return matches;
 }
 
-// function takes an array of card objects and returns the number of points.
+// function takes an array of card objects and returns the round's result & number of points.
 function calcHandScore(cardsArr) {
   const matchedNum = checkForWinningCond(cardsArr);
   const straightFlush = checkForStraightFlush(cardsArr);
+  // game condition for pair/s
+  const pairs = checkForPair(cardsArr);
+  const pairResult = countPairs(pairs);
   const resultMessage = `Total points: ${totalPoints}`;
-
-  if (matchedNum === 1) {
-    totalPoints -= 10;
-    return `No Match :( . Total points: ${totalPoints}`;
-  }
-  if (matchedNum === 2) {
-    totalPoints += 20;
-    return `One Pair. Earned 20 points in the round. ${resultMessage}`;
-  }
-  if (matchedNum === 3) {
-    totalPoints += 40;
-    return `Three Of a Kind. Earned 40 points in the round.${resultMessage}`;
-  }
 
   if (matchedNum === 'straight') {
     totalPoints += 50;
@@ -225,20 +245,34 @@ function calcHandScore(cardsArr) {
   }
   if (matchedNum === 'flush') {
     totalPoints += 60;
-    return `Flush. Earned 60 points in the round.${resultMessage}`;
+    return `Flush. Earned 60 points in the round.Total points: ${totalPoints}`;
   }
-  // if (matchedNum === 'three of a kind') {
-  //   totalPoints += 40;
-  //   return `Three of a kind. Earned 40 points in the round. ${resultMessage}`;
-  // }
-  // if (matchedNum === 'four of a kind') {
-  //   totalPoints += 80;
-  //   return `Four of a kind. Earned 80 points in the round. ${resultMessage}`;
-  // }
   if (straightFlush === 'straight flush') {
     totalPoints += 90;
     return `Straight flush. Earned 90 points in the round.${resultMessage}`;
   }
+
+  if (pairResult === 'no match found') {
+    totalPoints -= 10;
+    return `No match found. Lost 10 points in the round.Total points: ${totalPoints}`;
+  }
+  if (pairResult === 'pair') {
+    totalPoints += 20;
+    return `Pair. Earned 20 points in the round. Total points: ${totalPoints}`;
+  }
+  if (pairResult === 'two pairs') {
+    totalPoints += 30;
+    return `Two Pairs. Earned 30 points in the round.Total points: ${totalPoints}`;
+  }
+  if (pairResult === 'three of a kind') {
+    totalPoints += 40;
+    return `Three of a kind. Earned 40 points in the round. Total points: ${totalPoints}`;
+  }
+  if (pairResult === 'four of a kind') {
+    totalPoints += 80;
+    return `Four of a kind. Earned 80 points in the round. Total points: ${totalPoints}`;
+  }
+
   return `either no match or something went wrong.${resultMessage}`;
 }
 
@@ -251,6 +285,7 @@ function gameStarted(cards) {
   }
   return dealtCardsArr;
 }
+
 function removeCard(cardId) {
   const selectedCard = document.getElementById(cardId);
   selectedCard.remove();
@@ -291,18 +326,21 @@ startBtn.innerText = 'Play';
 document.body.appendChild(startBtn);
 startBtn.addEventListener('click', () => {
   // cards are dealt to the player.
-  // const fiveDealtcards = gameStarted(deck);
-  // example hand
-  const playerHand = [
-    { rank: 6, suit: 'hearts', name: '7' },
-    { rank: 7, suit: 'hearts', name: '8' },
-    { rank: 8, suit: 'spades', name: '9' },
-    { rank: 9, suit: 'hearts', name: '10' },
-    { rank: 10, suit: 'hearts', name: 'jack' },
-  ];
-  displayCards(playerHand);
+  const fiveDealtcards = gameStarted(deck);
+
+  // ****example hand code starts
+  // const playerHand = [
+  //   { rank: 6, suit: 'hearts', name: '7' },
+  //   { rank: 7, suit: 'hearts', name: '8' },
+  //   { rank: 6, suit: 'hearts', name: '9' },
+  //   { rank: 6, suit: 'hearts', name: '10' },
+  //   { rank: 6, suit: 'spades', name: 'jack' },
+  // ];
+  // displayCards(playerHand);
+  // ****example hand code ends.
+
   // diplay the cards to the players.
-  // displayCards(fiveDealtcards);
+  displayCards(fiveDealtcards);
 });
 
 const result = viewResult();

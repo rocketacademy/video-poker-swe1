@@ -14,6 +14,7 @@ const messageTag = document.querySelector(".message");
 const startBtn = document.querySelector(".start-btn");
 const dealBtn = document.querySelector(".deal-btn");
 const playBtn = document.querySelector(".play-btn");
+const replayBtn = document.querySelector(".replay-btn");
 
 /* ------- HELPER FUNCTIONS FOR CARDS ------ */
 
@@ -87,6 +88,7 @@ const initGame = () => {
   // Hide the opening window
   entryDiv.style.display = "none";
   playBtn.style.display = "none";
+  replayBtn.style.display = "none";
 };
 
 initGame();
@@ -127,7 +129,20 @@ playBtn.addEventListener("click", () => {
   score = calcHand(hand);
   scoreTag.innerHTML = score;
   console.log(score);
-  // Remove the empty boxes that are not filled
+  playBtn.style.display = "none";
+  replayBtn.style.display = "inline";
+  printMessage(`Replay?`);
+});
+
+replayBtn.addEventListener("click", () => {
+  // Empty the hand;
+  hand.splice(0, hand.length);
+  cardsDiv.innerHTML = "";
+  startBtn.style.display = "inline";
+  dealBtn.style.display = "inline";
+  playBtn.style.display = "none";
+  replayBtn.style.display = "none";
+  messageTag.innerHTML = "";
 });
 
 /* -------- CALCULATING HAND SCORE ---------- */

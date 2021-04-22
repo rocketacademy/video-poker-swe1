@@ -86,6 +86,7 @@ let resultText = '';
 function viewResult() {
   const resultBtn = document.createElement('button');
   resultBtn.innerText = 'Result';
+  resultBtn.setAttribute('id', 'result-btn');
   document.body.appendChild(resultBtn);
   return resultBtn;
 }
@@ -334,6 +335,7 @@ function displayCards(cardsArr) {
 // click the button to start the game.
 const startBtn = document.createElement('button');
 startBtn.innerText = 'Play';
+startBtn.setAttribute('id', 'play-btn');
 document.body.appendChild(startBtn);
 startBtn.addEventListener('click', () => {
   // cards are dealt to the player.

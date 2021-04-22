@@ -8,10 +8,22 @@ body {
   background-color: #508250;
 }
 
-/* button {
-  background-color: rgb(245, 61, 61);
+button {
+  cursor: pointer;
+  width: 200px;
+  height: 40px;
+  text-align: center;
+  margin: 20px;
+  border-radius: 5px;
   color: white;
-} */
+  font-weight: 600;
+}
+#play-btn {
+  background-color: rgb(5, 69, 5);
+}
+#result-btn {
+  background-color: rgb(157, 26, 26);
+}
 
 #display-cards {
   background-color: pink;

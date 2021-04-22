@@ -118,10 +118,9 @@ const makeDeck = () => {
         name: cardName,
         suit: currentSuit,
         rank: cardIndex,
+        number: cardIndex,
         img: `cards/${currentSuit}/${cardName}.png`,
       };
-
-      // projects/video-poker/.vscode/cards/◆/2.png
 
       // Add the new card to the deck
       newDeck.push(card);

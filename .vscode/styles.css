@@ -74,7 +74,8 @@ h1 {
   margin: 2px;
   max-width: 715px;
   height: 680px;
-  position: relative;
+  position: absolute;
+  right: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -88,6 +89,7 @@ h1 {
 
 .score-div,
 .message-div {
+  position: relative;
   display: inline;
   color: #fff;
   font-size: 12px;
@@ -116,4 +118,11 @@ li {
 .message-div {
   float: left;
   padding: 24px 0 36px 0;
+}
+
+.controls-div {
+  position: relative;
+  width: 720px;
+  text-align: center;
+  top: 680px;
 }

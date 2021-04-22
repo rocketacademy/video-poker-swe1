@@ -1,4 +1,4 @@
-/* SELECTORS */
+/* ------- SELECTORS ------- */
 
 // Containers
 const entryDiv = document.querySelector(".entry-div");
@@ -124,9 +124,13 @@ dealBtn.addEventListener("click", () => {
 // The users selects which cards they want to keep & signal "Play"
 playBtn.addEventListener("click", () => {
   // Calculate the score
-  scoreTag.innerHTML = calcHand(hand);
+  score = calcHand(hand);
+  scoreTag.innerHTML = score;
+  console.log(score);
   // Remove the empty boxes that are not filled
 });
+
+/* -------- CALCULATING HAND SCORE ---------- */
 
 // Takes in array and calculate score of the ranks
 const basicScore = (arr) => {
@@ -139,63 +143,141 @@ const basicScore = (arr) => {
 };
 
 // Score begins at 100
-const score = 100;
+let score = 100;
 
+// Order of overriding the different winning ranks
 // Takes in array hand of cards, prints in HTML, gives the multiplier score
 const calcHand = (arr) => {
   const tallyObj = tallyCards(hand);
   console.log(`tally object is `, tallyObj);
 
-  // [1] Straight flush
-  for (i = 0; i < arr.length; i += 1) {
-    if (hand[i].suit === hand[)
+  // Check suits inside each card object
+  if (isSameSuit(hand)) {
+    const winningSuit = hand[0].suit;
+
+    if (isStraight(hand)) {
+      console.log(`is straight value`, isStraight(hand));
+      printMessage(`Straight flush of ${winningSuit}`);
+      return score;
+    } else {
+      console.log(`is flush`);
+      printMessage(`Flush of ${winningSuit}`);
+      return score;
+    }
   }
-  // Same suit & increment by one
-  // const containsAll = (arr1, arr2) => 
-  // arr2.every(arr2Item => arr1.includes(arr2Item))
-  // const sameMembers = (arr1, arr2) => 
-  // containsAll(arr1, arr2) && containsAll(arr2, arr1);
-  // sameMembers(arr1, arr2);
 
-  // Array of keys
-  // const cardNames = Object.keys(tallyObj);
-  // Test for straight
+  // [3, 2]
+  const cardCounts = Object.values(tallyObj);
+  const twoPairsArr = [1, 2, 2];
+  const flushArr = [2, 3];
+  const oneCountArr = [1, 1, 1, 1, 1];
 
-  // Array of values
-  // const cardValues = Object.values(tallyObj);
+  // Checks for [2 , 2 , 1]. We don't want [3, 1, 1]
+  if (matchArr(cardCounts, twoPairsArr) === true) {
+    printMessage(`Two pairs`);
+  }
 
+  // Checks for [3, 2]
+  if (matchArr(cardCounts, flushArr) === true) {
+    printMessage(`Full house`);
+  }
+
+  // Checks for no repeating cards and prints Jacks or Better
+  if (
+    matchArr(cardCounts, oneCountArr) === true &&
+    isJacksOrBetter(hand) === true
+  ) {
+    return score;
+  }
+
+  // Loop inside the card tally
+  // Still need to print out what card type
   for (const [cardType, cardCount] of Object.entries(tallyObj)) {
-    console.log(`there is ${cardCount} ${cardType}s in the hand`); // 2 As in the hand
+    console.log(`there is ${cardCount} ${cardType}s in the hand`);
 
-    // [1] Four of a kind
     if (cardCount === 4) {
       printMessage(`Four of a kind of ${cardType}`);
+      score;
     }
-
-    // [2] Three of a kind
-    if (cardcount === 3) {
+    if (cardCount === 3) {
       printMessage(`Three of a kind of ${cardType}`);
+      score;
     }
-
-
-
+    if (cardCount === 2) {
+      printMessage(`One pair of ${cardType}`);
+      score;
+    }
   }
-
-  // for (i = 0; i < values.length; i += 1) {
-  //   if (value[i] === 4) {
-
-  //     printMessage(`Four of a kind of ${}`);
-  //     score;
-  //   }
-  // }
-
-  // Array [key, property] of arrays [ [" ", num] , [" ", num] , [" ", num] , [" ", num] ]
-  // const cardEntries = Object.entries(tallyObj);
-
   return score;
 };
 
-/* ------- HAND RANKING FUNCTIONS ------ */
+/* ------- HELPER HAND RANKING FUNCTIONS ------ */
+
+const matchArr = (arr1, arr2) => {
+  if (arr1.length !== arr2.length) {
+    return false;
+  }
+  arr1.sort();
+
+  // Check if all items exist and are in the same order
+  for (i = 0; i < arr1.length; i += 1) {
+    if (arr1[i] !== arr2[i]) return false;
+  }
+  console.log(`matched for ${arr1} and ${arr2}`);
+  // Otherwise, return true
+  return true;
+};
+
+const isJacksOrBetter = (arr) => {
+  for (i = 0; i < arr.length; i += 1) {
+    if (
+      hand[i].name === "A" ||
+      hand[i].name === "J" ||
+      hand[i].name === "Q" ||
+      hand[i].name === "K"
+    ) {
+      printMessage(`Jacks or Better with ${hand[i].name} of ${hand[i].suit}`);
+    }
+  }
+  return true;
+};
+
+const isSameSuit = (cardObjArr) => {
+  for (i = 0; i < cardObjArr.length; i += 1) {
+    if (cardObjArr[i].suit !== cardObjArr[0].suit) {
+      return false;
+    }
+  }
+  return true;
+};
+
+// Takes array of card objects
+const isStraight = (cardObjArr) => {
+  const numArr = [];
+  let addSumOfArr = 0;
+
+  for (i = 0; i < cardObjArr.length; i += 1) {
+    numArr.push(cardObjArr[i].number);
+    addSumOfArr += cardObjArr[i].number;
+  }
+  // Sort from lowest to highest
+  numArr.sort((a, b) => a - b);
+  console.log(`numbers array is `, numArr);
+  const lowestNum = numArr[0];
+
+  // Sum of the numbers
+  if (addSumOfArr === calcStraightSum(lowestNum)) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+const calcStraightSum = (firstTerm) => {
+  const sum = 2.5 * (2 * firstTerm + 4);
+  console.log(sum);
+  return sum;
+};
 
 // Adds list-item about what is true inside the hand
 const printMessage = (message) => {
@@ -203,32 +285,6 @@ const printMessage = (message) => {
   listItem.innerHTML = message;
   messageTag.appendChild(listItem);
 };
-
-// Four of a kind
-const is4OfAKind = (values) => {};
-
-// Rank 4: Full house
-const isFullHouse = (arr) => {};
-
-// Rank 5: Flush
-const isFLush = (arr) => {};
-
-// Rank 6: Straight
-const isStraight = (arr) => {};
-
-// Rank 7: Three of a kind
-const is3OfAKind = (arr) => {};
-
-// Rank 8: Two pair
-const is2Pair = (arr) => {};
-
-// Rank 9: One pair
-const is1Pair = () => {};
-
-// Rank 10: High card
-const isHighCard = (arr) => {};
-
-/* --------------------------- */
 
 // Takes in an array of objects
 // Returns object to store how many times a card type occurs
@@ -252,5 +308,3 @@ const tallyCards = (arr) => {
   }
   return cardTypes;
 };
-
-/** */

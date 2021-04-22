@@ -67,6 +67,14 @@ const makeDeck = () => {
     }
   }
 
+  // ### add a joker to the deck
+  // const card = {
+  //   name: 'joker',
+  //   suit: 'none',
+  //   rank: 0,
+  // };
+  // ####newDeck.push(card);
+
   // Return the completed card deck
   return newDeck;
 };
@@ -88,7 +96,6 @@ function playerCardsRankArr(drawnCardsArr) {
     const card = drawnCardsArr[i].rank;
     ranksOnlyArr.push(card);
   }
-  console.log(`cardRanks: ${ranksOnlyArr}`);
   return ranksOnlyArr;
 }
 
@@ -136,13 +143,11 @@ function xOfAKind(cards) {
   let matches = 0;
   for (let i = 0; i < 1; i += 1) {
     for (let j = 1; j < cards.length; j += 1) {
-      console.log(`i = ${cards[i]} and j= ${cards[j]}`);
       if (cards[i] === cards[j]) {
         matches += 1;
       }
     }
   }
-  console.log(`x of a kind matches: ${matches}`);
   return matches;
 }
 
@@ -151,16 +156,18 @@ function checkForStraightFlush(cards) {
   const cardsSuits = checkForSuits(cards);
   const cardRanks = playerCardsRankArr(cards);
   const largestRank = Math.max(...cardRanks);
-  console.log(largestRank);
   const smallestRank = Math.min(...cardRanks);
-  console.log(smallestRank);
   let sum = 0;
 
   for (let i = 0; i < cardRanks.length; i += 1) {
     sum += cardRanks[i];
   }
-  console.log(sum);
-  if (largestRank === 11 && smallestRank === 7 && sum === 45 && cardsSuits === 'flush') {
+  // if (largestRank === 11 && smallestRank === 7 && sum === 45 && cardsSuits === 'flush') {
+  //   return 'straight flush';
+  // }
+
+  const checkSum = (smallestRank) * 5 + 10;
+  if (sum === checkSum && cardsSuits === 'flush') {
     return 'straight flush';
   }
 }
@@ -182,9 +189,15 @@ function countPairs(pairObj) {
   console.log(pairObj);
   let result = 'no match found';
   let numOfPair = 0;
+  //
+  let foundThree = false;
+  let foundFour = false;
+  let foundJoker = false;
   for (let i = 0; i < Object.keys(pairObj).length; i += 1) {
     const value = Object.values(pairObj)[i];
-    console.log(`value${value}`);
+    if (Object.keys(pairObj)[i] == 0) {
+      foundJoker = true;
+    }
     if (value === 2) {
       result = 'pair';
       numOfPair += 1;
@@ -195,11 +208,20 @@ function countPairs(pairObj) {
     }
     else if (value === 3) {
       result = 'three of a kind';
-      return result;
+      // return result;
+      foundThree = true;
     }
     else if (value === 4) {
       result = 'four of a kind';
-      return result;
+      foundFour = true;
+      // return result;
+    }
+    if (foundThree === true && numOfPair === 1) {
+      result = 'full house';
+      foundThree = false;
+    }
+    if (foundFour === true && foundJoker === true) {
+      result = 'five of a kind';
     }
   }
   return result;
@@ -275,6 +297,14 @@ function calcHandScore(cardsArr) {
     totalPoints += 80;
     return `Four of a kind. Earned 80 points in the round. Total points: ${totalPoints}`;
   }
+  if (pairResult === 'full house') {
+    totalPoints += 70;
+    return `Full House. Earned 70 points in the round. Total points: ${totalPoints}`;
+  }
+  if (pairResult === 'five of a kind') {
+    totalPoints += 100;
+    return `Five of a kind. Earned 100 points in the round. Total points: ${totalPoints}`;
+  }
 
   return `either no match or something went wrong.${resultMessage}`;
 }
@@ -334,10 +364,10 @@ startBtn.addEventListener('click', () => {
   // ****example hand code starts
   const playerHand = [
     { rank: 7, suit: 'hearts', name: '7' },
-    { rank: 8, suit: 'hearts', name: '8' },
-    { rank: 11, suit: 'hearts', name: '9' },
-    { rank: 10, suit: 'hearts', name: '10' },
-    { rank: 12, suit: 'hearts', name: 'jack' },
+    { rank: 3, suit: 'hearts', name: '8' },
+    { rank: 4, suit: 'hearts', name: '9' },
+    { rank: 5, suit: 'hearts', name: '10' },
+    { rank: 6, suit: 'hearts', name: 'jack' },
   ];
   displayCards(playerHand);
   // ****example hand code ends.

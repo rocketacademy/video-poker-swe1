@@ -51,9 +51,9 @@ domSelector.betButton.addEventListener("click", () => {
   // const a = [
   //   { value: "J", suit: "b" },
   //   { value: "Q", suit: "b" },
-  //   { value: "Q", suit: "b" },
-  //   { value: "J", suit: "b" },
-  //   { value: "J", suit: "b" },
+  //   { value: "K", suit: "b" },
+  //   { value: 9, suit: "b" },
+  //   { value: 10, suit: "b" },
   // ];
 
   if (handleCheckStraightFlush(user.hand)) {
@@ -69,6 +69,8 @@ domSelector.betButton.addEventListener("click", () => {
     alert("YES, full house");
   } else if (handleCheckFlush(user.hand)) {
     alert("YES, flush");
+  } else if (handleCheckStraight(user.hand)) {
+    alert("YES, straight");
   } else {
     // No match
     alert("Nope, no matches");

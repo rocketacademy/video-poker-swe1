@@ -75,7 +75,7 @@ button {
 
 /* Info */
 .info-container {
-  height: 60%;
+  height: 50%;
   padding: 20px;
   margin: 0;
   display: flex;
@@ -123,9 +123,37 @@ button {
 .cards-container {
   height: 40%;
   width: 100%;
+  position: relative;
+}
+
+/* Front Card Container */
+.front-cards-container {
+  position: absolute;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: row;
   justify-content: center;
+  top: 36px;
+}
+
+/* Front and Back Card Container */
+.front-cards-container,
+.back-cards-container {
+  position: absolute;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  top: 36px;
+}
+
+/* Front Card Container */
+.front-cards-container {
+  z-index: 2;
 }
 
 /* Card Properties */
@@ -169,7 +197,7 @@ button {
 
 /* Hold Card Properties */
 .hold {
-  background-color: rgba(255, 255, 255, 0.37);
+  background-color: rgb(241, 241, 241);
 }
 
 .hold-text {
@@ -178,16 +206,56 @@ button {
   background-color: coral;
 }
 
+/* Back of Card Properties */
+.back-card-design {
+  cursor: default;
+  width: 100%;
+  height: 100%;
+  background-color: #e5e5f7;
+  opacity: 0.7;
+  background: linear-gradient(135deg, #809bf355 25%, transparent 25%) -6px 0/
+      12px 12px,
+    linear-gradient(225deg, #809bf3 25%, transparent 25%) -6px 0/ 12px 12px,
+    linear-gradient(315deg, #809bf355 25%, transparent 25%) 0px 0/ 12px 12px,
+    linear-gradient(45deg, #809bf3 25%, #e5e5f7 25%) 0px 0/ 12px 12px;
+}
+
 /* Greetings */
 .greetings-container {
   position: absolute;
-  width: 80%;
-  text-align: center;
   background-color: rgb(31, 31, 31);
   border-radius: 20px;
   padding: 20px;
-  top: 30%;
-  left: 10%;
+  z-index: 3;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: 50px auto 50px auto;
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.gif {
+  width: 50%;
+  display: block;
+  margin: 15px;
+}
+
+/* Messages */
+.message-container {
+  height: 10%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.message {
+  font-size: 20px;
+  font-weight: bold;
 }
 
 /* Fancy Buttons */
@@ -259,4 +327,8 @@ button {
 }
 .pushable:focus:not(:focus-visible) {
   outline: none;
+}
+
+.disable-click {
+  pointer-events: none;
 }

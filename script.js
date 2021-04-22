@@ -1,4 +1,6 @@
-/* ================== GLOBALS ======================= */
+/* ========================================================== */
+/* ======================= GLOBALS ========================= */
+/* ========================================================== */
 
 // this is where we will store all the 5 cards displayed
 let displayCardsArr = [];
@@ -8,8 +10,9 @@ let deckOfCards = [];
 
 // game state (not super useful now but may be in the future)
 const INTRO_GAME_STATE = 'INTRO_GAME_STATE';
+const BET_GAME_STATE = 'BET_GAME_STATE';
 const PLAY_GAME_STATE = 'PLAY_GAME_STATE';
-const END_GAME_STATE = 'END_GAME_STATE';
+const NEXT_GAME_STATE = 'NEXT_GAME_STATE';
 let GAME_STATE = INTRO_GAME_STATE;
 
 // this array holds the coordinates of which cards were clicked
@@ -25,10 +28,13 @@ let betAmount = 0;
 // bonus amount from jacks or better
 let bonusMultiplyer = 0;
 
-/* ================== DOM SELECTORS ======================= */
+/* ========================================================== */
+/* ==================== DOM SELECTORS ======================= */
+/* ========================================================== */
 // divs
 const displayContainer = document.querySelector('.primary-display-container');
-const cardContainer = document.querySelector('.cards-container');
+const frontCardContainer = document.querySelector('.front-cards-container');
+const backCardContainer = document.querySelector('.back-cards-container');
 const infoContainer = document.querySelector('.info-container');
 
 // buttons
@@ -39,7 +45,11 @@ const betMaxButton = document.querySelector('.btn-bet-max');
 // credits
 const creditScoreText = document.querySelector('.credits-text');
 
+/* ========================================================== */
 /* ================== HELPER FUNCTIONS======================= */
+/* ========================================================== */
+
+/* ================== CARD FUNCTIONS ======================= */
 
 // Get a random index ranging from 0 (inclusive) to max (exclusive).
 const getRandomIndex = (max) => Math.floor(Math.random() * max);
@@ -60,7 +70,6 @@ const shuffleCards = (cards) => {
   // Return the shuffled deck
   return cards;
 };
-
 const makeDeck = () => {
   // Initialise an empty deck array
   const newDeck = [];
@@ -130,6 +139,166 @@ const makeDeck = () => {
   // Return the completed card deck
   return newDeck;
 };
+
+// function that deals cards
+const dealCards = () => {
+  /* ============== CARD INFO ============== */
+  // make deck and shuffle
+  deckOfCards = shuffleCards(makeDeck());
+
+  // set up for 5 cards
+  for (let i = 0; i < 5; i += 1) {
+    // create individual card container
+    const singleCardContainer = document.createElement('div');
+    singleCardContainer.classList.add('card');
+    frontCardContainer.appendChild(singleCardContainer);
+
+    /* ============== THIS IS FOR TESTING ============== */
+    /* ============== THIS IS FOR TESTING ============== */
+    /* ============== THIS IS FOR TESTING ============== */
+    // draw card and push into display cards array
+    const drawCard = royalFlush()[i];
+    // const drawCard = straightFlush()[i];
+    // const drawCard = fourOfAKind()[i];
+    // const drawCard = fullHouse()[i];
+    // const drawCard = flush()[i];
+    // const drawCard = straight()[i];
+    // const drawCard = threeOfAKind()[i];
+    // const drawCard = twoPair()[i];
+    displayCardsArr.push(drawCard);
+
+    /* ========= UNCOMMENT BELOW WHEN DONE WITH TEST =========== */
+    /* ========= UNCOMMENT BELOW WHEN DONE WITH TEST =========== */
+    /* ========= UNCOMMENT BELOW WHEN DONE WITH TEST =========== */
+    // // draw card and push into display cards array
+    // const drawCard = deckOfCards.pop();
+    // console.log(drawCard);
+    // displayCardsArr.push(drawCard);
+
+    // add event listener
+    singleCardContainer.addEventListener('click', () => {
+      clickedCard(i);
+    });
+  }
+  // display cards
+  displayCards(displayCardsArr);
+};
+
+// function that displays the cards in the display cards array
+const displayCards = (arr) => {
+  const childrenOfCardContainer = frontCardContainer.children;
+
+  const displayCardsInDOM = (i) => {
+    // remove color class attribute
+    childrenOfCardContainer[i].classList.remove('red');
+    childrenOfCardContainer[i].classList.remove('black');
+    // remove hold class attribute
+    childrenOfCardContainer[i].classList.remove('hold');
+    childrenOfCardContainer[i].innerHTML = '';
+    createCard(arr[i], childrenOfCardContainer[i]);
+  };
+
+  const repeats = childrenOfCardContainer.length - 1;
+
+  let i = 0;
+  const ref = setInterval(() => {
+    displayCardsInDOM(i);
+    if (i >= repeats) {
+      clearInterval(ref);
+    }
+    i += 1;
+  }, 50);
+};
+
+// function that disables the clicking of the cards after a game is finished
+const disableClickingOnCard = () => {
+  const childrenOfCardContainer = frontCardContainer.children;
+  for (let i = 0; i < childrenOfCardContainer.length; i += 1) {
+    // toggle disable class attribute
+    childrenOfCardContainer[i].classList.add('disable-click');
+  }
+};
+
+// create hold card marker
+const createOrRemoveHoldCard = (parent) => {
+  if (parent.classList.contains('hold')) {
+    parent.classList.remove('hold');
+    parent.lastChild.remove();
+  } else {
+    parent.classList.add('hold');
+    const holdMarker = document.createElement('div');
+    holdMarker.classList.add('hold-text');
+    holdMarker.innerText = 'HOLD';
+    parent.appendChild(holdMarker);
+  }
+};
+
+/* ============== CREDIT / SCORE FUNCTIONS ================== */
+// manipulate total credits lossed/gain in each round
+const adjustTotalCredits = (creditNum) => {
+  // update global variable
+  totalCredits = creditNum;
+  // display in DOM
+  creditScoreText.innerHTML = `TOTAL CREDITS: ${totalCredits}`;
+};
+
+// display and adjustment for bets
+const displayAndAdjustBet = (typeOfBet) => {
+  if (typeOfBet === 'betOne' && betAmount < 5) {
+    betAmount += 1;
+    adjustTotalCredits(totalCredits - 1);
+
+    // remove display from other buttons if any
+    for (let i = 0; i < 5; i += 1) {
+      const betDisplayOff = document.querySelectorAll(`.bet-${i}`);
+      betDisplayOff.forEach((element) => element.classList.remove('bet-green'));
+    }
+
+    // add display on correct bet amount
+    const betDisplayOn = document.querySelectorAll(`.bet-${betAmount}`);
+    betDisplayOn.forEach((element) => element.classList.add('bet-green'));
+
+    // message
+    createMessage('WANNA MAKE THAT 5?');
+
+    // disable button click and print message
+    if (betAmount === 5) {
+      createMessage('OH YEAH. HIT THAT DEAL!');
+      betOneButton.disabled = true;
+      betMaxButton.disabled = true;
+    }
+  } else if (typeOfBet === 'betMax' && betAmount != 5) {
+    const previousBetAmt = betAmount;
+    betAmount = 5;
+    adjustTotalCredits(totalCredits + previousBetAmt - betAmount);
+    // remove display from other buttons if any
+    for (let i = 0; i < 5; i += 1) {
+      const betDisplayOff = document.querySelectorAll(`.bet-${i}`);
+      betDisplayOff.forEach((element) => element.classList.remove('bet-green'));
+    }
+
+    // add display on correct bet amount
+    const betDisplayOn = document.querySelectorAll(`.bet-${betAmount}`);
+    betDisplayOn.forEach((element) => element.classList.add('bet-green'));
+
+    // disable button click
+    betMaxButton.disabled = true;
+
+    // message
+    createMessage('BOSSMAN I LIKE YOUR CONFIDENCE, HIT THAT DEAL!');
+  } else if (typeOfBet === 'reset') {
+    // remove display from other buttons if any
+    for (let i = 0; i <= 5; i += 1) {
+      const betDisplayOff = document.querySelectorAll(`.bet-${i}`);
+      betDisplayOff.forEach((element) => element.classList.remove('bet-green'));
+    }
+    // enable button click
+    betOneButton.disabled = false;
+    betMaxButton.disabled = false;
+  }
+};
+
+/* ============== USER INTERFACE FUNCTIONS ================== */
 
 // this function creates the data for the card combinations info
 const makePointSystem = () => {
@@ -264,9 +433,9 @@ const createCard = (objCardInfo, parent) => {
 // function that creates the display for the back of the cards
 const createBackOfCard = (parent) => {
   // card display e.g. J K Q...
-  const backOfCard = document.createElement('div');
-  backOfCard.innerText = 'BACK OF CARD';
-  parent.appendChild(backOfCard);
+  const backOfCardDesign = document.createElement('div');
+  backOfCardDesign.classList.add('back-card-design');
+  parent.appendChild(backOfCardDesign);
 };
 
 // function that greets user and asks them to start game
@@ -277,12 +446,21 @@ const createGreeting = () => {
 
   // create header for greeting
   const greetingHeader = document.createElement('h2');
+  greetingHeader.innerHTML = `THE TABLE IS SET`;
   greetingHeader.classList.add('greetings-h2');
 
   // create paragraph
   const greetingParagraph = document.createElement('p');
   greetingParagraph.classList.add('greetings-p');
   greetingParagraph.innerHTML = `Here's your chance to win big moolah!`;
+
+  // create gif container
+  const gif = document.createElement('img');
+  gif.setAttribute(
+    'src',
+    'https://media.giphy.com/media/ClhVz6L3tnple/giphy.gif'
+  );
+  gif.classList.add('gif');
 
   // create button with event-listener
   const startGameButton = document.createElement('button');
@@ -293,111 +471,41 @@ const createGreeting = () => {
   displayContainer.appendChild(greetingsContainer);
   greetingsContainer.appendChild(greetingHeader);
   greetingsContainer.appendChild(greetingParagraph);
+  greetingsContainer.appendChild(gif);
   greetingsContainer.appendChild(startGameButton);
 
   // return button so that it is easy to select
   return startGameButton;
 };
 
-// function that displays the cards in the display cards array
-const displayCards = (arr) => {
-  const childrenOfCardContainer = cardContainer.children;
-  // for first game
-  if (GAME_STATE === INTRO_GAME_STATE) {
-    // clear back facing cards
-    // display cards
-    for (let i = 0; i < childrenOfCardContainer.length; i += 1) {
-      childrenOfCardContainer[i].innerHTML = '';
-      createCard(arr[i], childrenOfCardContainer[i]);
-    }
+// function that takes in a string and displays the message on screen
+const createMessage = (strMessage) => {
+  // check if message container already exists
+  // if it doesn't exist then create one
+
+  if (document.querySelector('.message-container')) {
+    // message container
+    screenMessage = document.querySelector('.message');
+    screenMessage.innerHTML = strMessage;
   } else {
-    // clear cards
-    // display cards
-    // clear back facing cards
-    // display cards
-    for (let i = 0; i < childrenOfCardContainer.length; i += 1) {
-      // remove hold class attribute
-      childrenOfCardContainer[i].classList.remove('hold');
-      childrenOfCardContainer[i].innerHTML = '';
-      createCard(arr[i], childrenOfCardContainer[i]);
-    }
+    // message container
+    const screenMessageContainer = document.createElement('div');
+    screenMessageContainer.classList.add('message-container');
+
+    // message
+    const screenMessage = document.createElement('div');
+    screenMessage.classList.add('message');
+    screenMessage.innerHTML = strMessage;
+
+    // add to DOM
+    screenMessageContainer.appendChild(screenMessage);
+    displayContainer.appendChild(screenMessageContainer);
   }
 };
 
-// create hold card marker
-const createOrRemoveHoldCard = (parent) => {
-  if (parent.classList.contains('hold')) {
-    parent.classList.remove('hold');
-    parent.lastChild.remove();
-  } else {
-    parent.classList.add('hold');
-    const holdMarker = document.createElement('div');
-    holdMarker.classList.add('hold-text');
-    holdMarker.innerText = 'HOLD';
-    parent.appendChild(holdMarker);
-  }
-};
-
-// manipulate total credits lossed/gain in each round
-const adjustTotalCredits = (creditNum) => {
-  // update global variable
-  totalCredits = creditNum;
-  // display in DOM
-  creditScoreText.innerHTML = `TOTAL CREDITS: ${totalCredits}`;
-};
-
-// display and adjustment for bets
-const displayAndAdjustBet = (typeOfBet) => {
-  if (typeOfBet === 'betOne' && betAmount < 5) {
-    betAmount += 1;
-    adjustTotalCredits(totalCredits - 1);
-
-    // remove display from other buttons if any
-    for (let i = 0; i < 5; i += 1) {
-      const betDisplayOff = document.querySelectorAll(`.bet-${i}`);
-      betDisplayOff.forEach((element) => element.classList.remove('bet-green'));
-    }
-
-    // add display on correct bet amount
-    const betDisplayOn = document.querySelectorAll(`.bet-${betAmount}`);
-    betDisplayOn.forEach((element) => element.classList.add('bet-green'));
-
-    // disable button click
-    if (betAmount === 5) {
-      betOneButton.disabled = true;
-      betMaxButton.disabled = true;
-    }
-  } else if (typeOfBet === 'betMax' && betAmount != 5) {
-    betAmount = 5;
-    adjustTotalCredits(totalCredits - betAmount);
-    // remove display from other buttons if any
-    for (let i = 0; i < 5; i += 1) {
-      const betDisplayOff = document.querySelectorAll(`.bet-${i}`);
-      betDisplayOff.forEach((element) => element.classList.remove('bet-green'));
-    }
-
-    // add display on correct bet amount
-    const betDisplayOn = document.querySelectorAll(`.bet-${betAmount}`);
-    betDisplayOn.forEach((element) => element.classList.add('bet-green'));
-
-    // disable button click
-    betMaxButton.disabled = true;
-  } else if (typeOfBet === 'reset') {
-    console.log('RESET DISPLAY RAN');
-    // remove display from other buttons if any
-    for (let i = 0; i <= 5; i += 1) {
-      const betDisplayOff = document.querySelectorAll(`.bet-${i}`);
-      betDisplayOff.forEach((element) => element.classList.remove('bet-green'));
-    }
-    // enable button click
-    betOneButton.disabled = false;
-    betMaxButton.disabled = false;
-  }
-
-  console.log('BET ' + betAmount);
-};
-
-/* ================== GAME LOGIC ======================= */
+/* ========================================================== */
+/* ===================== GAME LOGIC ========================== */
+/* ========================================================== */
 
 // function that determins what to do when card is clicked
 const clickedCard = (arrPosition) => {
@@ -406,7 +514,7 @@ const clickedCard = (arrPosition) => {
   // console.log(displayCardsArr[arrPosition]);
 
   // add class to css to show that the card is set to hold
-  const cardToHold = cardContainer.children[arrPosition];
+  const cardToHold = frontCardContainer.children[arrPosition];
   createOrRemoveHoldCard(cardToHold);
 
   // collect the coordinates of all the clicks
@@ -415,7 +523,7 @@ const clickedCard = (arrPosition) => {
 };
 
 // function that determins which cards to hold or switch
-const dealCards = () => {
+const holdOrSwitchCards = () => {
   // count how many repeats
   const coordinatesToHold = [0, 0, 0, 0, 0];
   holdCardsClickCounter.forEach((val) => {
@@ -742,176 +850,187 @@ const calcHandScore = () => {
   let winAmount = 0;
   let bonusAmount = 0;
   let betPlaced = betAmount - 1;
+  let messageOutput;
   // Win ranking Best to Worst
   if (winByRoyalFlush) {
     winAmount = combiPoints.royalFlush[betPlaced];
+    messageOutput = 'Royal Flush!';
   } else if (winByStraightFlush) {
     winAmount = combiPoints.straightFlush[betPlaced];
+    messageOutput = 'Straight Flush!';
   } else if (winByFourOfAKind) {
     winAmount = combiPoints.fourOfAKind[betPlaced];
+    messageOutput = '4 of a kind!';
   } else if (winByFullHouse) {
     winAmount = combiPoints.fullHouse[betPlaced];
+    messageOutput = 'Full house!';
   } else if (winByFlush) {
     winAmount = combiPoints.flush[betPlaced];
+    messageOutput = 'very smelly... you got Flush?';
   } else if (winByStraight) {
     winAmount = combiPoints.straight[betPlaced];
+    messageOutput = 'Straights!';
   } else if (winByThreeOfAKind) {
     winAmount = combiPoints.threeOfAKind[betPlaced];
+    messageOutput = '3 of a kind!';
   } else if (winByTwoPair) {
     winAmount = combiPoints.twoPair[betPlaced];
-  }
-  // bonus points
-  if (winByJacksOrBetter) {
-    bonusAmount += combiPoints.jacksOrBetter[betPlaced] * bonusMultiplyer;
-    // reset bonus multiplyer
-    bonusMultiplyer = 0;
+    messageOutput = '2 pairs!';
   }
 
+  // if there is a win
+  if (messageOutput) {
+    // check if there are bonus points
+    // bonus points
+    if (winByJacksOrBetter) {
+      bonusAmount += combiPoints.jacksOrBetter[betPlaced] * bonusMultiplyer;
+      // reset bonus multiplyer
+      bonusMultiplyer = 0;
+      messageOutput += '\n with BONUS!';
+    }
+  } else {
+    // message for no wins
+    messageOutput = 'Aww shucks. A pile of nothin.';
+  }
+
+  // message
+  createMessage(`${messageOutput}\n Bet Again!`);
+
+  // add to score
   const newCredit = totalCredits + winAmount + bonusAmount;
   adjustTotalCredits(newCredit);
 };
 
-/* ================== GAME INIT FUNCTIONS ======================= */
+/* ========================================================== */
+/* ================== GAME INIT FUNCTIONS =================== */
+/* ========================================================== */
+
 const buildGame = () => {
-  if (GAME_STATE === INTRO_GAME_STATE) {
-    // set credit
-    adjustTotalCredits(100);
-    // populate info-container with point system
-    createInfo();
-  }
+  /* ============== SCORE INFO ============== */
+  // set credit
+  adjustTotalCredits(100);
+  // populate info-container with point system
+  createInfo();
 
-  // make deck and shuffle
-  deckOfCards = shuffleCards(makeDeck());
-
-  // set up for 5 cards
+  /* ============== CARD INFO ============== */
+  // set up for 5 back faced cards
   for (let i = 0; i < 5; i += 1) {
     // create individual card container
     const singleCardContainer = document.createElement('div');
     singleCardContainer.classList.add('card');
-    cardContainer.appendChild(singleCardContainer);
+    backCardContainer.appendChild(singleCardContainer);
 
     // set the initial display of the card container
     createBackOfCard(singleCardContainer);
-
-    // TEST FOR GAME
-    // ['hearts', 'diamonds', 'clubs', 'spades']
-    // [('♥', '♦', '♣', '♠')]
-    const testHand = (
-      card1Rank,
-      card2Rank,
-      card3Rank,
-      card4Rank,
-      car5Rank,
-      suits,
-      symbol
-    ) => {
-      const hand = [
-        {
-          name: '',
-          rank: card1Rank,
-          display: `${card1Rank}`,
-          color: 'black',
-          suit: suits,
-          suitSymbol: symbol,
-        },
-        {
-          name: '',
-          rank: card2Rank,
-          display: `${card2Rank}`,
-          color: 'black',
-          suit: suits,
-          suitSymbol: symbol,
-        },
-        {
-          name: '',
-          rank: card3Rank,
-          display: `${card3Rank}`,
-          color: 'black',
-          suit: suits,
-          suitSymbol: symbol,
-        },
-        {
-          name: '',
-          rank: card4Rank,
-          display: `${card4Rank}`,
-          color: 'black',
-          suit: suits,
-          suitSymbol: symbol,
-        },
-        {
-          name: '',
-          rank: car5Rank,
-          display: `${car5Rank}`,
-          color: 'black',
-          suit: suits,
-          suitSymbol: symbol,
-        },
-      ];
-      return hand;
-    };
-    const hand = testHand(1, 10, 11, 12, 13, 'spades', '♠');
-    // draw card and push into display cards array
-    const drawCard = hand[i];
-    displayCardsArr.push(drawCard);
-
-    // ACTIVATE THIS WHEN NOT TESTING
-    // // draw card and push into display cards array
-    // const drawCard = deckOfCards.pop();
-    // console.log(drawCard);
-    // displayCardsArr.push(drawCard);
-
-    // add event listener
-    singleCardContainer.addEventListener('click', () => {
-      clickedCard(i);
-    });
   }
-
-  // display cards
-  displayCards(displayCardsArr);
 };
 
 const gameInit = () => {
-  // MAKE EVENT LISTENERS
-
-  // deal button
-  dealButton.addEventListener('click', () => {
-    console.log('clicked deal btn!');
-    dealCards();
-    // check if any of the winning conditions are met
-    calcHandScore();
-  });
-
-  // bet one button
-  betOneButton.addEventListener('click', () => {
-    console.log('clicked bet one btn!');
-    // display & adjust bet amount
-    displayAndAdjustBet('betOne');
-  });
-
-  // bet max button
-  betMaxButton.addEventListener('click', () => {
-    console.log('clicked bet max btn!');
-    // display bet amount
-    displayAndAdjustBet('betMax');
-  });
-
-  // MAKE GREETING
+  /* ================================ */
+  /* ======== IF FIRST GAME ======== */
+  /* ================================ */
 
   if (GAME_STATE === INTRO_GAME_STATE) {
+    /* ------------- GREETING -------------*/
+
+    // disable clicking of bet and deal buttons
+    betOneButton.disabled = true;
+    betMaxButton.disabled = true;
+    dealButton.disabled = true;
+
     // create Greeting
-    startGameButton = createGreeting();
+    const startGameButton = createGreeting();
 
     // start game button
     startGameButton.addEventListener('click', () => {
       console.log('clicked start game!');
       // remove greeting
       document.querySelector('.greetings-container').remove();
+      // update game state
+      GAME_STATE = BET_GAME_STATE;
       // initialize game
       buildGame();
-      // update game state
-      GAME_STATE = PLAY_GAME_STATE;
+      // message
+      createMessage('PLACE THY BET!');
+      // enable clicking of bet and button
+      betOneButton.disabled = false;
+      betMaxButton.disabled = false;
+    });
+
+    /* ------------- EVENT LISTENERS -------------*/
+
+    // deal button listener
+    dealButton.addEventListener('click', () => {
+      console.log('clicked deal btn!');
+      if (GAME_STATE === BET_GAME_STATE) {
+        // disable betting buttons
+        betOneButton.disabled = true;
+        betMaxButton.disabled = true;
+
+        /* ------ FIRST CLICK -------*/
+        // deal cards
+        dealCards();
+
+        // message
+        createMessage('LOOKS PRETTY GOOD, WANNA HOLD A FEW?');
+
+        // update game state
+        GAME_STATE = PLAY_GAME_STATE;
+        // wait for player to choose which to hold
+      } else if (GAME_STATE === PLAY_GAME_STATE) {
+        /* ------ SECOND CLICK -------*/
+        // hold or switch logic
+        holdOrSwitchCards();
+
+        // check if any of the winning conditions are met.
+        // A message will be shown after this function runs
+        calcHandScore();
+
+        // enable betting buttons
+        betOneButton.disabled = false;
+        betMaxButton.disabled = false;
+
+        // disable deal button
+        dealButton.disabled = true;
+
+        // disable clicking on cards
+        disableClickingOnCard();
+
+        // update game state
+        GAME_STATE = NEXT_GAME_STATE;
+      }
+      // third click on deal is same as first
+    });
+
+    // bet one button listener
+    betOneButton.addEventListener('click', () => {
+      console.log('clicked bet one btn!');
+      if (GAME_STATE === NEXT_GAME_STATE) {
+        resetGame();
+      }
+      // display & adjust bet amount
+      displayAndAdjustBet('betOne');
+
+      //enable clicking of deal button
+      dealButton.disabled = false;
+    });
+
+    // bet max button listener
+    betMaxButton.addEventListener('click', () => {
+      console.log('clicked bet max btn!');
+      if (GAME_STATE === NEXT_GAME_STATE) {
+        resetGame();
+      }
+      // display bet amount
+      displayAndAdjustBet('betMax');
+
+      //enable clicking of deal button
+      dealButton.disabled = false;
     });
   } else {
+    /* ================================ */
+    /* ====== IF SUBSEQUENT GAME ====== */
+    /* ================================ */
     // Re-initialize game
     buildGame();
   }
@@ -927,13 +1046,20 @@ const resetGame = () => {
   holdCardsClickCounter = [];
   betAmount = 0;
   bonusMultiplyer = 0;
+
   // clear extra css classes
   displayAndAdjustBet('reset');
   // empty cards container
-  cardContainer.innerHTML = '';
-  // re-init game
-  gameInit();
+  frontCardContainer.innerHTML = '';
+
+  // update game state
+  GAME_STATE = BET_GAME_STATE;
+
+  // enable deal button
+  dealButton.disabled = false;
 };
 
+/* ================================================ */
 /* ================== INIT ======================= */
+/* ================================================ */
 gameInit();

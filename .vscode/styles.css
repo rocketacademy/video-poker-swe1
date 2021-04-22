@@ -118,6 +118,7 @@ li {
 .message-div {
   float: left;
   padding: 24px 0 36px 0;
+  text-align: left;
 }
 
 .controls-div {
@@ -125,4 +126,22 @@ li {
   width: 720px;
   text-align: center;
   top: 680px;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th {
+  text-align: left;
+}
+
+td,
+th {
+  padding: 6px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
 }

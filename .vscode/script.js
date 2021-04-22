@@ -159,41 +159,49 @@ const basicScore = (arr) => {
 
 // Score begins at 100
 let score = 100;
+let isZero = true;
 
 // Order of overriding the different winning ranks
 // Takes in array hand of cards, prints in HTML, gives the multiplier score
 const calcHand = (arr) => {
   const tallyObj = tallyCards(hand);
   console.log(`tally object is `, tallyObj);
-
-  // Check suits inside each card object
-  if (isSameSuit(hand)) {
-    const winningSuit = hand[0].suit;
-
-    if (isStraight(hand)) {
-      console.log(`is straight value`, isStraight(hand));
-      printMessage(`Straight flush of ${winningSuit}`);
-      return score;
-    } else {
-      console.log(`is flush`);
-      printMessage(`Flush of ${winningSuit}`);
-      return score;
-    }
-  }
-
-  // [3, 2]
   const cardCounts = Object.values(tallyObj);
+  const cardTypes = Object.keys(tallyObj);
+
+  const royalFlushArr = ["10", "A", "J", "K", "Q"];
   const twoPairsArr = [1, 2, 2];
   const flushArr = [2, 3];
   const oneCountArr = [1, 1, 1, 1, 1];
 
+  // Check suits inside each card object
+  if (isSameSuit(hand)) {
+    isZero = false;
+    const winningSuit = hand[0].suit;
+
+    if (matchArr(cardTypes, royalFlushArr)) {
+      printMessage(`Royal flush of ${winningSuit}`);
+      return (score *= 800);
+    }
+
+    if (isStraight(hand)) {
+      printMessage(`Straight flush of ${winningSuit}`);
+      return (score *= 50);
+    } else {
+      printMessage(`Flush of ${winningSuit}`);
+      return (score *= 6);
+    }
+  }
+
   // Checks for [2 , 2 , 1]. We don't want [3, 1, 1]
   if (matchArr(cardCounts, twoPairsArr) === true) {
+    isZero = false;
     printMessage(`Two pairs`);
   }
 
   // Checks for [3, 2]
   if (matchArr(cardCounts, flushArr) === true) {
+    isZero = false;
     printMessage(`Full house`);
   }
 
@@ -202,6 +210,7 @@ const calcHand = (arr) => {
     matchArr(cardCounts, oneCountArr) === true &&
     isJacksOrBetter(hand) === true
   ) {
+    isZero = false;
     return score;
   }
 
@@ -212,17 +221,26 @@ const calcHand = (arr) => {
 
     if (cardCount === 4) {
       printMessage(`Four of a kind of ${cardType}`);
-      score;
+      isZero = false;
+      score *= 25;
     }
     if (cardCount === 3) {
       printMessage(`Three of a kind of ${cardType}`);
-      score;
+      isZero = false;
+      score *= 3;
     }
     if (cardCount === 2) {
       printMessage(`One pair of ${cardType}`);
-      score;
+      isZero = false;
+      score *= 2;
     }
   }
+  console.log(`is zero is`, isZero);
+
+  if (isZero === true) {
+    score *= 0;
+  }
+  console.log(`is zero is`, isZero);
   return score;
 };
 

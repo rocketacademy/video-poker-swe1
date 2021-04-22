@@ -146,7 +146,9 @@ function xOfAKind(cards) {
   return matches;
 }
 
+// takes dealt cards object as input
 function checkForStraightFlush(cards) {
+  const cardsSuits = checkForSuits(cards);
   const cardRanks = playerCardsRankArr(cards);
   const largestRank = Math.max(...cardRanks);
   console.log(largestRank);
@@ -158,7 +160,7 @@ function checkForStraightFlush(cards) {
     sum += cardRanks[i];
   }
   console.log(sum);
-  if (largestRank === 11 && smallestRank === 7 && sum === 45) {
+  if (largestRank === 11 && smallestRank === 7 && sum === 45 && cardsSuits === 'flush') {
     return 'straight flush';
   }
 }
@@ -244,13 +246,13 @@ function calcHandScore(cardsArr) {
     totalPoints += 50;
     return `Straight. Earned 50 points in the round. Total points: ${totalPoints}`;
   }
+  if (straightFlush === 'straight flush') {
+    totalPoints += 90;
+    return `Straight flush. Earned 90 points in the round.Total points: ${totalPoints}`;
+  }
   if (matchedNum === 'flush') {
     totalPoints += 60;
     return `Flush. Earned 60 points in the round.Total points: ${totalPoints}`;
-  }
-  if (straightFlush === 'straight flush') {
-    totalPoints += 90;
-    return `Straight flush. Earned 90 points in the round.${resultMessage}`;
   }
 
   if (pairResult === 'no match found') {
@@ -327,21 +329,21 @@ startBtn.innerText = 'Play';
 document.body.appendChild(startBtn);
 startBtn.addEventListener('click', () => {
   // cards are dealt to the player.
-  const fiveDealtcards = gameStarted(deck);
+  // const fiveDealtcards = gameStarted(deck);
 
   // ****example hand code starts
-  // const playerHand = [
-  //   { rank: 6, suit: 'hearts', name: '7' },
-  //   { rank: 7, suit: 'hearts', name: '8' },
-  //   { rank: 6, suit: 'hearts', name: '9' },
-  //   { rank: 6, suit: 'hearts', name: '10' },
-  //   { rank: 6, suit: 'spades', name: 'jack' },
-  // ];
-  // displayCards(playerHand);
+  const playerHand = [
+    { rank: 7, suit: 'hearts', name: '7' },
+    { rank: 8, suit: 'hearts', name: '8' },
+    { rank: 11, suit: 'hearts', name: '9' },
+    { rank: 10, suit: 'hearts', name: '10' },
+    { rank: 12, suit: 'hearts', name: 'jack' },
+  ];
+  displayCards(playerHand);
   // ****example hand code ends.
 
   // diplay the cards to the players.
-  displayCards(fiveDealtcards);
+  // displayCards(fiveDealtcards);
 });
 
 const result = viewResult();

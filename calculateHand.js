@@ -151,13 +151,63 @@ const handleCheckFourKind = (playerHand) => {
   return numOfSameValues != 4 ? false : true;
 };
 
+// CHECK FOR FULL HOUSE
+const handleCheckFullHouse = (playerHand) => {
+  // Full house is a hand that contains three cards of one rank and two cards of another rank
+
+  // increment each time match hit (should === 13 for fullhouse)
+  let numOfSameValues = 0;
+
+  // convert values into numbers
+  let convertValues = [];
+
+  // Get array of values from playerHand
+  const valuesArray = playerHand.map((card) => card.value);
+  valuesArray.forEach((card) => {
+    switch (card) {
+      case "J":
+        card = 11;
+        break;
+      case "Q":
+        card = 12;
+        break;
+      case "K":
+        card = 13;
+        break;
+      case "A":
+        card = 1;
+        break;
+
+      default:
+        card;
+        break;
+    }
+    convertValues.push(card);
+  });
+
+  // CHECK FOR 2 SAME CARDS
+  for (i = 0; i < convertValues.length; i += 1) {
+    const valueToCheckAgainst = convertValues[i];
+    for (j = 0; j < convertValues.length; j += 1) {
+      if (convertValues[j] === convertValues[i]) {
+        numOfSameValues += 1;
+      }
+    }
+  }
+
+  console.log("NUMBEROFSAME --> ", numOfSameValues);
+
+  return numOfSameValues != 13 ? false : true;
+};
+
 // const a = [
-//   { value: "Q", suit: "b" },
-//   { value: "Q", suit: "b" },
-//   { value: "Q", suit: "b" },
+//   { value: "K", suit: "b" },
+//   { value: "K", suit: "b" },
 //   { value: 9, suit: "b" },
-//   { value: "Q", suit: "b" },
+//   { value: 9, suit: "b" },
+//   { value: "K", suit: "b" },
 // ];
 
-// // console.log(handleCheckStraightFlush(a));
-// console.log(handleCheckFourKind(a));
+// // // console.log(handleCheckStraightFlush(a));
+// // console.log(handleCheckFourKind(a));
+// console.log(handleCheckFullHouse(a));

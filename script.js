@@ -49,10 +49,10 @@ domSelector.betButton.addEventListener("click", () => {
 
   //  TESTING HAND
   // const a = [
+  //   { value: "J", suit: "b" },
   //   { value: "Q", suit: "b" },
   //   { value: "Q", suit: "b" },
-  //   { value: "Q", suit: "b" },
-  //   { value: "Q", suit: "b" },
+  //   { value: "J", suit: "b" },
   //   { value: "J", suit: "b" },
   // ];
 
@@ -65,6 +65,8 @@ domSelector.betButton.addEventListener("click", () => {
     alert("YES, five kind");
   } else if (handleCheckFourKind(user.hand)) {
     alert("YES, four kind");
+  } else if (handleCheckFullHouse(user.hand)) {
+    alert("YES, full house");
   } else {
     // No match
     alert("Nope, no matches");

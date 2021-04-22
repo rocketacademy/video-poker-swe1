@@ -53,7 +53,7 @@ domSelector.betButton.addEventListener("click", () => {
   //   { value: "Q", suit: "b" },
   //   { value: "Q", suit: "b" },
   //   { value: "Q", suit: "b" },
-  //   { value: "Q", suit: "b" },
+  //   { value: "J", suit: "b" },
   // ];
 
   if (handleCheckStraightFlush(user.hand)) {
@@ -63,8 +63,10 @@ domSelector.betButton.addEventListener("click", () => {
     alert("YES, straight flush");
   } else if (handleCheckFiveKind(user.hand)) {
     alert("YES, five kind");
+  } else if (handleCheckFourKind(user.hand)) {
+    alert("YES, four kind");
   } else {
-    // BREAK
+    // No match
     alert("Nope, no matches");
   }
 

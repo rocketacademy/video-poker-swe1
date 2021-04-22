@@ -103,12 +103,61 @@ const handleCheckStraightFlush = (playerHand) => {
   return false;
 };
 
+// CHECK FOR FOUR OF A KIND
+const handleCheckFourKind = (playerHand) => {
+  // Four of a kind, also known as quads, is a hand that contains four cards of one value and one card of another value
+
+  // convert values into numbers
+  let convertValues = [];
+
+  // counter to keep track of num of cards with same values
+  let numOfSameValues = 0;
+
+  // Get array of values from playerHand
+  const valuesArray = playerHand.map((card) => card.value);
+  valuesArray.forEach((card) => {
+    switch (card) {
+      case "J":
+        card = 11;
+        break;
+      case "Q":
+        card = 12;
+        break;
+      case "K":
+        card = 13;
+        break;
+      case "A":
+        card = 1;
+        break;
+
+      default:
+        card;
+        break;
+    }
+    convertValues.push(card);
+  });
+  console.log(convertValues);
+
+  // Check if there are 4 cards with same value
+  for (i = 0; i < convertValues.length; i += 1) {
+    const valueToCheckAgainst = convertValues[0];
+    if (convertValues[i] === valueToCheckAgainst) {
+      numOfSameValues += 1;
+    }
+  }
+
+  // Return true if so
+  console.log("Four kind --> ", numOfSameValues);
+  return numOfSameValues != 4 ? false : true;
+};
+
 // const a = [
+//   { value: "Q", suit: "b" },
+//   { value: "Q", suit: "b" },
+//   { value: "Q", suit: "b" },
 //   { value: 9, suit: "b" },
 //   { value: "Q", suit: "b" },
-//   { value: "K", suit: "b" },
-//   { value: "J", suit: "b" },
-//   { value: 9, suit: "b" },
 // ];
 
-// console.log(handleCheckStraightFlush(a));
+// // console.log(handleCheckStraightFlush(a));
+// console.log(handleCheckFourKind(a));

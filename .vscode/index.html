@@ -31,6 +31,27 @@
         </div>
       </div>
 
+      <div class="back-div">
+        <div class="window small-window">
+          <div class="title-bar">
+            <div class="title-bar-text">Select Card Back</div>
+
+            <div class="title-bar-controls">
+              <button aria-label="Help"></button>
+              <button aria-label="Close"></button>
+            </div>
+          </div>
+          <div class="window-body">
+            <div class="img-div row-1"></div>
+            <div class="img-div row-2"></div>
+            <section class="field-row">
+              <button>Ok</button>
+              <button>Cancel</button>
+            </section>
+          </div>
+        </div>
+      </div>
+
       <div class="game-div">
         <div class="window game-window">
           <div class="title-bar">
@@ -75,20 +96,28 @@
           <div class="title-bar">
             <div class="title-bar-text">How To Play</div>
             <div class="title-bar-controls">
-              <button aria-label="Minimize"></button>
-              <button aria-label="Maximize"></button>
               <button aria-label="Close"></button>
             </div>
           </div>
           <div class="window-body">
             <menu role="tablist">
-              <button aria-selected="false" aria-controls="gameplay">
+              <button
+                class="gameplay"
+                aria-selected="false"
+                aria-controls="gameplay"
+              >
                 Gameplay
               </button>
-              <button aria-selected="false" aria-controls="stakes">
+              <button
+                class="stakes"
+                aria-selected="false"
+                aria-controls="stakes"
+              >
                 Stakes
               </button>
-              <button aria-selected="true" aria-controls="watch">Watch</button>
+              <button class="watch" aria-selected="true" aria-controls="watch">
+                Watch
+              </button>
             </menu>
 
             <article role="tabpanel" hidden id="gameplay">
@@ -196,6 +225,6 @@
     <!-- Import program logic -->
     <script src="cards.js"></script>
     <script src="script.js"></script>
-    <script src="rules.js"></script>
+    <script src="extra.js"></script>
   </body>
 </html>

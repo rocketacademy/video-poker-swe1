@@ -10,6 +10,12 @@
   font-weight: normal;
 }
 
+:root {
+  --main-width: 500px;
+  --main-height: 500px;
+  --margin-bottom: 440px;
+}
+
 body {
   background-image: url(https://news-cdn.softpedia.com/images/news2/did-you-know-the-windows-xp-wallpaper-was-so-expensive-fedex-refused-to-ship-it-520483-2.jpg);
   background-repeat: no-repeat;
@@ -19,7 +25,7 @@ body {
 }
 
 h1 {
-  /* font-family: "Ms Sans Serif"; */
+  font-family: "Ms Sans Serif";
   font-size: 16px;
 }
 
@@ -41,8 +47,8 @@ h1 {
 
 .game-window,
 .game-window-body {
-  width: 720px;
-  height: 720px;
+  width: var(--main-width);
+  height: var(--main-height);
 }
 
 .green-bg {
@@ -50,7 +56,6 @@ h1 {
   height: 100%;
   width: 100%;
   display: relative;
-  text-align: center;
 }
 
 .green-bg,
@@ -73,7 +78,7 @@ h1 {
 .cards-div {
   margin: 2px;
   max-width: 715px;
-  height: 680px;
+  height: var(--margin-bottom);
   position: absolute;
   right: 50%;
   display: flex;
@@ -123,9 +128,9 @@ li {
 
 .controls-div {
   position: relative;
-  width: 720px;
+  width: var(--main-height);
   text-align: center;
-  top: 680px;
+  top: var(--margin-bottom);
 }
 
 table {

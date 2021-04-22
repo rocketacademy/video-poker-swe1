@@ -43,6 +43,20 @@ const handleDrawDom = (userHand) => {
     suit.innerText = cardOnHand.suit;
     domSelector.pointsBox.innerText = user.points;
 
+    // ADD EVENT LISTENERS
+    deckItem.addEventListener("click", (e) => {
+      console.log("user hand", user.hand);
+      console.log(gameState.deck);
+      const cardValueToChange = e.target.children[0];
+      const cardSuitToChange = e.target.children[1];
+      console.log(
+        `CLICKED TO CHANGE CARD value: ${cardValueToChange} CARD SUIT: ${cardSuitToChange}`
+      );
+      // TAKE THE USER HAND
+
+      // FIND WAY TO CHANGE HAND
+    });
+
     // APPEND TO DOM
 
     domSelector.pointsBoxDiv.style.display = "block";

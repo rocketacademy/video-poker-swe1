@@ -259,15 +259,58 @@ const handleCheckStraight = (playerHand) => {
     : false;
 };
 
+// CHECK FOR THREE KIND
+const handleCheckThreeKind = (playerHand) => {
+  // Array to store non duplicate values
+  const threeKind = [];
+
+  // VARIABLE TO STORE ALL VALUES AFTER CONVERTING STRINGS INTO NUMBERS
+  let convertValues = [];
+  const valuesArray = playerHand.map((card) => card.value);
+  valuesArray.forEach((card) => {
+    switch (card) {
+      case "J":
+        card = 11;
+        break;
+      case "Q":
+        card = 12;
+        break;
+      case "K":
+        card = 13;
+        break;
+      case "A":
+        card = 1;
+        break;
+
+      default:
+        card;
+        break;
+    }
+    convertValues.push(card);
+  });
+  console.log(convertValues);
+
+  // Push to threeKind array if its not a repeat
+  for (i = 0; i < convertValues.length; i += 1) {
+    if (!threeKind.includes(convertValues[i])) {
+      threeKind.push(convertValues[i]);
+    }
+  }
+  console.log(threeKind);
+  // return false if threeKind.length > 3
+  return threeKind.length != 3 ? false : true;
+};
+
 // const a = [
-//   { value: "K", suit: "b" },
-//   { value: "Q", suit: "b" },
-//   { value: "J", suit: "aa" },
-//   { value: 7, suit: "b" },
-//   { value: 10, suit: "b" },
+//   { value: 1, suit: "b" },
+//   { value: 9, suit: "b" },
+//   { value: 1, suit: "aa" },
+//   { value: 9, suit: "b" },
+//   { value: 1, suit: "b" },
 // ];
 
 // // // console.log(handleCheckStraightFlush(a));
 // // console.log(handleCheckFourKind(a));
 // console.log(handleCheckFullHouse(a));
 // console.log(handleCheckStraight(a));
+// console.log(handleCheckThreeKind(a));

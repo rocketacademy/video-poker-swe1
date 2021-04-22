@@ -139,18 +139,6 @@ function checkForStraight(cards) {
   }
 }
 
-function xOfAKind(cards) {
-  let matches = 0;
-  for (let i = 0; i < 1; i += 1) {
-    for (let j = 1; j < cards.length; j += 1) {
-      if (cards[i] === cards[j]) {
-        matches += 1;
-      }
-    }
-  }
-  return matches;
-}
-
 // takes dealt cards object as input
 function checkForStraightFlush(cards) {
   const cardsSuits = checkForSuits(cards);
@@ -230,16 +218,6 @@ function countPairs(pairObj) {
 // takes player's cards(objects) array and returns the winning combination if any.
 function checkForWinningCond(dealtCardsArr) {
   const cardRanks = playerCardsRankArr(dealtCardsArr);
-  const cardNums = xOfAKind(cardRanks);
-  if (cardNums === 1) {
-    return 'pair';
-  }
-  if (cardNums === 2) {
-    return 'three of a kind';
-  }
-  if (cardNums === 3) {
-    return 'four of a kind';
-  }
   // game condition for flush
   const flushCards = checkForSuits(dealtCardsArr);
   if (flushCards === 'flush') {
@@ -364,10 +342,10 @@ startBtn.addEventListener('click', () => {
   // ****example hand code starts
   const playerHand = [
     { rank: 7, suit: 'hearts', name: '7' },
-    { rank: 3, suit: 'hearts', name: '8' },
-    { rank: 4, suit: 'hearts', name: '9' },
+    { rank: 8, suit: 'hearts', name: '8' },
+    { rank: 6, suit: 'hearts', name: '9' },
     { rank: 5, suit: 'hearts', name: '10' },
-    { rank: 6, suit: 'hearts', name: 'jack' },
+    { rank: 2, suit: 'spades', name: 'jack' },
   ];
   displayCards(playerHand);
   // ****example hand code ends.

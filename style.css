@@ -18,10 +18,16 @@ body {
 }
 .card {
   display: inline-block;
-  width: 200px;
+  /* width: 200px; */
+  width: 150px;
+  height: 214px;
   background-color: white;
   padding: 10px;
   margin: 10px;
   vertical-align: top;
   text-align: center;
+  /* text style */
+  box-sizing: border-box;
+  border: 1px #555555 solid;
+  border-radius: 10px;
 }

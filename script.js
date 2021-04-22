@@ -73,7 +73,6 @@ const makeDeck = () => {
 
 const deck = shuffleCards(makeDeck());
 
-let totalPoints = 100;
 let resultText = '';
 
 function viewResult() {
@@ -231,7 +230,9 @@ function checkForWinningCond(dealtCardsArr) {
 }
 
 // function takes an array of card objects and returns the round's result & number of points.
+
 function calcHandScore(cardsArr) {
+  let totalPoints = 100;
   const matchedNum = checkForWinningCond(cardsArr);
   const straightFlush = checkForStraightFlush(cardsArr);
   // game condition for pair/s

@@ -47,10 +47,25 @@ domSelector.betButton.addEventListener("click", () => {
   domSelector.betButton.classList.add("disable-click");
   console.log(handleCheckFiveKind(user.hand));
 
+  //  TESTING HAND
+  // const a = [
+  //   { value: "Q", suit: "b" },
+  //   { value: "Q", suit: "b" },
+  //   { value: "Q", suit: "b" },
+  //   { value: "Q", suit: "b" },
+  //   { value: "Q", suit: "b" },
+  // ];
+
   if (handleCheckStraightFlush(user.hand)) {
+    // if (handleCheckStraightFlush(a)) {
     // UPDATE POINTS
+    // SHOW WINNING MESSAGE
+    alert("YES, straight flush");
+  } else if (handleCheckFiveKind(user.hand)) {
+    alert("YES, five kind");
   } else {
     // BREAK
+    alert("Nope, no matches");
   }
 
   // RESHUFFLE AND CREATE NEW DECK

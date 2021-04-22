@@ -67,6 +67,8 @@ domSelector.betButton.addEventListener("click", () => {
     alert("YES, four kind");
   } else if (handleCheckFullHouse(user.hand)) {
     alert("YES, full house");
+  } else if (handleCheckFlush(user.hand)) {
+    alert("YES, flush");
   } else {
     // No match
     alert("Nope, no matches");

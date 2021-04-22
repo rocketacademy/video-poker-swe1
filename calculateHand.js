@@ -200,14 +200,28 @@ const handleCheckFullHouse = (playerHand) => {
   return numOfSameValues != 13 ? false : true;
 };
 
-// const a = [
-//   { value: "K", suit: "b" },
-//   { value: "K", suit: "b" },
-//   { value: 9, suit: "b" },
-//   { value: 9, suit: "b" },
-//   { value: "K", suit: "b" },
-// ];
+// CHECK FOR FLUSH
+const handleCheckFlush = (playerHand) => {
+  //A flush is a hand that contains five cards all of the same suit, not all of sequential rank, such as K♣ 10♣ 7♣ 6♣ 4♣
+
+  // STORE SUITS INTO ARRAY
+  const suitArray = playerHand.map((card) => card.suit);
+  console.log("THIS IS SUIT ARRAY MAPPED ==> ", suitArray);
+  // CHECK IF ALL SUITS MATCHES
+  const checkSuitMatches = suitArray.every((suit) => suit === suitArray[0]);
+  console.log("THIS IS CHECK SUITS MATCHES --> ", checkSuitMatches);
+  return checkSuitMatches ? true : false;
+};
+
+const a = [
+  { value: "K", suit: "b" },
+  { value: "K", suit: "b" },
+  { value: 9, suit: "aa" },
+  { value: 9, suit: "b" },
+  { value: "K", suit: "b" },
+];
 
 // // // console.log(handleCheckStraightFlush(a));
 // // console.log(handleCheckFourKind(a));
 // console.log(handleCheckFullHouse(a));
+console.log(handleCheckFlush(a));

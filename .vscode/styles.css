@@ -75,4 +75,45 @@ h1 {
   max-width: 715px;
   height: 680px;
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.empty-div {
+  height: 96px;
+  width: 71px;
+  border: 1px solid #000;
+}
+
+.score-div,
+.message-div {
+  display: inline;
+  color: #fff;
+  font-size: 12px;
+  font-family: "Ms Sans Serif";
+}
+
+.score-div {
+  float: right;
+  padding: 24px 36px 0 0;
+}
+
+.score-div p {
+  margin: 0 0 4px 0;
+  text-align: right;
+}
+
+ul {
+  margin: 0;
+  list-style-type: none;
+}
+
+li {
+  margin: 0 0 4px 0;
+}
+
+.message-div {
+  float: left;
+  padding: 24px 0 36px 0;
 }

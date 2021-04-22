@@ -1,5 +1,5 @@
 html {
-  max-width: 70%;
+  /* max-width: 70%; */
 }
 body {
   font-family: 'Odibee Sans', cursive;
@@ -7,7 +7,10 @@ body {
   background-size: auto; */
   background-color: #508250;
 }
-
+.container {
+  max-width: 70%;
+  margin: 0 auto;
+}
 button {
   cursor: pointer;
   width: 200px;
@@ -24,9 +27,12 @@ button {
 #result-btn {
   background-color: rgb(157, 26, 26);
 }
+#reset-btn {
+  background-color: rgb(170, 113, 7);
+}
 
 #display-cards {
-  background-color: pink;
+  /* background-color: pink; */
 }
 .card {
   display: inline-block;
@@ -42,4 +48,16 @@ button {
   box-sizing: border-box;
   border: 1px #555555 solid;
   border-radius: 10px;
+}
+
+h1,
+p {
+  color: white;
+  text-align: center;
+}
+
+/* experiments */
+body {
+  display: flex;
+  flex-direction: column;
 }

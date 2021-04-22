@@ -339,21 +339,30 @@ startBtn.setAttribute('id', 'play-btn');
 document.body.appendChild(startBtn);
 startBtn.addEventListener('click', () => {
   // cards are dealt to the player.
-  // const fiveDealtcards = gameStarted(deck);
+  const fiveDealtcards = gameStarted(deck);
 
   // ****example hand code starts
-  const playerHand = [
-    { rank: 7, suit: 'hearts', name: '7' },
-    { rank: 8, suit: 'hearts', name: '8' },
-    { rank: 6, suit: 'hearts', name: '9' },
-    { rank: 5, suit: 'hearts', name: '10' },
-    { rank: 2, suit: 'spades', name: 'jack' },
-  ];
-  displayCards(playerHand);
+  // const playerHand = [
+  //   { rank: 7, suit: 'hearts', name: '7' },
+  //   { rank: 8, suit: 'hearts', name: '8' },
+  //   { rank: 6, suit: 'hearts', name: '9' },
+  //   { rank: 5, suit: 'hearts', name: '10' },
+  //   { rank: 2, suit: 'spades', name: 'jack' },
+  // ];
+  // displayCards(playerHand);
   // ****example hand code ends.
 
   // diplay the cards to the players.
-  // displayCards(fiveDealtcards);
+  displayCards(fiveDealtcards);
+});
+
+// reset the game
+const resetBtn = document.createElement('button');
+resetBtn.innerText = 'Reset';
+resetBtn.setAttribute('id', 'reset-btn');
+document.body.appendChild(resetBtn);
+resetBtn.addEventListener('click', () => {
+  window.location.reload();
 });
 
 const result = viewResult();

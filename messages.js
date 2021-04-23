@@ -3,7 +3,7 @@ const loseMsg = () => {
   domSelector.loseMessageBox.style.display = "block";
   domSelector.loseMessageBox.classList.add(
     "animate__animated",
-    "animate__wobble"
+    "animate__hinge"
   );
   domSelector.loseMessageBox.innerText =
     "OOPS! No winning hand! Loose 10 points!";
@@ -17,10 +17,7 @@ const winMsg = (points, hand) => {
   const msg = `WOW!! Good Job! That's a ${hand}!. You earned ${points} points`;
 
   domSelector.winMessageBox.style.display = "block";
-  domSelector.winMessageBox.classList.add(
-    "animate__animated",
-    "animate__wobble"
-  );
+  domSelector.winMessageBox.classList.add("animate__animated", "animate__tada");
   domSelector.winMessageBox.innerText = msg;
 
   setTimeout(() => {

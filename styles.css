@@ -274,8 +274,10 @@ a {
 
 .win-msg,
 .lose-msg {
+  position: relative;
   display: none;
   font-size: 150%;
+  z-index: 100;
 }
 
 .lose-msg {
@@ -284,4 +286,8 @@ a {
 
 .win-msg {
   color: green;
+}
+
+.msg {
+  text-align: center;
 }

@@ -61,25 +61,25 @@ domSelector.betButton.addEventListener("click", () => {
     // UPDATE POINTS
     domSelector.pointsBoxDiv.innerHTML = user.points += 50;
     // SHOW WINNING MESSAGE
-    alert("YES, straight flush");
+    winMsg("50", "Straight Flush");
   } else if (handleCheckFiveKind(user.hand)) {
     domSelector.pointsBoxDiv.innerHTML = user.points += 100;
-    alert("YES, five kind");
+    winMsg("100", "Five of a Kind");
   } else if (handleCheckFourKind(user.hand)) {
     domSelector.pointsBoxDiv.innerHTML = user.points += 40;
-    alert("YES, four kind");
+    winMsg("40", "Four of a Kind");
   } else if (handleCheckFullHouse(user.hand)) {
     domSelector.pointsBoxDiv.innerHTML = user.points += 35;
-    alert("YES, full house");
+    winMsg("35", "Full House");
   } else if (handleCheckFlush(user.hand)) {
     domSelector.pointsBoxDiv.innerHTML = user.points += 25;
-    alert("YES, flush");
+    winMsg("25", "Flush");
   } else if (handleCheckStraight(user.hand)) {
     domSelector.pointsBoxDiv.innerHTML = user.points += 20;
-    alert("YES, straight");
+    winMsg("20", "Straight");
   } else if (handleCheckThreeKind(user.hand)) {
     domSelector.pointsBoxDiv.innerHTML = user.points += 15;
-    alert("YES, three kind");
+    winMsg("15", "Three of a Kind");
   } else if (handleCheckPairs(user.hand)) {
     winMsg("5", "One Pair");
     domSelector.pointsBoxDiv.innerHTML = user.points += 5;

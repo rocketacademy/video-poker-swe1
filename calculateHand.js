@@ -262,7 +262,10 @@ const handleCheckStraight = (playerHand) => {
 // CHECK FOR THREE KIND
 const handleCheckThreeKind = (playerHand) => {
   // Array to store non duplicate values
+  // let threeKind = [];
+  // const nonThreeKind = [];
   const threeKind = [];
+  const balanceCards = [];
 
   // VARIABLE TO STORE ALL VALUES AFTER CONVERTING STRINGS INTO NUMBERS
   let convertValues = [];
@@ -290,27 +293,72 @@ const handleCheckThreeKind = (playerHand) => {
   });
   console.log(convertValues);
 
-  // Push to threeKind array if its not a repeat
-  for (i = 0; i < convertValues.length; i += 1) {
-    if (!threeKind.includes(convertValues[i])) {
+  // // Push to threeKind array if its not a repeat
+  // for (i = 0; i < convertValues.length; i += 1) {
+  //   if (!threeKind.includes(convertValues[i])) {
+  //     threeKind.push(convertValues[i]);
+  //   }
+  // }
+  const isThree = (num) => {
+    const fil = convertValues.filter((x) => x === num).length;
+    console.log("Filter function", fil);
+    return fil;
+  };
+
+  for (i = 0; i < convertValues.length; i++) {
+    if (isThree(convertValues[i]) === 3) {
+      console.log("yes", convertValues[i]);
       threeKind.push(convertValues[i]);
+    } else {
+      console.log("NOPE");
+      // th.push(convertValues[i]);
+      !balanceCards.includes(convertValues[i])
+        ? balanceCards.push(convertValues[i])
+        : "";
     }
   }
-  console.log(threeKind);
+
+  console.log("heerererererererere", threeKind);
+  console.log("notttttt", balanceCards);
+  console.log("Threwe kind array", threeKind);
   // return false if threeKind.length > 3
-  return threeKind.length != 3 ? false : true;
+  // return threeKind.length != 3 ? false : true;
+
+  return threeKind.length === 3 && balanceCards.length === 2 ? true : false;
 };
 
-// const a = [
-//   { value: 1, suit: "b" },
-//   { value: 9, suit: "b" },
-//   { value: 1, suit: "aa" },
-//   { value: 9, suit: "b" },
-//   { value: 1, suit: "b" },
-// ];
+const a = [
+  { value: 9, suit: "b" },
+  { value: 9, suit: "b" },
+  { value: "Q", suit: "b" },
+  { value: "Q", suit: "b" },
+  { value: 6, suit: "b" },
+];
 
-// // // console.log(handleCheckStraightFlush(a));
-// // console.log(handleCheckFourKind(a));
+// console.log(handleCheckStraightFlush(a));
+// console.log(handleCheckFourKind(a));
 // console.log(handleCheckFullHouse(a));
 // console.log(handleCheckStraight(a));
 // console.log(handleCheckThreeKind(a));
+
+// const o = [1, 2, 3, 4, 3];
+// let counter = 0;
+// for (i = 0; i < o.length; i++) {
+//   const check = o[i];
+//   console.log("this is i", o[i]);
+//   for (j = 0; j < o.length; j++) {
+//     // console.log("this is j", o[j], "this is ii", o[i]);
+//     if (o[i] === o[j]) {
+//       console.log(`MATCH I: ${o[i]}, ${o[j]}`);
+//       counter++;
+//     }
+
+//     // for (l = 0; l < o.length; l++) {
+//     //   if (counter === 3) {
+//     //     console.log("three", o[l]);
+//     //   }
+//     // }
+//   }
+// }
+
+// console.log("counter after loop", counter);

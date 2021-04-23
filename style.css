@@ -52,6 +52,9 @@ button {
   box-sizing: border-box;
   border: 1px #555555 solid;
   border-radius: 10px;
+  font-size: 32px;
+  padding-top: 50px;
+  line-height: 150%;
 }
 
 h1,

@@ -83,6 +83,9 @@ const deck = shuffleCards(makeDeck());
 
 let resultText = '';
 const btnContainer = document.getElementById('btn-container');
+const casinoAudio = new Audio('audios/cardPlace2.wav');
+const newCardAudio = new Audio('audios/cardPlace1.wav');
+const resultAudio = new Audio('audios/result.mp3');
 
 // creates result button on the screen.
 function viewResult() {
@@ -319,7 +322,16 @@ function displayCards(cardsArr) {
     const card = document.createElement('div');
     card.classList.add('card');
     card.setAttribute('id', i);
-    card.innerText = `${cardsArr[i].rank}  ${cardsArr[i].suit}`;
+    // card.innerText = `${cardsArr[i].rank}  ${cardsArr[i].suit}`;
+
+    const cardRank = document.createElement('div');
+    cardRank.innerText = cardsArr[i].rank;
+    card.appendChild(cardRank);
+
+    const cardSuit = document.createElement('div');
+    cardSuit.innerText = cardsArr[i].suit;
+    card.appendChild(cardSuit);
+
     parentDiv.appendChild(card);
 
     card.addEventListener('click', () => {
@@ -327,11 +339,11 @@ function displayCards(cardsArr) {
       // get a new card for replacement.
       const newDealtCard = deck.pop();
       cardsArr.splice(i, 1, newDealtCard);
-
       setTimeout(() => {
+        // newCardAudio.play();
         parentDiv.innerHTML = '';
         displayCards(cardsArr);
-      }, 3000);
+      }, 2000);
     });
   }
   const finalScore = calcHandScore(cardsArr);
@@ -349,6 +361,7 @@ startBtn.setAttribute('id', 'play-btn');
 btnContainer.appendChild(startBtn);
 
 startBtn.addEventListener('click', () => {
+  casinoAudio.play();
   // cards are dealt to the player.
   const fiveDealtcards = gameStarted(deck);
 
@@ -379,6 +392,7 @@ resetBtn.addEventListener('click', () => {
 const result = viewResult();
 
 result.addEventListener('click', () => {
+  resultAudio.play();
   const resultDiv = document.createElement('div');
   resultDiv.innerText = resultText;
   const resultContainer = document.getElementById('result-container');

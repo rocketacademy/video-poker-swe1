@@ -1,6 +1,6 @@
 // 1 player plays
 // start the game with 100 points.
-// on "deal" => 5 cards will be dealt.
+// on "play" => 5 cards will be dealt.
 // player can ask for different cards.
 // ranking given based on players hand.
 
@@ -82,15 +82,18 @@ const makeDeck = () => {
 const deck = shuffleCards(makeDeck());
 
 let resultText = '';
+const btnContainer = document.getElementById('btn-container');
 
+// creates result button on the screen.
 function viewResult() {
   const resultBtn = document.createElement('button');
   resultBtn.innerText = 'Result';
   resultBtn.setAttribute('id', 'result-btn');
-  document.body.appendChild(resultBtn);
+  btnContainer.appendChild(resultBtn);
   return resultBtn;
 }
 
+// takes arr of cards object as input and returns array containg only card rank.
 function playerCardsRankArr(drawnCardsArr) {
   const ranksOnlyArr = [];
   for (let i = 0; i < drawnCardsArr.length; i += 1) {
@@ -100,6 +103,7 @@ function playerCardsRankArr(drawnCardsArr) {
   return ranksOnlyArr;
 }
 
+// takes arr of cards object as input and returns array containg only card suit.
 function playerCardsSuitArr(drawnCardsArr) {
   const suitsOnlyArr = [];
   for (let i = 0; i < drawnCardsArr.length; i += 1) {
@@ -110,7 +114,7 @@ function playerCardsSuitArr(drawnCardsArr) {
   return suitsOnlyArr;
 }
 
-// check for suits
+// takes array of card suits as input. checks for suits and returns consition for flush.
 function checkForSuits(cards) {
   const cardSuits = playerCardsSuitArr(cards);
   let count = 0;
@@ -127,6 +131,7 @@ function checkForSuits(cards) {
   }
 }
 
+// takes array of card's rank and returns condition for straight.
 function checkForStraight(cards) {
   const smallest = Math.min(...cards);
   const largest = Math.max(...cards);
@@ -140,7 +145,7 @@ function checkForStraight(cards) {
   }
 }
 
-// takes dealt cards object as input
+// takes array of cards object as input. returns condition for straight flush.
 function checkForStraightFlush(cards) {
   const cardsSuits = checkForSuits(cards);
   const cardRanks = playerCardsRankArr(cards);
@@ -161,6 +166,7 @@ function checkForStraightFlush(cards) {
   }
 }
 
+// takes array of cards object. returns an object of key(i.e rank): num of repeats.
 function checkForPair(dealtCardsArr) {
   const cardTypes = {};
   for (let i = 0; i < dealtCardsArr.length; i += 1) {
@@ -174,6 +180,8 @@ function checkForPair(dealtCardsArr) {
   }
   return cardTypes;
 }
+
+// takes object of {key:repeats}. returns match condition for pair, two pairs, 3,4 & 5 of a kind.
 function countPairs(pairObj) {
   console.log(pairObj);
   let result = 'no match found';
@@ -216,7 +224,7 @@ function countPairs(pairObj) {
   return result;
 }
 
-// takes player's cards(objects) array and returns the winning combination if any.
+// takes player's cards object  array and returns the winning combination if any.
 function checkForWinningCond(dealtCardsArr) {
   const cardRanks = playerCardsRankArr(dealtCardsArr);
   // game condition for flush
@@ -233,7 +241,6 @@ function checkForWinningCond(dealtCardsArr) {
 }
 
 // function takes an array of card objects and returns the round's result & number of points.
-
 function calcHandScore(cardsArr) {
   let totalPoints = 100;
   const matchedNum = checkForWinningCond(cardsArr);
@@ -288,7 +295,7 @@ function calcHandScore(cardsArr) {
   return `either no match or something went wrong.${resultMessage}`;
 }
 
-// deals the cards
+// takes entire deck of shuffled cards. returns array of 5 deals cards.
 function gameStarted(cards) {
   const dealtCardsArr = [];
   for (let i = 0; i < 5; i += 1) {
@@ -298,11 +305,13 @@ function gameStarted(cards) {
   return dealtCardsArr;
 }
 
+// takes card id of users input (to remove card). function removes the card.
 function removeCard(cardId) {
   const selectedCard = document.getElementById(cardId);
   selectedCard.remove();
 }
 
+// takes cards array. function replaces the user's removed card and displays the final set of cards.
 function displayCards(cardsArr) {
   const parentDiv = document.getElementById('display-cards');
   for (let i = 0; i < cardsArr.length; i += 1) {
@@ -332,16 +341,17 @@ function displayCards(cardsArr) {
   return cardsArr;
 }
 
-// click the button to start the game.
+// click the play button to start the game.
 const startBtn = document.createElement('button');
 startBtn.innerText = 'Play';
 startBtn.setAttribute('id', 'play-btn');
-document.body.appendChild(startBtn);
+btnContainer.appendChild(startBtn);
+
 startBtn.addEventListener('click', () => {
   // cards are dealt to the player.
   const fiveDealtcards = gameStarted(deck);
 
-  // ****example hand code starts
+  // **** example hardcoded for testing purposes starts here ****
   // const playerHand = [
   //   { rank: 7, suit: 'hearts', name: '7' },
   //   { rank: 8, suit: 'hearts', name: '8' },
@@ -350,17 +360,17 @@ startBtn.addEventListener('click', () => {
   //   { rank: 2, suit: 'spades', name: 'jack' },
   // ];
   // displayCards(playerHand);
-  // ****example hand code ends.
+  // **** example hardcoded for testing ends here. *****
 
   // diplay the cards to the players.
   displayCards(fiveDealtcards);
 });
 
-// reset the game
+// create button to reset the game
 const resetBtn = document.createElement('button');
 resetBtn.innerText = 'Reset';
 resetBtn.setAttribute('id', 'reset-btn');
-document.body.appendChild(resetBtn);
+btnContainer.appendChild(resetBtn);
 resetBtn.addEventListener('click', () => {
   window.location.reload();
 });

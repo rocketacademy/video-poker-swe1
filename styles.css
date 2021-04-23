@@ -213,22 +213,29 @@ a {
 }
 
 .card {
-  background-color: orangered;
+  /* background-color: orangered; */
   border: 0.5px solid #dbdbdb;
   padding: 80px 65px;
   position: relative;
+}
+
+.suit {
+  font-size: 120%;
 }
 
 .top-left-value {
   position: absolute;
   top: 10%;
   left: 10%;
+  font-size: 120%;
 }
 
 .bottom-right-value {
   position: absolute;
   bottom: 10%;
   right: 10%;
+
+  font-size: 120%;
 }
 
 /******* GAME BUTTON SECTION  *******/
@@ -282,6 +289,7 @@ a {
 
 .lose-msg {
   color: red;
+  font-size: 220%;
 }
 
 .win-msg {

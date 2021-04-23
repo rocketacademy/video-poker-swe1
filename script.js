@@ -83,6 +83,7 @@ const deck = shuffleCards(makeDeck());
 
 let resultText = '';
 const btnContainer = document.getElementById('btn-container');
+const rulesDiv = document.getElementById('rules');
 const casinoAudio = new Audio('audios/cardPlace2.wav');
 const newCardAudio = new Audio('audios/cardPlace1.wav');
 const resultAudio = new Audio('audios/result.mp3');
@@ -361,6 +362,7 @@ startBtn.setAttribute('id', 'play-btn');
 btnContainer.appendChild(startBtn);
 
 startBtn.addEventListener('click', () => {
+  rulesDiv.remove();
   casinoAudio.play();
   // cards are dealt to the player.
   const fiveDealtcards = gameStarted(deck);

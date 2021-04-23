@@ -81,3 +81,22 @@ body {
   color: white;
   font-family: 'Roboto Mono', monospace;
 }
+
+.card-rules {
+  background-color: rgb(220, 210, 210);
+  padding: 10px;
+  width: 370px;
+  display: inline-block;
+  margin: 30px;
+  vertical-align: top;
+  font-family: monospace;
+  /* font-size: smaller; */
+}
+li {
+  line-height: 150%;
+  list-style: none;
+  margin-left: 0;
+}
+.li-heading {
+  font-size: 1.25rem;
+}

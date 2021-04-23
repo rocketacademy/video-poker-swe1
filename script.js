@@ -28,6 +28,9 @@ let betAmount = 0;
 // bonus amount from jacks or better
 let bonusMultiplyer = 0;
 
+// background music
+let turnOnBackgrounMusic = false;
+
 /* ========================================================== */
 /* ==================== DOM SELECTORS ======================= */
 /* ========================================================== */
@@ -49,6 +52,88 @@ const creditScoreText = document.querySelector('.credits-text');
 /* ================== HELPER FUNCTIONS======================= */
 /* ========================================================== */
 
+/* ================== AUDIO FUNCTIONS ======================= */
+const createBackgroudMusic = () => {
+  // get music
+  const currentSound = document.querySelector('#background-music');
+
+  // create button
+  const bgMusic = document.createElement('ion-icon');
+  bgMusic.setAttribute('name', 'musical-notes-outline');
+  bgMusic.classList.add('music-btn');
+  document.body.appendChild(bgMusic);
+
+  // pause music func
+  const pauseMusic = () => {
+    currentSound.pause();
+  };
+
+  // add event listener to button
+  bgMusic.addEventListener('click', () => {
+    // if music is off / paused
+    if (!turnOnBackgrounMusic) {
+      currentSound.loop = true;
+      currentSound.play();
+      turnOnBackgrounMusic = true;
+      bgMusic.setAttribute('name', 'pause-outline');
+    } else {
+      // if music is playing
+      pauseMusic();
+      turnOnBackgrounMusic = false;
+      bgMusic.setAttribute('name', 'play-outline');
+    }
+  });
+};
+
+const playStartBtnSound = () => {
+  // get music
+  const currentSound = document.querySelector('#click-start');
+  // preloading ensures that there isn't delay in the audio
+  // e.g. if the user does rapid clicks
+  currentSound.preload = 'auto';
+  currentSound.load();
+  currentSound.play();
+};
+
+const playBetBtSound = () => {
+  // get music
+  const currentSound = document.querySelector('#click-bet');
+  // preloading ensures that there isn't delay in the audio
+  // e.g. if the user does rapid clicks
+  currentSound.preload = 'auto';
+  currentSound.load();
+  currentSound.play();
+};
+
+const playDealBtSound = () => {
+  // get music
+  const currentSound = document.querySelector('#click-deal');
+  // preloading ensures that there isn't delay in the audio
+  // e.g. if the user does rapid clicks
+  currentSound.preload = 'auto';
+  currentSound.load();
+  currentSound.play();
+};
+
+const playWinSound = () => {
+  // get music
+  const currentSound = document.querySelector('#game-win');
+  // preloading ensures that there isn't delay in the audio
+  // e.g. if the user does rapid clicks
+  currentSound.preload = 'auto';
+  currentSound.load();
+  currentSound.play();
+};
+
+const playLoseSound = () => {
+  // get music
+  const currentSound = document.querySelector('#game-lose');
+  // preloading ensures that there isn't delay in the audio
+  // e.g. if the user does rapid clicks
+  currentSound.preload = 'auto';
+  currentSound.load();
+  currentSound.play();
+};
 /* ================== CARD FUNCTIONS ======================= */
 
 // Get a random index ranging from 0 (inclusive) to max (exclusive).
@@ -282,6 +367,7 @@ const displayAndAdjustBet = (typeOfBet) => {
     betDisplayOn.forEach((element) => element.classList.add('bet-green'));
 
     // disable button click
+    betOneButton.disabled = true;
     betMaxButton.disabled = true;
 
     // message
@@ -493,7 +579,7 @@ const createMessage = (strMessage) => {
     screenMessageContainer.classList.add('message-container');
 
     // message
-    const screenMessage = document.createElement('div');
+    const screenMessage = document.createElement('p');
     screenMessage.classList.add('message');
     screenMessage.innerHTML = strMessage;
 
@@ -878,8 +964,11 @@ const calcHandScore = () => {
     messageOutput = '2 pairs!';
   }
 
+  // Check for win to display message and play audio
+  let win = false;
   // if there is a win
   if (messageOutput) {
+    win = true;
     // check if there are bonus points
     // bonus points
     if (winByJacksOrBetter) {
@@ -891,6 +980,7 @@ const calcHandScore = () => {
   } else {
     // message for no wins
     messageOutput = 'Aww shucks. A pile of nothin.';
+    win = false;
   }
 
   // message
@@ -899,6 +989,13 @@ const calcHandScore = () => {
   // add to score
   const newCredit = totalCredits + winAmount + bonusAmount;
   adjustTotalCredits(newCredit);
+
+  //play audio
+  if (win) {
+    playWinSound();
+  } else {
+    playLoseSound();
+  }
 };
 
 /* ========================================================== */
@@ -906,6 +1003,9 @@ const calcHandScore = () => {
 /* ========================================================== */
 
 const buildGame = () => {
+  // music
+  createBackgroudMusic();
+
   /* ============== SCORE INFO ============== */
   // set credit
   adjustTotalCredits(100);
@@ -944,6 +1044,8 @@ const gameInit = () => {
     // start game button
     startGameButton.addEventListener('click', () => {
       console.log('clicked start game!');
+      // play button audio
+      playStartBtnSound();
       // remove greeting
       document.querySelector('.greetings-container').remove();
       // update game state
@@ -951,7 +1053,7 @@ const gameInit = () => {
       // initialize game
       buildGame();
       // message
-      createMessage('PLACE THY BET!');
+      createMessage('PLACE YOUR BET!');
       // enable clicking of bet and button
       betOneButton.disabled = false;
       betMaxButton.disabled = false;
@@ -962,6 +1064,8 @@ const gameInit = () => {
     // deal button listener
     dealButton.addEventListener('click', () => {
       console.log('clicked deal btn!');
+      // play button audio
+      playDealBtSound();
       if (GAME_STATE === BET_GAME_STATE) {
         // disable betting buttons
         betOneButton.disabled = true;
@@ -972,7 +1076,7 @@ const gameInit = () => {
         dealCards();
 
         // message
-        createMessage('LOOKS PRETTY GOOD, WANNA HOLD A FEW?');
+        createMessage('LOOKS PRETTY GOOD, CLICK ON THE CARDS YOU WANT TO HOLD');
 
         // update game state
         GAME_STATE = PLAY_GAME_STATE;
@@ -1005,6 +1109,8 @@ const gameInit = () => {
     // bet one button listener
     betOneButton.addEventListener('click', () => {
       console.log('clicked bet one btn!');
+      // play button audio
+      playBetBtSound();
       if (GAME_STATE === NEXT_GAME_STATE) {
         resetGame();
       }
@@ -1017,6 +1123,8 @@ const gameInit = () => {
 
     // bet max button listener
     betMaxButton.addEventListener('click', () => {
+      // play button audio
+      playBetBtSound();
       console.log('clicked bet max btn!');
       if (GAME_STATE === NEXT_GAME_STATE) {
         resetGame();

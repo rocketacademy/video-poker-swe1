@@ -2,91 +2,105 @@
 *:before,
 *:after {
   box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  /* browser's default font size is 16px */
 }
 
 body {
   background-color: black;
   color: white;
-  padding: 1px;
   font-family: monospace;
+  position: absolute;
 }
 
 button {
-  /* height: 40px;
-  width: 200px;
-  border-radius: 10px; */
   cursor: pointer;
-  max-width: 500px;
+  max-width: 15rem;
+}
+
+.music-btn {
+  display: block;
+  position: absolute;
+  font-size: 2rem;
+  cursor: pointer;
+  top: 2rem;
+  right: 2rem;
+  border: 0.2rem solid rgb(255, 255, 255);
+  border-radius: 50%;
+  padding: 0.5rem;
 }
 
 .main-container {
-  max-width: 800px;
-  height: 600px;
-  margin: 80px auto; /* left and right margin auto*/
-  padding: 10px;
+  width: 100vw;
+  height: 100vh;
+  padding: 3rem 15rem;
+  display: flex;
+  flex-direction: column;
 }
 
 .primary-display-container {
-  background: linear-gradient(180deg, #6900ff 0%, #000066 100%);
+  position: relative;
   height: 80%;
-  border-radius: 20px;
-  padding: 0 15px;
-  margin: 0 20px;
+  width: 100%;
+  border-radius: 2rem;
+  padding: 0.5rem 0.5rem;
+  margin: 0 1rem;
+  background: linear-gradient(180deg, #6900ff 0%, #000066 100%);
   border-style: solid;
   border-color: rgb(34, 34, 255);
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .secondary-display-container {
-  width: 100%;
-  height: 20%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 1px;
-  perspective: 1000px;
+  margin: 1rem;
+  padding: 0;
+  perspective: 50rem;
 }
 
 .credits-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
+  text-align: center;
 }
 
-.credits-text {
-  padding: 5px 15px;
+.credits-container h4 {
+  padding: 0.5rem;
   margin: 0px;
-  font-size: 15px;
-  color: rgba(255, 217, 0, 0.918);
+  font-size: 1.25rem;
+  color: rgba(255, 255, 255, 0.918);
 }
 
 .button-container {
-  position: relative;
-  transform-style: preserve-3d;
+  /* position: relative; */
+  /* transform-style: preserve-3d; */
   transform: rotateX(45deg);
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
   background-color: rgb(27, 27, 27);
-  border-radius: 15px;
-  padding: 20px;
-  width: 100%;
+  padding: 2rem;
+  border-radius: 1rem;
+  width: 80%;
 }
 
 /* Info */
 .info-container {
+  width: 100%;
   height: 50%;
-  padding: 20px;
-  margin: 0;
+  margin: 0.5rem 0 0 0;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
 }
 
 .combi-type {
-  width: 80%;
-  padding: 0 0;
-  margin: 0;
+  font-size: 0.7rem;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -95,19 +109,18 @@ button {
 
 .combi-type > h4 {
   display: inline-block;
-  width: 150px;
-  margin: 0 50px 5px 0;
-  padding: 2px;
+  width: 12rem;
+  padding: 0.3rem 0.5rem;
 }
 .combi-type > p {
   display: inline-block;
-  width: 50px;
-  margin: 0 15px 5px 5px;
-  padding: 0;
+  width: 5rem;
+  margin: 0.2rem;
 }
 
 .bet {
-  font-weight: bold;
+  font-weight: bolder;
+  font-size: 0.8rem;
 }
 
 .alt {
@@ -116,7 +129,9 @@ button {
 
 /* info bet */
 .bet-green {
+  opacity: 0.8;
   background-color: rgba(61, 255, 13, 0.438);
+  box-shadow: 0 0 10px 5px rgba(0, 255, 213, 0.616);
 }
 
 /* Main Card Container */
@@ -124,18 +139,6 @@ button {
   height: 40%;
   width: 100%;
   position: relative;
-}
-
-/* Front Card Container */
-.front-cards-container {
-  position: absolute;
-  z-index: 2;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  top: 36px;
 }
 
 /* Front and Back Card Container */
@@ -148,7 +151,8 @@ button {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  top: 36px;
+  align-items: flex-start;
+  top: 1.5rem;
 }
 
 /* Front Card Container */
@@ -157,38 +161,40 @@ button {
 }
 
 /* Card Properties */
+
+/* Main Display Card Properties */
 .card {
-  width: 80px;
-  height: 120px;
+  width: 6rem;
+  height: 8.25rem;
   background-color: rgb(255, 255, 255);
-  margin: 10px 6px;
-  padding: 1px;
-  border-radius: 5px;
+  margin: 0 0.25rem;
+  border-radius: 0.5rem;
   text-align: center;
   cursor: pointer;
-  color: black;
+  color: rgb(0, 0, 0);
 }
 
 .card-display,
 .card-suit {
   pointer-events: none;
-  font-size: 20px;
+  font-size: 1.2rem;
   text-align: left;
-  margin-left: 2px;
+  margin-left: 0.2rem;
   font-weight: bold;
 }
 
 .card-suit {
-  margin-top: -5px;
+  margin-top: -0.3rem;
+  font-size: 1rem;
 }
 
 .card-suit-display {
   pointer-events: none;
-  font-size: 40px;
+  font-size: 2.5rem;
 }
 
 .red {
-  color: red;
+  color: rgb(255, 0, 0);
 }
 
 .black {
@@ -197,13 +203,15 @@ button {
 
 /* Hold Card Properties */
 .hold {
-  background-color: rgb(241, 241, 241);
+  background-color: rgb(236, 236, 236);
 }
 
 .hold-text {
   pointer-events: none;
-  color: white;
-  background-color: coral;
+  color: rgb(255, 255, 255);
+  background-color: rgb(255, 108, 108);
+  font-weight: bold;
+  padding: 0.2rem;
 }
 
 /* Back of Card Properties */
@@ -211,7 +219,7 @@ button {
   cursor: default;
   width: 100%;
   height: 100%;
-  background-color: #e5e5f7;
+  border-radius: 0.5rem;
   opacity: 0.7;
   background: linear-gradient(135deg, #809bf355 25%, transparent 25%) -6px 0/
       12px 12px,
@@ -224,24 +232,44 @@ button {
 .greetings-container {
   position: absolute;
   background-color: rgb(31, 31, 31);
-  border-radius: 20px;
-  padding: 20px;
+  border-radius: 2rem;
+  padding: 1rem;
   z-index: 3;
   left: 0;
   right: 0;
-  top: 0;
+  top: 1rem;
   bottom: 0;
-  margin: 50px auto 50px auto;
-  width: 500px;
+  margin: 2rem auto 2rem auto;
+  max-width: 80%;
+  height: 80%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+}
+
+.greetings-container h2 {
+  font-size: 1.5rem;
+}
+
+.greetings-container p {
+  font-size: 1rem;
+  margin: 0.5rem 0 0;
+  color: yellow;
 }
 
 .gif {
-  width: 50%;
+  max-width: 40%;
   display: block;
-  margin: 15px;
+  margin: 1rem;
+}
+
+.greetings-container button {
+  background-color: #ffea32;
+  color: rgb(0, 0, 0);
+  font-weight: bolder;
+  padding: 0.5rem 1.5rem;
+  border-radius: 0.5rem;
 }
 
 /* Messages */
@@ -250,12 +278,38 @@ button {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
+}
+
+.message-container p {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #ffd932;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  transform-origin: bottom;
 }
 
 .message {
-  font-size: 20px;
-  font-weight: bold;
+  animation-name: message;
+  animation-timing-function: ease;
+}
+@keyframes message {
+  0% {
+    transform: scale(1, 1) translateY(0);
+  }
+  10% {
+    transform: scale(1, 0.9) translateY(0);
+  }
+  30% {
+    transform: scale(1.05, 1) translateY(-0.1rem);
+  }
+  50% {
+    transform: scale(1, 1) translateY(0);
+  }
+  100% {
+    transform: scale(1, 1) translateY(0);
+  }
 }
 
 /* Fancy Buttons */
@@ -264,7 +318,7 @@ button {
   border: none;
   background: transparent;
   padding: 0;
-  outline-offset: 4px;
+  outline-offset: 0.4rem;
   transition: filter 250ms;
 }
 .shadow {
@@ -273,7 +327,7 @@ button {
   left: 0;
   width: 100%;
   height: 100%;
-  border-radius: 12px;
+  border-radius: 1rem;
   background: hsl(0deg 0% 0% / 0.25);
   will-change: transform;
   transform: translateY(2px);
@@ -285,7 +339,7 @@ button {
   left: 0;
   width: 100%;
   height: 100%;
-  border-radius: 12px;
+  border-radius: 1rem;
   background: linear-gradient(
     to left,
     hsl(340deg 100% 16%) 0%,
@@ -297,7 +351,8 @@ button {
 .front {
   display: block;
   position: relative;
-  padding: 12px 42px;
+  padding: 1rem 0;
+  width: 10rem;
   border-radius: 12px;
   font-size: 1.25rem;
   color: white;
@@ -327,6 +382,10 @@ button {
 }
 .pushable:focus:not(:focus-visible) {
   outline: none;
+}
+
+.pushable:disabled {
+  filter: brightness(10%);
 }
 
 .disable-click {

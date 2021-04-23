@@ -99,6 +99,10 @@ button {
   justify-content: center;
 }
 
+.info-container :nth-child(2n):not(p) {
+  background-color: rgba(26, 140, 246, 0.376);
+}
+
 .combi-type {
   font-size: 0.7rem;
   display: flex;
@@ -121,10 +125,6 @@ button {
 .bet {
   font-weight: bolder;
   font-size: 0.8rem;
-}
-
-.alt {
-  background-color: rgba(26, 140, 246, 0.376);
 }
 
 /* info bet */

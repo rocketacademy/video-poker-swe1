@@ -31,6 +31,19 @@ let bonusMultiplyer = 0;
 // background music
 let turnOnBackgrounMusic = false;
 
+// Point system
+const combiPoints = {
+  royalFlush: [250, 500, 750, 1000, 4000],
+  straightFlush: [50, 100, 150, 200, 250],
+  fourOfAKind: [25, 50, 75, 100, 125],
+  fullHouse: [9, 18, 27, 36, 45],
+  flush: [6, 12, 18, 24, 30],
+  straight: [4, 8, 12, 16, 20],
+  threeOfAKind: [3, 6, 9, 12, 15],
+  twoPair: [2, 4, 6, 8, 10],
+  jacksOrBetter: [1, 2, 3, 4, 5],
+};
+
 /* ========================================================== */
 /* ==================== DOM SELECTORS ======================= */
 /* ========================================================== */
@@ -386,108 +399,51 @@ const displayAndAdjustBet = (typeOfBet) => {
 
 /* ============== USER INTERFACE FUNCTIONS ================== */
 
-// this function creates the data for the card combinations info
-const makePointSystem = () => {
-  const cardCombinations = [
-    { className: 'bet', betOne: 1 },
-    { className: 'royal-flush', betOne: 250 },
-    { className: 'straight-flush', betOne: 50 },
-    { className: 'four-of-a-kind', betOne: 25 },
-    { className: 'full-house', betOne: 9 },
-    { className: 'flush', betOne: 6 },
-    { className: 'straight', betOne: 4 },
-    { className: 'three-of-a-kind', betOne: 3 },
-    { className: 'two-pair', betOne: 2 },
-    { className: 'jacks-or-better', betOne: 1 },
-  ];
+// function that creates the score table (i.e the points system)
+const createScoreTable = () => {
+  // We want the first row of the table to display the bet amount
+  // to do this, we add a new object to the first row
+  let newTable = { bet: [1, 2, 3, 4, 5], ...combiPoints };
 
-  cardCombinations.forEach((element, i) => {
-    // exception for top-menu
-    if (i === 0) {
-      cardCombinations[i].displayName = '';
-      cardCombinations[i].betTwo = element.betOne * 2;
-      cardCombinations[i].betThree = element.betOne * 3;
-      cardCombinations[i].betFour = element.betOne * 4;
-      cardCombinations[i].betMax = element.betOne * 5;
-    }
-    // max bet exception for royal flush
-    else if (i === 1) {
-      cardCombinations[i].displayName = element.className
-        .replaceAll('-', ' ')
-        .toUpperCase();
-      cardCombinations[i].betTwo = element.betOne * 2;
-      cardCombinations[i].betThree = element.betOne * 3;
-      cardCombinations[i].betFour = element.betOne * 4;
-      cardCombinations[i].betMax = element.betOne * 16;
-    } else {
-      cardCombinations[i].displayName = element.className
-        .replaceAll('-', ' ')
-        .toUpperCase();
-      cardCombinations[i].betTwo = element.betOne * 2;
-      cardCombinations[i].betThree = element.betOne * 3;
-      cardCombinations[i].betFour = element.betOne * 4;
-      cardCombinations[i].betMax = element.betOne * 5;
-    }
+  // We want the points to be in individual arrays so we can use them easily to make the rows
+  const newTableArr = [];
+  Object.keys(newTable).forEach((k) => {
+    newTableArr.push(newTable[k]);
   });
 
-  return cardCombinations;
-};
-
-// function that creates the info screen
-const createInfo = () => {
-  const displayInfo = makePointSystem();
-
-  displayInfo.forEach((element, index) => {
-    const displayName = element.displayName;
-    const className = element.className;
-    const betOne = element.betOne;
-    const betTwo = element.betTwo;
-    const betThree = element.betThree;
-    const betFour = element.betFour;
-    const betMax = element.betMax;
-
+  // function to create the rows for the point info
+  const makeRow = (displayName, className, arrTypeOfCombi) => {
     // create combi container
-    const combiContainer = document.createElement('div');
-    combiContainer.classList.add(className, 'combi-type');
-    // alt to style css
-    if (index % 2) {
-      combiContainer.classList.add('alt');
-    }
+    const rowContainer = document.createElement('div');
+    rowContainer.classList.add(className, 'combi-type');
+    infoContainer.appendChild(rowContainer);
 
     // create text items
     // header
     const combiType = document.createElement('h4');
     combiType.innerHTML = displayName;
-    // bet 1
-    const bet1 = document.createElement('p');
-    bet1.classList.add('bet-1');
-    bet1.innerHTML = betOne;
-    // bet 2
-    const bet2 = document.createElement('p');
-    bet2.classList.add('bet-2');
-    bet2.innerHTML = betTwo;
-    // bet 3
-    const bet3 = document.createElement('p');
-    bet3.classList.add('bet-3');
-    bet3.innerHTML = betThree;
-    // bet 4
-    const bet4 = document.createElement('p');
-    bet4.classList.add('bet-4');
-    bet4.innerHTML = betFour;
-    // max bet
-    const maxBet = document.createElement('p');
-    maxBet.classList.add('bet-5');
-    maxBet.innerHTML = betMax;
+    rowContainer.appendChild(combiType);
 
-    // appendChild
-    combiContainer.appendChild(combiType);
-    combiContainer.appendChild(bet1);
-    combiContainer.appendChild(bet2);
-    combiContainer.appendChild(bet3);
-    combiContainer.appendChild(bet4);
-    combiContainer.appendChild(maxBet);
-    infoContainer.appendChild(combiContainer);
-  });
+    // paragraphs
+    arrTypeOfCombi.forEach((v, i) => {
+      const betAmt = document.createElement('p');
+      betAmt.classList.add(`bet-${i + 1}`);
+      betAmt.innerHTML = v;
+      rowContainer.appendChild(betAmt);
+    });
+  };
+
+  // create rows
+  makeRow('', 'bet', newTableArr[0]);
+  makeRow('ROYAL FLUSH', 'royal-flush', newTableArr[1]);
+  makeRow('STRAIGHT FLUSH', 'straight-flush', newTableArr[2]);
+  makeRow('FOUR OF A KIND', 'four-of-a-kind', newTableArr[3]);
+  makeRow('FULL HOUSE', 'full-house', newTableArr[4]);
+  makeRow('FLUSH', 'flush', newTableArr[5]);
+  makeRow('STRAIGHT', 'straight', newTableArr[6]);
+  makeRow('THREE OF A KIND', 'three-of-a-kind', newTableArr[7]);
+  makeRow('TWO PAIR', 'two-pair', newTableArr[8]);
+  makeRow('JACKS OR BETTER', 'jacks-or-better', newTableArr[9]);
 };
 
 // this function takes in a card object and displays the card
@@ -921,18 +877,6 @@ const calcHandScore = () => {
 
   // GET WINNINGS
 
-  const combiPoints = {
-    royalFlush: [250, 500, 750, 1000, 4000],
-    straightFlush: [50, 100, 150, 200, 250],
-    fourOfAKind: [25, 50, 75, 100, 125],
-    fullHouse: [9, 18, 27, 36, 45],
-    flush: [6, 12, 18, 24, 30],
-    straight: [4, 8, 12, 16, 20],
-    threeOfAKind: [3, 6, 9, 12, 15],
-    twoPair: [2, 4, 6, 8, 10],
-    jacksOrBetter: [1, 2, 3, 4, 5],
-  };
-
   let winAmount = 0;
   let bonusAmount = 0;
   let betPlaced = betAmount - 1;
@@ -998,6 +942,30 @@ const calcHandScore = () => {
   }
 };
 
+// function that resets the game
+const resetGame = () => {
+  // reset certain globals
+  // e.g. DONT CHANGE variable totalCredits
+
+  console.log('RESETTING!');
+  displayCardsArr = [];
+  deckOfCards = [];
+  holdCardsClickCounter = [];
+  betAmount = 0;
+  bonusMultiplyer = 0;
+
+  // clear extra css classes
+  displayAndAdjustBet('reset');
+  // empty cards container
+  frontCardContainer.innerHTML = '';
+
+  // update game state
+  GAME_STATE = BET_GAME_STATE;
+
+  // enable deal button
+  dealButton.disabled = false;
+};
+
 /* ========================================================== */
 /* ================== GAME INIT FUNCTIONS =================== */
 /* ========================================================== */
@@ -1009,8 +977,8 @@ const buildGame = () => {
   /* ============== SCORE INFO ============== */
   // set credit
   adjustTotalCredits(100);
-  // populate info-container with point system
-  createInfo();
+  // create scoreTable
+  createScoreTable();
 
   /* ============== CARD INFO ============== */
   // set up for 5 back faced cards
@@ -1142,29 +1110,6 @@ const gameInit = () => {
     // Re-initialize game
     buildGame();
   }
-};
-
-const resetGame = () => {
-  // reset certain globals
-  // e.g. DONT CHANGE variable totalCredits
-
-  console.log('RESETTING!');
-  displayCardsArr = [];
-  deckOfCards = [];
-  holdCardsClickCounter = [];
-  betAmount = 0;
-  bonusMultiplyer = 0;
-
-  // clear extra css classes
-  displayAndAdjustBet('reset');
-  // empty cards container
-  frontCardContainer.innerHTML = '';
-
-  // update game state
-  GAME_STATE = BET_GAME_STATE;
-
-  // enable deal button
-  dealButton.disabled = false;
 };
 
 /* ================================================ */

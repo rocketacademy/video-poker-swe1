@@ -1,5 +1,15 @@
 // HANDLES CALCULATING THE DECK ON HAND (returns score)
 
+// HELPER FUNCTIONS
+
+// returns number of same cards in array
+// this could go into a helper functon script (reusable funciton)
+const isThree = (num, arr) => {
+  const fil = arr.filter((x) => x === num).length;
+  console.log("Filter function", fil);
+  return fil;
+};
+
 // CHECK FOR FIVE OF A KIND
 const handleCheckFiveKind = (playerHand) => {
   // Five of a kind is a hand that contains five cards of one value,
@@ -293,20 +303,8 @@ const handleCheckThreeKind = (playerHand) => {
   });
   console.log(convertValues);
 
-  // // Push to threeKind array if its not a repeat
-  // for (i = 0; i < convertValues.length; i += 1) {
-  //   if (!threeKind.includes(convertValues[i])) {
-  //     threeKind.push(convertValues[i]);
-  //   }
-  // }
-  const isThree = (num) => {
-    const fil = convertValues.filter((x) => x === num).length;
-    console.log("Filter function", fil);
-    return fil;
-  };
-
   for (i = 0; i < convertValues.length; i++) {
-    if (isThree(convertValues[i]) === 3) {
+    if (isThree(convertValues[i], convertValues) === 3) {
       console.log("yes", convertValues[i]);
       threeKind.push(convertValues[i]);
     } else {
@@ -327,12 +325,57 @@ const handleCheckThreeKind = (playerHand) => {
   return threeKind.length === 3 && balanceCards.length === 2 ? true : false;
 };
 
+// CHECK FOR PAIRS
+const handleCheckPairs = (playerHand) => {
+  const pairArray = [];
+  const remainingCards = [];
+
+  // VARIABLE TO STORE ALL VALUES AFTER CONVERTING STRINGS INTO NUMBERS
+  let convertValues = [];
+  const valuesArray = playerHand.map((card) => card.value);
+  valuesArray.forEach((card) => {
+    switch (card) {
+      case "J":
+        card = 11;
+        break;
+      case "Q":
+        card = 12;
+        break;
+      case "K":
+        card = 13;
+        break;
+      case "A":
+        card = 1;
+        break;
+
+      default:
+        card;
+        break;
+    }
+    convertValues.push(card);
+  });
+
+  for (i = 0; i < convertValues.length; i++) {
+    if (isThree(convertValues[i], convertValues) === 2) {
+      pairArray.push(convertValues[i]);
+    } else {
+      !remainingCards.includes(convertValues[i])
+        ? remainingCards.push(convertValues[i])
+        : "";
+    }
+  }
+  console.log("PAIRS", pairArray);
+  console.log("REMAINING CARDS", remainingCards);
+
+  return pairArray.length === 2 && remainingCards.length === 3 ? true : false;
+};
+
 const a = [
   { value: 9, suit: "b" },
   { value: 9, suit: "b" },
-  { value: "Q", suit: "b" },
-  { value: "Q", suit: "b" },
-  { value: 6, suit: "b" },
+  { value: 8, suit: "b" },
+  { value: "K", suit: "b" },
+  { value: 1, suit: "b" },
 ];
 
 // console.log(handleCheckStraightFlush(a));
@@ -340,6 +383,7 @@ const a = [
 // console.log(handleCheckFullHouse(a));
 // console.log(handleCheckStraight(a));
 // console.log(handleCheckThreeKind(a));
+console.log(handleCheckPairs(a));
 
 // const o = [1, 2, 3, 4, 3];
 // let counter = 0;

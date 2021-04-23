@@ -73,6 +73,8 @@ domSelector.betButton.addEventListener("click", () => {
     alert("YES, straight");
   } else if (handleCheckThreeKind(user.hand)) {
     alert("YES, three kind");
+  } else if (handleCheckPairs(user.hand)) {
+    alert("YES, pair");
   } else {
     // No match
     alert("Nope, no matches");

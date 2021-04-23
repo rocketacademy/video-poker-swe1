@@ -271,3 +271,17 @@ a {
   pointer-events: none;
   opacity: 0.5;
 }
+
+.win-msg,
+.lose-msg {
+  display: none;
+  font-size: 150%;
+}
+
+.lose-msg {
+  color: red;
+}
+
+.win-msg {
+  color: green;
+}

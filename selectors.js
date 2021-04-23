@@ -8,4 +8,6 @@ const domSelector = {
   gameButtonSection: document.querySelector(".game-buttons-section"),
   betButton: document.querySelector(".bet-button"),
   changeCardButton: document.querySelector(".change-card-button"),
+  winMessageBox: document.querySelector(".win-msg"),
+  loseMessageBox: document.querySelector(".lose-msg"),
 };

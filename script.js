@@ -59,26 +59,40 @@ domSelector.betButton.addEventListener("click", () => {
   if (handleCheckStraightFlush(user.hand)) {
     // if (handleCheckStraightFlush(a)) {
     // UPDATE POINTS
+    domSelector.pointsBoxDiv.innerHTML = user.points += 50;
     // SHOW WINNING MESSAGE
     alert("YES, straight flush");
   } else if (handleCheckFiveKind(user.hand)) {
+    domSelector.pointsBoxDiv.innerHTML = user.points += 100;
     alert("YES, five kind");
   } else if (handleCheckFourKind(user.hand)) {
+    domSelector.pointsBoxDiv.innerHTML = user.points += 40;
     alert("YES, four kind");
   } else if (handleCheckFullHouse(user.hand)) {
+    domSelector.pointsBoxDiv.innerHTML = user.points += 35;
     alert("YES, full house");
   } else if (handleCheckFlush(user.hand)) {
+    domSelector.pointsBoxDiv.innerHTML = user.points += 25;
     alert("YES, flush");
   } else if (handleCheckStraight(user.hand)) {
+    domSelector.pointsBoxDiv.innerHTML = user.points += 20;
     alert("YES, straight");
   } else if (handleCheckThreeKind(user.hand)) {
+    domSelector.pointsBoxDiv.innerHTML = user.points += 15;
     alert("YES, three kind");
   } else if (handleCheckPairs(user.hand)) {
-    alert("YES, pair");
+    winMsg("5", "One Pair");
+    domSelector.pointsBoxDiv.innerHTML = user.points += 5;
+
+    // alert("YES, pair");
   } else {
     // No match
-    alert("Nope, no matches");
+    loseMsg();
+    domSelector.pointsBoxDiv.innerHTML = user.points -= 10;
+    // alert("Nope, no matches");
   }
+
+  // IF POINTS === 0 END GAME ??
 
   // RESHUFFLE AND CREATE NEW DECK
 

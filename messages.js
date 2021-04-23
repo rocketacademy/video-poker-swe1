@@ -1,0 +1,29 @@
+// Losing message
+const loseMsg = () => {
+  domSelector.loseMessageBox.style.display = "block";
+  domSelector.loseMessageBox.classList.add(
+    "animate__animated",
+    "animate__wobble"
+  );
+  domSelector.loseMessageBox.innerText =
+    "OOPS! No winning hand! Loose 10 points!";
+
+  setTimeout(() => {
+    domSelector.loseMessageBox.style.display = "none";
+  }, 2000);
+};
+
+const winMsg = (points, hand) => {
+  const msg = `WOW!! Good Job! That's a ${hand}!. You earned ${points} points`;
+
+  domSelector.winMessageBox.style.display = "block";
+  domSelector.winMessageBox.classList.add(
+    "animate__animated",
+    "animate__wobble"
+  );
+  domSelector.winMessageBox.innerText = msg;
+
+  setTimeout(() => {
+    domSelector.winMessageBox.style.display = "none";
+  }, 2000);
+};

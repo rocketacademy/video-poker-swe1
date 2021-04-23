@@ -280,22 +280,20 @@ a {
 }
 
 .win-msg,
-.lose-msg {
+.lose-msg,
+.game-over-msg {
   position: relative;
   display: none;
   font-size: 150%;
+  font-size: 220%;
   z-index: 100;
 }
 
-.lose-msg {
+.lose-msg,
+.game-over-msg {
   color: red;
-  font-size: 220%;
 }
 
 .win-msg {
   color: green;
-}
-
-.msg {
-  text-align: center;
 }

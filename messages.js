@@ -24,3 +24,12 @@ const winMsg = (points, hand) => {
     domSelector.winMessageBox.style.display = "none";
   }, 2000);
 };
+
+const gameOverMsg = () => {
+  domSelector.gameOverBox.style.display = "block";
+  domSelector.gameOverBox.innerText = "GAME OVER";
+
+  setTimeout(() => {
+    location.reload();
+  }, 5000);
+};

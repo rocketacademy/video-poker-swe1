@@ -55,9 +55,7 @@ domSelector.betButton.addEventListener("click", () => {
   //   { value: 9, suit: "b" },
   //   { value: 10, suit: "b" },
   // ];
-
   if (handleCheckStraightFlush(user.hand)) {
-    // if (handleCheckStraightFlush(a)) {
     // UPDATE POINTS
     domSelector.pointsBoxDiv.innerHTML = user.points += 50;
     // SHOW WINNING MESSAGE
@@ -90,6 +88,12 @@ domSelector.betButton.addEventListener("click", () => {
     loseMsg();
     domSelector.pointsBoxDiv.innerHTML = user.points -= 10;
     // alert("Nope, no matches");
+  }
+  if (user.points <= 0) {
+    domSelector.dealCardButton.classList.add("disable-click");
+    domSelector.changeCardButton.classList.add("disable-click");
+    domSelector.betButton.classList.add("disable-click");
+    gameOverMsg();
   }
 
   // IF POINTS === 0 END GAME ??

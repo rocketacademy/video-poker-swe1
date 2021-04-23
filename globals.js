@@ -4,7 +4,7 @@
 const user = {
   hand: [],
   cardsToReplace: [],
-  points: 100,
+  points: 5,
 };
 
 // GLOBAL STATE OBJECT

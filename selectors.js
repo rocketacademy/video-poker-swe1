@@ -10,4 +10,5 @@ const domSelector = {
   changeCardButton: document.querySelector(".change-card-button"),
   winMessageBox: document.querySelector(".win-msg"),
   loseMessageBox: document.querySelector(".lose-msg"),
+  gameOverBox: document.querySelector(".game-over-msg"),
 };

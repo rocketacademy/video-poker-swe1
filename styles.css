@@ -297,3 +297,7 @@ a {
 .win-msg {
   color: green;
 }
+
+.msg {
+  text-align: center;
+}

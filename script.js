@@ -248,51 +248,52 @@ function calcHandScore(cardsArr) {
   // game condition for pair/s
   const pairs = checkForPair(cardsArr);
   const pairResult = countPairs(pairs);
-  const resultMessage = `Total points: ${totalPoints}`;
+  // const resultMessage = `Total points: ${totalPoints}`;
+  const resultMessage = ' points earned in the round. Total points: ';
 
   if (matchedNum === 'straight') {
     totalPoints += 50;
-    return `Straight. Earned 50 points in the round. Total points: ${totalPoints}`;
+    return `Straight. 50 ${resultMessage} ${totalPoints}`;
   }
   if (straightFlush === 'straight flush') {
     totalPoints += 90;
-    return `Straight flush. Earned 90 points in the round.Total points: ${totalPoints}`;
+    return `Straight flush. 90 ${resultMessage} ${totalPoints}`;
   }
   if (matchedNum === 'flush') {
     totalPoints += 60;
-    return `Flush. Earned 60 points in the round.Total points: ${totalPoints}`;
+    return `Flush. 60 ${resultMessage} ${totalPoints}`;
   }
 
   if (pairResult === 'no match found') {
     totalPoints -= 10;
-    return `No match found. Lost 10 points in the round.Total points: ${totalPoints}`;
+    return `No match found. Lost 10 point in the round.Total points: ${totalPoints}`;
   }
   if (pairResult === 'pair') {
     totalPoints += 20;
-    return `Pair. Earned 20 points in the round. Total points: ${totalPoints}`;
+    return `Pair. 20 ${resultMessage} ${totalPoints}`;
   }
   if (pairResult === 'two pairs') {
     totalPoints += 30;
-    return `Two Pairs. Earned 30 points in the round.Total points: ${totalPoints}`;
+    return `Two Pairs. 30 ${resultMessage} ${totalPoints}`;
   }
   if (pairResult === 'three of a kind') {
     totalPoints += 40;
-    return `Three of a kind. Earned 40 points in the round. Total points: ${totalPoints}`;
+    return `Three of a kind. 40 ${resultMessage} ${totalPoints}`;
   }
   if (pairResult === 'four of a kind') {
     totalPoints += 80;
-    return `Four of a kind. Earned 80 points in the round. Total points: ${totalPoints}`;
+    return `Four of a kind. 80 ${resultMessage} ${totalPoints}`;
   }
   if (pairResult === 'full house') {
     totalPoints += 70;
-    return `Full House. Earned 70 points in the round. Total points: ${totalPoints}`;
+    return `Full House. 70 ${resultMessage} ${totalPoints}`;
   }
   if (pairResult === 'five of a kind') {
     totalPoints += 100;
-    return `Five of a kind. Earned 100 points in the round. Total points: ${totalPoints}`;
+    return `Five of a kind. 100 ${resultMessage} ${totalPoints}`;
   }
 
-  return `either no match or something went wrong.${resultMessage}`;
+  return 'either no match or something went wrong.';
 }
 
 // takes entire deck of shuffled cards. returns array of 5 deals cards.
@@ -378,7 +379,8 @@ resetBtn.addEventListener('click', () => {
 const result = viewResult();
 
 result.addEventListener('click', () => {
-  const resultDiv = document.createElement('p');
+  const resultDiv = document.createElement('div');
   resultDiv.innerText = resultText;
-  document.body.appendChild(resultDiv);
+  const resultContainer = document.getElementById('result-container');
+  resultContainer.appendChild(resultDiv);
 });

@@ -73,9 +73,9 @@ const gameInit = () => {
 
         /* ------ FIRST CLICK -------*/
         // // deal cards
-        // dealCards();
+        dealCards();
         /*----- Test code to put in your own cards ---*/
-        TESTdealCards();
+        // TESTdealCards();
 
         // message
         createMessage('LOOKS PRETTY GOOD, CLICK ON THE CARDS YOU WANT TO HOLD');

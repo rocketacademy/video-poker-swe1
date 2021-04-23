@@ -16,6 +16,8 @@ const handleCheckFiveKind = (playerHand) => {
   // Five of a kind is a hand that contains five cards of one value,
 
   const convertValues = [];
+  const fourCards = [];
+  const oneCard = [];
 
   // Taking player hand to convert into an array of values
   const convertCard = playerHand.map((hand) => hand.value);
@@ -42,12 +44,22 @@ const handleCheckFiveKind = (playerHand) => {
   });
   console.log("convertValues --> ", convertValues);
 
-  // CHECK IF EVERY VALUE MATCHES
-  const checkFiveKind = convertValues.every(
-    (value) => value === convertValues[0]
-  );
-  console.log("CHECKING FIVEKIND ->> ", checkFiveKind);
-  return checkFiveKind;
+  for (i = 0; i < convertValues.length; i++) {
+    if (isThree(convertValues[i], convertValues) === 4) {
+      fourCards.push(convertValues[i]);
+    } else {
+      if (!oneCard.includes(convertValues[i])) {
+        oneCard.push(convertValues[i]);
+      } else {
+        ("");
+      }
+    }
+  }
+
+  console.log("FOUR CARDS", fourCards);
+  console.log("ONE CARD", oneCard);
+
+  return fourCards.length === 4 && oneCard.length === 1 ? true : false;
 };
 
 // CHECK FOR STRAIGHT FLUSH
@@ -374,9 +386,9 @@ const handleCheckPairs = (playerHand) => {
 const a = [
   { value: 9, suit: "b" },
   { value: 9, suit: "b" },
-  { value: 8, suit: "b" },
-  { value: "K", suit: "b" },
-  { value: 1, suit: "b" },
+  { value: 9, suit: "b" },
+  { value: "J", suit: "b" },
+  { value: 9, suit: "b" },
 ];
 
 // console.log(handleCheckStraightFlush(a));
@@ -384,7 +396,8 @@ const a = [
 // console.log(handleCheckFullHouse(a));
 // console.log(handleCheckStraight(a));
 // console.log(handleCheckThreeKind(a));
-console.log(handleCheckPairs(a));
+// console.log(handleCheckPairs(a));
+console.log(handleCheckFiveKind(a));
 
 // const o = [1, 2, 3, 4, 3];
 // let counter = 0;

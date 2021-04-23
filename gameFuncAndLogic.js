@@ -1,50 +1,4 @@
 /* ========================================================== */
-/* ======================= GLOBALS ========================= */
-/* ========================================================== */
-
-// this is where we will store all the 5 cards displayed
-let displayCardsArr = [];
-
-// this is our deck of cards used for each game
-let deckOfCards = [];
-
-// game state (not super useful now but may be in the future)
-const INTRO_GAME_STATE = 'INTRO_GAME_STATE';
-const BET_GAME_STATE = 'BET_GAME_STATE';
-const PLAY_GAME_STATE = 'PLAY_GAME_STATE';
-const NEXT_GAME_STATE = 'NEXT_GAME_STATE';
-let GAME_STATE = INTRO_GAME_STATE;
-
-// this array holds the coordinates of which cards were clicked
-// we use this array to determin if we should hold or switch cards
-let holdCardsClickCounter = [];
-
-// total credits
-let totalCredits = 100;
-
-// bet amount
-let betAmount = 0;
-
-// bonus amount from jacks or better
-let bonusMultiplyer = 0;
-
-// background music
-let turnOnBackgrounMusic = false;
-
-// Point system
-const combiPoints = {
-  royalFlush: [250, 500, 750, 1000, 4000],
-  straightFlush: [50, 100, 150, 200, 250],
-  fourOfAKind: [25, 50, 75, 100, 125],
-  fullHouse: [9, 18, 27, 36, 45],
-  flush: [6, 12, 18, 24, 30],
-  straight: [4, 8, 12, 16, 20],
-  threeOfAKind: [3, 6, 9, 12, 15],
-  twoPair: [2, 4, 6, 8, 10],
-  jacksOrBetter: [1, 2, 3, 4, 5],
-};
-
-/* ========================================================== */
 /* ==================== DOM SELECTORS ======================= */
 /* ========================================================== */
 // divs
@@ -239,6 +193,7 @@ const makeDeck = () => {
 };
 
 // function that deals cards
+// NOTE THAT WE CAN HARD CODE OUR CARDS IN HERE TO TEST
 const dealCards = () => {
   /* ============== CARD INFO ============== */
   // make deck and shuffle
@@ -251,27 +206,10 @@ const dealCards = () => {
     singleCardContainer.classList.add('card');
     frontCardContainer.appendChild(singleCardContainer);
 
-    /* ============== THIS IS FOR TESTING ============== */
-    /* ============== THIS IS FOR TESTING ============== */
-    /* ============== THIS IS FOR TESTING ============== */
     // draw card and push into display cards array
-    const drawCard = royalFlush()[i];
-    // const drawCard = straightFlush()[i];
-    // const drawCard = fourOfAKind()[i];
-    // const drawCard = fullHouse()[i];
-    // const drawCard = flush()[i];
-    // const drawCard = straight()[i];
-    // const drawCard = threeOfAKind()[i];
-    // const drawCard = twoPair()[i];
+    const drawCard = deckOfCards.pop();
+    console.log(drawCard);
     displayCardsArr.push(drawCard);
-
-    /* ========= UNCOMMENT BELOW WHEN DONE WITH TEST =========== */
-    /* ========= UNCOMMENT BELOW WHEN DONE WITH TEST =========== */
-    /* ========= UNCOMMENT BELOW WHEN DONE WITH TEST =========== */
-    // // draw card and push into display cards array
-    // const drawCard = deckOfCards.pop();
-    // console.log(drawCard);
-    // displayCardsArr.push(drawCard);
 
     // add event listener
     singleCardContainer.addEventListener('click', () => {
@@ -443,7 +381,7 @@ const createScoreTable = () => {
   makeRow('STRAIGHT', 'straight', newTableArr[6]);
   makeRow('THREE OF A KIND', 'three-of-a-kind', newTableArr[7]);
   makeRow('TWO PAIR', 'two-pair', newTableArr[8]);
-  makeRow('JACKS OR BETTER', 'jacks-or-better', newTableArr[9]);
+  makeRow('JACKS OR BETTER (BONUS)', 'jacks-or-better', newTableArr[9]);
 };
 
 // this function takes in a card object and displays the card
@@ -790,6 +728,7 @@ const checkForTwoPair = (rankObj) => {
 const checkForJacksOrBetter = (rankObj) => {
   // a jacks or better has the following properties
   // player gets an extra point for every pair of Jacks or higher
+  console.log(rankObj);
 
   let win = false;
 
@@ -941,178 +880,3 @@ const calcHandScore = () => {
     playLoseSound();
   }
 };
-
-// function that resets the game
-const resetGame = () => {
-  // reset certain globals
-  // e.g. DONT CHANGE variable totalCredits
-
-  console.log('RESETTING!');
-  displayCardsArr = [];
-  deckOfCards = [];
-  holdCardsClickCounter = [];
-  betAmount = 0;
-  bonusMultiplyer = 0;
-
-  // clear extra css classes
-  displayAndAdjustBet('reset');
-  // empty cards container
-  frontCardContainer.innerHTML = '';
-
-  // update game state
-  GAME_STATE = BET_GAME_STATE;
-
-  // enable deal button
-  dealButton.disabled = false;
-};
-
-/* ========================================================== */
-/* ================== GAME INIT FUNCTIONS =================== */
-/* ========================================================== */
-
-const buildGame = () => {
-  // music
-  createBackgroudMusic();
-
-  /* ============== SCORE INFO ============== */
-  // set credit
-  adjustTotalCredits(100);
-  // create scoreTable
-  createScoreTable();
-
-  /* ============== CARD INFO ============== */
-  // set up for 5 back faced cards
-  for (let i = 0; i < 5; i += 1) {
-    // create individual card container
-    const singleCardContainer = document.createElement('div');
-    singleCardContainer.classList.add('card');
-    backCardContainer.appendChild(singleCardContainer);
-
-    // set the initial display of the card container
-    createBackOfCard(singleCardContainer);
-  }
-};
-
-const gameInit = () => {
-  /* ================================ */
-  /* ======== IF FIRST GAME ======== */
-  /* ================================ */
-
-  if (GAME_STATE === INTRO_GAME_STATE) {
-    /* ------------- GREETING -------------*/
-
-    // disable clicking of bet and deal buttons
-    betOneButton.disabled = true;
-    betMaxButton.disabled = true;
-    dealButton.disabled = true;
-
-    // create Greeting
-    const startGameButton = createGreeting();
-
-    // start game button
-    startGameButton.addEventListener('click', () => {
-      console.log('clicked start game!');
-      // play button audio
-      playStartBtnSound();
-      // remove greeting
-      document.querySelector('.greetings-container').remove();
-      // update game state
-      GAME_STATE = BET_GAME_STATE;
-      // initialize game
-      buildGame();
-      // message
-      createMessage('PLACE YOUR BET!');
-      // enable clicking of bet and button
-      betOneButton.disabled = false;
-      betMaxButton.disabled = false;
-    });
-
-    /* ------------- EVENT LISTENERS -------------*/
-
-    // deal button listener
-    dealButton.addEventListener('click', () => {
-      console.log('clicked deal btn!');
-      // play button audio
-      playDealBtSound();
-      if (GAME_STATE === BET_GAME_STATE) {
-        // disable betting buttons
-        betOneButton.disabled = true;
-        betMaxButton.disabled = true;
-
-        /* ------ FIRST CLICK -------*/
-        // deal cards
-        dealCards();
-
-        // message
-        createMessage('LOOKS PRETTY GOOD, CLICK ON THE CARDS YOU WANT TO HOLD');
-
-        // update game state
-        GAME_STATE = PLAY_GAME_STATE;
-        // wait for player to choose which to hold
-      } else if (GAME_STATE === PLAY_GAME_STATE) {
-        /* ------ SECOND CLICK -------*/
-        // hold or switch logic
-        holdOrSwitchCards();
-
-        // check if any of the winning conditions are met.
-        // A message will be shown after this function runs
-        calcHandScore();
-
-        // enable betting buttons
-        betOneButton.disabled = false;
-        betMaxButton.disabled = false;
-
-        // disable deal button
-        dealButton.disabled = true;
-
-        // disable clicking on cards
-        disableClickingOnCard();
-
-        // update game state
-        GAME_STATE = NEXT_GAME_STATE;
-      }
-      // third click on deal is same as first
-    });
-
-    // bet one button listener
-    betOneButton.addEventListener('click', () => {
-      console.log('clicked bet one btn!');
-      // play button audio
-      playBetBtSound();
-      if (GAME_STATE === NEXT_GAME_STATE) {
-        resetGame();
-      }
-      // display & adjust bet amount
-      displayAndAdjustBet('betOne');
-
-      //enable clicking of deal button
-      dealButton.disabled = false;
-    });
-
-    // bet max button listener
-    betMaxButton.addEventListener('click', () => {
-      // play button audio
-      playBetBtSound();
-      console.log('clicked bet max btn!');
-      if (GAME_STATE === NEXT_GAME_STATE) {
-        resetGame();
-      }
-      // display bet amount
-      displayAndAdjustBet('betMax');
-
-      //enable clicking of deal button
-      dealButton.disabled = false;
-    });
-  } else {
-    /* ================================ */
-    /* ====== IF SUBSEQUENT GAME ====== */
-    /* ================================ */
-    // Re-initialize game
-    buildGame();
-  }
-};
-
-/* ================================================ */
-/* ================== INIT ======================= */
-/* ================================================ */
-gameInit();

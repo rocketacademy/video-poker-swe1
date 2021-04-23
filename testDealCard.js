@@ -1,5 +1,10 @@
-const deckOfFive = [];
+/* ========================================================== */
+/* ========================= TEST CODE ====================== */
+/* ========================================================== */
 
+// The test code below allows us to input the 5 cards that appear at the begining of the game
+
+const deckOfFive = [];
 const makeCard = (
   cardRank,
   displayRank,
@@ -18,9 +23,6 @@ const makeCard = (
   deckOfFive.push(hand);
 };
 
-// ['hearts', 'diamonds', 'clubs', 'spades']
-// [('♥', '♦', '♣', '♠')]
-
 const royalFlush = () => {
   makeCard(1, 'A', 'spades', '♠', 'black');
   makeCard(10, '10', 'spades', '♠', 'black');
@@ -29,7 +31,6 @@ const royalFlush = () => {
   makeCard(13, 'K', 'spades', '♠', 'black');
   return deckOfFive;
 };
-
 const straightFlush = () => {
   makeCard(4, '4', 'hearts', '♥', 'red');
   makeCard(5, '5', 'hearts', '♥', 'red');
@@ -38,7 +39,6 @@ const straightFlush = () => {
   makeCard(8, '8', 'hearts', '♥', 'red');
   return deckOfFive;
 };
-
 const fourOfAKind = () => {
   makeCard(5, '5', 'diamonds', '♦', 'red');
   makeCard(5, '5', 'clubs', '♣', 'black');
@@ -47,7 +47,6 @@ const fourOfAKind = () => {
   makeCard(12, 'Q', 'hearts', '♥', 'red');
   return deckOfFive;
 };
-
 const fullHouse = () => {
   makeCard(3, '3', 'diamonds', '♦', 'red');
   makeCard(3, '3', 'clubs', '♣', 'black');
@@ -56,7 +55,6 @@ const fullHouse = () => {
   makeCard(12, 'Q', 'hearts', '♥', 'red');
   return deckOfFive;
 };
-
 const flush = () => {
   makeCard(11, 'J', 'diamonds', '♦', 'red');
   makeCard(6, '6', 'diamonds', '♦', 'red');
@@ -65,7 +63,6 @@ const flush = () => {
   makeCard(2, '2', 'diamonds', '♦', 'red');
   return deckOfFive;
 };
-
 const straight = () => {
   makeCard(4, '4', 'diamonds', '♦', 'red');
   makeCard(5, '5', 'clubs', '♣', 'black');
@@ -74,7 +71,6 @@ const straight = () => {
   makeCard(8, '8', 'hearts', '♥', 'red');
   return deckOfFive;
 };
-
 const threeOfAKind = () => {
   makeCard(7, '7', 'diamonds', '♦', 'red');
   makeCard(7, '7', 'clubs', '♣', 'black');
@@ -83,7 +79,6 @@ const threeOfAKind = () => {
   makeCard(12, 'Q', 'hearts', '♥', 'red');
   return deckOfFive;
 };
-
 const twoPair = () => {
   makeCard(7, '7', 'diamonds', '♦', 'red');
   makeCard(7, '7', 'clubs', '♣', 'black');
@@ -91,4 +86,38 @@ const twoPair = () => {
   makeCard(12, 'Q', 'spades', '♠', 'black');
   makeCard(12, 'Q', 'hearts', '♥', 'red');
   return deckOfFive;
+};
+
+// THIS FUNCTION IS CALLED IN gameInit.js (line 77) to test
+const TESTdealCards = () => {
+  /* ============== CARD INFO ============== */
+  // make deck and shuffle
+  deckOfCards = shuffleCards(makeDeck());
+
+  // set up for 5 cards
+  for (let i = 0; i < 5; i += 1) {
+    // create individual card container
+    const singleCardContainer = document.createElement('div');
+    singleCardContainer.classList.add('card');
+    frontCardContainer.appendChild(singleCardContainer);
+
+    /* ============== THIS IS FOR TESTING ============== */
+    // draw card and push into display cards array
+    // const drawCard = royalFlush()[i];
+    // const drawCard = straightFlush()[i];
+    // const drawCard = fourOfAKind()[i];
+    // const drawCard = fullHouse()[i];
+    // const drawCard = flush()[i];
+    // const drawCard = straight()[i];
+    // const drawCard = threeOfAKind()[i];
+    const drawCard = twoPair()[i];
+    displayCardsArr.push(drawCard);
+
+    // add event listener
+    singleCardContainer.addEventListener('click', () => {
+      clickedCard(i);
+    });
+  }
+  // display cards
+  displayCards(displayCardsArr);
 };

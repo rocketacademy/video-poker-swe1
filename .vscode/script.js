@@ -6,6 +6,7 @@ const gameDiv = document.querySelector(".game-div");
 const cardsDiv = document.querySelector(".cards-div");
 const scoreTag = document.querySelector(".player-score");
 const messageDiv = document.querySelector(".message-div");
+const backDiv = document.querySelector(".back-div");
 
 // Message
 const messageTag = document.querySelector(".message");
@@ -85,10 +86,12 @@ const removeCardDisplay = (index) => {
 
 // Initialize game
 const initGame = () => {
-  // Hide the opening window
-  entryDiv.style.display = "none";
   playBtn.style.display = "none";
   replayBtn.style.display = "none";
+
+  // Hide the opening window
+  entryDiv.style.display = "none";
+  backDiv.style.display = "none";
 };
 
 initGame();
@@ -100,8 +103,11 @@ startBtn.addEventListener("click", () => {
   startBtn.style.display = "none";
 
   // Deal the first five random cards in the array
-  createHand();
-  replaceCards();
+  // createHand();
+  for (i = 0; i < allOther.length; i += 1) {
+    hand.push(allOther[i]);
+  }
+  // replaceCards();
 
   // Creates the display for the hand of cards
   for (i = 0; i < hand.length; i += 1) {
@@ -128,7 +134,6 @@ playBtn.addEventListener("click", () => {
   // Calculate the score
   score = calcHand(hand);
   scoreTag.innerHTML = score;
-  console.log(score);
   playBtn.style.display = "none";
   replayBtn.style.display = "inline";
   printMessage(`Replay?`);
@@ -193,6 +198,12 @@ const calcHand = (arr) => {
     }
   }
 
+  if (isStraight(hand)) {
+    isZero = false;
+    printMessage(`Straight`);
+    return (score *= 4);
+  }
+
   // Checks for [2 , 2 , 1]. We don't want [3, 1, 1]
   if (matchArr(cardCounts, twoPairsArr) === true) {
     isZero = false;
@@ -222,7 +233,7 @@ const calcHand = (arr) => {
     if (cardCount === 4) {
       printMessage(`Four of a kind of ${cardType}`);
       isZero = false;
-      score *= 25;
+      return (score *= 25);
     }
     if (cardCount === 3) {
       printMessage(`Three of a kind of ${cardType}`);
@@ -235,12 +246,13 @@ const calcHand = (arr) => {
       score *= 2;
     }
   }
-  console.log(`is zero is`, isZero);
 
-  if (isZero === true) {
-    score *= 0;
-  }
   console.log(`is zero is`, isZero);
+  if (isZero == true) {
+    console.log(`is Zero`, isZero);
+    return (score *= 0);
+  }
+  console.log(`final score is `, score);
   return score;
 };
 
@@ -256,7 +268,6 @@ const matchArr = (arr1, arr2) => {
   for (i = 0; i < arr1.length; i += 1) {
     if (arr1[i] !== arr2[i]) return false;
   }
-  console.log(`matched for ${arr1} and ${arr2}`);
   // Otherwise, return true
   return true;
 };
@@ -308,7 +319,6 @@ const isStraight = (cardObjArr) => {
 
 const calcStraightSum = (firstTerm) => {
   const sum = 2.5 * (2 * firstTerm + 4);
-  console.log(sum);
   return sum;
 };
 

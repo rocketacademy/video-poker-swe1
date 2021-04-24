@@ -87,7 +87,7 @@ const rulesDiv = document.getElementById('rules');
 const casinoAudio = new Audio('audios/cardPlace2.wav');
 const newCardAudio = new Audio('audios/cardPlace1.wav');
 const resultAudio = new Audio('audios/result.mp3');
-const canClick = true;
+let canClick = true;
 let canClickResult = true;
 
 // creates result button on the screen.
@@ -151,7 +151,7 @@ function checkForStraight(cards) {
   // }
 
   const checkSum = (smallest) * 5 + 10;
-  if (sum === checkSum) {
+  if (sum === checkSum && (largest - smallest === 4)) {
     return 'straight';
   }
 }

@@ -309,4 +309,7 @@ a {
     font-size: 60%;
     margin: 25px 28px;
   }
+  .card {
+    padding: 51px 40px;
+  }
 }

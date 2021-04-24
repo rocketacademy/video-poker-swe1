@@ -87,6 +87,8 @@ const rulesDiv = document.getElementById('rules');
 const casinoAudio = new Audio('audios/cardPlace2.wav');
 const newCardAudio = new Audio('audios/cardPlace1.wav');
 const resultAudio = new Audio('audios/result.mp3');
+let canClick = true;
+let canClickResult = true;
 
 // creates result button on the screen.
 function viewResult() {
@@ -344,7 +346,7 @@ function displayCards(cardsArr) {
         // newCardAudio.play();
         parentDiv.innerHTML = '';
         displayCards(cardsArr);
-      }, 2000);
+      }, 3000);
     });
   }
   const finalScore = calcHandScore(cardsArr);
@@ -379,7 +381,10 @@ startBtn.addEventListener('click', () => {
   // **** example hardcoded for testing ends here. *****
 
   // diplay the cards to the players.
-  displayCards(fiveDealtcards);
+  if (canClick) {
+    displayCards(fiveDealtcards);
+    canClick = false;
+  }
 });
 
 // create button to reset the game
@@ -394,9 +399,15 @@ resetBtn.addEventListener('click', () => {
 const result = viewResult();
 
 result.addEventListener('click', () => {
-  resultAudio.play();
-  const resultDiv = document.createElement('div');
-  resultDiv.innerText = resultText;
-  const resultContainer = document.getElementById('result-container');
-  resultContainer.appendChild(resultDiv);
+  if (canClickResult === true) {
+    resultAudio.play();
+    const resultDiv = document.createElement('div');
+    resultDiv.innerText = resultText;
+    const resultContainer = document.getElementById('result-container');
+    resultContainer.appendChild(resultDiv);
+    canClickResult = false;
+  }
+  else {
+    alert('\'Reset\' the game to play again');
+  }
 });

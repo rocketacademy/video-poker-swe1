@@ -16,6 +16,7 @@ const startBtn = document.querySelector(".start-btn");
 const dealBtn = document.querySelector(".deal-btn");
 const playBtn = document.querySelector(".play-btn");
 const replayBtn = document.querySelector(".replay-btn");
+const selectCardBtn = document.querySelector(".select-card-btn");
 
 /* ------- HELPER FUNCTIONS FOR CARDS ------ */
 
@@ -81,74 +82,6 @@ const removeCardDisplay = (index) => {
     hand[index] = "";
   }
 };
-
-/* ------- GAME PLAY ------ */
-
-// Initialize game
-const initGame = () => {
-  playBtn.style.display = "none";
-  replayBtn.style.display = "none";
-
-  // Hide the opening window
-  entryDiv.style.display = "none";
-  backDiv.style.display = "none";
-};
-
-initGame();
-
-// When the clicks "Start"
-startBtn.addEventListener("click", () => {
-  // Show Play, hide Start
-  playBtn.style.display = "inline";
-  startBtn.style.display = "none";
-
-  // Deal the first five random cards in the array
-  // createHand();
-  for (i = 0; i < allOther.length; i += 1) {
-    hand.push(allOther[i]);
-  }
-  // replaceCards();
-
-  // Creates the display for the hand of cards
-  for (i = 0; i < hand.length; i += 1) {
-    const cardTag = createCardDiv(i);
-    displayCard(hand[i], cardTag);
-  }
-});
-
-// When user clicks "Deal", the game deals the cards, add to hand
-dealBtn.addEventListener("click", () => {
-  console.log(`deal button was clicked`);
-  replaceCards();
-
-  // Empty previous div & display hand of cards
-  cardsDiv.innerHTML = "";
-  for (i = 0; i < hand.length; i += 1) {
-    const cardTag = createCardDiv(i);
-    displayCard(hand[i], cardTag);
-  }
-});
-
-// The users selects which cards they want to keep & signal "Play"
-playBtn.addEventListener("click", () => {
-  // Calculate the score
-  score = calcHand(hand);
-  scoreTag.innerHTML = score;
-  playBtn.style.display = "none";
-  replayBtn.style.display = "inline";
-  printMessage(`Replay?`);
-});
-
-replayBtn.addEventListener("click", () => {
-  // Empty the hand;
-  hand.splice(0, hand.length);
-  cardsDiv.innerHTML = "";
-  startBtn.style.display = "inline";
-  dealBtn.style.display = "inline";
-  playBtn.style.display = "none";
-  replayBtn.style.display = "none";
-  messageTag.innerHTML = "";
-});
 
 /* -------- CALCULATING HAND SCORE ---------- */
 
@@ -351,3 +284,84 @@ const tallyCards = (arr) => {
   }
   return cardTypes;
 };
+
+/* ------- GAME PLAY ------ */
+
+// Settings & permissions
+const initSettings = () => {
+  // selectedBack =
+};
+
+let selectedBackImg;
+
+selectCardBtn.addEventListener("click", () => {
+  // Saves the card back
+  selectedBackImg = selectedBack.getElementsByTagName("img")[0].src;
+  backDiv.style.display = "none";
+});
+
+// Initialize game
+const initGame = () => {
+  playBtn.style.display = "none";
+  replayBtn.style.display = "none";
+
+  // Hide the opening window
+  entryDiv.style.display = "none";
+  // backDiv.style.display = "none";
+};
+
+initGame();
+
+// When the clicks "Start"
+startBtn.addEventListener("click", () => {
+  // Show Play, hide Start
+  playBtn.style.display = "inline";
+  startBtn.style.display = "none";
+
+  // Deal the first five random cards in the array
+  // createHand();
+  for (i = 0; i < allOther.length; i += 1) {
+    hand.push(allOther[i]);
+  }
+  // replaceCards();
+
+  // Creates the display for the hand of cards
+  for (i = 0; i < hand.length; i += 1) {
+    const cardTag = createCardDiv(i);
+    displayCard(hand[i], cardTag);
+  }
+});
+
+// When user clicks "Deal", the game deals the cards, add to hand
+dealBtn.addEventListener("click", () => {
+  console.log(`deal button was clicked`);
+  replaceCards();
+
+  // Empty previous div & display hand of cards
+  cardsDiv.innerHTML = "";
+  for (i = 0; i < hand.length; i += 1) {
+    const cardTag = createCardDiv(i);
+    displayCard(hand[i], cardTag);
+  }
+});
+
+// The users selects which cards they want to keep & signal "Play"
+playBtn.addEventListener("click", () => {
+  // Calculate the score
+  score = calcHand(hand);
+  scoreTag.innerHTML = score;
+  playBtn.style.display = "none";
+  replayBtn.style.display = "inline";
+  printMessage(`Replay?`);
+});
+
+replayBtn.addEventListener("click", () => {
+  // Empty the hand;
+  hand.splice(0, hand.length);
+  cardsDiv.innerHTML = "";
+  startBtn.style.display = "inline";
+  dealBtn.style.display = "inline";
+  playBtn.style.display = "none";
+  replayBtn.style.display = "none";
+  messageTag.innerHTML = "";
+});

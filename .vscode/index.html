@@ -23,6 +23,8 @@
           </div>
           <div class="window-body">
             <p>I am over eighteen years old.</p>
+            <input type="checkbox" id="show-again" />
+            <label for="show-again">Don't show this message again</label>
             <section class="field-row">
               <button>Yes</button>
               <button>No</button>
@@ -31,6 +33,7 @@
         </div>
       </div>
 
+      <!-- Choose the card backing -->
       <div class="back-div">
         <div class="window small-window">
           <div class="title-bar">
@@ -41,17 +44,55 @@
               <button aria-label="Close"></button>
             </div>
           </div>
-          <div class="window-body">
-            <div class="img-div row-1"></div>
-            <div class="img-div row-2"></div>
+          <div class="window-body cards-back-body">
+            <div class="card-img-div row-1">
+              <div class="card-back card-active">
+                <img src="cards/back/1.png" alt="card-back-img" />
+              </div>
+              <div class="card-back">
+                <img src="cards/back/2.png" alt="card-back-img" />
+              </div>
+              <div class="card-back">
+                <img src="cards/back/3.png" alt="card-back-img" />
+              </div>
+              <div class="card-back">
+                <img src="cards/back/4.png" alt="card-back-img" />
+              </div>
+              <div class="card-back">
+                <img src="cards/back/5.png" alt="card-back-img" />
+              </div>
+              <div class="card-back">
+                <img src="cards/back/6.png" alt="card-back-img" />
+              </div>
+            </div>
+            <div class="card-img-div row-2">
+              <div class="card-back">
+                <img src="cards/back/7.png" alt="card-back-img" />
+              </div>
+              <div class="card-back">
+                <img src="cards/back/8.png" alt="card-back-img" />
+              </div>
+              <div class="card-back">
+                <img src="cards/back/9.png" alt="card-back-img" />
+              </div>
+              <div class="card-back">
+                <img src="cards/back/10.png" alt="card-back-img" />
+              </div>
+              <div class="card-back">
+                <img src="cards/back/11.png" alt="card-back-img" />
+              </div>
+              <div class="card-back">
+                <img src="cards/back/12.png" alt="card-back-img" />
+              </div>
+            </div>
             <section class="field-row">
-              <button>Ok</button>
-              <button>Cancel</button>
+              <button class="select-card-btn">Ok</button>
             </section>
           </div>
         </div>
       </div>
 
+      <!-- Main game window -->
       <div class="game-div">
         <div class="window game-window">
           <div class="title-bar">
@@ -91,6 +132,7 @@
         </div>
       </div>
 
+      <!-- Rules -->
       <div class="rules-div">
         <div class="window" style="width: 400px">
           <div class="title-bar">
@@ -102,20 +144,18 @@
           <div class="window-body">
             <menu role="tablist">
               <button
-                class="gameplay"
+                class="tab"
                 aria-selected="false"
                 aria-controls="gameplay"
               >
                 Gameplay
               </button>
-              <button
-                class="stakes"
-                aria-selected="false"
-                aria-controls="stakes"
-              >
+
+              <button class="tab" aria-selected="false" aria-controls="stakes">
                 Stakes
               </button>
-              <button class="watch" aria-selected="true" aria-controls="watch">
+
+              <button class="tab" aria-selected="true" aria-controls="watch">
                 Watch
               </button>
             </menu>
@@ -224,6 +264,7 @@
 
     <!-- Import program logic -->
     <script src="cards.js"></script>
+    <script src="testcases.js"></script>
     <script src="script.js"></script>
     <script src="extra.js"></script>
   </body>

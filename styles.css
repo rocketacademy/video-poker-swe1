@@ -301,3 +301,12 @@ a {
 .msg {
   text-align: center;
 }
+
+/* MEDIA QUERIES */
+
+@media only screen and (max-width: 500px) {
+  .game-rules-section {
+    font-size: 60%;
+    margin: 25px 28px;
+  }
+}

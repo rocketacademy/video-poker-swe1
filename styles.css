@@ -312,4 +312,15 @@ a {
   .card {
     padding: 51px 40px;
   }
+
+  .win-msg,
+  .lose-msg,
+  .game-over-msg {
+    position: relative;
+    display: none;
+    font-size: 150%;
+    font-size: 110%;
+    z-index: 100;
+    padding: 2px 10px;
+  }
 }

@@ -110,4 +110,17 @@ const handleDealCard = (userHand) => {
 
 // HANDLES GIVING OUT NEW CARDS TO PLAYER IF REQUESTED
 // only care about replacing selected cards
-const handleNewCards = (oldCards) => {};
+const handleNewCards = (oldCards, i, arr) => {
+  // NOT WORKING YET STILL STUCK HERE
+
+  // Mutate user.hand
+
+  const r = Math.floor(Math.random() * gameState.deck.length);
+  console.log("Current??", arr);
+  const newCard = user.hand.splice(1, 1, gameState.deck[r]);
+  console.log("NEW USER HAND ", user.hand);
+  // cardValueToChangeTop.innerText = newCard.value;
+  // cardValueToChangeBottom.innerText = newCard.value;
+
+  console.log("after splice -> ", user.hand);
+};

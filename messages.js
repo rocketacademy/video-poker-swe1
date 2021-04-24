@@ -32,4 +32,6 @@ const gameOverMsg = () => {
   setTimeout(() => {
     location.reload();
   }, 5000);
+
+  // Could reload to a message page instaed
 };

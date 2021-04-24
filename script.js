@@ -8,6 +8,8 @@ domSelector.dealCardButton.addEventListener("click", (e) => {
   domSelector.dealCardButton.classList.add("disable-click");
   domSelector.betButton.classList.remove("disable-click");
   domSelector.changeCardButton.classList.remove("disable-click");
+  gameState.swap = 0;
+  gameState.secondDeal = false;
   e.preventDefault();
   console.log("CLICKED DEAL BUTTON");
   // INITIALISING THE DECK OF CARDS
@@ -15,16 +17,11 @@ domSelector.dealCardButton.addEventListener("click", (e) => {
   // console.log("THIS IS THE DECK ", gameState.deck);
 
   // CHECK IF USER ALREADY HAS 5 CARDS ON HAND
+  // IF NOT, DEAL CARDS TO USER
   if (user.hand.length) {
     user.hand = [];
     console.log("this is player hand after clearing", user.hand);
   }
-  // IF NOT, DEAL CARDS TO USER
-  // THIS SHOULD GO INTO HANDLEDEALCARDS
-  // for (i = 0; i < 5; i += 1) {
-  //   user.hand.push(gameState.deck[i]);
-  // }
-  // console.log("THIS IS PLAYER HAND AFTER DEALING", user.hand);
 
   handleDealCard(user.hand);
   handleDrawDom(user.hand);
@@ -81,13 +78,10 @@ domSelector.betButton.addEventListener("click", () => {
   } else if (handleCheckPairs(user.hand)) {
     winMsg("5", "One Pair");
     domSelector.pointsBoxDiv.innerHTML = user.points += 5;
-
-    // alert("YES, pair");
   } else {
     // No match
     loseMsg();
     domSelector.pointsBoxDiv.innerHTML = user.points -= 10;
-    // alert("Nope, no matches");
   }
   if (user.points <= 0) {
     domSelector.dealCardButton.classList.add("disable-click");
@@ -95,25 +89,30 @@ domSelector.betButton.addEventListener("click", () => {
     domSelector.betButton.classList.add("disable-click");
     gameOverMsg();
   }
+});
 
-  // IF POINTS === 0 END GAME ??
+// // CHANGE CARD BUTTON
+domSelector.changeCardButton.addEventListener("click", () => {
+  // CHECK IF USER IS STILL ALLOWED TO SAWP (max 2x)
 
-  // RESHUFFLE AND CREATE NEW DECK
+  if (gameState.secondDeal === true) {
+    domSelector.changeCardButton.classList.add("disable-click");
+  }
 
-  // DEAL CARDS AGAIN
+  gameState.deck = handleShuffleCards(handleCreateDeck());
+  if (user.hand.length) {
+    user.hand = [];
+    console.log("this is player hand after clearing", user.hand);
+  }
+  handleDealCard(user.hand);
+  handleDrawDom(user.hand);
+  gameState.swap += 1;
+  gameState.swap > 1
+    ? (gameState.secondDeal = true)
+    : (gameState.secondDeal = false);
 });
 
 // ******** TO CONSIDER *********
-// // CHANGE CARD BUTTON
-// domSelector.changeCardButton.addEventListener("click", () => {
-//   // CHECK IF USER IS STILL ALLOWED TO SAWP (max 2x)
-//   // !gameState.secondDeal ? alert("Can SwaP") : (gameState.secondDeal = true);
-//   // console.log("GAME STATE ==> ", gameState.secondDeal);
-//   // if (gameState.secondDeal === false) {
-//   //   gameState.secondDeal = true;
-//   //   alert("Can swap");
-//   // }
-
 //   // GET ARRAY OF CARDS SELECTED
 //   // GO AHEAD SWAP CARDS
 //   // TOGGLE BUTTON CLASSES
@@ -124,27 +123,3 @@ domSelector.betButton.addEventListener("click", () => {
 //     domSelector.changeCardButton.classList.add("disable-click");
 //     domSelector.betButton.classList.remove("disable-click");
 //   }
-
-//   // only testing function here
-//   // if (handleCheckStraightFlush(user.hand)) {
-//   //   // UPDATE POINTS
-//   // } else {
-//   //   alert("FALSE3");
-//   // }
-//   // RUN HANDLECEHCK FUNCTIONS AND ADD TO POUNTS IF RETURNS TRUE
-// });
-
-//                    ********  TO DO ********
-
-// * THINK ABOUT SOC ARCHITECTURE FOR ENTIRE PROJECT (FUCNTIONS FOR EVEVRY ACTIONS)
-// * ADD THE BET FUNCTIONALITY
-
-// * ADD THE SWAP FUNCTIONALITY
-
-// * ADD/REMOVE POINTS AFTER EACH CALCULATIONS
-
-// * CREATE AN ARRAY OF WINNING COMBINATIONS
-
-// * FIND ANIMATION LIBRARY FOR UI
-
-// console.log(handleCheckStraightFlush(user.hand));

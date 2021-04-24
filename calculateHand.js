@@ -383,13 +383,13 @@ const handleCheckPairs = (playerHand) => {
   return pairArray.length === 2 && remainingCards.length === 3 ? true : false;
 };
 
-const a = [
-  { value: 9, suit: "b" },
-  { value: 9, suit: "b" },
-  { value: 9, suit: "b" },
-  { value: "J", suit: "b" },
-  { value: 9, suit: "b" },
-];
+// const a = [
+//   { value: 9, suit: "b" },
+//   { value: 9, suit: "b" },
+//   { value: 9, suit: "b" },
+//   { value: "J", suit: "b" },
+//   { value: 9, suit: "b" },
+// ];
 
 // console.log(handleCheckStraightFlush(a));
 // console.log(handleCheckFourKind(a));
@@ -397,26 +397,4 @@ const a = [
 // console.log(handleCheckStraight(a));
 // console.log(handleCheckThreeKind(a));
 // console.log(handleCheckPairs(a));
-console.log(handleCheckFiveKind(a));
-
-// const o = [1, 2, 3, 4, 3];
-// let counter = 0;
-// for (i = 0; i < o.length; i++) {
-//   const check = o[i];
-//   console.log("this is i", o[i]);
-//   for (j = 0; j < o.length; j++) {
-//     // console.log("this is j", o[j], "this is ii", o[i]);
-//     if (o[i] === o[j]) {
-//       console.log(`MATCH I: ${o[i]}, ${o[j]}`);
-//       counter++;
-//     }
-
-//     // for (l = 0; l < o.length; l++) {
-//     //   if (counter === 3) {
-//     //     console.log("three", o[l]);
-//     //   }
-//     // }
-//   }
-// }
-
-// console.log("counter after loop", counter);
+// console.log(handleCheckFiveKind(a));

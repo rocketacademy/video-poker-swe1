@@ -1,22 +1,26 @@
 /* ------- SELECTORS ------- */
 
-// Containers
+// Main windows
 const entryDiv = document.querySelector(".entry-div");
 const gameDiv = document.querySelector(".game-div");
+const backDiv = document.querySelector(".back-div");
+const rulesDiv = document.querySelector(".rules-div");
+
+// Containers inside game div
 const cardsDiv = document.querySelector(".cards-div");
 const scoreTag = document.querySelector(".player-score");
 const messageDiv = document.querySelector(".message-div");
-const backDiv = document.querySelector(".back-div");
-
-// Message
 const messageTag = document.querySelector(".message");
+const deckDiv = document.querySelector(".deck-div");
 
 // Buttons
+const entryBtn = document.querySelector(".entry-btn");
 const startBtn = document.querySelector(".start-btn");
 const dealBtn = document.querySelector(".deal-btn");
 const playBtn = document.querySelector(".play-btn");
 const replayBtn = document.querySelector(".replay-btn");
 const selectCardBtn = document.querySelector(".select-card-btn");
+const restartBtn = document.querySelector(".restart-btn");
 
 /* ------- HELPER FUNCTIONS FOR CARDS ------ */
 
@@ -71,12 +75,10 @@ const removeCardDisplay = (index) => {
   // Checks that card that is clicked is not empty
   if (hand[index] !== "") {
     const clickedCard = hand[index]; // cardObj
-
     const clickedCardTag = document.querySelector(`.card-${index} img`);
 
     // Change image to empty card border
     clickedCardTag.src = `cards/back/empty.png`;
-    console.log(`clicked card tag is `, clickedCardTag);
 
     // Remove the card object from the array by reassigning it to empty string
     hand[index] = "";
@@ -289,28 +291,54 @@ const tallyCards = (arr) => {
 
 // Settings & permissions
 const initSettings = () => {
-  // selectedBack =
+  entryDiv.style.display = "block";
+  gameDiv.style.display = "none";
+  backDiv.style.display = "none";
+  rulesDiv.style.display = "none";
+  gameDiv.style.display = "none";
 };
+
+initSettings();
+
+entryBtn.addEventListener("click", () => {
+  entryDiv.style.display = "none";
+  gameDiv.style.display = "none";
+  backDiv.style.display = "block";
+  rulesDiv.style.display = "none";
+  gameDiv.style.display = "none";
+});
 
 let selectedBackImg;
 
 selectCardBtn.addEventListener("click", () => {
-  // Saves the card back
+  // Display selected card back as deck face down
   selectedBackImg = selectedBack.getElementsByTagName("img")[0].src;
+  console.log(`selected back img `, selectedBackImg);
+  const deckFaceDown = document.createElement("img");
+  deckFaceDown.setAttribute("src", selectedBackImg);
+  // deckFaceDown.src = selecte dBackImg;
+  deckFaceDown.style.transform = "rotate(-90deg)";
+  deckDiv.appendChild(deckFaceDown);
+
   backDiv.style.display = "none";
+  rulesDiv.style.display = "block";
+  gameDiv.style.display = "block";
+
+  initGame();
 });
 
 // Initialize game
 const initGame = () => {
+  startBtn.style.display = "inline";
+  dealBtn.style.display = "inline";
+
   playBtn.style.display = "none";
   replayBtn.style.display = "none";
+  restartBtn.style.display = "none";
 
   // Hide the opening window
   entryDiv.style.display = "none";
-  // backDiv.style.display = "none";
 };
-
-initGame();
 
 // When the clicks "Start"
 startBtn.addEventListener("click", () => {
@@ -319,11 +347,8 @@ startBtn.addEventListener("click", () => {
   startBtn.style.display = "none";
 
   // Deal the first five random cards in the array
-  // createHand();
-  for (i = 0; i < allOther.length; i += 1) {
-    hand.push(allOther[i]);
-  }
-  // replaceCards();
+  createHand();
+  replaceCards();
 
   // Creates the display for the hand of cards
   for (i = 0; i < hand.length; i += 1) {
@@ -334,14 +359,21 @@ startBtn.addEventListener("click", () => {
 
 // When user clicks "Deal", the game deals the cards, add to hand
 dealBtn.addEventListener("click", () => {
-  console.log(`deal button was clicked`);
-  replaceCards();
-
-  // Empty previous div & display hand of cards
-  cardsDiv.innerHTML = "";
-  for (i = 0; i < hand.length; i += 1) {
-    const cardTag = createCardDiv(i);
-    displayCard(hand[i], cardTag);
+  if (deck.length < 5) {
+    // When run out of cards
+    deckDiv.innerHTML = "";
+    printMessage(`GAME OVER.<br>You scored ${score} points.`);
+    playBtn.style.display = "none";
+    dealBtn.style.display = "none";
+    restartBtn.style.display = "block";
+  } else {
+    replaceCards();
+    // Empty previous div & display hand of cards
+    cardsDiv.innerHTML = "";
+    for (i = 0; i < hand.length; i += 1) {
+      const cardTag = createCardDiv(i);
+      displayCard(hand[i], cardTag);
+    }
   }
 });
 
@@ -352,6 +384,7 @@ playBtn.addEventListener("click", () => {
   scoreTag.innerHTML = score;
   playBtn.style.display = "none";
   replayBtn.style.display = "inline";
+  dealBtn.disabled = true;
   printMessage(`Replay?`);
 });
 
@@ -361,7 +394,16 @@ replayBtn.addEventListener("click", () => {
   cardsDiv.innerHTML = "";
   startBtn.style.display = "inline";
   dealBtn.style.display = "inline";
+  dealBtn.disabled = false;
   playBtn.style.display = "none";
   replayBtn.style.display = "none";
   messageTag.innerHTML = "";
+});
+
+restartBtn.addEventListener("click", () => {
+  deck = shuffleCards(makeDeck());
+  cardsDiv.innerHTML = "";
+  // Empty the array
+  hand.splice(0, hand.length);
+  initGame();
 });

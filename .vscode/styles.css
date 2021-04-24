@@ -1,3 +1,5 @@
+/* GLOBAL STYLES */
+
 @font-face {
   font-family: "Ms Sans Serif";
   src: url("assets/ms_sans_serif_bold.cb1c7473.woff2") format("woff2");
@@ -36,13 +38,29 @@ h1 {
   height: 100vh;
 }
 
+/* Affects all buttons inside field-row div */
+.field-row {
+  justify-content: flex-end;
+}
+
+/* OVER-18 ENTRY DIV */
+
 div.entry-div .small-window {
   margin: 32px;
   width: 250px;
 }
 
-.field-row {
-  justify-content: flex-end;
+.entry-div .field-row {
+  margin: 16px 0 0 0;
+}
+
+.entry-div .window-body {
+  padding: 6px 4px;
+}
+
+.entry-div p {
+  font-size: 12px;
+  margin: 0 0 12px 0;
 }
 
 .game-window,
@@ -55,7 +73,11 @@ div.entry-div .small-window {
   background-color: #017f02;
   height: 100%;
   width: 100%;
-  display: relative;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .green-bg,
@@ -69,21 +91,49 @@ div.entry-div .small-window {
   margin: -8px;
 }
 
-.deal-btn {
-  position: relative;
-  top: 0px;
-}
-
-/* Container which holds the player's cards */
 .cards-div {
   margin: 2px;
-  max-width: 715px;
-  height: var(--margin-bottom);
   position: absolute;
-  right: 50%;
+  top: 160px;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.deck-div {
+  position: absolute;
+  bottom: 100px;
+}
+
+.score-div,
+.message-div {
+  display: inline;
+  color: #fff;
+  font-size: 12px;
+  font-family: "Ms Sans Serif";
+}
+
+.score-div {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 24px 36px 0 0;
+  text-align: right;
+}
+
+.message-div {
+  position: absolute;
+  top: 0;
+  left: 0;
+  float: left;
+  padding: 24px 0 36px 0;
+  text-align: left;
+}
+
+.controls-div {
+  position: absolute;
+  bottom: 28px;
+  text-align: center;
 }
 
 .empty-div {
@@ -92,18 +142,10 @@ div.entry-div .small-window {
   border: 1px solid #000;
 }
 
-.score-div,
-.message-div {
-  position: relative;
-  display: inline;
-  color: #fff;
-  font-size: 12px;
-  font-family: "Ms Sans Serif";
-}
-
-.score-div {
-  float: right;
-  padding: 24px 36px 0 0;
+.rules-div {
+  position: absolute;
+  top: 30vh;
+  right: 8vw;
 }
 
 .score-div p {
@@ -118,19 +160,6 @@ ul {
 
 li {
   margin: 0 0 4px 0;
-}
-
-.message-div {
-  float: left;
-  padding: 24px 0 36px 0;
-  text-align: left;
-}
-
-.controls-div {
-  position: relative;
-  width: var(--main-height);
-  text-align: center;
-  top: var(--margin-bottom);
 }
 
 table {
@@ -149,11 +178,6 @@ th {
 
 tr:nth-child(even) {
   background-color: #dddddd;
-}
-
-/* Hide the windows for now */
-.entry-div {
-  display: none;
 }
 
 .back-div {

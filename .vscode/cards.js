@@ -133,4 +133,4 @@ const makeDeck = () => {
   return newDeck;
 };
 
-const deck = shuffleCards(makeDeck());
+let deck = shuffleCards(makeDeck());

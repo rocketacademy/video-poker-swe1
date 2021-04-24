@@ -87,7 +87,7 @@ const rulesDiv = document.getElementById('rules');
 const casinoAudio = new Audio('audios/cardPlace2.wav');
 const newCardAudio = new Audio('audios/cardPlace1.wav');
 const resultAudio = new Audio('audios/result.mp3');
-let canClick = true;
+const canClick = true;
 let canClickResult = true;
 
 // creates result button on the screen.
@@ -146,7 +146,12 @@ function checkForStraight(cards) {
   for (let i = 0; i < cards.length; i += 1) {
     sum += cards[i];
   }
-  if (smallest === 6 && largest === 10 && sum === 40) {
+  // if (smallest === 6 && largest === 10 && sum === 40) {
+  //   return 'straight';
+  // }
+
+  const checkSum = (smallest) * 5 + 10;
+  if (sum === checkSum) {
     return 'straight';
   }
 }
@@ -371,11 +376,11 @@ startBtn.addEventListener('click', () => {
 
   // **** example hardcoded for testing purposes starts here ****
   // const playerHand = [
-  //   { rank: 7, suit: 'hearts', name: '7' },
-  //   { rank: 8, suit: 'hearts', name: '8' },
-  //   { rank: 6, suit: 'hearts', name: '9' },
-  //   { rank: 5, suit: 'hearts', name: '10' },
-  //   { rank: 2, suit: 'spades', name: 'jack' },
+  //   { rank: 10, suit: 'hearts', name: '7' },
+  //   { rank: 9, suit: 'hearts', name: '8' },
+  //   { rank: 8, suit: 'hearts', name: '9' },
+  //   { rank: 7, suit: 'hearts', name: '10' },
+  //   { rank: 6, suit: 'spades', name: 'jack' },
   // ];
   // displayCards(playerHand);
   // **** example hardcoded for testing ends here. *****

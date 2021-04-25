@@ -19,6 +19,7 @@
 }
 
 body {
+  font-family: "Ms Sans Serif";
   background-image: url(https://news-cdn.softpedia.com/images/news2/did-you-know-the-windows-xp-wallpaper-was-so-expensive-fedex-refused-to-ship-it-520483-2.jpg);
   background-repeat: no-repeat;
   background-size: cover;
@@ -59,6 +60,7 @@ div.entry-div .small-window {
 }
 
 .entry-div p {
+  font-family: "Ms Sans Serif";
   font-size: 12px;
   margin: 0 0 12px 0;
 }
@@ -145,6 +147,7 @@ div.entry-div .small-window {
 }
 
 .rules-div {
+  font-family: "Ms Sans Serif";
   position: absolute;
   top: 30vh;
   right: 8vw;

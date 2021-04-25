@@ -63,6 +63,8 @@ div.entry-div .small-window {
   margin: 0 0 12px 0;
 }
 
+/* MAIN PLAYING CARD GAME DIV */
+
 .game-window,
 .game-window-body {
   width: var(--main-width);
@@ -162,6 +164,8 @@ li {
   margin: 0 0 4px 0;
 }
 
+/* RULES DIV */
+
 table {
   border-collapse: collapse;
   width: 100%;
@@ -180,9 +184,7 @@ tr:nth-child(even) {
   background-color: #dddddd;
 }
 
-.back-div {
-  z-index: 2;
-}
+/* CARD BACKING DIV */
 
 .cards-back-body {
   margin: 16px 16px 8px 16px !important;
@@ -210,4 +212,16 @@ tr:nth-child(even) {
   margin: 1px 3px 9px 1px;
   border: 2px dotted #919b9c;
   pointer-events: none;
+}
+
+/* CONFETTI CELEBRATION */
+
+.confetti-container {
+  position: fixed;
+  top: 0;
+  left: 9;
+  width: 100%;
+  height: 0;
+  overflow: visible;
+  z-index: 9999;
 }

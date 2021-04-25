@@ -9,6 +9,8 @@
 
   <body>
     <div class="main">
+      <div class="confetti-container"></div>
+
       <!-- Over 18 Window -->
       <div class="entry-div">
         <div class="window small-window">
@@ -147,11 +149,7 @@
           </div>
           <div class="window-body">
             <menu role="tablist">
-              <button
-                class="tab"
-                aria-selected="false"
-                aria-controls="gameplay"
-              >
+              <button class="tab" aria-selected="true" aria-controls="gameplay">
                 Gameplay
               </button>
 
@@ -159,12 +157,12 @@
                 Stakes
               </button>
 
-              <button class="tab" aria-selected="true" aria-controls="watch">
+              <button class="tab" aria-selected="false" aria-controls="watch">
                 Watch
               </button>
             </menu>
 
-            <article role="tabpanel" hidden id="gameplay">
+            <article role="tabpanel" id="gameplay">
               <ol>
                 <li>You start with 100 points.</li>
                 <li>
@@ -247,7 +245,7 @@
               </table>
             </article>
 
-            <article role="tabpanel" id="watch">
+            <article role="tabpanel" hidden id="watch">
               <p>10-year-old YouTube video on video poker</p>
               <iframe
                 width="100%"
@@ -267,6 +265,7 @@
     </div>
 
     <!-- Import program logic -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
     <script src="cards.js"></script>
     <script src="extra.js"></script>
     <script src="testcases.js"></script>

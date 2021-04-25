@@ -104,6 +104,9 @@ let isZero = true;
 // Order of overriding the different winning ranks
 // Takes in array hand of cards, prints in HTML, gives the multiplier score
 const calcHand = (arr) => {
+  // Confetti set to false at the start of every calcHand
+  celebrateHand = false;
+
   const tallyObj = tallyCards(hand);
   console.log(`tally object is `, tallyObj);
   const cardCounts = Object.values(tallyObj);
@@ -120,11 +123,13 @@ const calcHand = (arr) => {
     const winningSuit = hand[0].suit;
 
     if (matchArr(cardTypes, royalFlushArr)) {
+      celebrateHand = true;
       printMessage(`Royal flush of ${winningSuit}`);
       return (score *= 800);
     }
 
     if (isStraight(hand)) {
+      celebrateHand = true;
       printMessage(`Straight flush of ${winningSuit}`);
       return (score *= 50);
     } else {
@@ -148,6 +153,7 @@ const calcHand = (arr) => {
   // Checks for [3, 2]
   if (matchArr(cardCounts, flushArr) === true) {
     isZero = false;
+    celebrateHand = true;
     printMessage(`Full house`);
   }
 
@@ -156,6 +162,7 @@ const calcHand = (arr) => {
     matchArr(cardCounts, oneCountArr) === true &&
     isJacksOrBetter(hand) === true
   ) {
+    celebrateHand = true;
     isZero = false;
     return score;
   }
@@ -166,6 +173,7 @@ const calcHand = (arr) => {
     console.log(`there is ${cardCount} ${cardType}s in the hand`);
 
     if (cardCount === 4) {
+      celebrateHand = true;
       printMessage(`Four of a kind of ${cardType}`);
       isZero = false;
       return (score *= 25);
@@ -184,8 +192,7 @@ const calcHand = (arr) => {
 
   console.log(`is zero is`, isZero);
   if (isZero == true) {
-    console.log(`is Zero`, isZero);
-    return (score *= 0);
+    score = 0;
   }
   console.log(`final score is `, score);
   return score;
@@ -381,6 +388,7 @@ dealBtn.addEventListener("click", () => {
 playBtn.addEventListener("click", () => {
   // Calculate the score
   score = calcHand(hand);
+  if (celebrateHand) poof();
   scoreTag.innerHTML = score;
   playBtn.style.display = "none";
   replayBtn.style.display = "inline";
@@ -389,6 +397,7 @@ playBtn.addEventListener("click", () => {
 });
 
 replayBtn.addEventListener("click", () => {
+  confettiContainer.innerHTML = "";
   // Empty the hand;
   hand.splice(0, hand.length);
   cardsDiv.innerHTML = "";

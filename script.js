@@ -91,26 +91,27 @@ domSelector.betButton.addEventListener("click", () => {
   }
 });
 
+// REMOVED THIS FOR NOW //
 // // CHANGE CARD BUTTON
-domSelector.changeCardButton.addEventListener("click", () => {
-  // CHECK IF USER IS STILL ALLOWED TO SAWP (max 2x)
+// domSelector.changeCardButton.addEventListener("click", () => {
+//   // CHECK IF USER IS STILL ALLOWED TO SAWP (max 2x)
 
-  if (gameState.secondDeal === true) {
-    domSelector.changeCardButton.classList.add("disable-click");
-  }
+//   if (gameState.secondDeal === true) {
+//     domSelector.changeCardButton.classList.add("disable-click");
+//   }
 
-  gameState.deck = handleShuffleCards(handleCreateDeck());
-  if (user.hand.length) {
-    user.hand = [];
-    console.log("this is player hand after clearing", user.hand);
-  }
-  handleDealCard(user.hand);
-  handleDrawDom(user.hand);
-  gameState.swap += 1;
-  gameState.swap > 1
-    ? (gameState.secondDeal = true)
-    : (gameState.secondDeal = false);
-});
+//   gameState.deck = handleShuffleCards(handleCreateDeck());
+//   if (user.hand.length) {
+//     user.hand = [];
+//     console.log("this is player hand after clearing", user.hand);
+//   }
+//   handleDealCard(user.hand);
+//   handleDrawDom(user.hand);
+//   gameState.swap += 1;
+//   gameState.swap > 1
+//     ? (gameState.secondDeal = true)
+//     : (gameState.secondDeal = false);
+// });
 
 // ******** TO CONSIDER *********
 //   // GET ARRAY OF CARDS SELECTED

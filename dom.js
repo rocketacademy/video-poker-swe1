@@ -33,6 +33,7 @@ const handleDrawDom = (userHand) => {
       "animate__delay-0.5s"
     );
     card.classList.add("card");
+    card.classList.add("able-swap");
     topLeftValue.classList.add("top-left-value");
     suit.classList.add("suit");
     bottomRightValue.classList.add("bottom-right-value");

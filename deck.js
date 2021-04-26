@@ -123,6 +123,8 @@ const handleNewCards = (
   if (gameState.secondDeal === true) {
     domSelector.changeCardButton.classList.add("disable-click");
     domSelector.deckItem.classList.add("disable-click");
+    domSelector.cardDiv.classList.toggle("able-swap");
+    // domSelector.cardDiv.classList.add("disable-swap");
   }
 
   // Mutate user.hand

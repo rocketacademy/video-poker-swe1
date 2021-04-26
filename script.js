@@ -222,8 +222,12 @@ const checkWinningConditions = () => {
       remainingCredit += 60;
     }
   }
+<<<<<<< HEAD
   //checks for a pair
   else if (Math.max(...rankCounterValues) === 2) {
+=======
+  if (Math.max(...rankCounterValues) === 2) {
+>>>>>>> 96b8d379e8293780cd724b2f1a78e0df566f704f
     const index = rankCounterValues.indexOf(2);
     rankCounterValues.splice(index, 1);
     //checks for an additional pair
@@ -306,6 +310,7 @@ const replayGame = () => {
   rankCounterKeysNo = [];
   playerCardsNo = [];
   playerCardsSuit = [];
+<<<<<<< HEAD
   console.log(cards.length);
   if (cards.length < 15) {
     initGame();
@@ -319,6 +324,22 @@ const replayGame = () => {
     document.getElementsByClassName("pop-up")[0].remove();
     generateCards();
   }
+=======
+  console.log(cards.length)
+  if (cards.length<15){
+    cards.length = 0
+    cards = shuffleCards(makeDeck())
+  }
+  if (remainingCredit<20){
+    document.getElementsByClassName('pop-up-text')[0].innerText = 'Oops you ran out of credit'
+    document.getElementsByClassName('pop-up-button')[0].remove();
+  }
+  else{
+  document.getElementsByClassName('pop-up')[0].remove();
+  generateCards();
+  }
+  
+>>>>>>> 96b8d379e8293780cd724b2f1a78e0df566f704f
 };
 //init game
 

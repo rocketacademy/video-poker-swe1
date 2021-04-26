@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Video Poker</title>
+    <link rel="stylesheet" href="styles.css" />
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="https://unpkg.com/xp.css" />
+  </head>
+
+  <body>
+    <div class="main">
+      <div class="confetti-container"></div>
+
+      <!-- Over 18 Window -->
+      <div class="entry-div">
+        <div class="window small-window">
+          <div class="title-bar">
+            <div class="title-bar-text">Video Poker</div>
+
+            <div class="title-bar-controls">
+              <button aria-label="Minimize"></button>
+              <button aria-label="Maximize"></button>
+              <button aria-label="Close"></button>
+            </div>
+          </div>
+          <div class="window-body">
+            <p>I am over eighteen years old.</p>
+            <input type="checkbox" id="show-again" />
+            <label for="show-again">Don't show this message again</label>
+            <section class="field-row">
+              <button class="entry-btn">Yes</button>
+              <button>No</button>
+            </section>
+          </div>
+        </div>
+      </div>
+
+      <!-- Choose the card backing -->
+      <div class="back-div">
+        <div class="window small-window">
+          <div class="title-bar">
+            <div class="title-bar-text">Select Card Back</div>
+
+            <div class="title-bar-controls">
+              <button aria-label="Help"></button>
+              <button aria-label="Close"></button>
+            </div>
+          </div>
+          <div class="window-body cards-back-body">
+            <div class="card-img-div row-1">
+              <div class="card-back card-active">
+                <img src="cards/back/1.png" alt="card-back-img" />
+              </div>
+              <div class="card-back">
+                <img src="cards/back/2.png" alt="card-back-img" />
+              </div>
+              <div class="card-back">
+                <img src="cards/back/3.png" alt="card-back-img" />
+              </div>
+              <div class="card-back">
+                <img src="cards/back/4.png" alt="card-back-img" />
+              </div>
+              <div class="card-back">
+                <img src="cards/back/5.png" alt="card-back-img" />
+              </div>
+              <div class="card-back">
+                <img src="cards/back/6.png" alt="card-back-img" />
+              </div>
+            </div>
+            <div class="card-img-div row-2">
+              <div class="card-back">
+                <img src="cards/back/7.png" alt="card-back-img" />
+              </div>
+              <div class="card-back">
+                <img src="cards/back/8.png" alt="card-back-img" />
+              </div>
+              <div class="card-back">
+                <img src="cards/back/9.png" alt="card-back-img" />
+              </div>
+              <div class="card-back">
+                <img src="cards/back/10.png" alt="card-back-img" />
+              </div>
+              <div class="card-back">
+                <img src="cards/back/11.png" alt="card-back-img" />
+              </div>
+              <div class="card-back">
+                <img src="cards/back/12.png" alt="card-back-img" />
+              </div>
+            </div>
+            <section class="field-row">
+              <button class="select-card-btn">Ok</button>
+            </section>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main game window -->
+      <div class="game-div">
+        <div class="window game-window">
+          <div class="title-bar">
+            <div class="title-bar-text">Video Poker</div>
+
+            <!-- Video poker title bar -->
+            <div class="title-bar-controls">
+              <button aria-label="Minimize"></button>
+              <button aria-label="Maximize"></button>
+              <button aria-label="Close"></button>
+            </div>
+          </div>
+
+          <!-- Video poker window body -->
+          <div class="game-window-body window-body">
+            <div class="green-bg">
+              <div class="message-div">
+                <ul class="message"></ul>
+              </div>
+
+              <div class="score-div">
+                <p class="label">Score</p>
+                <p class="player-score">100</p>
+              </div>
+
+              <!-- Player views cards -->
+              <div class="cards-div"></div>
+
+              <!-- Deck on the table -->
+              <div class="deck-div"></div>
+
+              <div class="controls-div">
+                <button class="start-btn">Start</button>
+                <button class="deal-btn">Deal</button>
+                <button class="play-btn">Play</button>
+                <button class="replay-btn">Replay</button>
+                <button class="restart-btn">Restart Game</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rules -->
+      <div class="rules-div">
+        <div class="window" style="width: 400px">
+          <div class="title-bar">
+            <div class="title-bar-text">How To Play</div>
+            <div class="title-bar-controls">
+              <button aria-label="Close"></button>
+            </div>
+          </div>
+          <div class="window-body">
+            <menu role="tablist">
+              <button class="tab" aria-selected="true" aria-controls="gameplay">
+                Gameplay
+              </button>
+
+              <button class="tab" aria-selected="false" aria-controls="stakes">
+                Stakes
+              </button>
+
+              <button class="tab" aria-selected="false" aria-controls="watch">
+                Watch
+              </button>
+            </menu>
+
+            <article role="tabpanel" id="gameplay">
+              <ol>
+                <li>You start with 100 points.</li>
+                <li>
+                  Hit <b>Start</b> to receive your first five-card poker hand.
+                </li>
+                <li>
+                  Discard cards you don’t want (up to all five can be discarded)
+                </li>
+                <li>
+                  Hit <b>Deal</b> to receive replacement cards from the deck.
+                </li>
+                <li>
+                  Any winnings will be displayed and added to your score
+                  according to the rank of hands. See
+                  <a href="#stakes">Stakes</a>
+                </li>
+                <li>Hit <b>Replay</b> to continue the game.</li>
+                <li>The game ends when the deck runs out of cards.</li>
+              </ol>
+            </article>
+
+            <article role="tabpanel" hidden id="stakes">
+              <table>
+                <tr>
+                  <th>Hand</th>
+                  <th>Stake Multiplier</th>
+                  <th>Probability</th>
+                </tr>
+                <tr>
+                  <td>Royal Flush</td>
+                  <td>800</td>
+                  <td>0.000025</td>
+                </tr>
+                <tr>
+                  <td>Straight Flush</td>
+                  <td>50</td>
+                  <td>0.000109</td>
+                </tr>
+                <tr>
+                  <td>Four of a kind</td>
+                  <td>25</td>
+                  <td>0.002363</td>
+                </tr>
+                <tr>
+                  <td>Full House</td>
+                  <td>9</td>
+                  <td>0.011512</td>
+                </tr>
+                <tr>
+                  <td>Flush</td>
+                  <td>6</td>
+                  <td>0.011015</td>
+                </tr>
+                <tr>
+                  <td>Straight</td>
+                  <td>4</td>
+                  <td>0.011229</td>
+                </tr>
+                <tr>
+                  <td>Three of a kind</td>
+                  <td>3</td>
+                  <td>0.074449</td>
+                </tr>
+                <tr>
+                  <td>Two Pair</td>
+                  <td>2</td>
+                  <td>0.129279</td>
+                </tr>
+
+                <tr>
+                  <td>Jacks or Better</td>
+                  <td>1</td>
+                  <td>0.214585</td>
+                </tr>
+
+                <tr>
+                  <td>All Other</td>
+                  <td>0</td>
+                  <td>0.545435</td>
+                </tr>
+              </table>
+            </article>
+
+            <article role="tabpanel" hidden id="watch">
+              <p>10-year-old YouTube video on video poker</p>
+              <iframe
+                width="100%"
+                height="200"
+                src="https://www.youtube.com/embed/gLYQ3ZIowPA"
+                frameborder="0"
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
+              ></iframe>
+            </article>
+            <section class="field-row" style="justify-content: flex-end">
+              <button>OK</button>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Import program logic -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+    <script src="cards.js"></script>
+    <script src="extra.js"></script>
+    <script src="testcases.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>

@@ -115,19 +115,19 @@ document
   .getElementsByClassName("complete-turn")[0]
   .addEventListener("click", () => {
     document.getElementById("click-audio").play();
-    card1rank.innerText = card1Text.rank;
+    card1rank.innerText = card1Text.name;
     card1SuitCenter.innerText = card1Text.suit;
     card1suit.innerText = card1Text.suit;
-    card2rank.innerText = card2Text.rank;
+    card2rank.innerText = card2Text.name;
     card2SuitCenter.innerText = card2Text.suit;
     card2suit.innerText = card2Text.suit;
-    card3rank.innerText = card3Text.rank;
+    card3rank.innerText = card3Text.name;
     card3SuitCenter.innerText = card3Text.suit;
     card3suit.innerText = card3Text.suit;
-    card4rank.innerText = card4Text.rank;
+    card4rank.innerText = card4Text.name;
     card4SuitCenter.innerText = card4Text.suit;
     card4suit.innerText = card4Text.suit;
-    card5rank.innerText = card5Text.rank;
+    card5rank.innerText = card5Text.name;
     card5SuitCenter.innerText = card5Text.suit;
     card5suit.innerText = card5Text.suit;
     document.getElementsByClassName("cards")[0].style.border = "none";
@@ -159,119 +159,112 @@ const tallyCounts = () => {
     }
   }
 };
-// let creditWon = 0;
-// let remainingCredit = 100;
-const checkWinningConditions = () => {
-  tallyCounts();
-  const rankCounterValues = Object.values(rankCounter);
-  const rankCounterKeys = Object.keys(rankCounter);
-  //populates rankCounterKeysNo with all unique rank numbers
-  for (i = 0; i < rankCounterKeys.length; i++) {
-    const numberAdded = parseInt(rankCounterKeys[i]);
-    rankCounterKeysNo.push(numberAdded);
+
+const checkForConsecutive = (rankCounterKeysNum) => {
+  rankCounterKeysNum.sort((a, b) => a - b);
+  let consecutiveNumbers = 0;
+  for (i = 1; i < 5; i++) {
+    if (rankCounterKeysNum[i] - rankCounterKeysNum[i - 1] === 1) {
+      consecutiveNumbers += 1;
+    }
   }
-  console.log(rankCounterKeysNo);
+  if (consecutiveNumbers === 5) {
+    return True;
+  } else if (
+    consecutiveNumbers === 3 &&
+    rankCounterKeysNum.indexOf(13) != -1 &&
+    rankCounterKeysNum.indexOf(1) != -1
+  ) {
+    return True;
+  }
+};
+
+const checkForFlushOrStraightFlush = () => {
   if (Object.keys(suitCounter).length === 1) {
     //check if flush or straight flush
-    rankCounterKeysNo.sort((a, b) => a - b);
-    let consecutiveNumbers = 0;
-    for (i = 1; i < 5; i++) {
-      if (rankCounterKeysNo[i] - rankCounterKeysNo[i - 1] === 1) {
-        consecutiveNumbers += 1;
-        console.log(consecutiveNumbers);
-        console.log(rankCounterKeysNo[i]);
-      } else {
-        console.log(`not ${rankCounterKeysNo[i]}`);
-      }
-    }
-    if (consecutiveNumbers === 5) {
-      console.log("Straight Flush");
-      creditWon = 10000;
-      remainingCredit += 10000;
-    } else if (
-      consecutiveNumbers === 3 &&
-      rankCounterKeysNo.indexOf(13) != -1 &&
-      rankCounterKeysNo.indexOf(1) != -1
-    ) {
-      console.log("Straight Flush");
+    if (checkForConsecutive(rankCounterKeysNum) === True) {
+      handWon = "Straight Flush";
       creditWon = 10000;
       remainingCredit += 10000;
     } else {
       creditWon = 500;
       remainingCredit += 500;
-      console.log("Flush");
+      handWon = "Flush";
     }
-  } else if (Math.max(...rankCounterValues) === 4) {
-    creditWon = 1500;
-    remainingCredit += 1500;
-    console.log("4 of a kind");
-    //win 4 of a kind
   }
-  //check for 3 same cards
-  else if (Math.max(...rankCounterValues) === 3) {
+};
+
+const checkFor3OfAKindOrFullHouse = () => {
+  if (highestRankFrequency === 3) {
     const index = rankCounterValues.indexOf(3);
     rankCounterValues.splice(index, 1);
     //check for additional pair of same cards
+    //unsure how to put Math.max() in line 220 as a seperate variable
     if (Math.max(...rankCounterValues) === 2) {
-      console.log("Full house");
+      handWon = "Full house";
       creditWon = 1000;
       remainingCredit += 1000;
     } else {
-      console.log("3 of a kind");
+      handWon = "3 of a kind";
       creditWon = 60;
       remainingCredit += 60;
     }
   }
-<<<<<<< HEAD
-  //checks for a pair
-  else if (Math.max(...rankCounterValues) === 2) {
-=======
-  if (Math.max(...rankCounterValues) === 2) {
->>>>>>> 96b8d379e8293780cd724b2f1a78e0df566f704f
+};
+const checkFor4OfAKind = () => {
+  if (highestRankFrequency === 4) {
+    creditWon = 1500;
+    remainingCredit += 1500;
+    handWon = "4 of a kind";
+    //win 4 of a kind
+  }
+};
+const checkForPairNum = () => {
+  if (highestRankFrequency === 2) {
     const index = rankCounterValues.indexOf(2);
     rankCounterValues.splice(index, 1);
     //checks for an additional pair
     if (Math.max(...rankCounterValues) === 2) {
-      console.log("2 Pair");
+      handWon = "2 Pair";
       creditWon = 40;
       remainingCredit += 40;
     } else {
-      console.log("1 Pair");
+      handWon = "1 Pair";
       creditWon = 20;
       remainingCredit += 20;
     }
-  } else if (Object.keys(rankCounter).length === 5) {
+  }
+};
+
+const checkForStraightOrNothing = () => {
+  if (Object.keys(rankCounter).length === 5) {
     //check if Straight
-    rankCounterKeysNo.sort((a, b) => a - b);
-    let consecutiveNumbers = 0;
-    for (i = 1; i < 5; i++) {
-      if (rankCounterKeysNo[i] - rankCounterKeysNo[i - 1] === 1) {
-        consecutiveNumbers += 1;
-        console.log(consecutiveNumbers);
-        console.log(rankCounterKeysNo[i]);
-      } else {
-        console.log(`not ${rankCounterKeysNo[i]}`);
-      }
-    }
-    if (consecutiveNumbers === 5) {
-      console.log("Straight");
-      creditWon = 100;
-      remainingCredit += 100;
-    }
-    if (
-      consecutiveNumbers === 3 &&
-      rankCounterKeysNo.indexOf(13) != -1 &&
-      rankCounterKeysNo.indexOf(1) != -1
-    ) {
-      console.log("Straight");
+    if (checkForConsecutive(rankCounterKeysNum)) {
+      handWon = "Straight";
       creditWon = 100;
       remainingCredit += 100;
     } else {
-      console.log("Nothing");
+      handWon = "Nothing";
       creditWon = -20;
       remainingCredit -= 20;
     }
   }
+};
+
+const checkWinningConditions = () => {
+  tallyCounts();
+  rankCounterValues = Object.values(rankCounter);
+  rankCounterKeys = Object.keys(rankCounter);
+  highestRankFrequency = Math.max(...rankCounterValues);
+  rankCounterKeysNum = rankCounterKeys.map((x) => parseInt(x));
+  console.log(rankCounterKeysNum);
+  checkForFlushOrStraightFlush();
+  checkFor4OfAKind();
+  //check for 3 same cards
+  checkFor3OfAKindOrFullHouse();
+  //checks for a pair
+  checkForPairNum();
+  checkForStraightOrNothing();
   playerScore.innerHTML = `Player: ${remainingCredit} Credits`;
 };
 //play again
@@ -284,9 +277,9 @@ const playAgain = () => {
   popUp.appendChild(popUpText);
   let displayMessage = "";
   if (creditWon > 0) {
-    displayMessage = `Congrats! You Won ${creditWon}`;
+    displayMessage = `${handWon}! Congrats! You Won ${creditWon}`;
   } else {
-    displayMessage = "You Lost 20";
+    displayMessage = "You got nothing :( You Lost 20";
   }
   popUpText.innerText = `${displayMessage} Credits`;
   const popUpButton = document.createElement("button");
@@ -307,10 +300,9 @@ const initGame = () => {
 const replayGame = () => {
   rankCounter = {};
   suitCounter = {};
-  rankCounterKeysNo = [];
+  rankCounterKeysNum = [];
   playerCardsNo = [];
   playerCardsSuit = [];
-<<<<<<< HEAD
   console.log(cards.length);
   if (cards.length < 15) {
     initGame();
@@ -324,22 +316,6 @@ const replayGame = () => {
     document.getElementsByClassName("pop-up")[0].remove();
     generateCards();
   }
-=======
-  console.log(cards.length)
-  if (cards.length<15){
-    cards.length = 0
-    cards = shuffleCards(makeDeck())
-  }
-  if (remainingCredit<20){
-    document.getElementsByClassName('pop-up-text')[0].innerText = 'Oops you ran out of credit'
-    document.getElementsByClassName('pop-up-button')[0].remove();
-  }
-  else{
-  document.getElementsByClassName('pop-up')[0].remove();
-  generateCards();
-  }
-  
->>>>>>> 96b8d379e8293780cd724b2f1a78e0df566f704f
 };
 //init game
 

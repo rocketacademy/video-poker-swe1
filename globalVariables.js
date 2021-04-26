@@ -37,9 +37,18 @@ const card5SuitCenter = document.getElementsByClassName("card-5p2")[1];
 let rankCounter = {};
 //counts the number of cards held for each suit
 let suitCounter = {};
-//
+//array to check for consecutive numbers
 let rankCounterKeysNo = [];
 //amount won by player in the round
 let creditWon = 0;
 //accumulated credits held by player
 let remainingCredit = 100;
+
+// store the frequency of each rank
+let rankCounterValues;
+//store all distict ranks held
+let rankCounterKeys;
+// store the highest frequency of a rank being repeated
+let highestRankFrequency;
+//stores keys of rankCounter as integers
+let rankCounterKeysNum;

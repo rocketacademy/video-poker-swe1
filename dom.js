@@ -48,10 +48,10 @@ const handleDrawDom = (userHand) => {
       // console.log(e.target);
       // console.log("user hand", user.hand);
       // console.log("game deck", gameState.deck);
-      // const cardValueToChangeTop = e.target.children[0];
-      // const cardValueToChangeBottom = e.target.children[2];
-      // const cardSuitToChange = e.target.children[1];
-      // console.log(cardValueToChangeTop);
+      const cardValueToChangeTop = e.target.children[0];
+      const cardValueToChangeBottom = e.target.children[2];
+      const cardSuitToChange = e.target.children[1];
+      console.log(cardValueToChangeTop);
       // console.log(cardSuitToChange);
       // console.log("this is card on hand ", cardOnHand);
       // TAKE THE USER HAND
@@ -66,7 +66,13 @@ const handleDrawDom = (userHand) => {
       //   // cardValueToChangeBottom.innerText = newCard.value;
 
       // NOT WORKING YET STILL STUCK HERE
-      handleNewCards(cardOnHand, i, arr);
+      handleNewCards(
+        cardValueToChangeTop,
+        cardValueToChangeBottom,
+        cardSuitToChange,
+        i,
+        arr
+      );
     });
 
     // console.log("after splice -> ", user.hand);

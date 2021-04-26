@@ -14,7 +14,7 @@ const isThree = (num, arr) => {
 // CHECK FOR FIVE OF A KIND
 const handleCheckFiveKind = (playerHand) => {
   // Five of a kind is a hand that contains five cards of one value,
-
+  console.log("HERE PLAYERHAND ", playerHand);
   const convertValues = [];
   const fourCards = [];
   const oneCard = [];

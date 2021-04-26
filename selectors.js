@@ -11,4 +11,5 @@ const domSelector = {
   winMessageBox: document.querySelector(".win-msg"),
   loseMessageBox: document.querySelector(".lose-msg"),
   gameOverBox: document.querySelector(".game-over-msg"),
+  deckItem: document.querySelector(".deck-item"),
 };

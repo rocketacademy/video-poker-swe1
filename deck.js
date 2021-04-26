@@ -59,7 +59,8 @@ const handleShuffleCards = (cards) => {
 // DEAL CARDS SHOULD ONLY CARE ABOUT PUSHING 5 CARDS INTO USER HAND
 const handleDealCard = (userHand) => {
   for (i = 0; i < 5; i += 1) {
-    userHand.push(gameState.deck[i]);
+    const r = Math.floor(Math.random() * gameState.deck.length);
+    userHand.push(gameState.deck[r]);
   }
   console.log("THIS IS PLAYER HAND AFTER DEALING", user.hand);
 
@@ -110,17 +111,32 @@ const handleDealCard = (userHand) => {
 
 // HANDLES GIVING OUT NEW CARDS TO PLAYER IF REQUESTED
 // only care about replacing selected cards
-const handleNewCards = (oldCards, i, arr) => {
+const handleNewCards = (
+  cardValueToChangeTop,
+  cardValueToChangeBottom,
+  suit,
+  i,
+  arr
+) => {
   // NOT WORKING YET STILL STUCK HERE
 
+  if (gameState.secondDeal === true) {
+    domSelector.changeCardButton.classList.add("disable-click");
+    domSelector.deckItem.classList.add("disable-click");
+  }
+
   // Mutate user.hand
-
+  // user.hand[i] = { suit: "♠️", value: 3 };
   const r = Math.floor(Math.random() * gameState.deck.length);
-  console.log("Current??", arr);
-  const newCard = user.hand.splice(1, 1, gameState.deck[r]);
-  console.log("NEW USER HAND ", user.hand);
-  // cardValueToChangeTop.innerText = newCard.value;
-  // cardValueToChangeBottom.innerText = newCard.value;
+  user.hand[i] = gameState.deck[r];
+  cardValueToChangeTop.innerText = user.hand[i].value;
+  cardValueToChangeBottom.innerText = user.hand[i].value;
+  suit.innerText = user.hand[i].suit;
 
-  console.log("after splice -> ", user.hand);
+  console.log("NEW USER HAND ", user.hand);
+
+  gameState.swap += 1;
+  gameState.swap > 2
+    ? (gameState.secondDeal = true)
+    : (gameState.secondDeal = false);
 };

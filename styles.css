@@ -1,0 +1,229 @@
+/* GLOBAL STYLES */
+
+@font-face {
+  font-family: "Ms Sans Serif";
+  src: url("assets/ms_sans_serif_bold.cb1c7473.woff2") format("woff2");
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: "Ms Sans Serif";
+  src: url("assets/ms_sans_serif.1d4d404a.woff2") format("woff2");
+  font-weight: normal;
+}
+
+:root {
+  --main-width: 500px;
+  --main-height: 500px;
+  --margin-bottom: 440px;
+}
+
+body {
+  background-image: url(https://news-cdn.softpedia.com/images/news2/did-you-know-the-windows-xp-wallpaper-was-so-expensive-fedex-refused-to-ship-it-520483-2.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+h1 {
+  font-family: "Ms Sans Serif";
+  font-size: 16px;
+}
+
+.main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* Affects all buttons inside field-row div */
+.field-row {
+  justify-content: flex-end;
+}
+
+/* OVER-18 ENTRY DIV */
+
+div.entry-div .small-window {
+  margin: 32px;
+  width: 250px;
+}
+
+.entry-div .field-row {
+  margin: 16px 0 0 0;
+}
+
+.entry-div .window-body {
+  padding: 6px 4px;
+}
+
+.entry-div p {
+  font-family: "Ms Sans Serif";
+  font-size: 12px;
+  margin: 0 0 12px 0;
+}
+
+/* MAIN PLAYING CARD GAME DIV */
+
+.game-window,
+.game-window-body {
+  width: var(--main-width);
+  height: var(--main-height);
+}
+
+.green-bg {
+  background-color: #017f02;
+  height: 100%;
+  width: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.green-bg,
+.window {
+  box-shadow: inset -1px -1px #00138c, inset 1px 1px #0831d9,
+    inset -2px -2px #001ea0, inset 2px 2px #166aee, inset -3px -3px #003bda,
+    inset 3px 3px #0855dd;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  padding: 0 0 3px 0;
+  margin: -8px;
+}
+
+.cards-div {
+  margin: 2px;
+  position: absolute;
+  top: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.deck-div {
+  position: absolute;
+  bottom: 100px;
+}
+
+.score-div,
+.message-div {
+  display: inline;
+  color: #fff;
+  font-size: 12px;
+  font-family: "Ms Sans Serif";
+}
+
+.score-div {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 24px 36px 0 0;
+  text-align: right;
+}
+
+.message-div {
+  position: absolute;
+  top: 0;
+  left: 0;
+  float: left;
+  padding: 24px 0 36px 0;
+  text-align: left;
+}
+
+.controls-div {
+  position: absolute;
+  bottom: 28px;
+  text-align: center;
+}
+
+.empty-div {
+  height: 96px;
+  width: 71px;
+  border: 1px solid #000;
+}
+
+.score-div p {
+  margin: 0 0 4px 0;
+  text-align: right;
+}
+
+ul {
+  margin: 0;
+  list-style-type: none;
+}
+
+li {
+  margin: 0 0 4px 0;
+}
+
+/* RULES DIV */
+
+.rules-div {
+  font-family: "Ms Sans Serif";
+  position: absolute;
+  top: 30vh;
+  right: 6vw;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th {
+  text-align: left;
+}
+
+td,
+th {
+  padding: 6px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+
+/* CARD BACKING DIV */
+
+.cards-back-body {
+  margin: 16px 16px 8px 16px !important;
+  width: fit-content;
+}
+
+.card-img-div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-back {
+  margin: 0 2px 8px 0;
+  border: 3px solid transparent;
+}
+
+.card-back:hover {
+  box-shadow: none;
+  margin: 0 2px 8px 0;
+  border: 3px solid #98b8ea;
+}
+
+.card-active {
+  margin: 1px 3px 9px 1px;
+  border: 2px dotted #919b9c;
+  pointer-events: none;
+}
+
+/* CONFETTI CELEBRATION */
+
+.confetti-container {
+  position: fixed;
+  top: 0;
+  left: 9;
+  width: 100%;
+  height: 0;
+  overflow: visible;
+  z-index: 9999;
+}

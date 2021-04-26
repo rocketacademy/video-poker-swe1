@@ -1,7 +1,3 @@
-let cards;
-let playerCardsNo = [];
-let playerCardsSuit = [];
-const playerScore = document.getElementsByClassName("player-credits")[0];
 //create deck and shuffle
 const makeDeck = () => {
   // create the empty deck at the beginning
@@ -64,31 +60,6 @@ const shuffleCards = (cards) => {
   return cards;
 };
 //draw 5 cards
-let card1Text;
-let card2Text;
-let card3Text;
-let card4Text;
-let card5Text;
-const card1 = document.getElementsByClassName("card-1")[0];
-const card2 = document.getElementsByClassName("card-2")[0];
-const card3 = document.getElementsByClassName("card-3")[0];
-const card4 = document.getElementsByClassName("card-4")[0];
-const card5 = document.getElementsByClassName("card-5")[0];
-const card1rank = document.getElementsByClassName("card-1p1")[0];
-const card1suit = document.getElementsByClassName("card-1p2")[0];
-const card1SuitCenter = document.getElementsByClassName("card-1p2")[1];
-const card2rank = document.getElementsByClassName("card-2p1")[0];
-const card2suit = document.getElementsByClassName("card-2p2")[0];
-const card2SuitCenter = document.getElementsByClassName("card-2p2")[1];
-const card3rank = document.getElementsByClassName("card-3p1")[0];
-const card3suit = document.getElementsByClassName("card-3p2")[0];
-const card3SuitCenter = document.getElementsByClassName("card-3p2")[1];
-const card4rank = document.getElementsByClassName("card-4p1")[0];
-const card4suit = document.getElementsByClassName("card-4p2")[0];
-const card4SuitCenter = document.getElementsByClassName("card-4p2")[1];
-const card5rank = document.getElementsByClassName("card-5p1")[0];
-const card5suit = document.getElementsByClassName("card-5p2")[0];
-const card5SuitCenter = document.getElementsByClassName("card-5p2")[1];
 
 const generateCards = () => {
   card1Text = outputCards(cards, 0);
@@ -143,7 +114,7 @@ const outputCards = (cards, cardNo) => {
 document
   .getElementsByClassName("complete-turn")[0]
   .addEventListener("click", () => {
-    document.getElementById('click-audio').play();
+    document.getElementById("click-audio").play();
     card1rank.innerText = card1Text.rank;
     card1SuitCenter.innerText = card1Text.suit;
     card1suit.innerText = card1Text.suit;
@@ -165,16 +136,13 @@ document
     document.getElementsByClassName("cards")[3].style.border = "none";
     document.getElementsByClassName("cards")[4].style.border = "none";
     checkWinningConditions();
-    if(creditWon>19){
-      document.getElementById('click-win').play();
+    if (creditWon > 19) {
+      document.getElementById("click-win").play();
     }
     playAgain();
   });
 
 //produce result
-let rankCounter = {};
-let suitCounter = {};
-let rankCounterKeysNo = [];
 const tallyCounts = () => {
   for (i = 0; i < 5; i++) {
     const cardNoProperty = playerCardsNo[i];
@@ -191,12 +159,13 @@ const tallyCounts = () => {
     }
   }
 };
-let creditWon = 0;
-let remainingCredit = 100;
+// let creditWon = 0;
+// let remainingCredit = 100;
 const checkWinningConditions = () => {
   tallyCounts();
   const rankCounterValues = Object.values(rankCounter);
   const rankCounterKeys = Object.keys(rankCounter);
+  //populates rankCounterKeysNo with all unique rank numbers
   for (i = 0; i < rankCounterKeys.length; i++) {
     const numberAdded = parseInt(rankCounterKeys[i]);
     rankCounterKeysNo.push(numberAdded);
@@ -204,32 +173,45 @@ const checkWinningConditions = () => {
   console.log(rankCounterKeysNo);
   if (Object.keys(suitCounter).length === 1) {
     //check if flush or straight flush
-    rankCounterKeys.sort();
+    rankCounterKeysNo.sort((a, b) => a - b);
     let consecutiveNumbers = 0;
     for (i = 1; i < 5; i++) {
       if (rankCounterKeysNo[i] - rankCounterKeysNo[i - 1] === 1) {
         consecutiveNumbers += 1;
+        console.log(consecutiveNumbers);
+        console.log(rankCounterKeysNo[i]);
+      } else {
+        console.log(`not ${rankCounterKeysNo[i]}`);
       }
     }
     if (consecutiveNumbers === 5) {
+      console.log("Straight Flush");
       creditWon = 10000;
       remainingCredit += 10000;
+    } else if (
+      consecutiveNumbers === 3 &&
+      rankCounterKeysNo.indexOf(13) != -1 &&
+      rankCounterKeysNo.indexOf(1) != -1
+    ) {
       console.log("Straight Flush");
+      creditWon = 10000;
+      remainingCredit += 10000;
     } else {
       creditWon = 500;
       remainingCredit += 500;
       console.log("Flush");
     }
-  }
-  if (Math.max(...rankCounterValues) === 4) {
+  } else if (Math.max(...rankCounterValues) === 4) {
     creditWon = 1500;
     remainingCredit += 1500;
     console.log("4 of a kind");
     //win 4 of a kind
   }
-  if (Math.max(...rankCounterValues) === 3) {
+  //check for 3 same cards
+  else if (Math.max(...rankCounterValues) === 3) {
     const index = rankCounterValues.indexOf(3);
     rankCounterValues.splice(index, 1);
+    //check for additional pair of same cards
     if (Math.max(...rankCounterValues) === 2) {
       console.log("Full house");
       creditWon = 1000;
@@ -240,9 +222,11 @@ const checkWinningConditions = () => {
       remainingCredit += 60;
     }
   }
-  if (Math.max(...rankCounterValues) === 2) {
-    const index = rankCounterValues.indexOf(3);
+  //checks for a pair
+  else if (Math.max(...rankCounterValues) === 2) {
+    const index = rankCounterValues.indexOf(2);
     rankCounterValues.splice(index, 1);
+    //checks for an additional pair
     if (Math.max(...rankCounterValues) === 2) {
       console.log("2 Pair");
       creditWon = 40;
@@ -252,8 +236,7 @@ const checkWinningConditions = () => {
       creditWon = 20;
       remainingCredit += 20;
     }
-  }
-  if (Object.keys(rankCounter).length === 5) {
+  } else if (Object.keys(rankCounter).length === 5) {
     //check if Straight
     rankCounterKeysNo.sort((a, b) => a - b);
     let consecutiveNumbers = 0;
@@ -277,6 +260,8 @@ const checkWinningConditions = () => {
       rankCounterKeysNo.indexOf(1) != -1
     ) {
       console.log("Straight");
+      creditWon = 100;
+      remainingCredit += 100;
     } else {
       console.log("Nothing");
       creditWon = -20;
@@ -289,7 +274,7 @@ const checkWinningConditions = () => {
 const playAgain = () => {
   const popUp = document.createElement("div");
   popUp.classList.add("pop-up");
-  document.body.appendChild(popUp)
+  document.body.appendChild(popUp);
   const popUpText = document.createElement("p");
   popUpText.classList.add("pop-up-text");
   popUp.appendChild(popUpText);
@@ -303,27 +288,38 @@ const playAgain = () => {
   const popUpButton = document.createElement("button");
   popUpButton.classList.add("pop-up-button");
   popUpButton.innerText = "Play Again";
-  popUp.appendChild(popUpButton)
+  popUp.appendChild(popUpButton);
   popUpButton.addEventListener("click", () => {
-    document.getElementById('click-audio').play();
+    document.getElementById("click-audio").play();
     replayGame();
   });
 };
+
+const initGame = () => {
+  cards = shuffleCards(makeDeck());
+  generateCards();
+};
+
 const replayGame = () => {
   rankCounter = {};
   suitCounter = {};
   rankCounterKeysNo = [];
   playerCardsNo = [];
   playerCardsSuit = [];
-  document.getElementsByClassName('pop-up')[0].remove();
-  generateCards();
-  
+  console.log(cards.length);
+  if (cards.length < 15) {
+    initGame();
+    document.getElementsByClassName("pop-up")[0].remove();
+    console.log("added cards");
+  } else if (remainingCredit < 20) {
+    document.getElementsByClassName("pop-up-text")[0].innerText =
+      "Oops you ran out of credit";
+    document.getElementsByClassName("pop-up-button")[0].remove();
+  } else {
+    document.getElementsByClassName("pop-up")[0].remove();
+    generateCards();
+  }
 };
 //init game
-
-const initGame = () => {
-  cards = shuffleCards(makeDeck());
-  generateCards();
-};
 
 initGame();

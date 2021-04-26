@@ -1,6 +1,6 @@
-/* ========================================================== */
-/* ==================== DOM SELECTORS ======================= */
-/* ========================================================== */
+/* ==========================================================
+===================== DOM SELECTORS =========================
+=========================================================== */
 // divs
 const displayContainer = document.querySelector('.primary-display-container');
 const frontCardContainer = document.querySelector('.front-cards-container');
@@ -15,11 +15,14 @@ const betMaxButton = document.querySelector('.btn-bet-max');
 // credits
 const creditScoreText = document.querySelector('.credits-text');
 
-/* ========================================================== */
-/* ================== HELPER FUNCTIONS======================= */
-/* ========================================================== */
+/* ==========================================================
+===================== HELPER FUCTIONS =======================
+=========================================================== */
 
-/* ================== AUDIO FUNCTIONS ======================= */
+/* ================== AUDIO ======================= */
+/**
+ * Used to turn on/off or trigger the music/audio.
+ */
 const createBackgroudMusic = () => {
   // get music
   const currentSound = document.querySelector('#background-music');
@@ -101,11 +104,16 @@ const playLoseSound = () => {
   currentSound.load();
   currentSound.play();
 };
-/* ================== CARD FUNCTIONS ======================= */
 
-// Get a random index ranging from 0 (inclusive) to max (exclusive).
+/* ================== CREATING THE DECK OF CARDS ==================== */
+/**
+ * Get a random index ranging from 0 (inclusive) to max (exclusive).
+ */
 const getRandomIndex = (max) => Math.floor(Math.random() * max);
-// Shuffle an array of cards
+
+/**
+ * Shuffle an array of cards
+ */
 const shuffleCards = (cards) => {
   // Loop over the card deck array once
   for (let currentIndex = 0; currentIndex < cards.length; currentIndex += 1) {
@@ -122,6 +130,10 @@ const shuffleCards = (cards) => {
   // Return the shuffled deck
   return cards;
 };
+
+/**
+ * Create a deck of cards
+ */
 const makeDeck = () => {
   // Initialise an empty deck array
   const newDeck = [];
@@ -192,13 +204,73 @@ const makeDeck = () => {
   return newDeck;
 };
 
-// function that deals cards
-// NOTE THAT WE CAN HARD CODE OUR CARDS IN HERE TO TEST
-const dealCards = () => {
-  /* ============== CARD INFO ============== */
-  // make deck and shuffle
-  deckOfCards = shuffleCards(makeDeck());
+/* ================== HOLDING OF CARDS ======================= */
 
+/**
+ * Determins what to do when card is clicked
+ * @param {Array} parent - the index of the card in the displayCardsArr
+ */
+const clickedCard = (displayCardIndex) => {
+  // add css class to show that the card is set to hold
+  const cardToHold = frontCardContainer.children[displayCardIndex];
+  createOrRemoveHoldCard(cardToHold);
+
+  // toggle between true/false as the user clicks on the card
+  if (holdCardsArr[displayCardIndex] === true) {
+    holdCardsArr[displayCardIndex] = false;
+  } else {
+    holdCardsArr[displayCardIndex] = true;
+  }
+};
+
+/**
+ * Determins which cards to hold or switch
+ */
+const holdOrSwitchCards = () => {
+  // update displayCardsArr
+  // only switch cards for falses
+  holdCardsArr.forEach((val, index) => {
+    if (val === false) {
+      displayCardsArr[index] = deckOfCards.pop();
+    }
+  });
+};
+
+/**
+ * Create element to show if card is currently clicked/hold
+ * @param {element} parent - the parent for this created element
+ */
+const createOrRemoveHoldCard = (parent) => {
+  if (parent.classList.contains('hold')) {
+    parent.classList.remove('hold');
+    parent.lastChild.remove();
+  } else {
+    parent.classList.add('hold');
+    const holdMarker = document.createElement('div');
+    holdMarker.classList.add('hold-text');
+    holdMarker.innerText = 'HOLD';
+    parent.appendChild(holdMarker);
+  }
+};
+
+/* ================== CREATING / DISPLAYING CARDS ======================= */
+/**
+ * Creates the display for the back of the cards
+ * @param {element} parent - the parent for this created element
+ */
+const createBackOfCard = (parent) => {
+  // card display e.g. J K Q...
+  const backOfCardDesign = document.createElement('div');
+  backOfCardDesign.classList.add('back-card-design');
+  parent.appendChild(backOfCardDesign);
+};
+
+/**
+ * Deals 5 cards
+ * Stores these 5 cards in the global: displayCardsArr
+ * Creates elements & event listeners for the 5 cards, enabling the user to click to hold the cards
+ */
+const dealCards = () => {
   // set up for 5 cards
   for (let i = 0; i < 5; i += 1) {
     // create individual card container
@@ -208,7 +280,6 @@ const dealCards = () => {
 
     // draw card and push into display cards array
     const drawCard = deckOfCards.pop();
-    console.log(drawCard);
     displayCardsArr.push(drawCard);
 
     // add event listener
@@ -216,12 +287,43 @@ const dealCards = () => {
       clickedCard(i);
     });
   }
-  // display cards
-  displayCards(displayCardsArr);
 };
 
-// function that displays the cards in the display cards array
-const displayCards = (arr) => {
+/**
+ * Create element for a single card
+ * @param {Object} objCardInfo - the object containing the details for a single card
+ * @param {element} parent - the parent for this created element
+ */
+// this function takes in a card object and displays the card
+const createCard = (objCardInfo, parent) => {
+  // update class for main parent element
+  parent.classList.add('card', objCardInfo.color);
+
+  // card display e.g. J K Q...
+  const cardDisplay = document.createElement('div');
+  cardDisplay.classList.add('card-display');
+  cardDisplay.innerText = objCardInfo.display;
+
+  // card suit
+  const cardSuit = document.createElement('div');
+  cardSuit.classList.add('card-suit');
+  cardSuit.innerText = objCardInfo.suitSymbol;
+
+  // card suit display
+  const cardSuitDisplay = document.createElement('div');
+  cardSuitDisplay.classList.add('card-suit-display');
+  cardSuitDisplay.innerText = objCardInfo.suitSymbol;
+
+  // assign parent
+  parent.appendChild(cardDisplay);
+  parent.appendChild(cardSuit);
+  parent.appendChild(cardSuitDisplay);
+};
+
+/**
+ * Displays the 5 cards in the DOM
+ */
+const displayCards = () => {
   const childrenOfCardContainer = frontCardContainer.children;
 
   const displayCardsInDOM = (i) => {
@@ -231,7 +333,7 @@ const displayCards = (arr) => {
     // remove hold class attribute
     childrenOfCardContainer[i].classList.remove('hold');
     childrenOfCardContainer[i].innerHTML = '';
-    createCard(arr[i], childrenOfCardContainer[i]);
+    createCard(displayCardsArr[i], childrenOfCardContainer[i]);
   };
 
   const repeats = childrenOfCardContainer.length - 1;
@@ -246,7 +348,9 @@ const displayCards = (arr) => {
   }, 50);
 };
 
-// function that disables the clicking of the cards after a game is finished
+/**
+ * Disable the user from clicking on the cards after commiting to their holds
+ */
 const disableClickingOnCard = () => {
   const childrenOfCardContainer = frontCardContainer.children;
   for (let i = 0; i < childrenOfCardContainer.length; i += 1) {
@@ -255,22 +359,200 @@ const disableClickingOnCard = () => {
   }
 };
 
-// create hold card marker
-const createOrRemoveHoldCard = (parent) => {
-  if (parent.classList.contains('hold')) {
-    parent.classList.remove('hold');
-    parent.lastChild.remove();
-  } else {
-    parent.classList.add('hold');
-    const holdMarker = document.createElement('div');
-    holdMarker.classList.add('hold-text');
-    holdMarker.innerText = 'HOLD';
-    parent.appendChild(holdMarker);
+/* ================== WINNING CARD COMBINATIONS ======================= */
+/**
+ * Check if user gets a winning combination of cards and returns a boolean
+ * @param {Object} rankObjTally - tally of all the ranks in the displayCardsArr
+ * @param {Object} suitObjTally - tally of all the suits in the displayCardsArr
+ */
+const checkForRoyalFlush = (rankObjTally, suitObjTally) => {
+  // a royal flush has the following properties
+  // all same suit
+  // a straight of 10,J,Q,K,Ace
+
+  let win = false;
+  // check if suits are the same
+  if (Object.keys(suitObjTally).length === 1) {
+    // check if the ranks are correct
+    const winningRankCombination = ['1', '10', '11', '12', '13'];
+    // the code below turns the obj into an array
+    const arrayOfRanksInHand = Object.keys(rankObjTally);
+
+    // check if the arrays are similar
+    let difference = arrayOfRanksInHand.filter(
+      (x) => !winningRankCombination.includes(x)
+    );
+    if (difference.length === 0) {
+      win = true;
+    }
   }
+  return win;
+};
+const checkForStraightFlush = (rankObjTally, suitObjTally) => {
+  // a straight flush has the following properties
+  // all same suit
+  // any straight
+  let win = false;
+  // check if suits are the same
+  if (Object.keys(suitObjTally).length === 1) {
+    // the code below turns the obj into an array then converts the string values into integers
+    const arrayOfRanksInHand = Object.keys(rankObjTally).map(Number);
+
+    // note that the last array will return false so we have to omit it out
+    // e.g. [1,2,3,4] will return [true,true,true,false]
+    let checkIfAscending = arrayOfRanksInHand.map((val, i) => {
+      const currentVal = val;
+      let nextVal = arrayOfRanksInHand[i + 1];
+      return currentVal === nextVal - 1;
+    });
+    // omit last array
+    checkIfAscending.pop();
+    if (checkIfAscending.includes(false)) {
+      win = false;
+    } else {
+      win = true;
+    }
+  }
+  return win;
+};
+const checkForFourOfAKind = (rankObjTally) => {
+  // a four of a kind has the following properties
+  // Any four cards of the same rank
+  let win = false;
+  Object.keys(rankObjTally).forEach((k) => {
+    if (rankObjTally[k] === 4) {
+      win = true;
+    }
+  });
+  return win;
+};
+const checkForFullHouse = (rankObjTally) => {
+  // a full house has the following properties
+  // Any three cards of the same rank together
+  // and any two cards of the same rank
+  let win = false;
+  // check if the number of keys in the obj is 2
+  if (Object.keys(rankObjTally).length === 2) {
+    // check if we have 3 & 2 similar ranks
+    Object.keys(rankObjTally).forEach((k) => {
+      if ([2, 3].includes(rankObjTally[k])) {
+        win = true;
+      }
+    });
+  }
+  return win;
+};
+const checkForFlush = (suitObjTally) => {
+  // a flush has the following properties
+  // Any five cards of the same suit which are not consecutive
+  let win = false;
+  // check if suits are the same
+  if (Object.keys(suitObjTally).length === 1) {
+    win = true;
+  }
+  return win;
+};
+const checkForStraight = (rankObjTally) => {
+  // a straight has the following properties
+  // Any five consecutive cards of different suits.
+  // ace can be either ranked 1 or 14 here
+
+  let win = false;
+
+  // check if it's 5 different ranked cards
+  if (Object.keys(rankObjTally).length === 5) {
+    // the code below turns the obj into an array then converts the string values into integers
+    const arrayOfRanksInHand = Object.keys(rankObjTally).map(Number);
+
+    // check if ranks are ascending
+    // note that the last array will return false so we have to omit it out
+    // e.g. [1,2,3,4] will return [true,true,true,false]
+    let checkIfAscending = arrayOfRanksInHand.map((val, i) => {
+      const currentVal = val;
+      let nextVal = arrayOfRanksInHand[i + 1];
+      return currentVal === nextVal - 1;
+    });
+    // omit last array
+    checkIfAscending.pop();
+    if (checkIfAscending.includes(false)) {
+      win = false;
+    } else {
+      win = true;
+    }
+
+    // exception for high straight with ace
+    // e.g. 10,jack,queen,king,ace
+    const highStraightCombination = [1, 10, 11, 12, 13];
+    // check if the arrays are similar
+    const difference = arrayOfRanksInHand.filter(
+      (x) => !highStraightCombination.includes(x)
+    );
+    if (difference.length === 0) {
+      win = true;
+    }
+  }
+  return win;
+};
+const checkForThreeOfAKind = (rankObjTally) => {
+  // a three of a kind has the following properties
+  // Any three cards of the same rank.
+
+  let win = false;
+
+  Object.keys(rankObjTally).forEach((k) => {
+    if (rankObjTally[k] === 3) {
+      win = true;
+    }
+  });
+  return win;
+};
+const checkForTwoPair = (rankObjTally) => {
+  // a two pair has the following properties
+  // Any two cards of the same rank together with
+  // another two cards of the same rank.
+
+  let win = false;
+
+  // check if the number of keys in the obj is 2
+  if (Object.keys(rankObjTally).length === 3) {
+    // check if we have 2 pairs of similar ranks
+    Object.keys(rankObjTally).forEach((k) => {
+      if (rankObjTally[k] === 2) {
+        win = true;
+      }
+      // if ([2, 3].includes(rankObj[k])) {
+      //   win = true;
+      // }
+    });
+  }
+  return win;
+};
+const checkForJacksOrBetter = (rankObjTally) => {
+  // a jacks or better has the following properties
+  // player gets an extra point for every pair of Jacks or higher
+
+  let win = false;
+
+  // check for pairs
+  // if pairs are more than Jack add 1 to bonus point
+  Object.keys(rankObjTally).forEach((k, i) => {
+    if (rankObjTally[k] === 2 && Object.keys(rankObjTally)[i] >= 11) {
+      bonusMultiplyer += 1;
+      win = true;
+    }
+  });
+
+  return win;
 };
 
-/* ============== CREDIT / SCORE FUNCTIONS ================== */
-// manipulate total credits lossed/gain in each round
+/* ============== CREDIT / SCORE  ================== */
+
+/**
+ * Update total credits lossed/gain in each round
+ * This updates the global: totalCredits
+ * and also updates the total credits display in the DOM
+ * @param {number} creditNum - the number of credits left after each round/bet
+ */
 const adjustTotalCredits = (creditNum) => {
   // update global variable
   totalCredits = creditNum;
@@ -278,6 +560,13 @@ const adjustTotalCredits = (creditNum) => {
   creditScoreText.innerHTML = `TOTAL CREDITS: ${totalCredits}`;
 };
 
+/**
+ * Update the bet amount
+ * This updates the global: betAmount && totalCredits
+ * and also updates the totalCredits and messages in the DOM
+ * @param {String} typeOfBet - The strings are 'betOne', 'betMax' and 'reset'
+ * Each gives a different ouput
+ */
 // display and adjustment for bets
 const displayAndAdjustBet = (typeOfBet) => {
   if (typeOfBet === 'betOne' && betAmount < 5) {
@@ -335,9 +624,11 @@ const displayAndAdjustBet = (typeOfBet) => {
   }
 };
 
-/* ============== USER INTERFACE FUNCTIONS ================== */
+/* ============== USER INTERFACE / DOM ================== */
 
-// function that creates the score table (i.e the points system)
+/**
+ * Creates the score table (i.e the points system)
+ */
 const createScoreTable = () => {
   // We want the first row of the table to display the bet amount
   // to do this, we add a new object to the first row
@@ -384,41 +675,9 @@ const createScoreTable = () => {
   makeRow('JACKS OR BETTER (BONUS)', 'jacks-or-better', newTableArr[9]);
 };
 
-// this function takes in a card object and displays the card
-const createCard = (objCardInfo, parent) => {
-  // update class for main parent element
-  parent.classList.add('card', objCardInfo.color);
-
-  // card display e.g. J K Q...
-  const cardDisplay = document.createElement('div');
-  cardDisplay.classList.add('card-display');
-  cardDisplay.innerText = objCardInfo.display;
-
-  // card suit
-  const cardSuit = document.createElement('div');
-  cardSuit.classList.add('card-suit');
-  cardSuit.innerText = objCardInfo.suitSymbol;
-
-  // card suit display
-  const cardSuitDisplay = document.createElement('div');
-  cardSuitDisplay.classList.add('card-suit-display');
-  cardSuitDisplay.innerText = objCardInfo.suitSymbol;
-
-  // assign parent
-  parent.appendChild(cardDisplay);
-  parent.appendChild(cardSuit);
-  parent.appendChild(cardSuitDisplay);
-};
-
-// function that creates the display for the back of the cards
-const createBackOfCard = (parent) => {
-  // card display e.g. J K Q...
-  const backOfCardDesign = document.createElement('div');
-  backOfCardDesign.classList.add('back-card-design');
-  parent.appendChild(backOfCardDesign);
-};
-
-// function that greets user and asks them to start game
+/**
+ * A Greeting that asks the user to start the game
+ */
 const createGreeting = () => {
   // create container
   const greetingsContainer = document.createElement('div');
@@ -458,7 +717,10 @@ const createGreeting = () => {
   return startGameButton;
 };
 
-// function that takes in a string and displays the message on screen
+/**
+ * A custom message displayed for the user
+ * @param {String} strMessage - The message that will be displayed
+ */
 const createMessage = (strMessage) => {
   // check if message container already exists
   // if it doesn't exist then create one
@@ -487,291 +749,33 @@ const createMessage = (strMessage) => {
 /* ===================== GAME LOGIC ========================== */
 /* ========================================================== */
 
-// function that determins what to do when card is clicked
-const clickedCard = (arrPosition) => {
-  // console.log(displayCardsArr);
-  // console.log('coordinates', arrPosition);
-  // console.log(displayCardsArr[arrPosition]);
-
-  // add class to css to show that the card is set to hold
-  const cardToHold = frontCardContainer.children[arrPosition];
-  createOrRemoveHoldCard(cardToHold);
-
-  // collect the coordinates of all the clicks
-  // this will be used to determin which card to hold or switch
-  holdCardsClickCounter.push(arrPosition);
-};
-
-// function that determins which cards to hold or switch
-const holdOrSwitchCards = () => {
-  // count how many repeats
-  const coordinatesToHold = [0, 0, 0, 0, 0];
-  holdCardsClickCounter.forEach((val) => {
-    if (val === 0) {
-      coordinatesToHold[0] += 1;
-    }
-    if (val === 1) {
-      coordinatesToHold[1] += 1;
-    }
-    if (val === 2) {
-      coordinatesToHold[2] += 1;
-    }
-    if (val === 3) {
-      coordinatesToHold[3] += 1;
-    }
-    if (val === 4) {
-      coordinatesToHold[4] += 1;
-    }
-  });
-
-  // odd numbered repeats mean that player wants to hold
-  // even numbered repeats mean that player wants to switch
-  coordinatesToHold.forEach((val, i) => {
-    if (val % 2) {
-      coordinatesToHold[i] = true;
-    } else {
-      coordinatesToHold[i] = false;
-    }
-  });
-
-  // update displayCardsArr
-  // only switch cards for falses
-  coordinatesToHold.forEach((val, index) => {
-    if (val === false) {
-      displayCardsArr[index] = deckOfCards.pop();
-    }
-  });
-
-  // display cards
-  displayCards(displayCardsArr);
-};
-
-// function that checks for royal flush and returns a boolean
-const checkForRoyalFlush = (rankObj, suitObj) => {
-  // a royal flush has the following properties
-  // all same suit
-  // a straight of 10,J,Q,K,Ace
-
-  let win = false;
-  // check if suits are the same
-  if (Object.keys(suitObj).length === 1) {
-    // check if the ranks are correct
-    const winningRankCombination = ['1', '10', '11', '12', '13'];
-    // the code below turns the obj into an array
-    const arrayOfRanksInHand = Object.keys(rankObj);
-
-    // check if the arrays are similar
-    let difference = arrayOfRanksInHand.filter(
-      (x) => !winningRankCombination.includes(x)
-    );
-    if (difference.length === 0) {
-      win = true;
-    }
-  }
-  return win;
-};
-
-// function that checks for straight flush and returns a boolean
-const checkForStraightFlush = (rankObj, suitObj) => {
-  // a straight flush has the following properties
-  // all same suit
-  // any straight
-  let win = false;
-  // check if suits are the same
-  if (Object.keys(suitObj).length === 1) {
-    // the code below turns the obj into an array then converts the string values into integers
-    const arrayOfRanksInHand = Object.keys(rankObj).map(Number);
-
-    // note that the last array will return false so we have to omit it out
-    // e.g. [1,2,3,4] will return [true,true,true,false]
-    let checkIfAscending = arrayOfRanksInHand.map((val, i) => {
-      const currentVal = val;
-      let nextVal = arrayOfRanksInHand[i + 1];
-      return currentVal === nextVal - 1;
-    });
-    // omit last array
-    checkIfAscending.pop();
-    if (checkIfAscending.includes(false)) {
-      win = false;
-    } else {
-      win = true;
-    }
-  }
-  return win;
-};
-
-// function that checks for four of a kind and returns a boolean
-const checkForFourOfAKind = (rankObj) => {
-  // a four of a kind has the following properties
-  // Any four cards of the same rank
-  let win = false;
-  Object.keys(rankObj).forEach((k) => {
-    if (rankObj[k] === 4) {
-      win = true;
-    }
-  });
-  return win;
-};
-
-// function that checks for full house and returns a boolean
-const checkForFullHouse = (rankObj) => {
-  // a full house has the following properties
-  // Any three cards of the same rank together
-  // and any two cards of the same rank
-  let win = false;
-  // check if the number of keys in the obj is 2
-  if (Object.keys(rankObj).length === 2) {
-    // check if we have 3 & 2 similar ranks
-    Object.keys(rankObj).forEach((k) => {
-      if ([2, 3].includes(rankObj[k])) {
-        win = true;
-      }
-    });
-  }
-  return win;
-};
-
-// function that checks for flush and returns a boolean
-const checkForFlush = (suitObj) => {
-  // a flush has the following properties
-  // Any five cards of the same suit which are not consecutive
-  let win = false;
-  // check if suits are the same
-  if (Object.keys(suitObj).length === 1) {
-    win = true;
-  }
-  return win;
-};
-
-// function that checks for straight and returns a boolean
-const checkForStraight = (rankObj) => {
-  // a straight has the following properties
-  // Any five consecutive cards of different suits.
-  // ace can be either ranked 1 or 14 here
-
-  let win = false;
-
-  // check if it's 5 different ranked cards
-  if (Object.keys(rankObj).length === 5) {
-    // the code below turns the obj into an array then converts the string values into integers
-    const arrayOfRanksInHand = Object.keys(rankObj).map(Number);
-
-    // check if ranks are ascending
-    // note that the last array will return false so we have to omit it out
-    // e.g. [1,2,3,4] will return [true,true,true,false]
-    let checkIfAscending = arrayOfRanksInHand.map((val, i) => {
-      const currentVal = val;
-      let nextVal = arrayOfRanksInHand[i + 1];
-      return currentVal === nextVal - 1;
-    });
-    // omit last array
-    checkIfAscending.pop();
-    if (checkIfAscending.includes(false)) {
-      win = false;
-    } else {
-      win = true;
-    }
-
-    // exception for high straight with ace
-    // e.g. 10,jack,queen,king,ace
-    const highStraightCombination = [1, 10, 11, 12, 13];
-    // check if the arrays are similar
-    const difference = arrayOfRanksInHand.filter(
-      (x) => !highStraightCombination.includes(x)
-    );
-    if (difference.length === 0) {
-      win = true;
-    }
-  }
-  return win;
-};
-
-// function that checks for three of a kind and returns a boolean
-const checkForThreeOfAKind = (rankObj) => {
-  // a three of a kind has the following properties
-  // Any three cards of the same rank.
-
-  let win = false;
-
-  Object.keys(rankObj).forEach((k) => {
-    if (rankObj[k] === 3) {
-      win = true;
-    }
-  });
-  return win;
-};
-
-// function that checks for two pair and returns a boolean
-const checkForTwoPair = (rankObj) => {
-  // a two pair has the following properties
-  // Any two cards of the same rank together with
-  // another two cards of the same rank.
-
-  let win = false;
-
-  // check if the number of keys in the obj is 2
-  if (Object.keys(rankObj).length === 3) {
-    // check if we have 2 pairs of similar ranks
-    Object.keys(rankObj).forEach((k) => {
-      if (rankObj[k] === 2) {
-        win = true;
-      }
-      // if ([2, 3].includes(rankObj[k])) {
-      //   win = true;
-      // }
-    });
-  }
-  return win;
-};
-
-// function that checks for jacks or better
-const checkForJacksOrBetter = (rankObj) => {
-  // a jacks or better has the following properties
-  // player gets an extra point for every pair of Jacks or higher
-  console.log(rankObj);
-
-  let win = false;
-
-  // check for pairs
-  // if pairs are more than Jack add 1 to bonus point
-  Object.keys(rankObj).forEach((k, i) => {
-    if (rankObj[k] === 2 && Object.keys(rankObj)[i] >= 11) {
-      console.log(Object.keys(rankObj)[i]);
-      bonusMultiplyer += 1;
-      win = true;
-    }
-  });
-
-  return win;
-};
-
 // function that checks if player has won anything
 const calcHandScore = () => {
   const calcHand = displayCardsArr;
 
   // get the values that are needed (rank and suit)
   // put these values into an object
-  const rankTypesObj = {};
-  const suitTypesObj = {};
+  const rankTypesTallyObj = {};
+  const suitTypesTallyObj = {};
   calcHand.forEach((card) => {
     // Loop for rank
     // get the rank of one card
     let rankType = card.rank;
     // check if we have already recorded this rank
-    if (rankTypesObj[rankType] === undefined) {
-      rankTypesObj[rankType] = 1;
+    if (rankTypesTallyObj[rankType] === undefined) {
+      rankTypesTallyObj[rankType] = 1;
     } else {
-      rankTypesObj[rankType] += 1;
+      rankTypesTallyObj[rankType] += 1;
     }
 
     // Loop for suit
     // get the suit of one card
     let suitType = card.suit;
     // check if we have already recorded this rank
-    if (suitTypesObj[suitType] === undefined) {
-      suitTypesObj[suitType] = 1;
+    if (suitTypesTallyObj[suitType] === undefined) {
+      suitTypesTallyObj[suitType] = 1;
     } else {
-      suitTypesObj[suitType] += 1;
+      suitTypesTallyObj[suitType] += 1;
     }
   });
 
@@ -779,46 +783,47 @@ const calcHandScore = () => {
   // each check function returns a boolean
 
   // Win type: royalFlush
-  const winByRoyalFlush = checkForRoyalFlush(rankTypesObj, suitTypesObj);
-  console.log(`Royal Flush Check Win: ${winByRoyalFlush}`);
+  const winByRoyalFlush = checkForRoyalFlush(
+    rankTypesTallyObj,
+    suitTypesTallyObj
+  );
 
   // Win type: straightFlush
-  const winByStraightFlush = checkForStraightFlush(rankTypesObj, suitTypesObj);
-  console.log(`Straight Flush Check Win: ${winByStraightFlush}`);
+  const winByStraightFlush = checkForStraightFlush(
+    rankTypesTallyObj,
+    suitTypesTallyObj
+  );
 
   // Win type: Four of a kind
-  const winByFourOfAKind = checkForFourOfAKind(rankTypesObj);
-  console.log(`Four Of A Kind Check Win: ${winByFourOfAKind}`);
+  const winByFourOfAKind = checkForFourOfAKind(rankTypesTallyObj);
 
   // Win type: Full house
-  const winByFullHouse = checkForFullHouse(rankTypesObj);
-  console.log(`Full House Check Win: ${winByFullHouse}`);
+  const winByFullHouse = checkForFullHouse(rankTypesTallyObj);
 
   // Win type: Flush
-  const winByFlush = checkForFlush(suitTypesObj);
-  console.log(`Flush Check Win: ${winByFlush}`);
+  const winByFlush = checkForFlush(suitTypesTallyObj);
 
   // Win type: Straight
-  const winByStraight = checkForStraight(rankTypesObj);
-  console.log(`Straight Check Win: ${winByStraight}`);
+  const winByStraight = checkForStraight(rankTypesTallyObj);
 
   // Win type: Three of a kind
-  const winByThreeOfAKind = checkForThreeOfAKind(rankTypesObj);
-  console.log(`Three Of A Kind Check Win: ${winByThreeOfAKind}`);
+  const winByThreeOfAKind = checkForThreeOfAKind(rankTypesTallyObj);
 
   // Win type: Two pair
-  const winByTwoPair = checkForTwoPair(rankTypesObj);
-  console.log(`Two Pair Check Win: ${winByTwoPair}`);
+  const winByTwoPair = checkForTwoPair(rankTypesTallyObj);
 
   // BONUS POINTS: Jacks or better
-  const winByJacksOrBetter = checkForJacksOrBetter(rankTypesObj);
-  console.log(`Jacks Or Better Check Win: ${winByJacksOrBetter}`);
+  const winByJacksOrBetter = checkForJacksOrBetter(rankTypesTallyObj);
 
-  // GET WINNINGS
+  // GET WIN RESULT
 
+  // total amount of points that player has won
   let winAmount = 0;
+  // total amount of bonus points that player has won
   let bonusAmount = 0;
+  // bet amouunt that user placed
   let betPlaced = betAmount - 1;
+  // message that will be shown after calulation of hand
   let messageOutput;
   // Win ranking Best to Worst
   if (winByRoyalFlush) {
@@ -858,15 +863,16 @@ const calcHandScore = () => {
       bonusAmount += combiPoints.jacksOrBetter[betPlaced] * bonusMultiplyer;
       // reset bonus multiplyer
       bonusMultiplyer = 0;
+      // create message for bonus win
       messageOutput += '\n with BONUS!';
     }
   } else {
-    // message for no wins
+    // create message for no win
     messageOutput = 'Aww shucks. A pile of nothin.';
     win = false;
   }
 
-  // message
+  // final message that displays in the DOM
   createMessage(`${messageOutput}\n Bet Again!`);
 
   // add to score

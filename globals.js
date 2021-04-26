@@ -1,13 +1,14 @@
-/* ========================================================== */
-/* ======================= GLOBALS ========================= */
-/* ========================================================== */
+/* ==========================================================
+======================== GLOBALS ============================
+=========================================================== */
 
-// this is where we will store all the 5 cards displayed
+// An array that contains the 5 cards shown in the DOM
 let displayCardsArr = [];
 
-// this is our deck of cards used for each game
+// An array that contains the deck of cards used in each game
 let deckOfCards = [];
 
+// Variable that stores the state of the game
 // game state (not super useful now but may be in the future)
 const INTRO_GAME_STATE = 'INTRO_GAME_STATE';
 const BET_GAME_STATE = 'BET_GAME_STATE';
@@ -15,23 +16,24 @@ const PLAY_GAME_STATE = 'PLAY_GAME_STATE';
 const NEXT_GAME_STATE = 'NEXT_GAME_STATE';
 let GAME_STATE = INTRO_GAME_STATE;
 
-// this array holds the coordinates of which cards were clicked
 // we use this array to determin if we should hold or switch cards
-let holdCardsClickCounter = [];
+// false means that we want to switch the cards
+// the cards are set to false by default
+let holdCardsArr = [false, false, false, false, false];
 
-// total credits
+// Variable that stores the total game credits
 let totalCredits = 100;
 
-// bet amount
+// Variable that stores the bet amount per game
 let betAmount = 0;
 
-// bonus amount from jacks or better
+// Variable that stores the bonus amount from jacks or better
 let bonusMultiplyer = 0;
 
-// background music
+// Variable that stores checks if the background music should be on or off
 let turnOnBackgrounMusic = false;
 
-// Point system
+// An object that contains the point / score system of the game
 const combiPoints = {
   royalFlush: [250, 500, 750, 1000, 4000],
   straightFlush: [50, 100, 150, 200, 250],

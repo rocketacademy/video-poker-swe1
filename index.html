@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <meta charset="UTF-8" />
+  <title>Video Poker</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
+  <body>
+    <section class="main-container">
+      <div class="primary-display-container">
+        <div class="info-container"></div>
+        <div class="cards-container">
+          <div class="front-cards-container"></div>
+          <div class="back-cards-container"></div>
+        </div>
+      </div>
+      <div class="secondary-display-container">
+        <div class="credits-container">
+          <h4 class="credits-text">TOTAL CREDITS: 000</h4>
+        </div>
+        <div class="button-container">
+          <button class="btn-bet-one pushable" type="button">
+            <span class="shadow"></span>
+            <span class="edge"></span>
+            <span class="front"> BET ONE </span>
+          </button>
+          <button class="btn-bet-max pushable" type="button">
+            <span class="shadow"></span>
+            <span class="edge"></span>
+            <span class="front"> BET MAX </span>
+          </button>
+          <button class="btn-deal pushable" type="button">
+            <span class="shadow"></span>
+            <span class="edge"></span>
+            <span class="front"> DEAL </span>
+          </button>
+        </div>
+      </div>
+    </section>
+    <!-- testDealCard.js is for testing -->
+    <script src="testDealCard.js"></script>
+    <!-- <script src="script.js"></script> -->
+    <script src="globals.js"></script>
+    <script src="gameFuncAndLogic.js"></script>
+    <script src="gameInit.js"></script>
+    <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
+    <audio
+      src="https://opengameart.org/sites/default/files/happy_adveture.mp3"
+      id="background-music"
+    ></audio>
+    <audio
+      src="https://opengameart.org/sites/default/files/Accept.mp3"
+      id="click-start"
+    ></audio>
+    <audio
+      src="https://opengameart.org/sites/default/files/audio_preview/5_Coins.ogg.mp3"
+      id="click-bet"
+    ></audio>
+    <audio
+      src="https://opengameart.org/sites/default/files/Picked%20Coin%20Echo%202%20mp3_1.mp3"
+      id="click-deal"
+    ></audio>
+    <audio
+      src="https://opengameart.org/sites/default/files/audio_preview/applause.wav.mp3"
+      id="game-win"
+    ></audio>
+    <audio
+      src="https://opengameart.org/sites/default/files/audio_preview/vgdeathsound.ogg.mp3
+"
+      id="game-lose"
+    ></audio>
+  </body>
+</html>
+
+<!-- design ref
+https://www.youtube.com/watch?v=h26X-4tJytw -->

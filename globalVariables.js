@@ -50,5 +50,8 @@ let rankCounterValues;
 let rankCounterKeys;
 // store the highest frequency of a rank being repeated
 let highestRankFrequency;
+let secondHighestRankFrequency;
 //stores keys of rankCounter as integers
 let rankCounterKeysNum;
+
+let handWon;

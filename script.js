@@ -196,11 +196,7 @@ const checkForFlushOrStraightFlush = () => {
 
 const checkFor3OfAKindOrFullHouse = () => {
   if (highestRankFrequency === 3) {
-    const index = rankCounterValues.indexOf(3);
-    rankCounterValues.splice(index, 1);
-    //check for additional pair of same cards
-    //unsure how to put Math.max() in line 220 as a seperate variable
-    if (Math.max(...rankCounterValues) === 2) {
+    if (secondHighestRankFrequency === 2) {
       handWon = "Full house";
       creditWon = 1000;
       remainingCredit += 1000;
@@ -221,10 +217,8 @@ const checkFor4OfAKind = () => {
 };
 const checkForPairNum = () => {
   if (highestRankFrequency === 2) {
-    const index = rankCounterValues.indexOf(2);
-    rankCounterValues.splice(index, 1);
     //checks for an additional pair
-    if (Math.max(...rankCounterValues) === 2) {
+    if (secondHighestRankFrequency === 2) {
       handWon = "2 Pair";
       creditWon = 40;
       remainingCredit += 40;
@@ -255,7 +249,10 @@ const checkWinningConditions = () => {
   tallyCounts();
   rankCounterValues = Object.values(rankCounter);
   rankCounterKeys = Object.keys(rankCounter);
-  highestRankFrequency = Math.max(...rankCounterValues);
+  rankCounterValues.sort((a, b) => a - b);
+  const rankCounterValuesLength = rankCounterValues.length;
+  highestRankFrequency = rankCounterValues[rankCounterValuesLength - 1];
+  secondHighestRankFrequency = rankCounterValues[rankCounterValuesLength - 2];
   rankCounterKeysNum = rankCounterKeys.map((x) => parseInt(x));
   console.log(rankCounterKeysNum);
   checkForFlushOrStraightFlush();

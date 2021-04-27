@@ -1,0 +1,175 @@
+h1 {
+  font-family: "Faster One", cursive;
+  color: #ff114f;
+  font-size: 110px;
+  animation-name: video-poker;
+  animation-duration: 8s;
+  animation-iteration-count: infinite;
+}
+@keyframes video-poker {
+  0% {
+    color: #ff114f;
+  }
+  70% {
+    color: #ff114f;
+  }
+  73% {
+    color: yellow;
+  }
+  75% {
+    color: #fa0808;
+  }
+  77% {
+    color: yellow;
+  }
+  85% {
+    color: #ff114f;
+  }
+}
+.game {
+  width: 40%;
+}
+.title-container {
+  width: 70%;
+  margin: auto;
+  display: flex;
+}
+.payout-container {
+  margin-top: 73px;
+  height: 250px;
+  font-size: 15px;
+  display: flex;
+  width: 60%;
+  border-style: solid;
+  border-color: #53f6ff;
+  border-width: 5px;
+  border-radius: 5px;
+  align-items: center;
+  justify-content: space-around;
+  background-color: #ea3afa;
+  font-family: "Press Start 2P", cursive;
+  box-shadow: 0px 0px 6px 2px rgb(255, 255, 255);
+}
+table {
+  width: 50%;
+  margin-left: 15px;
+  margin-right: 15px;
+}
+th {
+  line-height: 300%;
+}
+.hand {
+  text-align: left;
+  width: 60%;
+  color: #00e2ee;
+}
+.value {
+  text-align: right;
+  color: #00ffc8;
+}
+body {
+  background-color: #7903eb;
+}
+.card-container {
+  width: 70%;
+  height: 400px;
+  background-color: #ff46ff;
+  border-radius: 4px;
+  text-align: center;
+  margin: auto;
+  padding: 8px;
+  display: flex;
+  justify-content: space-around;
+}
+.cards {
+  width: 19%;
+  position: relative;
+  background-color: rgb(0, 0, 0);
+  height: auto;
+  border-radius: 4px;
+  color: black;
+  font-family: "Open Sans", sans-serif;
+  font-size: 30px;
+  box-shadow: 0px 0px 4px 2px rgb(192, 136, 187);
+  border-color: white;
+}
+.rank {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  margin: 0;
+  font-family: "Press Start 2P", cursive;
+  color: #00ffc8;
+}
+.small-symbol {
+  position: absolute;
+  top: 40px;
+  left: 17px;
+  margin: 0;
+  font-size: 60px;
+  color: #00ffc8;
+}
+.center-symbol {
+  font-size: 100px;
+  color: #00ffc8;
+}
+.game-controls {
+  width: 70%;
+  margin: auto;
+  padding-top: 20px;
+}
+.buttons {
+  width: 20%;
+  height: 50px;
+  background-color: yellow;
+  border-radius: 8px;
+  font-family: "Press Start 2P", cursive;
+  font-size: 15px;
+  font-weight: 600;
+}
+.complete-turn {
+  float: right;
+}
+.points-container {
+  width: 70%;
+  margin: auto;
+  padding: 10px;
+  color: yellow;
+}
+.player-bet {
+  float: right;
+  font-family: "Press Start 2P", cursive;
+  font-size: 17px;
+  font-weight: 600;
+}
+.player-credits {
+  font-family: "Press Start 2P", cursive;
+  font-size: 17px;
+  font-weight: 600;
+}
+.pop-up {
+  background-color: #00d4f0;
+  width: 60%;
+  height: 250px;
+  position: fixed;
+  top: 100px;
+  left: 20%;
+  box-shadow: 0px 0px 6px 6px yellow;
+  border-radius: 6px;
+  border: 6px solid yellow;
+}
+.pop-up-text {
+  font-family: "Press Start 2P", cursive;
+  font-size: 30px;
+  font-weight: 600;
+  text-align: center;
+}
+.pop-up-button {
+  width: 40%;
+  padding: 10px;
+  font-family: "Press Start 2P", cursive;
+  background-color: yellow;
+  border-radius: 8px;
+  margin-left: 30%;
+  margin-top: 30px;
+}

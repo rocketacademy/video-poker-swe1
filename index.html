@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Video Poker</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Faster+One&family=Open+Sans&family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="title-container">
+      <span class="game"><h1>Video Poker</h1></span>
+      <span class="payout-container">
+        <table class="score-table-1">
+          <tr>
+            <th class="hand">Straight Flush</th>
+            <th class="value">$10 000</th>
+          </tr>
+          <tr>
+            <th class="hand">4 Of A Kind</th>
+            <th class="value">$1500</th>
+          </tr>
+          <tr>
+            <th class="hand">Full House</th>
+            <th class="value">$1000</th>
+          </tr>
+          <tr>
+            <th class="hand">Flush</th>
+            <th class="value">$500</th>
+          </tr>
+        </table>
+        <table class="score-table-2">
+          <tr>
+            <th class="hand">Straight</th>
+            <th class="value">$100</th>
+          </tr>
+          <tr>
+            <th class="hand">3 Of A Kind</th>
+            <th class="value">$60</th>
+          </tr>
+          <tr>
+            <th class="hand">2 Pairs</th>
+            <th class="value">$40</th>
+          </tr>
+          <tr>
+            <th class="hand">1 Pair</th>
+            <th class="value">$20</th>
+          </tr>
+        </table>
+      </span>
+    </div>
+    <div class="points-container">
+      <span class="player-credits">Player: 100 Credits</span>
+      <span class="player-bet">Bet: 20 Credits</span>
+    </div>
+    <p class="output-message"></p>
+    <div class="card-container">
+      <button class="cards card-1" id="hi">
+        <p class="rank card-1p1"></p>
+        <p class="small-symbol card-1p2"></p>
+        <p class="center-symbol card-1p2"></p>
+      </button>
+      <button class="cards card-2">
+        <p class="rank card-2p1"></p>
+        <p class="small-symbol card-2p2"></p>
+        <p class="center-symbol card-2p2"></p>
+      </button>
+      <button class="cards card-3">
+        <p class="rank card-3p1"></p>
+        <p class="small-symbol card-3p2"></p>
+        <p class="center-symbol card-3p2"></p>
+      </button>
+      <button class="cards card-4">
+        <p class="rank card-4p1"></p>
+        <p class="small-symbol card-4p2"></p>
+        <p class="center-symbol card-4p2"></p>
+      </button>
+      <button class="cards card-5">
+        <p class="rank card-5p1"></p>
+        <p class="small-symbol card-5p2"></p>
+        <p class="center-symbol card-5p2"></p>
+      </button>
+    </div>
+    <div class="game-controls">
+      <button class="buttons complete-turn">Discard</button>
+    </div>
+    <script src="globalVariables.js"></script>
+    <script src="script.js"></script>
+    <audio
+      id="click-audio"
+      controls
+      src="mixkit-video-game-retro-click-237.wav"
+      hidden="true"
+    ></audio>
+    <audio
+      id="click-win"
+      controls
+      src="mixkit-winning-an-extra-bonus-2060.wav"
+      hidden="true"
+    ></audio>
+  </body>
+</html>

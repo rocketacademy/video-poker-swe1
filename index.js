@@ -1,5 +1,6 @@
-import { readFile } from 'fs';
-import { createServer } from 'http';
+const readFile = require('fs'.readFile);
+
+const createServer = require('http'.createServer);
 
 const PORT = process.argv[2];
 

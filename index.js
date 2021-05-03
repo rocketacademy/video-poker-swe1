@@ -14,7 +14,7 @@ http
     const extentionName = String(path.extname(fileName)).toLocaleLowerCase();
     console.log('THIS IS REQ -> ', fileName);
 
-    readFile(game, (err, content) => {
+    readFile(`./${fileName}`, (err, content) => {
       if (!err) {
         res.end(content);
         return;

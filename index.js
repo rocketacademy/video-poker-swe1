@@ -1,9 +1,11 @@
-const readFile = require('fs'.readFile);
+// const fs = require('fs');
 
-const createServer = require('http'.createServer);
+const http = require('http');
 
 const PORT = process.argv[2];
 
-createServer((req, res) => {
-  res.send('Hello');
-}).listen(PORT, console.log(`Server listening on port ${PORT}`));
+http
+  .createServer((req, res) => {
+    res.send('Hello');
+  })
+  .listen(PORT, console.log(`Server listening on port ${PORT}`));

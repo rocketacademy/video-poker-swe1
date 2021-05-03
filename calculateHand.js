@@ -2,7 +2,7 @@
 
 // HELPER FUNCTIONS
 
-// returns number of same cards in array
+// returns number of same cards in array ()
 // this could go into a helper functon script (reusable funciton)
 const isThree = (num, arr) => {
   // The filter() method creates a new array with all elements that pass the test

@@ -1,6 +1,6 @@
 // CREATING THE DECK
 const handleCreateDeck = () => {
-  const deckSuit = ["♠️", "♣️", "♥️", "♦️"];
+  const deckSuit = ['♠️', '♣️', '♥️', '♦️'];
   const deckValues = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
 
   let newDeck = [];
@@ -11,16 +11,16 @@ const handleCreateDeck = () => {
       // CONVERT 1 , 11, 12, 13 TO RESPECTIVE deckValues
       switch (deckValues[j]) {
         case 1:
-          deckValues[j] = "A";
+          deckValues[j] = 'A';
           break;
         case 11:
-          deckValues[j] = "J";
+          deckValues[j] = 'J';
           break;
         case 12:
-          deckValues[j] = "Q";
+          deckValues[j] = 'Q';
           break;
         case 13:
-          deckValues[j] = "K";
+          deckValues[j] = 'K';
           break;
         default:
           deckValues[j];
@@ -62,7 +62,7 @@ const handleDealCard = (userHand) => {
     const r = Math.floor(Math.random() * gameState.deck.length);
     userHand.push(gameState.deck[r]);
   }
-  console.log("THIS IS PLAYER HAND AFTER DEALING", user.hand);
+  console.log('THIS IS PLAYER HAND AFTER DEALING', user.hand);
 
   // // CHECK FOR EXISTING CARDS ON VISIBLE DOM
   // // THIS SHOULD GO INTO DOM.JS (handleDrawDom)
@@ -120,10 +120,13 @@ const handleNewCards = (
 ) => {
   // NOT WORKING YET STILL STUCK HERE
 
+  gameState.swap += 1;
+
   if (gameState.secondDeal === true) {
-    domSelector.changeCardButton.classList.add("disable-click");
-    domSelector.deckItem.classList.add("disable-click");
-    domSelector.cardDiv.classList.toggle("able-swap");
+    domSelector.changeCardButton.classList.add('disable-click');
+    domSelector.deckItem.classList.add('disable-click');
+    // eslint-disable-next-line no-undef
+    domSelector.cardDiv.classList.toggle('able-swap');
     // domSelector.cardDiv.classList.add("disable-swap");
   }
 
@@ -135,10 +138,9 @@ const handleNewCards = (
   cardValueToChangeBottom.innerText = user.hand[i].value;
   suit.innerText = user.hand[i].suit;
 
-  console.log("NEW USER HAND ", user.hand);
+  console.log('NEW USER HAND ', user.hand);
 
-  gameState.swap += 1;
-  gameState.swap > 2
+  gameState.swap >= 2
     ? (gameState.secondDeal = true)
     : (gameState.secondDeal = false);
 };

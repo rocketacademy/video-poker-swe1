@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+/* eslint-disable no-unused-vars */
 // Losing message
 const loseMsg = () => {
   domSelector.loseMessageBox.style.display = 'block';
@@ -30,7 +32,7 @@ const gameOverMsg = () => {
   domSelector.gameOverBox.innerText = 'GAME OVER';
 
   setTimeout(() => {
-    location.reload();
+    window.location.reload();
   }, 5000);
 
   // Could reload to a message page instaed

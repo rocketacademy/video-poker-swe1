@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 // GLOBAL VARIABLES FOR PROJECT
 
 // GLOBAL USER OBJECT

@@ -1,3 +1,5 @@
+/* eslint-disable no-multi-assign */
+/* eslint-disable no-undef */
 // APP STARTS HERE
 
 // // DEAL CARDS BUTTON ON GAME PAGE

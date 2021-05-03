@@ -6,6 +6,7 @@ const path = require('path');
 
 const PORT = process.argv[2];
 const file = './index.html';
+const game = './game.html';
 
 http
   .createServer((req, res) => {
@@ -13,7 +14,7 @@ http
     const extentionName = String(path.extname(fileName)).toLocaleLowerCase();
     console.log('THIS IS REQ -> ', fileName);
 
-    readFile(file, (err, content) => {
+    readFile(game, (err, content) => {
       if (!err) {
         res.end(content);
         return;

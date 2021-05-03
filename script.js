@@ -4,14 +4,14 @@
 // const dealCardButton = document.querySelector(".deal-button");
 
 // dealCardButton.addEventListener("click", (e) => {
-domSelector.dealCardButton.addEventListener("click", (e) => {
-  domSelector.dealCardButton.classList.add("disable-click");
-  domSelector.betButton.classList.remove("disable-click");
-  domSelector.changeCardButton.classList.remove("disable-click");
+domSelector.dealCardButton.addEventListener('click', (e) => {
+  domSelector.dealCardButton.classList.add('disable-click');
+  domSelector.betButton.classList.remove('disable-click');
+  domSelector.changeCardButton.classList.remove('disable-click');
   gameState.swap = 0;
   gameState.secondDeal = false;
   e.preventDefault();
-  console.log("CLICKED DEAL BUTTON");
+  console.log('CLICKED DEAL BUTTON');
   // INITIALISING THE DECK OF CARDS
   gameState.deck = handleShuffleCards(handleCreateDeck());
   // console.log("THIS IS THE DECK ", gameState.deck);
@@ -20,7 +20,7 @@ domSelector.dealCardButton.addEventListener("click", (e) => {
   // IF NOT, DEAL CARDS TO USER
   if (user.hand.length) {
     user.hand = [];
-    console.log("this is player hand after clearing", user.hand);
+    console.log('this is player hand after clearing', user.hand);
   }
 
   handleDealCard(user.hand);
@@ -28,20 +28,20 @@ domSelector.dealCardButton.addEventListener("click", (e) => {
 });
 
 // REMOVES GAME RULES AND SHOWS PLAYING SCREEN
-domSelector.letsGoButton.addEventListener("click", () => {
-  domSelector.betButton.classList.add("disable-click");
-  domSelector.changeCardButton.classList.add("disable-click");
+domSelector.letsGoButton.addEventListener('click', () => {
+  domSelector.betButton.classList.add('disable-click');
+  domSelector.changeCardButton.classList.add('disable-click');
   handleEraseGameRules();
 });
 
 // EVENT TO CALCULATE CARD IN HAND
 // also remove pointerEvents from other buttons
-domSelector.betButton.addEventListener("click", () => {
-  console.log("Bet button clicked");
+domSelector.betButton.addEventListener('click', () => {
+  console.log('Bet button clicked');
   // toggle disable class to buttons
-  domSelector.dealCardButton.classList.remove("disable-click");
-  domSelector.changeCardButton.classList.add("disable-click");
-  domSelector.betButton.classList.add("disable-click");
+  domSelector.dealCardButton.classList.remove('disable-click');
+  domSelector.changeCardButton.classList.add('disable-click');
+  domSelector.betButton.classList.add('disable-click');
   console.log(handleCheckFiveKind(user.hand));
 
   //  TESTING HAND
@@ -56,27 +56,27 @@ domSelector.betButton.addEventListener("click", () => {
     // UPDATE POINTS
     domSelector.pointsBoxDiv.innerHTML = user.points += 50;
     // SHOW WINNING MESSAGE
-    winMsg("50", "Straight Flush");
+    winMsg('50', 'Straight Flush');
   } else if (handleCheckFiveKind(user.hand)) {
     domSelector.pointsBoxDiv.innerHTML = user.points += 100;
-    winMsg("100", "Five of a Kind");
+    winMsg('100', 'Five of a Kind');
   } else if (handleCheckFourKind(user.hand)) {
     domSelector.pointsBoxDiv.innerHTML = user.points += 40;
-    winMsg("40", "Four of a Kind");
+    winMsg('40', 'Four of a Kind');
   } else if (handleCheckFullHouse(user.hand)) {
     domSelector.pointsBoxDiv.innerHTML = user.points += 35;
-    winMsg("35", "Full House");
+    winMsg('35', 'Full House');
   } else if (handleCheckFlush(user.hand)) {
     domSelector.pointsBoxDiv.innerHTML = user.points += 25;
-    winMsg("25", "Flush");
+    winMsg('25', 'Flush');
   } else if (handleCheckStraight(user.hand)) {
     domSelector.pointsBoxDiv.innerHTML = user.points += 20;
-    winMsg("20", "Straight");
+    winMsg('20', 'Straight');
   } else if (handleCheckThreeKind(user.hand)) {
     domSelector.pointsBoxDiv.innerHTML = user.points += 15;
-    winMsg("15", "Three of a Kind");
+    winMsg('15', 'Three of a Kind');
   } else if (handleCheckPairs(user.hand)) {
-    winMsg("5", "One Pair");
+    winMsg('5', 'One Pair');
     domSelector.pointsBoxDiv.innerHTML = user.points += 5;
   } else {
     // No match
@@ -84,9 +84,9 @@ domSelector.betButton.addEventListener("click", () => {
     domSelector.pointsBoxDiv.innerHTML = user.points -= 10;
   }
   if (user.points <= 0) {
-    domSelector.dealCardButton.classList.add("disable-click");
-    domSelector.changeCardButton.classList.add("disable-click");
-    domSelector.betButton.classList.add("disable-click");
+    domSelector.dealCardButton.classList.add('disable-click');
+    domSelector.changeCardButton.classList.add('disable-click');
+    domSelector.betButton.classList.add('disable-click');
     gameOverMsg();
   }
 });
